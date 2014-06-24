@@ -1,0 +1,21 @@
+{
+  "name": "lounge",
+  "description": "coming soon",
+  "version": "0.0.1",
+  "homepage": "https://github.com/bojand/lounge",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bojand/lounge.git"
+  },
+  "bugs": {
+    "url": "http://github.com/bojand/lounge/issues"
+  },
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "main": "./index.js",
+  "author": {
+    "name": "Bojan Djurkovic <dbojan@gmail.com>"
+  }
+}
