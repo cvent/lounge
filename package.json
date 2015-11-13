@@ -1,7 +1,7 @@
 {
   "name": "lounge",
   "description": "coming soon",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "homepage": "https://github.com/bojand/lounge",
   "license": "MIT",
   "repository": {
@@ -17,5 +17,21 @@
   "main": "./index.js",
   "author": {
     "name": "Bojan Djurkovic <dbojan@gmail.com>"
+  },
+  "scripts": {
+    "test": "COUCHBASE_MOCK=true mocha"
+  },
+  "dependencies": {
+    "couchbase": "^2.1.2",
+    "clone": "^1.0.2",
+    "hooks-fixed": "^1.1.0",
+    "lodash": "^3.10.1",
+    "prop-search": "^1.1.8",
+    "sliced": "^1.0.1",
+    "uuid": "^2.0.1"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "mocha": "^2.3.3"
   }
 }
