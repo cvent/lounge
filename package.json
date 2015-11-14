@@ -22,10 +22,12 @@
     "test": "COUCHBASE_MOCK=true mocha"
   },
   "dependencies": {
+    "async": "^1.5.0",
     "couchbase": "^2.1.2",
     "clone": "^1.0.2",
     "hooks-fixed": "^1.1.0",
     "lodash": "^3.10.1",
+    "mpath": "^0.2.1",
     "prop-search": "^1.1.8",
     "sliced": "^1.0.1",
     "uuid": "^2.0.1"

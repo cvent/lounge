@@ -7,46 +7,46 @@ describe('Schema basics', function () {
     lounge = new lounge.Lounge(); // recreate it
   });
 
-  describe("Schema basics", function () {
-    describe("Should only accept a plain object or undefined as an argument", function () {
-      it("Should accept a 'undefined'", function () {
+  describe('Schema basics', function () {
+    describe('Should only accept a plain object or undefined as an argument', function () {
+      it('Should accept a \'undefined\'', function () {
         expect(function () {
           new Schema(undefined);
         }).to.not.throw(TypeError);
       });
 
-      it("Should not accept a 'null'", function () {
+      it('Should not accept a \'null\'', function () {
         expect(function () {
           new Schema(null);
         }).to.throw(TypeError);
       });
 
-      it("Should not accept a 'number'", function () {
+      it('Should not accept a \'number\'', function () {
         expect(function () {
           new Schema(1);
         }).to.throw(TypeError);
       });
 
-      it("Should not accept a 'boolean'", function () {
+      it('Should not accept a \'boolean\'', function () {
         expect(function () {
           new Schema(true);
         }).to.throw(TypeError);
       });
 
-      it("Should not accept a 'function'", function () {
+      it('Should not accept a \'function\'', function () {
         expect(function () {
           new Schema(function () {
           });
         }).to.throw(TypeError);
       });
 
-      it("Should not accept a 'date'", function () {
+      it('Should not accept a \'date\'', function () {
         expect(function () {
           new Schema(new Date);
         }).to.throw(TypeError);
       });
 
-      it("Should not accept a constructed object", function () {
+      it('Should not accept a constructed object', function () {
         var Thing = function Thing(arg) {
         }, thing = new (Thing);
 
@@ -55,7 +55,7 @@ describe('Schema basics', function () {
         }).to.throw(TypeError);
       });
 
-      it("Should accept a plain object", function () {
+      it('Should accept a plain object', function () {
         try {
           var sh = new Schema({property: String});
         }
@@ -67,7 +67,7 @@ describe('Schema basics', function () {
         }).to.not.throw(TypeError);
       });
 
-      it("Should throw with key type not a Number or String", function () {
+      it('Should throw with key type not a Number or String', function () {
         expect(
           function () {
             var siteSchema = new lounge.Schema({
@@ -80,7 +80,7 @@ describe('Schema basics', function () {
     });
 
     describe('add', function () {
-      it("Should accept a key and a descriptor object", function () {
+      it('Should accept a key and a descriptor object', function () {
         schema = new Schema();
         schema.add('name', String);
         schema.add('age', {type: Number});
