@@ -102,6 +102,40 @@ describe("Schema options", function () {
         expect(user.firstName).to.equal('JOE', 'Failed to call pre hook');
         expect(user.lastName).to.equal('SMITH', 'Failed to call pre hook');
       });
+
+      it("Should call pre hook with params before function", function (done) {
+
+        var userSchema = lounge.schema({firstName: String, lastName: String});
+
+        userSchema.method('foo', function (firstName, lastName, cb) {
+          return process.nextTick(function () {
+            return cb(null, firstName + ' ' + lastName);
+          });
+        });
+
+        var datacheck = {};
+
+        userSchema.pre('foo', function preFn(next, param1, param2) {
+          datacheck.param1 = param1;
+          datacheck.param2 = param2;
+          this.firstName = this.firstName.toUpperCase();
+          this.lastName = this.lastName.toUpperCase();
+          next();
+        });
+
+        var User = lounge.model('User', userSchema);
+
+        var user = new User({firstName: 'Joe', lastName: 'Smith'});
+
+        user.foo('Led', 'Zep', function (err, res) {
+          expect(res).to.equal('Led Zep');
+          expect(datacheck.param1).to.equal('Led', 'Failed to call pre hook');
+          expect(datacheck.param2).to.equal('Zep', 'Failed to call pre hook');
+          expect(user.firstName).to.equal('JOE', 'Failed to call pre hook');
+          expect(user.lastName).to.equal('SMITH', 'Failed to call pre hook');
+          done();
+        });
+      });
     });
 
     describe("post", function () {
@@ -123,6 +157,38 @@ describe("Schema options", function () {
 
         expect(user.firstName).to.equal('JOE', 'Failed to call post hook');
         expect(user.lastName).to.equal('SMITH', 'Failed to call post hook');
+      });
+
+      it("Should call post hook with return param after function", function (done) {
+
+        var userSchema = lounge.schema({firstName: String, lastName: String});
+
+        userSchema.method('foo', function (firstName, lastName, cb) {
+          return process.nextTick(function () {
+            return cb(null, firstName + ' ' + lastName);
+          });
+        });
+
+        var datacheck = {};
+
+        userSchema.post('foo', function postFn(next, param1) {
+          datacheck.param1 = param1;
+          this.firstName = this.firstName.toUpperCase();
+          this.lastName = this.lastName.toUpperCase();
+          next(null, param1);
+        });
+
+        var User = lounge.model('User', userSchema);
+
+        var user = new User({firstName: 'Joe', lastName: 'Smith'});
+
+        user.foo('Led', 'Zep', function (err, res) {
+          expect(res).to.equal('Led Zep');
+          expect(datacheck.param1).to.equal('Led Zep', 'Failed to call post hook');
+          expect(user.firstName).to.equal('JOE', 'Failed to call post hook');
+          expect(user.lastName).to.equal('SMITH', 'Failed to call post hook');
+          done();
+        });
       });
     });
   });
