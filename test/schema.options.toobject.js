@@ -1,15 +1,15 @@
-describe("Schema options", function () {
-  var lounge = require('../lib/')
-    , assert = require('assert');
+var lounge = require('../lib/');
+var expect = require('chai').expect;
 
-  beforeEach(function (done) {
+describe('Schema options', function () {
+
+  beforeEach(function () {
     lounge = new lounge.Lounge(); // recreate it
-    done();
   });
 
-  describe("toObject", function () {
+  describe('toObject', function () {
 
-    it("Should just work without any options", function () {
+    it('Should just work without any options', function () {
       var userSchema = lounge.schema({name: String, email: String});
 
       var User = lounge.model('User', userSchema);
@@ -18,11 +18,20 @@ describe("Schema options", function () {
 
       var obj = user.toObject();
 
-      assert.equal(obj.name, 'Joe');
-      assert.equal(obj.email, 'joe@gmail.com');
+      var expected = {
+        name: 'Joe',
+        email: 'joe@gmail.com'
+      };
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+
+      delete obj.id;
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should transform if given the option", function () {
+    it('Should transform if given the option', function () {
       var userSchema = lounge.schema({
         name: String,
         email: String,
@@ -44,12 +53,20 @@ describe("Schema options", function () {
 
       var obj = user.toObject({transform: xform});
 
-      assert.equal(obj.name, 'Joe', 'Failed to properly transform toObject()');
-      assert.equal(obj.email, 'joe@gmail.com', 'Failed to properly transform toObject()');
-      assert.equal(obj.password, undefined, 'Failed to properly transform toObject(). Did not delete hidden property.');
+      var expected = {
+        name: 'Joe',
+        email: 'joe@gmail.com'
+      };
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+
+      delete obj.id;
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should transform if given the option only the specific object", function () {
+    it('Should transform if given the option only the specific object', function () {
       var userSchema = lounge.schema({
         name: String,
         email: String,
@@ -78,16 +95,32 @@ describe("Schema options", function () {
       var obj1 = user.toObject({transform: xform});
       var obj2 = user2.toObject();
 
-      assert.equal(obj1.name, 'Joe', 'Failed to properly transform toObject()');
-      assert.equal(obj1.email, 'joe@gmail.com', 'Failed to properly transform toObject()');
-      assert.equal(obj1.password, undefined, 'Failed to properly transform toObject(). Did not delete hidden property.');
+      var expected1 = {
+        name: 'Joe',
+        email: 'joe@gmail.com'
+      };
 
-      assert.equal(obj2.name, 'Bob', 'Failed to properly transform toObject()');
-      assert.equal(obj2.email, 'bob@gmail.com', 'Failed to properly transform toObject()');
-      assert.equal(obj2.password, 'password2', 'Failed to properly transform toObject(). Deleted property when it should not have.');
+      var expected2 = {
+        name: 'Bob',
+        email: 'bob@gmail.com',
+        password: 'password2'
+      };
+
+      expect(obj1.id).to.be.ok;
+      expect(obj1.id).to.be.a('string');
+
+      delete obj1.id;
+
+      expect(obj2.id).to.be.ok;
+      expect(obj2.id).to.be.a('string');
+
+      delete obj2.id;
+
+      expect(obj1).to.deep.equal(expected1);
+      expect(obj2).to.deep.equal(expected2);
     });
 
-    it("Should transform if given the option at schema level", function () {
+    it('Should transform if given the option at schema level', function () {
       var userSchema = lounge.schema({
         name: String,
         email: String,
@@ -111,12 +144,20 @@ describe("Schema options", function () {
 
       var obj = user.toObject();
 
-      assert.equal(obj.name, 'Joe', 'Failed to properly transform toObject()');
-      assert.equal(obj.email, 'joe@gmail.com', 'Failed to properly transform toObject()');
-      assert.equal(obj.password, undefined, 'Failed to properly transform toObject(). Did not delete hidden property.');
+      var expected = {
+        name: 'Joe',
+        email: 'joe@gmail.com'
+      };
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+
+      delete obj.id;
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should not effect toJSON if having a transform at schema level", function () {
+    it('Should not effect toJSON if having a transform at schema level', function () {
       var userSchema = lounge.schema({
         name: String,
         email: String,
@@ -140,12 +181,21 @@ describe("Schema options", function () {
 
       var obj = user.toJSON();
 
-      assert.equal(obj.name, 'Joe', 'Failed to properly transform toJSON()');
-      assert.equal(obj.email, 'joe@gmail.com', 'Failed to properly transform toJSON()');
-      assert.equal(obj.password, 'password', 'Failed to properly transform toJSON().  Deleted property when it should not have.');
+      var expected = {
+        name: 'Joe',
+        email: 'joe@gmail.com',
+        password: 'password'
+      };
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+
+      delete obj.id;
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should perform transform correctly on nested objects", function () {
+    it('Should perform transform correctly on nested objects', function () {
       var userSchema = lounge.schema({name: String, email: String, password: String})
         , postSchema = lounge.schema({owner: Object, content: String});
 
@@ -160,18 +210,32 @@ describe("Schema options", function () {
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({name: 'Joe', email: 'joe@gmail.com', password: 'password'})
-        , post = new Post({owner: user, content: "I like lounge :)"});
+        , post = new Post({owner: user, content: 'I like lounge :)'});
 
       var obj = post.toObject();
 
-      assert.equal(obj.content, 'I like lounge :)', 'Failed to properly transform toObject()');
-      assert.ok(obj.owner, 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.name, 'Joe', 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.email, 'joe@gmail.com', 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.password, undefined, 'Failed to properly transform toObject(). Did not delete hidden property.');
+      var expected = {
+        content: 'I like lounge :)',
+        owner: {
+          name: 'Joe',
+          email: 'joe@gmail.com'
+        }
+      };
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+      expect(obj.owner).to.be.ok;
+      expect(obj.owner).to.be.an('object');
+      expect(obj.owner.id).to.be.ok;
+      expect(obj.owner.id).to.be.a('string');
+
+      delete obj.id;
+      delete obj.owner.id;
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it.skip("Should perform transform correctly on nested objects when using inline tranform on one of them", function () {
+    it.skip('Should perform transform correctly on nested objects when using inline tranform on one of them', function () {
       var userSchema = lounge.schema({name: String, email: String, password: String})
         , postSchema = lounge.schema({owner: Object, content: String});
 
@@ -191,18 +255,32 @@ describe("Schema options", function () {
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({name: 'Joe', email: 'joe@gmail.com', password: 'password'})
-        , post = new Post({owner: user, content: "I like lounge :)"});
+        , post = new Post({owner: user, content: 'I like lounge :)'});
 
       var obj = post.toObject({transform: postxform});
 
-      assert.equal(obj.content, 'I LIKE LOUNGE :)', 'Failed to properly transform toObject()');
-      assert.ok(obj.owner, 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.name, 'Joe', 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.email, 'joe@gmail.com', 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.password, undefined, 'Failed to properly transform toObject(). Did not delete hidden property.');
+      var expected = {
+        content: 'I LIKE LOUNGE :)',
+        owner: {
+          name: 'Joe',
+          email: 'joe@gmail.com'
+        }
+      };
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+      expect(obj.owner).to.be.ok;
+      expect(obj.owner).to.be.an('object');
+      expect(obj.owner.id).to.be.ok;
+      expect(obj.owner.id).to.be.a('string');
+
+      delete obj.id;
+      delete obj.owner.id;
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should perform transform correctly on nested objects when using schema tranform on both of them", function () {
+    it('Should perform transform correctly on nested objects when using schema tranform on both of them', function () {
       var userSchema = lounge.schema({name: String, email: String, password: String})
         , postSchema = lounge.schema({owner: Object, content: String});
 
@@ -224,18 +302,32 @@ describe("Schema options", function () {
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({name: 'Joe', email: 'joe@gmail.com', password: 'password'})
-        , post = new Post({owner: user, content: "I like lounge :)"});
+        , post = new Post({owner: user, content: 'I like lounge :)'});
 
       var obj = post.toObject();
 
-      assert.equal(obj.content, 'I LIKE LOUNGE :)', 'Failed to properly transform toObject()');
-      assert.ok(obj.owner, 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.name, 'Joe', 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.email, 'joe@gmail.com', 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.password, undefined, 'Failed to properly transform toObject(). Did not delete hidden property.');
+      var expected = {
+        content: 'I LIKE LOUNGE :)',
+        owner: {
+          name: 'Joe',
+          email: 'joe@gmail.com'
+        }
+      };
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+      expect(obj.owner).to.be.ok;
+      expect(obj.owner).to.be.an('object');
+      expect(obj.owner.id).to.be.ok;
+      expect(obj.owner.id).to.be.a('string');
+
+      delete obj.id;
+      delete obj.owner.id;
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should not get virtuals if not given the option", function () {
+    it('Should not get virtuals if not given the option', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
@@ -258,12 +350,21 @@ describe("Schema options", function () {
 
       var obj = user.toObject();
 
-      assert.equal(obj.firstName, 'Joe', 'Failed to properly transform toObject()');
-      assert.equal(obj.lastName, 'Smith', 'Failed to properly transform toObject()');
-      assert.equal(obj.fullName, undefined, 'Failed to properly transform toObject(). Got virtual property.');
+      var expected = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        password: 'password'
+      };
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+
+      delete obj.id;
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should get virtuals if given the option at schema level", function () {
+    it('Should get virtuals if given the option at schema level', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
@@ -288,12 +389,22 @@ describe("Schema options", function () {
 
       var obj = user.toObject();
 
-      assert.equal(obj.firstName, 'Joe', 'Failed to properly transform toObject()');
-      assert.equal(obj.lastName, 'Smith', 'Failed to properly transform toObject()');
-      assert.equal(obj.fullName, 'Joe Smith', 'Failed to properly transform toObject(). Did not get virtual property.');
+      var expected = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        fullName: 'Joe Smith',
+        password: 'password'
+      };
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+
+      delete obj.id;
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should get virtuals if given the option at inline level", function () {
+    it('Should get virtuals if given the option at inline level', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
@@ -316,12 +427,22 @@ describe("Schema options", function () {
 
       var obj = user.toObject({virtuals: true});
 
-      assert.equal(obj.firstName, 'Joe', 'Failed to properly transform toObject()');
-      assert.equal(obj.lastName, 'Smith', 'Failed to properly transform toObject()');
-      assert.equal(obj.fullName, 'Joe Smith', 'Failed to properly transform toObject(). Did not get virtual property.');
+      var expected = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        fullName: 'Joe Smith',
+        password: 'password'
+      };
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+
+      delete obj.id;
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should perform correctly on nested objects when using virtuals on both models inline option", function () {
+    it('Should perform correctly on nested objects when using virtuals on both models inline option', function () {
       var userSchema = lounge.schema({firstName: String, lastName: String, password: String})
         , postSchema = lounge.schema({owner: Object, content: String});
 
@@ -347,19 +468,35 @@ describe("Schema options", function () {
         password: 'password'
       });
 
-      var post = new Post({owner: user, content: "I like lounge :)"});
+      var post = new Post({owner: user, content: 'I like lounge :)'});
 
       var obj = post.toObject({virtuals: true});
 
-      assert.equal(obj.content, 'I like lounge :)', 'Failed to properly transform toObject()');
-      assert.equal(obj.capContent, 'I LIKE LOUNGE :)', 'Failed to properly transform toObject()');
-      assert.ok(obj.owner, 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.firstName, 'Joe', 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.lastName, 'Smith', 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.fullName, 'Joe Smith', 'Failed to properly transform toObject(). Did not get virtual property.');
+      var expected = {
+        owner: {
+          firstName: 'Joe',
+          lastName: 'Smith',
+          password: 'password',
+          fullName: 'Joe Smith'
+        },
+        content: 'I like lounge :)',
+        capContent: 'I LIKE LOUNGE :)'
+      };
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+      expect(obj.owner).to.be.ok;
+      expect(obj.owner).to.be.an('object');
+      expect(obj.owner.id).to.be.ok;
+      expect(obj.owner.id).to.be.a('string');
+
+      delete obj.id;
+      delete obj.owner.id;
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should perform correctly on nested objects when using virtuals on both models and setting schema option for one model", function () {
+    it('Should perform correctly on nested objects when using virtuals on both models and setting schema option for one model', function () {
       var userSchema = lounge.schema({firstName: String, lastName: String, password: String})
         , postSchema = lounge.schema({owner: Object, content: String});
 
@@ -386,19 +523,34 @@ describe("Schema options", function () {
         password: 'password'
       });
 
-      var post = new Post({owner: user, content: "I like lounge :)"});
+      var post = new Post({owner: user, content: 'I like lounge :)'});
 
       var obj = post.toObject();
 
-      assert.equal(obj.content, 'I like lounge :)', 'Failed to properly transform toObject()');
-      assert.equal(obj.capContent, undefined, 'Failed to properly transform toObject()');
-      assert.ok(obj.owner, 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.firstName, 'Joe', 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.lastName, 'Smith', 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.fullName, 'Joe Smith', 'Failed to properly transform toObject(). Did not get virtual property.');
+      var expected = {
+        owner: {
+          firstName: 'Joe',
+          lastName: 'Smith',
+          password: 'password',
+          fullName: 'Joe Smith'
+        },
+        content: 'I like lounge :)'
+      };
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+      expect(obj.owner).to.be.ok;
+      expect(obj.owner).to.be.an('object');
+      expect(obj.owner.id).to.be.ok;
+      expect(obj.owner.id).to.be.a('string');
+
+      delete obj.id;
+      delete obj.owner.id;
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should perform correctly on nested objects when using virtuals on both models and setting schema option for one and false for other", function () {
+    it('Should perform correctly on nested objects when using virtuals on both models and setting schema option for one and false for other', function () {
       var userSchema = lounge.schema({firstName: String, lastName: String, password: String})
         , postSchema = lounge.schema({owner: Object, content: String});
 
@@ -427,19 +579,34 @@ describe("Schema options", function () {
         password: 'password'
       });
 
-      var post = new Post({owner: user, content: "I like lounge :)"});
+      var post = new Post({owner: user, content: 'I like lounge :)'});
 
       var obj = post.toObject();
 
-      assert.equal(obj.content, 'I like lounge :)', 'Failed to properly transform toObject()');
-      assert.equal(obj.capContent, undefined, 'Failed to properly transform toObject()');
-      assert.ok(obj.owner, 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.firstName, 'Joe', 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.lastName, 'Smith', 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.fullName, 'Joe Smith', 'Failed to properly transform toObject(). Did not get virtual property.');
+      var expected = {
+        owner: {
+          firstName: 'Joe',
+          lastName: 'Smith',
+          password: 'password',
+          fullName: 'Joe Smith'
+        },
+        content: 'I like lounge :)'
+      };
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+      expect(obj.owner).to.be.ok;
+      expect(obj.owner).to.be.an('object');
+      expect(obj.owner.id).to.be.ok;
+      expect(obj.owner.id).to.be.a('string');
+
+      delete obj.id;
+      delete obj.owner.id;
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should perform correctly on nested objects when using virtuals on both models and setting schema option for one and false for other", function () {
+    it('Should perform correctly on nested objects when using virtuals on both models and setting schema option for one and false for other', function () {
       var userSchema = lounge.schema({firstName: String, lastName: String, password: String})
         , postSchema = lounge.schema({owner: Object, content: String});
 
@@ -468,19 +635,34 @@ describe("Schema options", function () {
         password: 'password'
       });
 
-      var post = new Post({owner: user, content: "I like lounge :)"});
+      var post = new Post({owner: user, content: 'I like lounge :)'});
 
       var obj = post.toObject();
 
-      assert.equal(obj.content, 'I like lounge :)', 'Failed to properly transform toObject()');
-      assert.equal(obj.capContent, 'I LIKE LOUNGE :)', 'Failed to properly transform toObject()');
-      assert.ok(obj.owner, 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.firstName, 'Joe', 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.lastName, 'Smith', 'Failed to properly transform toObject()');
-      assert.equal(obj.owner.fullName, undefined, 'Failed to properly transform toObject(). Did not get virtual property.');
+      var expected = {
+        owner: {
+          firstName: 'Joe',
+          lastName: 'Smith',
+          password: 'password'
+        },
+        content: 'I like lounge :)',
+        capContent: 'I LIKE LOUNGE :)'
+      };
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+      expect(obj.owner).to.be.ok;
+      expect(obj.owner).to.be.an('object');
+      expect(obj.owner.id).to.be.ok;
+      expect(obj.owner.id).to.be.a('string');
+
+      delete obj.id;
+      delete obj.owner.id;
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should print id correctly when no options specified", function () {
+    it('Should print id correctly when no options specified', function () {
       var siteSchema = new lounge.Schema({
         name: String,
         url: String
@@ -492,10 +674,11 @@ describe("Schema options", function () {
 
       var obj = site.toObject();
 
-      assert.ok(obj.id, 'Failed to print id properly in toObject()');
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
     });
 
-    it("Should print id correctly when using id and generate options specified", function () {
+    it('Should print id correctly when using id and generate options specified', function () {
       var siteSchema = new lounge.Schema({
         id: {type: String, generate: true},
         name: String,
@@ -508,10 +691,11 @@ describe("Schema options", function () {
 
       var obj = site.toObject();
 
-      assert.ok(obj.id, 'Failed to print id properly in toObject()');
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
     });
 
-    it("Should print id correctly when key option specified", function () {
+    it('Should print id correctly when key option specified', function () {
       var siteSchema = new lounge.Schema({
         ip: {type: String, key: true},
         name: String,
@@ -524,11 +708,11 @@ describe("Schema options", function () {
 
       var obj = site.toObject();
 
-      assert.equal(obj.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.ip, '123.123.123', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.not.be.ok;
+      expect(obj.ip).to.equal('123.123.123');
     });
 
-    it("Should print id correctly when key option specified and prefix. should not print prefix by default.", function () {
+    it('Should print id correctly when key option specified and prefix. should not print prefix by default.', function () {
       var siteSchema = new lounge.Schema({
         ip: {type: String, key: true, prefix: 'site:'},
         name: String,
@@ -541,11 +725,11 @@ describe("Schema options", function () {
 
       var obj = site.toObject();
 
-      assert.equal(obj.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.ip, '123.123.123', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.not.be.ok;
+      expect(obj.ip).to.equal('123.123.123');
     });
 
-    it("Should print id correctly when key option specified and suffix. should not print suffix by default.", function () {
+    it('Should print id correctly when key option specified and suffix. should not print suffix by default.', function () {
       var siteSchema = new lounge.Schema({
         ip: {type: String, key: true, suffix: ':site'},
         name: String,
@@ -558,11 +742,11 @@ describe("Schema options", function () {
 
       var obj = site.toObject();
 
-      assert.equal(obj.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.ip, '123.123.123', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.not.be.ok;
+      expect(obj.ip).to.equal('123.123.123');
     });
 
-    it("Should print id correctly when key option specified with prefix and suffix. should not print prefix and suffix by default.", function () {
+    it('Should print id correctly when key option specified with prefix and suffix. should not print prefix and suffix by default.', function () {
       var siteSchema = new lounge.Schema({
         ip: {type: String, key: true, prefix: 'site:', suffix: ':site'},
         name: String,
@@ -575,11 +759,11 @@ describe("Schema options", function () {
 
       var obj = site.toObject();
 
-      assert.equal(obj.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.ip, '123.123.123', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.not.be.ok;
+      expect(obj.ip).to.equal('123.123.123');
     });
 
-    it("Should print id fully key option specified with prefix and expand options.", function () {
+    it('Should print id fully key option specified with prefix and expand options.', function () {
       var siteSchema = new lounge.Schema({
         ip: {type: String, key: true, prefix: 'site:'},
         name: String,
@@ -594,11 +778,11 @@ describe("Schema options", function () {
 
       var obj = site.toObject();
 
-      assert.equal(obj.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.ip, 'site:123.123.123', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.not.be.ok;
+      expect(obj.ip).to.equal('site:123.123.123');
     });
 
-    it("Should print id fully key option specified with prefix and expand option inline.", function () {
+    it('Should print id fully key option specified with prefix and expand option inline.', function () {
       var siteSchema = new lounge.Schema({
         ip: {type: String, key: true, prefix: 'site:'},
         name: String,
@@ -611,11 +795,11 @@ describe("Schema options", function () {
 
       var obj = site.toObject({expandDocumentKey: true});
 
-      assert.equal(obj.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.ip, 'site:123.123.123', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.not.be.ok;
+      expect(obj.ip).to.equal('site:123.123.123');
     });
 
-    it("Should print id fully when expand inline specified and false in schema", function () {
+    it('Should print id fully when expand inline specified and false in schema', function () {
       var siteSchema = new lounge.Schema({
         ip: {type: String, key: true, prefix: 'site:'},
         name: String,
@@ -630,11 +814,11 @@ describe("Schema options", function () {
 
       var obj = site.toObject({expandDocumentKey: true});
 
-      assert.equal(obj.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.ip, 'site:123.123.123', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.not.be.ok;
+      expect(obj.ip).to.equal('site:123.123.123');
     });
 
-    it("Should print id correctly when suffix specified and no options", function () {
+    it('Should print id correctly when suffix specified and no options', function () {
       var siteSchema = new lounge.Schema({
         ip: {type: String, key: true, suffix: ':site'},
         name: String,
@@ -647,11 +831,11 @@ describe("Schema options", function () {
 
       var obj = site.toObject();
 
-      assert.equal(obj.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.ip, '123.123.123', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.not.be.ok;
+      expect(obj.ip).to.equal('123.123.123');
     });
 
-    it("Should print id correctly when suffix specified and expand option in schema", function () {
+    it('Should print id correctly when suffix specified and expand option in schema', function () {
       var siteSchema = new lounge.Schema({
         ip: {type: String, key: true, suffix: ':site'},
         name: String,
@@ -666,11 +850,11 @@ describe("Schema options", function () {
 
       var obj = site.toObject();
 
-      assert.equal(obj.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.ip, '123.123.123:site', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.not.be.ok;
+      expect(obj.ip).to.equal('123.123.123:site');
     });
 
-    it("Should print id correctly when suffix specified and expand option inline", function () {
+    it('Should print id correctly when suffix specified and expand option inline', function () {
       var siteSchema = new lounge.Schema({
         ip: {type: String, key: true, suffix: ':site'},
         name: String,
@@ -683,11 +867,11 @@ describe("Schema options", function () {
 
       var obj = site.toObject({expandDocumentKey: true});
 
-      assert.equal(obj.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.ip, '123.123.123:site', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.not.be.ok;
+      expect(obj.ip).to.equal('123.123.123:site');
     });
 
-    it("Should print id correctly when prefix and suffix specified and expand option in schema", function () {
+    it('Should print id correctly when prefix and suffix specified and expand option in schema', function () {
       var siteSchema = new lounge.Schema({
         ip: {type: String, key: true, prefix: 'site:', suffix: ':site'},
         name: String,
@@ -702,11 +886,11 @@ describe("Schema options", function () {
 
       var obj = site.toObject();
 
-      assert.equal(obj.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.ip, 'site:123.123.123:site', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.not.be.ok;
+      expect(obj.ip).to.equal('site:123.123.123:site');
     });
 
-    it("Should print id correctly when prefix and suffix specified and expand option inline", function () {
+    it('Should print id correctly when prefix and suffix specified and expand option inline', function () {
       var siteSchema = new lounge.Schema({
         ip: {type: String, key: true, prefix: 'site:', suffix: ':site'},
         name: String,
@@ -719,11 +903,11 @@ describe("Schema options", function () {
 
       var obj = site.toObject({expandDocumentKey: true});
 
-      assert.equal(obj.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.ip, 'site:123.123.123:site', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.not.be.ok;
+      expect(obj.ip).to.equal('site:123.123.123:site');
     });
 
-    it("Should print id correctly for nested documents and one has key specified.", function () {
+    it('Should print id correctly for nested documents and one has key specified.', function () {
       var userSchema = lounge.schema({
           email: {type: String, key: true},
           firstName: String, lastName: String
@@ -738,12 +922,27 @@ describe("Schema options", function () {
 
       var obj = post.toObject();
 
-      assert.ok(obj.id, 'Failed to print id properly in toObject()');
-      assert.equal(obj.owner.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.owner.email, 'joe@gmail.com', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+      expect(obj.owner).to.be.ok;
+      expect(obj.owner).to.be.an('object');
+      expect(obj.owner.id).to.not.be.ok;
+
+      var expected = {
+        owner: {
+          email: 'joe@gmail.com',
+          firstName: 'Joe',
+          lastName: 'Smith'
+        },
+        content: 'Lorem ipsum'
+      };
+
+      delete obj.id;
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should print id correctly for nested documents and one has key specified with prefix option.", function () {
+    it('Should print id correctly for nested documents and one has key specified with prefix option.', function () {
       var userSchema = lounge.schema({
           email: {type: String, key: true, prefix: 'user'},
           firstName: String, lastName: String
@@ -758,12 +957,27 @@ describe("Schema options", function () {
 
       var obj = post.toObject();
 
-      assert.ok(obj.id, 'Failed to print id properly in toObject()');
-      assert.equal(obj.owner.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.owner.email, 'joe@gmail.com', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+      expect(obj.owner).to.be.ok;
+      expect(obj.owner).to.be.an('object');
+      expect(obj.owner.id).to.not.be.ok;
+
+      var expected = {
+        owner: {
+          email: 'joe@gmail.com',
+          firstName: 'Joe',
+          lastName: 'Smith'
+        },
+        content: 'Lorem ipsum'
+      };
+
+      delete obj.id;
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should print id correctly for nested documents and one has key specified with prefix option and expand.", function () {
+    it('Should print id correctly for nested documents and one has key specified with prefix option and expand.', function () {
       var userSchema = lounge.schema({
           email: {type: String, key: true, prefix: 'user:'},
           firstName: String, lastName: String
@@ -780,12 +994,27 @@ describe("Schema options", function () {
 
       var obj = post.toObject();
 
-      assert.ok(obj.id, 'Failed to print id properly in toObject()');
-      assert.equal(obj.owner.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.owner.email, 'user:joe@gmail.com', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+      expect(obj.owner).to.be.ok;
+      expect(obj.owner).to.be.an('object');
+      expect(obj.owner.id).to.not.be.ok;
+
+      var expected = {
+        owner: {
+          email: 'user:joe@gmail.com',
+          firstName: 'Joe',
+          lastName: 'Smith'
+        },
+        content: 'Lorem ipsum'
+      };
+
+      delete obj.id;
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should print id correctly for nested documents and with different key and expand options", function () {
+    it('Should print id correctly for nested documents and with different key and expand options', function () {
       var userSchema = lounge.schema({
           email: {type: String, key: true, prefix: 'user:'},
           firstName: String, lastName: String
@@ -805,12 +1034,26 @@ describe("Schema options", function () {
 
       var obj = post.toObject();
 
-      assert.equal(obj.id, '1234', 'Failed to print id properly in toObject()');
-      assert.equal(obj.owner.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.owner.email, 'user:joe@gmail.com', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+      expect(obj.owner).to.be.ok;
+      expect(obj.owner).to.be.an('object');
+      expect(obj.owner.id).to.not.be.ok;
+
+      var expected = {
+        id: '1234',
+        owner: {
+          email: 'user:joe@gmail.com',
+          firstName: 'Joe',
+          lastName: 'Smith'
+        },
+        content: 'Lorem ipsum'
+      };
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should print id correctly for nested documents and with different key and expand options", function () {
+    it('Should print id correctly for nested documents and with different key and expand options', function () {
       var userSchema = lounge.schema({
           email: {type: String, key: true, prefix: 'user:'},
           firstName: String, lastName: String
@@ -832,12 +1075,26 @@ describe("Schema options", function () {
 
       var obj = post.toObject();
 
-      assert.equal(obj.id, '1234', 'Failed to print id properly in toObject()');
-      assert.equal(obj.owner.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.owner.email, 'user:joe@gmail.com', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+      expect(obj.owner).to.be.ok;
+      expect(obj.owner).to.be.an('object');
+      expect(obj.owner.id).to.not.be.ok;
+
+      var expected = {
+        id: '1234',
+        owner: {
+          email: 'user:joe@gmail.com',
+          firstName: 'Joe',
+          lastName: 'Smith'
+        },
+        content: 'Lorem ipsum'
+      };
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should print id correctly for nested documents and with different key and expand options", function () {
+    it('Should print id correctly for nested documents and with different key and expand options', function () {
       var userSchema = lounge.schema({
           email: {type: String, key: true, prefix: 'user:'},
           firstName: String, lastName: String
@@ -859,12 +1116,26 @@ describe("Schema options", function () {
 
       var obj = post.toObject();
 
-      assert.equal(obj.id, '1234:post', 'Failed to print id properly in toObject()');
-      assert.equal(obj.owner.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.owner.email, 'joe@gmail.com', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+      expect(obj.owner).to.be.ok;
+      expect(obj.owner).to.be.an('object');
+      expect(obj.owner.id).to.not.be.ok;
+
+      var expected = {
+        id: '1234:post',
+        owner: {
+          email: 'joe@gmail.com',
+          firstName: 'Joe',
+          lastName: 'Smith'
+        },
+        content: 'Lorem ipsum'
+      };
+
+      expect(obj).to.deep.equal(expected);
     });
 
-    it("Should print id correctly for nested documents and with schema and inline expand options. inline wins.", function () {
+    it('Should print id correctly for nested documents and with schema and inline expand options. inline wins.', function () {
       var userSchema = lounge.schema({
           email: {type: String, key: true, prefix: 'user:'},
           firstName: String, lastName: String
@@ -886,9 +1157,23 @@ describe("Schema options", function () {
 
       var obj = post.toObject({expandDocumentKey: true});
 
-      assert.equal(obj.id, '1234:post', 'Failed to print id properly in toObject()');
-      assert.equal(obj.owner.id, undefined, 'Failed to print id properly in toObject()');
-      assert.equal(obj.owner.email, 'user:joe@gmail.com', 'Failed to print id properly in toObject()');
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+      expect(obj.owner).to.be.ok;
+      expect(obj.owner).to.be.an('object');
+      expect(obj.owner.id).to.not.be.ok;
+
+      var expected = {
+        id: '1234:post',
+        owner: {
+          email: 'user:joe@gmail.com',
+          firstName: 'Joe',
+          lastName: 'Smith'
+        },
+        content: 'Lorem ipsum'
+      };
+
+      expect(obj).to.deep.equal(expected);
     });
   });
 });
