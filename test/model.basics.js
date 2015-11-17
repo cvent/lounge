@@ -3,8 +3,12 @@ var lounge = require('../lib');
 var Schema = lounge.Schema;
 
 describe('Schema basics', function () {
-  beforeEach(function () {
+  beforeEach(function (done) {
     lounge = new lounge.Lounge(); // recreate it
+    lounge.connect({
+      connectionString: 'couchbase://127.0.0.1',
+      bucket: 'lounge_test'
+    }, done);
   });
 
   describe('Should define a tree instance after instantiation', function () {
@@ -71,6 +75,38 @@ describe('Schema basics', function () {
       expect(!!~joe.parents().indexOf(joe.profile.parents.mother.name)).to.be.ok;
       expect(!!~joe.parents().indexOf(joe.profile.parents.father.name)).to.be.ok;
     });
+  });
+
+  it('Should properly create a model', function () {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String,
+      dateOfBirth: Date
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var dob = new Date('December 10, 1990 03:33:00');
+    console.log(dob.toString());
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe@gmail.com',
+      dateOfBirth: dob
+    });
+
+    expect(user instanceof User).to.be.ok;
+    expect(user instanceof lounge.Document).to.be.ok;
+    expect(user instanceof lounge.Model).to.be.ok;
+
+    expect(user.firstName).to.be.equal('Joe');
+    expect(user.lastName).to.be.equal('Smith');
+    expect(user.email).to.be.equal('joe@gmail.com');
+    expect(user.dateOfBirth).to.be.ok;
+    expect(user.dateOfBirth).to.be.an.instanceof(Date);
+    expect(user.dateOfBirth.toString()).to.be.equal((new Date('December 10, 1990 03:33:00').toString()));
   });
 
 });
