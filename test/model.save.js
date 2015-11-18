@@ -273,4 +273,88 @@ describe('Model save tests', function () {
       });
     });
   });
+
+  it('should ignore unknown properties', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String,
+      dateOfBirth: Date,
+      foo: Number,
+      favourites: [String],
+      boolProp: Boolean,
+      someProp: Object
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var user = new User({
+      firstName: 'Joe3',
+      lastName: 'Smith3',
+      email: 'joe3@gmail.com',
+      dateOfBirth: new Date('March 3, 1989 03:30:00'),
+      foo: 5,
+      boolProp: true,
+      unpa: 'something',
+      favourites: [
+        'fav0', 'fav1', 'fav2'
+      ],
+      someProp: {
+        abc: 'xyz',
+        sbp: false,
+        snp: 11
+      }
+    });
+
+    user.save(function (err, savedDoc) {
+      expect(err).to.not.be.ok;
+
+      expect(savedDoc).to.be.ok;
+      expect(savedDoc).to.be.an('object');
+      expect(savedDoc.id).to.be.ok;
+      expect(savedDoc.id).to.be.a('string');
+
+      expect(savedDoc.firstName).to.equal('Joe3');
+      expect(savedDoc.lastName).to.equal('Smith3');
+      expect(savedDoc.email).to.equal('joe3@gmail.com');
+      expect(savedDoc.dateOfBirth).to.be.ok;
+      expect(savedDoc.dateOfBirth).to.be.an.instanceof(Date);
+      expect(savedDoc.dateOfBirth.toString()).to.equal((new Date(1989, 2, 3, 3, 30, 0)).toString());
+      expect(user.foo).to.equal(5);
+      expect(user.boolProp).to.equal(true);
+      expect(user.favourites).to.deep.equal(['fav0', 'fav1', 'fav2']);
+      expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
+      expect(user.unpa).to.not.be.ok;
+
+      bucket.get(savedDoc.getDocumentKeyValue(true), function (err, dbDoc) {
+        expect(err).to.not.be.ok;
+
+        expect(dbDoc).to.be.ok;
+        expect(dbDoc.value).to.be.ok;
+        expect(dbDoc.value).to.be.an('object');
+
+        var expected = {
+          firstName: 'Joe3',
+          lastName: 'Smith3',
+          email: 'joe3@gmail.com',
+          dateOfBirth: new Date('March 3, 1989 03:30:00').toISOString(),
+          foo: 5,
+          boolProp: true,
+          favourites: [
+            'fav0', 'fav1', 'fav2'
+          ],
+          someProp: {
+            abc: 'xyz',
+            sbp: false,
+            snp: 11
+          }
+        };
+
+        expected.id = savedDoc.getDocumentKeyValue(true);
+
+        expect(dbDoc.value).to.deep.equal(expected);
+        done();
+      });
+    });
+  });
 });
