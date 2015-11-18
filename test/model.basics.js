@@ -88,7 +88,6 @@ describe('Schema basics', function () {
     var User = lounge.model('User', userSchema);
 
     var dob = new Date('December 10, 1990 03:33:00');
-    console.log(dob.toString());
 
     var user = new User({
       firstName: 'Joe',
@@ -101,12 +100,61 @@ describe('Schema basics', function () {
     expect(user instanceof lounge.Document).to.be.ok;
     expect(user instanceof lounge.Model).to.be.ok;
 
-    expect(user.firstName).to.be.equal('Joe');
-    expect(user.lastName).to.be.equal('Smith');
-    expect(user.email).to.be.equal('joe@gmail.com');
+    expect(user.firstName).to.equal('Joe');
+    expect(user.lastName).to.equal('Smith');
+    expect(user.email).to.equal('joe@gmail.com');
     expect(user.dateOfBirth).to.be.ok;
     expect(user.dateOfBirth).to.be.an.instanceof(Date);
-    expect(user.dateOfBirth.toString()).to.be.equal((new Date('December 10, 1990 03:33:00').toString()));
+    expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
   });
 
+  it('Should properly create a model with sub documents and arrays', function () {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String,
+      dateOfBirth: Date,
+      foo: Number,
+      favourites: [String],
+      boolProp: Boolean,
+      someProp: Object
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var dob = new Date('December 10, 1990 03:33:00');
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe@gmail.com',
+      dateOfBirth: dob,
+      foo: 5,
+      boolProp: true,
+      favourites: [
+        'fav0', 'fav1', 'fav2'
+      ],
+      someProp: {
+        abc: 'xyz',
+        sbp: false,
+        snp: 11
+      }
+    });
+
+
+    expect(user instanceof User).to.be.ok;
+    expect(user instanceof lounge.Document).to.be.ok;
+    expect(user instanceof lounge.Model).to.be.ok;
+
+    expect(user.firstName).to.equal('Joe');
+    expect(user.lastName).to.equal('Smith');
+    expect(user.email).to.equal('joe@gmail.com');
+    expect(user.dateOfBirth).to.be.ok;
+    expect(user.dateOfBirth).to.be.an.instanceof(Date);
+    expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+    expect(user.foo).to.equal(5);
+    expect(user.boolProp).to.equal(true);
+    expect(user.favourites).to.deep.equal(['fav0', 'fav1', 'fav2']);
+    expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
+  });
 });
