@@ -438,9 +438,7 @@ describe('Model save tests', function () {
           title: post.title,
           content: post.content,
           date: now.toISOString(),
-          owner: {
-            id: userKey
-          }
+          owner: userKey
         };
 
         expect(postDoc).to.be.ok;
@@ -545,24 +543,14 @@ describe('Model save tests', function () {
         expect(postDoc.comments).to.be.an.instanceof(Array);
         expect(postDoc.comments.length).to.be.equal(3);
 
-        postDoc.comments = _.sortBy(postDoc.comments, 'id');
+        postDoc.comments = postDoc.comments.sort();
 
         var expectedPostDoc = {
           id: postKey,
           title: post.title,
           content: post.content,
           date: postDate.toISOString(),
-          comments: _.sortBy([
-            {
-              id: commentKeys[0]
-            },
-            {
-              id: commentKeys[1]
-            },
-            {
-              id: commentKeys[2]
-            }
-          ], 'id')
+          comments: [commentKeys[0], commentKeys[1], commentKeys[2]].sort()
         };
 
         expect(postDoc).to.be.ok;
@@ -600,6 +588,120 @@ describe('Model save tests', function () {
         expect(commentDocs).to.deep.equal(expectedCommentDocs);
 
         done();
+      });
+    });
+  });
+
+  it('should save when ref is just an id', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var postSchema = lounge.schema({
+      title: String,
+      content: String,
+      date: Date,
+      owner: {type: User, ref: 'User'}
+    });
+
+    var Post = lounge.model('Post', postSchema);
+
+    var user = new User({
+      firstName: 'Will',
+      lastName: 'Smith',
+      email: 'willie@gmail.com'
+    });
+
+    user.save(function (err, savedUserDoc) {
+
+      expect(err).to.not.be.ok;
+
+      expect(savedUserDoc).to.be.ok;
+      expect(savedUserDoc).to.be.an('object');
+      expect(savedUserDoc).to.be.an.instanceof(User);
+      expect(savedUserDoc.id).to.be.ok;
+      expect(savedUserDoc.id).to.be.a('string');
+      expect(savedUserDoc.id).to.equal(user.id);
+      expect(savedUserDoc.email).to.equal('willie@gmail.com');
+      expect(savedUserDoc.firstName).to.equal('Will');
+      expect(savedUserDoc.lastName).to.equal('Smith');
+
+      var now = new Date();
+
+      var post = new Post({
+        title: 'sample title',
+        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor iaculis nunc vel tempus. Donec fringilla orci et posuere hendrerit.',
+        date: now,
+        owner: user.id
+      });
+
+      post.save(function (err, savedDoc) {
+
+        expect(err).to.not.be.ok;
+
+        expect(savedUserDoc).to.be.ok;
+        expect(savedUserDoc).to.be.an('object');
+        expect(savedUserDoc).to.be.an.instanceof(User);
+        expect(savedUserDoc.id).to.be.ok;
+        expect(savedUserDoc.id).to.be.a('string');
+        expect(savedUserDoc.id).to.equal(user.id);
+        expect(savedUserDoc.email).to.equal('willie@gmail.com');
+        expect(savedUserDoc.firstName).to.equal('Will');
+        expect(savedUserDoc.lastName).to.equal('Smith');
+
+        expect(savedDoc).to.be.ok;
+        expect(savedDoc).to.be.an('object');
+        expect(savedDoc.id).to.be.ok;
+        expect(savedDoc.id).to.be.a('string');
+        expect(savedDoc.content).to.equal(post.content);
+        expect(savedDoc.title).to.equal(post.title);
+        expect(savedDoc.date).to.be.an.instanceof(Date);
+        expect(savedDoc.date.toString()).to.equal(now.toString());
+        expect(savedDoc.owner).to.be.ok;
+        expect(savedDoc.owner).to.be.a('string');
+
+        var postKey = savedDoc.getDocumentKeyValue(true);
+        var userKey = savedUserDoc.getDocumentKeyValue(true);
+        var docIds = [
+          postKey,
+          userKey
+        ];
+
+        bucket.getMulti(docIds, function (err, docs) {
+          expect(err).to.not.be.ok;
+
+          var postDoc = docs[postKey].value;
+          var userDoc = docs[userKey].value;
+
+          var expectedUserDoc = {
+            firstName: 'Will',
+            lastName: 'Smith',
+            email: 'willie@gmail.com',
+            id: userKey
+          };
+
+          var expectedPostDoc = {
+            id: postKey,
+            title: post.title,
+            content: post.content,
+            date: now.toISOString(),
+            owner: userKey
+          };
+
+          expect(postDoc).to.be.ok;
+          expect(userDoc).to.be.ok;
+          expect(postDoc).to.be.an('object');
+          expect(userDoc).to.be.an('object');
+
+          expect(postDoc).to.deep.equal(expectedPostDoc);
+          expect(userDoc).to.deep.equal(expectedUserDoc);
+
+          done();
+        });
       });
     });
   });
