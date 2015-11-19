@@ -209,4 +209,35 @@ describe('Schema basics', function () {
     expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
     expect(user.unpa).to.not.be.ok;
   });
+
+  it('Should properly coerse string to Date when needed', function () {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String,
+      dateOfBirth: Date
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var dob = new Date('December 10, 1990 03:33:00');
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe@gmail.com',
+      dateOfBirth: dob.toISOString()
+    });
+
+    expect(user instanceof User).to.be.ok;
+    expect(user instanceof lounge.Document).to.be.ok;
+    expect(user instanceof lounge.Model).to.be.ok;
+
+    expect(user.firstName).to.equal('Joe');
+    expect(user.lastName).to.equal('Smith');
+    expect(user.email).to.equal('joe@gmail.com');
+    expect(user.dateOfBirth).to.be.ok;
+    expect(user.dateOfBirth).to.be.an.instanceof(Date);
+    expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+  });
 });

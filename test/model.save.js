@@ -1,4 +1,5 @@
 var couchbase = require('couchbase');
+var _ = require('lodash');
 var expect = require('chai').expect;
 
 var lounge = require('../lib');
@@ -449,6 +450,154 @@ describe('Model save tests', function () {
 
         expect(postDoc).to.deep.equal(expectedPostDoc);
         expect(userDoc).to.deep.equal(expectedUserDoc);
+
+        done();
+      });
+    });
+  });
+
+  it('should save array ref', function (done) {
+
+    var commentSchema = lounge.schema({
+      content: String,
+      date: Date,
+      owner: String
+    });
+
+    var Comment = lounge.model('Comment', commentSchema);
+
+    var postSchema = lounge.schema({
+      title: String,
+      content: String,
+      date: Date,
+      comments: [{type: Comment, ref: 'Comment'}]
+    });
+
+    var Post = lounge.model('Post', postSchema);
+
+    var comments = [
+      new Comment({
+        content: 'Comment 1',
+        date: new Date('November 10, 2015 03:00:00'),
+        owner: 'Bob'
+      }),
+      new Comment({
+        content: 'Comment 2',
+        date: new Date('November 11, 2015 04:00:00'),
+        owner: 'Sara'
+      }),
+      new Comment({
+        content: 'Comment 3',
+        date: new Date('November 12, 2015 05:00:00'),
+        owner: 'Jake'
+      })
+    ];
+
+    var postDate = new Date('November 9, 2015 02:00:00');
+    var post = new Post({
+      title: 'Sample post title',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor iaculis nunc vel tempus.',
+      date: postDate,
+      comments: comments
+    });
+
+    post.save(function (err, savedDoc) {
+
+      expect(err).to.not.be.ok;
+
+      expect(savedDoc).to.be.ok;
+      expect(savedDoc).to.be.an('object');
+      expect(savedDoc.id).to.be.ok;
+      expect(savedDoc.id).to.be.a('string');
+      expect(savedDoc.content).to.equal(post.content);
+      expect(savedDoc.title).to.equal(post.title);
+      expect(savedDoc.date).to.be.an.instanceof(Date);
+      expect(savedDoc.date.toString()).to.equal(postDate.toString());
+      expect(savedDoc.comments).to.be.ok;
+      expect(savedDoc.comments).to.be.an.instanceof(Array);
+      expect(savedDoc.comments.length).to.be.equal(3);
+
+      var commentKeys = [];
+      savedDoc.comments.forEach(function (elem, i) {
+        expect(elem).to.be.an.instanceof(Comment);
+        expect(elem.id).to.be.ok;
+        expect(elem.id).to.be.a('string');
+        expect(elem.content).to.equal(comments[i].content);
+        expect(elem.owner).to.equal(comments[i].owner);
+        expect(elem.date.toString()).to.equal(comments[i].date.toString());
+        commentKeys.push(elem.getDocumentKeyValue(true));
+      });
+
+      var postKey = savedDoc.getDocumentKeyValue(true);
+
+      commentKeys.sort();
+
+      var docKeys = [postKey].concat(commentKeys);
+
+      bucket.getMulti(docKeys, function (err, docs) {
+        expect(err).to.not.be.ok;
+
+        var postDoc = docs[postKey].value;
+        var commentDocs = _.sortBy([docs[commentKeys[0]].value, docs[commentKeys[1]].value, docs[commentKeys[2]].value], 'id');
+
+        expect(postDoc).to.be.ok;
+        expect(postDoc).to.be.an('object');
+        expect(postDoc.comments).to.be.an.instanceof(Array);
+        expect(postDoc.comments.length).to.be.equal(3);
+
+        postDoc.comments = _.sortBy(postDoc.comments, 'id');
+
+        var expectedPostDoc = {
+          id: postKey,
+          title: post.title,
+          content: post.content,
+          date: postDate.toISOString(),
+          comments: _.sortBy([
+            {
+              id: commentKeys[0]
+            },
+            {
+              id: commentKeys[1]
+            },
+            {
+              id: commentKeys[2]
+            }
+          ], 'id')
+        };
+
+        expect(postDoc).to.be.ok;
+        expect(postDoc).to.be.an('object');
+
+        expect(postDoc).to.deep.equal(expectedPostDoc);
+
+        var commentDocKeys = _.pluck(commentDocs, 'id');
+        commentDocKeys.sort();
+
+        expect(commentDocKeys).to.deep.equal(commentKeys);
+
+        commentDocs = _.chain(commentDocs).map(function (c) {
+          return _.omit(c, 'id');
+        }).sortBy('content').value();
+
+        var expectedCommentDocs = _.sortBy([
+          {
+            content: 'Comment 1',
+            date: new Date('November 10, 2015 03:00:00').toISOString(),
+            owner: 'Bob'
+          },
+          {
+            content: 'Comment 2',
+            date: new Date('November 11, 2015 04:00:00').toISOString(),
+            owner: 'Sara'
+          },
+          {
+            content: 'Comment 3',
+            date: new Date('November 12, 2015 05:00:00').toISOString(),
+            owner: 'Jake'
+          }
+        ], 'content');
+
+        expect(commentDocs).to.deep.equal(expectedCommentDocs);
 
         done();
       });
