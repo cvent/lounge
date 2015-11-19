@@ -1,14 +1,14 @@
 var expect = require('chai').expect;
 var lounge = require('../lib');
 
-describe("Schema options", function () {
+describe('Schema options', function () {
 
   beforeEach(function () {
     lounge = new lounge.Lounge(); // recreate it
   });
 
-  describe("virtuals", function () {
-    it("Should have a basic getter", function () {
+  describe('virtuals', function () {
+    it('Should have a basic getter', function () {
       var userSchema = lounge.schema({firstName: String, lastName: String});
 
       userSchema.virtual('fullName', {
@@ -26,7 +26,7 @@ describe("Schema options", function () {
       expect(user.fullName).to.equal('Joe Smith');
     });
 
-    it("Should not set it if no setter given", function () {
+    it('Should not set it if no setter given', function () {
       var userSchema = lounge.schema({firstName: String, lastName: String});
 
       userSchema.virtual('fullName', {
@@ -48,7 +48,7 @@ describe("Schema options", function () {
       expect(user.fullName).to.equal('Joe Smith');
     });
 
-    it("Should use the setter to set the property", function () {
+    it('Should use the setter to set the property', function () {
       var userSchema = lounge.schema({firstName: String, lastName: String});
 
       userSchema.virtual('fullName', {
@@ -80,10 +80,10 @@ describe("Schema options", function () {
     });
   });
 
-  describe("hooks", function () {
+  describe('hooks', function () {
 
-    describe("pre", function () {
-      it("Should call pre hook before function", function () {
+    describe('pre', function () {
+      it('Should call pre hook before function', function () {
 
         var userSchema = lounge.schema({firstName: String, lastName: String});
 
@@ -103,7 +103,7 @@ describe("Schema options", function () {
         expect(user.lastName).to.equal('SMITH', 'Failed to call pre hook');
       });
 
-      it("Should call pre hook with params before function", function (done) {
+      it('Should call pre hook with params before function', function (done) {
 
         var userSchema = lounge.schema({firstName: String, lastName: String});
 
@@ -138,8 +138,8 @@ describe("Schema options", function () {
       });
     });
 
-    describe("post", function () {
-      it("Should call post hook after function", function () {
+    describe('post', function () {
+      it('Should call post hook after function', function () {
 
         var userSchema = lounge.schema({firstName: String, lastName: String});
 
@@ -159,7 +159,7 @@ describe("Schema options", function () {
         expect(user.lastName).to.equal('SMITH', 'Failed to call post hook');
       });
 
-      it("Should call post hook with return param after function", function (done) {
+      it('Should call post hook with return param after function', function (done) {
 
         var userSchema = lounge.schema({firstName: String, lastName: String});
 
