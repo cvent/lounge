@@ -357,4 +357,102 @@ describe('Model save tests', function () {
       });
     });
   });
+
+  it('should save simple ref', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var postSchema = lounge.schema({
+      title: String,
+      content: String,
+      date: Date,
+      owner: {type: User, ref: 'User'}
+    });
+
+    var Post = lounge.model('Post', postSchema);
+
+    var user = new User({
+      firstName: 'Will',
+      lastName: 'Smith',
+      email: 'willie@gmail.com'
+    });
+
+    var now = new Date();
+
+    var post = new Post({
+      title: 'sample title',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor iaculis nunc vel tempus. Donec fringilla orci et posuere hendrerit.',
+      date: now,
+      owner: user
+    });
+
+    post.save(function (err, savedDoc) {
+
+      expect(err).to.not.be.ok;
+
+      expect(savedDoc).to.be.ok;
+      expect(savedDoc).to.be.an('object');
+      expect(savedDoc.id).to.be.ok;
+      expect(savedDoc.id).to.be.a('string');
+      expect(savedDoc.content).to.equal(post.content);
+      expect(savedDoc.title).to.equal(post.title);
+      expect(savedDoc.date).to.be.an.instanceof(Date);
+      expect(savedDoc.date.toString()).to.equal(now.toString());
+      expect(savedDoc.owner).to.be.ok;
+      expect(savedDoc.owner).to.be.an('object');
+      expect(savedDoc.owner).to.be.an.instanceof(User);
+      expect(savedDoc.owner.id).to.be.ok;
+      expect(savedDoc.owner.id).to.be.a('string');
+      expect(savedDoc.owner.email).to.equal('willie@gmail.com');
+      expect(savedDoc.owner.firstName).to.equal('Will');
+      expect(savedDoc.owner.lastName).to.equal('Smith');
+
+      var postKey = savedDoc.getDocumentKeyValue(true);
+      var userKey = savedDoc.owner.getDocumentKeyValue(true);
+      var docIds = [
+        postKey,
+        userKey
+      ];
+
+      bucket.getMulti(docIds, function (err, docs) {
+        expect(err).to.not.be.ok;
+
+        var postDoc = docs[postKey].value;
+        var userDoc = docs[userKey].value;
+
+        var expectedUserDoc = {
+          firstName: 'Will',
+          lastName: 'Smith',
+          email: 'willie@gmail.com',
+          id: userKey
+        };
+
+        var expectedPostDoc = {
+          id: postKey,
+          title: post.title,
+          content: post.content,
+          date: now.toISOString(),
+          owner: {
+            id: userKey
+          }
+        };
+
+        expect(postDoc).to.be.ok;
+        expect(userDoc).to.be.ok;
+        expect(postDoc).to.be.an('object');
+        expect(userDoc).to.be.an('object');
+
+        expect(postDoc).to.deep.equal(expectedPostDoc);
+        expect(userDoc).to.deep.equal(expectedUserDoc);
+
+        done();
+      });
+    });
+  });
+
 });
