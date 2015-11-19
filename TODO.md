@@ -1,4 +1,11 @@
-[ ] Improve middleware
-[ ] Add EventEmitter interface and events for documents
-[ ] Add init and isNew
-[ ] Fix transforms for inline options
+### TODO 
+
+[ ] Add EventEmitter interface and events for documents and actions.
+
+[ ] Add init and `isNew`.
+
+[ ] Improve pre and post middleware so that at least with post 'remove' middleware we pass the doc, and no callback. Like Mongoose.
+
+[ ] Fix transforms for inline options.
+
+[ ] Add config options for the module. Example: specify `Date` format for saving.
