@@ -706,4 +706,172 @@ describe('Model save tests', function () {
     });
   });
 
+  it('should work with a mix of refs and refs in array with a mix of objects and string ids', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String,
+      dateOfBirth: Date
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var commentSchema = lounge.schema({
+      content: String,
+      date: Date,
+      owner: {type: User, ref: 'User'}
+    });
+
+    var Comment = lounge.model('Comment', commentSchema);
+
+    var postSchema = lounge.schema({
+      title: String,
+      content: String,
+      date: Date,
+      owner: {type: User, ref: 'User'},
+      comments: [{type: Comment, ref: 'Comment'}]
+    });
+
+    var Post = lounge.model('Post', postSchema);
+
+    var dob1 = new Date('March 3, 1990 03:30:00');
+    var dob2 = new Date('April 7, 1985 11:22:00');
+
+    var user1 = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe@gmail.com',
+      dateOfBirth: dob1
+    });
+
+    var user2 = new User({
+      firstName: 'Jay',
+      lastName: 'Rock',
+      email: 'jrock@gmail.com',
+      dateOfBirth: dob2.toISOString()
+    });
+
+    var comments = [
+      new Comment({
+        content: 'Comment 1',
+        date: new Date('November 10, 2015 03:00:00'),
+        owner: user2
+      }),
+      new Comment({
+        content: 'Comment 2',
+        date: new Date('November 11, 2015 04:00:00'),
+        owner: user1
+      }),
+      new Comment({
+        content: 'Comment 3',
+        date: new Date('November 12, 2015 05:00:00'),
+        owner: user2.id
+      })
+    ];
+
+    var now = new Date();
+
+    var post = new Post({
+      title: 'sample title',
+      content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor iaculis nunc vel tempus. Donec fringilla orci et posuere hendrerit.',
+      date: now,
+      owner: user1,
+      comments: comments
+    });
+
+    post.save(function (err, savedDoc) {
+
+      expect(err).to.not.be.ok;
+
+      expect(savedDoc).to.be.ok;
+      expect(savedDoc).to.be.an('object');
+      expect(savedDoc).to.be.an.instanceof(Post);
+      expect(savedDoc.id).to.be.ok;
+      expect(savedDoc.id).to.be.a('string');
+      expect(savedDoc.id).to.equal(post.id);
+
+      var keys = [user1.id, user2.id, comments[0].id, comments[1].id, comments[2].id, post.id];
+
+      bucket.getMulti(keys, function (err, docs) {
+        expect(err).to.not.be.ok;
+
+        expect(Object.keys(docs).length).to.equal(6);
+
+        var user1doc = docs[user1.id].value;
+        var user2doc = docs[user2.id].value;
+        var comment1Doc = docs[comments[0].id].value;
+        var comment2Doc = docs[comments[1].id].value;
+        var comment3Doc = docs[comments[2].id].value;
+        var postDoc = docs[post.id].value;
+
+        // USER 1
+        expect(user1doc).to.be.ok;
+        expect(user1doc).to.be.an('object');
+        expect(user1doc.id).to.equal(user1.id);
+
+        delete user1doc.id;
+
+        var expectedUser1 = {
+          firstName: 'Joe',
+          lastName: 'Smith',
+          email: 'joe@gmail.com',
+          dateOfBirth: dob1.toISOString()
+        };
+
+        expect(user1doc).to.deep.equal(expectedUser1);
+
+        // USER 2
+        expect(user2doc).to.be.ok;
+        expect(user2doc).to.be.an('object');
+        expect(user2doc.id).to.equal(user2.id);
+
+        delete user2doc.id;
+
+        var expectedUser2 = {
+          firstName: 'Jay',
+          lastName: 'Rock',
+          email: 'jrock@gmail.com',
+          dateOfBirth: dob2.toISOString()
+        };
+
+        expect(user2doc).to.deep.equal(expectedUser2);
+
+        // COMMENTS
+
+        var commentDocs = _.sortBy([comment1Doc, comment2Doc, comment3Doc], 'id');
+
+        var expectedComments = _.sortBy([comments[0].toObject(), comments[1].toObject(), comments[2].toObject()], 'id');
+
+        expectedComments = _.map(expectedComments, function (comment) {
+          comment.date = comment.date.toISOString();
+          if (comment.owner.id) {
+            comment.owner = comment.owner.id;
+          }
+
+          return comment;
+        });
+
+        expect(commentDocs).to.deep.equal(expectedComments);
+
+        // POST
+
+        var expectedPost = {
+          title: 'sample title',
+          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor iaculis nunc vel tempus. Donec fringilla orci et posuere hendrerit.',
+          date: now.toISOString(),
+          owner: user1.id,
+          comments: [comment1Doc.id, comment2Doc.id, comment3Doc.id].sort(),
+          id: post.id
+        };
+
+        expect(postDoc.comments).to.be.instanceOf(Array);
+
+        postDoc.comments.sort();
+
+        expect(postDoc).to.deep.equal(expectedPost);
+
+        done();
+      });
+    });
+  });
 });
