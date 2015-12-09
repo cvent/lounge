@@ -9,6 +9,10 @@ var bucket;
 
 describe('Model save tests', function () {
   beforeEach(function (done) {
+    if(lounge) {
+      lounge.disconnect();
+    }
+
     lounge = new lounge.Lounge(); // recreate it
 
     var cluster = new couchbase.Mock.Cluster('couchbase://127.0.0.1');

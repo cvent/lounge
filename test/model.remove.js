@@ -10,6 +10,10 @@ var bucket;
 
 describe('Model remove tests', function () {
   beforeEach(function (done) {
+    if(lounge) {
+      lounge.disconnect();
+    }
+
     lounge = new lounge.Lounge(); // recreate it
 
     var cluster = new couchbase.Mock.Cluster('couchbase://127.0.0.1');
@@ -20,6 +24,7 @@ describe('Model remove tests', function () {
         if (err) {
           return done(err);
         }
+
         rs.setup(bucket, done);
       });
     });
