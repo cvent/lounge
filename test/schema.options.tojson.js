@@ -680,7 +680,7 @@ describe('Schema options', function () {
 
     it('Should print id correctly when using id and generate options specified', function () {
       var siteSchema = new lounge.Schema({
-        id: {type: String, generate: true},
+        id: {type: String, key: true, generate: true},
         name: String,
         url: String
       });
