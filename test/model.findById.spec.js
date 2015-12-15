@@ -1,14 +1,14 @@
 var couchbase = require('couchbase');
 var _ = require('lodash');
 var expect = require('chai').expect;
-var ts = require('./helpers/remove_setup');
+var ts = require('./helpers/findbyid_setup');
 
 var lounge = require('../lib');
 var Schema = lounge.Schema;
 
 var bucket;
 
-describe('Model remove tests', function () {
+describe('Model findById tests', function () {
   beforeEach(function (done) {
     if (lounge) {
       lounge.disconnect();
@@ -30,7 +30,7 @@ describe('Model remove tests', function () {
     });
   });
 
-  it('should remove a simple document', function (done) {
+  it('should find a simple document', function (done) {
     var userSchema = lounge.schema({
       firstName: String,
       lastName: String,
@@ -40,15 +40,15 @@ describe('Model remove tests', function () {
 
     var User = lounge.model('User', userSchema);
 
+    var userId = ts.data.users[0].id;
     var userData = ts.data.users[0];
 
-    var user = new User(userData);
-
-    user.remove(function (err, rdoc) {
+    User.findById(userId, function (err, rdoc) {
       expect(err).to.not.be.ok;
 
       expect(rdoc).to.be.ok;
       expect(rdoc).to.be.an('object');
+      expect(rdoc).to.be.an.instanceof(User);
       expect(rdoc.id).to.be.ok;
       expect(rdoc.id).to.be.a('string');
 
@@ -57,6 +57,15 @@ describe('Model remove tests', function () {
       expect(rdoc.email).to.equal(userData.email);
       expect(rdoc.dateOfBirth).to.be.ok;
       expect(rdoc.dateOfBirth).to.be.an.instanceof(Date);
+
+      var cas1 = rdoc.getCAS();
+      expect(cas1).to.be.a('string');
+
+      var cas2 = rdoc.getCAS(true);
+      expect(cas2).to.be.an('object');
+
+      var cas3 = rdoc.cas;
+      expect(cas3).to.be.a('string');
 
       done();
     });

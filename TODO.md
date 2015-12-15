@@ -7,5 +7,6 @@
 * Add config options for the module. 
     * Specify `Date` format for saving.
 * Add cas property and / or cas() function that can return the cas and cas string (based on options)
-* add db cas support to save() somehow
-* add db cas support to remove() somehow 
+* Add db cas support to save() somehow
+* Add db cas support to remove() somehow
+* Change from hooks to Kareem
