@@ -58,6 +58,7 @@ describe('Model findById tests', function () {
       expect(rdoc.dateOfBirth).to.be.ok;
       expect(rdoc.dateOfBirth).to.be.an.instanceof(Date);
 
+      // check CAS this is first time where we would get it
       var cas1 = rdoc.getCAS();
       expect(cas1).to.be.a('string');
 
