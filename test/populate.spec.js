@@ -1015,7 +1015,7 @@ describe('Model populate tests', function () {
       });
     });
 
-    it.only('should work with array index specified as populate option', function (done) {
+    it('should work with array index specified as populate option', function (done) {
       var postId = ts.data.posts[2].id;
       var expectedData = ts.data.posts[2];
 
