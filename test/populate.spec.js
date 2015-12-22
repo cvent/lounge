@@ -278,7 +278,6 @@ describe('Model populate tests', function () {
       var expectedData = ts.data.posts[0];
 
       Post.findById(postId, {populate: true}, function (err, rdoc, missed) {
-        //console.log(rdoc);
         expect(err).to.not.be.ok;
 
         expect(rdoc).to.be.ok;
@@ -297,13 +296,192 @@ describe('Model populate tests', function () {
 
         var actualComments = _.sortBy(rdoc.comments, 'id');
 
-        actualComments.forEach(function(ac, i) {
+        actualComments.forEach(function (ac, i) {
           var expectedComment = expectedComments[i];
 
           expect(ac.id).to.equal(expectedComment.id);
           expect(ac.title).to.equal(expectedComment.title);
           expect(ac.body).to.equal(expectedComment.body);
         });
+
+        done();
+      });
+    });
+
+    it('should work with array refs where length > 1 and have nested subdocuments', function (done) {
+      var postId = ts.data.posts[1].id;
+      var expectedData = ts.data.posts[1];
+
+      Post.findById(postId, {populate: true}, function (err, rdoc, missed) {
+        expect(err).to.not.be.ok;
+
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(Post);
+
+        expect(missed).to.be.an.instanceof(Array);
+        expect(missed.length).to.equal(0);
+
+        expect(rdoc.id).to.equal(expectedData.id);
+        expect(rdoc.title).to.equal(expectedData.title);
+        expect(rdoc.body).to.equal(expectedData.body);
+
+        var expectedComments = _.sortBy([ts.data.comments[1], ts.data.comments[2]], 'id');
+        var expectedUsers = [ts.data.users[1], ts.data.users[4]];
+        var expectedCompany = ts.data.companies[1];
+
+        expect(rdoc.comments).to.be.an.instanceof(Array);
+
+        var actualComments = _.sortBy(rdoc.comments, 'id');
+
+        actualComments.forEach(function (ac, i) {
+          var expectedComment = expectedComments[i];
+          var expectedUser = expectedUsers[i];
+
+          expect(ac.id).to.equal(expectedComment.id);
+          expect(ac.title).to.equal(expectedComment.title);
+          expect(ac.body).to.equal(expectedComment.body);
+          expect(ac.user).to.be.ok;
+          expect(ac.user).to.be.an('object');
+          expect(ac.user).to.be.an.instanceof(User);
+          expect(ac.user.firstName.id).to.be.not.ok;
+          expect(ac.user.firstName).to.equal(expectedUser.firstName);
+          expect(ac.user.lastName).to.equal(expectedUser.lastName);
+          expect(ac.user.email).to.equal(expectedUser.email);
+          expect(ac.user.dateOfBirth).to.be.ok;
+          expect(ac.user.dateOfBirth).to.be.an.instanceof(Date);
+          if (expectedUser.company && ac.user.company) {
+            expect(ac.user.company).to.be.ok;
+            expect(ac.user.company).to.be.an('object');
+            expect(ac.user.company).to.be.an.instanceof(Company);
+            expect(ac.user.company.name).to.be.equal(expectedCompany.name);
+            expect(ac.user.company.streetAddress).to.be.equal(expectedCompany.streetAddress);
+            expect(ac.user.company.city).to.be.equal(expectedCompany.city);
+            expect(ac.user.company.country).to.be.equal(expectedCompany.country);
+            expect(ac.user.company.postalCode).to.be.equal(expectedCompany.postalCode);
+            expect(ac.user.company.state).to.be.equal(expectedCompany.state);
+            expect(ac.user.company.founded).to.be.ok;
+            expect(ac.user.company.founded).to.be.an.instanceof(Date);
+          }
+        });
+
+        done();
+      });
+    });
+
+    it('should work with array refs multiple nested subdocuments', function (done) {
+      var postId = ts.data.posts[2].id;
+      var expectedData = ts.data.posts[2];
+
+      Post.findById(postId, {populate: true}, function (err, rdoc, missed) {
+        expect(err).to.not.be.ok;
+
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(Post);
+
+        expect(missed).to.be.an.instanceof(Array);
+        expect(missed.length).to.equal(0);
+
+        expect(rdoc.id).to.equal(expectedData.id);
+        expect(rdoc.title).to.equal(expectedData.title);
+        expect(rdoc.body).to.equal(expectedData.body);
+
+        var expectedComments = _.sortBy([ts.data.comments[3], ts.data.comments[4], ts.data.comments[5]], 'id');
+        var expectedUsers = [ts.data.users[2], ts.data.users[0], ts.data.users[2]];
+        var expectedCompanies = [ts.data.companies[2], ts.data.companies[0], ts.data.companies[2]];
+
+        expect(rdoc.comments).to.be.an.instanceof(Array);
+
+        var actualComments = _.sortBy(rdoc.comments, 'id');
+
+        actualComments.forEach(function (ac, i) {
+          var expectedComment = expectedComments[i];
+          var expectedUser = expectedUsers[i];
+
+          expect(ac.id).to.equal(expectedComment.id);
+          expect(ac.title).to.equal(expectedComment.title);
+          expect(ac.body).to.equal(expectedComment.body);
+
+          if (expectedUser) {
+            expect(ac.user).to.be.ok;
+            expect(ac.user).to.be.an('object');
+            expect(ac.user).to.be.an.instanceof(User);
+            expect(ac.user.firstName.id).to.be.not.ok;
+            expect(ac.user.firstName).to.equal(expectedUser.firstName);
+            expect(ac.user.lastName).to.equal(expectedUser.lastName);
+            expect(ac.user.email).to.equal(expectedUser.email);
+            expect(ac.user.dateOfBirth).to.be.ok;
+            expect(ac.user.dateOfBirth).to.be.an.instanceof(Date);
+            if (expectedUser.company) {
+              var expectedCompany = expectedCompanies[i];
+
+              expect(ac.user.company).to.be.ok;
+              expect(ac.user.company).to.be.an('object');
+              expect(ac.user.company).to.be.an.instanceof(Company);
+              expect(ac.user.company.name).to.be.equal(expectedCompany.name);
+              expect(ac.user.company.streetAddress).to.be.equal(expectedCompany.streetAddress);
+              expect(ac.user.company.city).to.be.equal(expectedCompany.city);
+              expect(ac.user.company.country).to.be.equal(expectedCompany.country);
+              expect(ac.user.company.postalCode).to.be.equal(expectedCompany.postalCode);
+              expect(ac.user.company.state).to.be.equal(expectedCompany.state);
+              expect(ac.user.company.founded).to.be.ok;
+              expect(ac.user.company.founded).to.be.an.instanceof(Date);
+            }
+            else {
+              expect(ac.user.company).to.not.be.ok;
+            }
+          }
+          else {
+            expect(ac.user).to.not.be.ok;
+          }
+        });
+
+        done();
+      });
+    });
+
+    it('should work with no array refs', function (done) {
+      var postId = ts.data.posts[3].id;
+      var expectedData = ts.data.posts[3];
+
+      Post.findById(postId, {populate: true}, function (err, rdoc, missed) {
+        expect(err).to.not.be.ok;
+
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(Post);
+
+        expect(missed).to.be.an.instanceof(Array);
+        expect(missed.length).to.equal(0);
+
+        expect(rdoc.id).to.equal(expectedData.id);
+        expect(rdoc.title).to.equal(expectedData.title);
+        expect(rdoc.body).to.equal(expectedData.body);
+        expect(rdoc.comments).to.deep.equal([]);
+
+        done();
+      });
+    });
+
+    it('should work with empty array refs', function (done) {
+      var postId = ts.data.posts[4].id;
+      var expectedData = ts.data.posts[4];
+
+      Post.findById(postId, {populate: true}, function (err, rdoc, missed) {
+        expect(err).to.not.be.ok;
+
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(Post);
+
+        expect(missed).to.be.an.instanceof(Array);
+        expect(missed.length).to.equal(0);
+
+        expect(rdoc.id).to.equal(expectedData.id);
+        expect(rdoc.title).to.equal(expectedData.title);
+        expect(rdoc.body).to.equal(expectedData.body);
+        expect(rdoc.comments).to.deep.equal([]);
 
         done();
       });
