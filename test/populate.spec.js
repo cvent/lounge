@@ -1014,5 +1014,61 @@ describe('Model populate tests', function () {
         done();
       });
     });
+
+    it.only('should work with array index specified as populate option', function (done) {
+      var postId = ts.data.posts[2].id;
+      var expectedData = ts.data.posts[2];
+
+      Post.findById(postId, {populate: 'comments.1.user'}, function (err, rdoc, missed) {
+        expect(err).to.not.be.ok;
+
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(Post);
+
+        expect(missed).to.be.an.instanceof(Array);
+        expect(missed.length).to.equal(0);
+
+        expect(rdoc.id).to.equal(expectedData.id);
+        expect(rdoc.title).to.equal(expectedData.title);
+        expect(rdoc.body).to.equal(expectedData.body);
+
+        var actualComments = rdoc.comments;
+        var expectedComments = [ts.data.comments[3].id, ts.data.comments[4], ts.data.comments[5].id];
+        var expectedUsers = [ts.data.users[2].email, ts.data.users[2], ts.data.users[0].email];
+
+        actualComments.forEach(function (ac, i) {
+          var expectedComment = expectedComments[i];
+          var expectedUser = expectedUsers[i];
+
+          if (typeof expectedComment === 'string') {
+            expect(ac).to.equal(expectedComment);
+          }
+          else {
+            expect(ac.id).to.equal(expectedComment.id);
+            expect(ac.title).to.equal(expectedComment.title);
+            expect(ac.body).to.equal(expectedComment.body);
+
+            if (typeof expectedUser === 'string') {
+              expect(ac.user).to.equal(expectedComment.user);
+            }
+            else {
+              expect(ac.user).to.be.ok;
+              expect(ac.user).to.be.an('object');
+              expect(ac.user).to.be.an.instanceof(User);
+              expect(ac.user.firstName.id).to.be.not.ok;
+              expect(ac.user.firstName).to.equal(expectedUser.firstName);
+              expect(ac.user.lastName).to.equal(expectedUser.lastName);
+              expect(ac.user.email).to.equal(expectedUser.email);
+              expect(ac.user.company).to.equal(expectedUser.company);
+              expect(ac.user.dateOfBirth).to.be.ok;
+              expect(ac.user.dateOfBirth).to.be.an.instanceof(Date);
+            }
+          }
+        });
+
+        done();
+      });
+    });
   });
 });
