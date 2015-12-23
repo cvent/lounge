@@ -70,8 +70,8 @@ describe('Model remove tests', function () {
   });
 
   it('should remove a simple document', function (done) {
-    var user = new User(userData);
     var userData = ts.data.users[0];
+    var user = new User(userData);
 
     user.remove(function (err, rdoc) {
       expect(err).to.not.be.ok;
