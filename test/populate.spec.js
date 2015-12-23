@@ -1070,5 +1070,197 @@ describe('Model populate tests', function () {
         done();
       });
     });
+
+    it('should get and index specified and nested properties as populate string option', function (done) {
+      var postId = ts.data.posts[2].id;
+      var expectedData = ts.data.posts[2];
+
+      Post.findById(postId, {populate: 'comments.1.user.company'}, function (err, rdoc, missed) {
+        expect(err).to.not.be.ok;
+
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(Post);
+
+        expect(missed).to.be.an.instanceof(Array);
+        expect(missed.length).to.equal(0);
+
+        expect(rdoc.id).to.equal(expectedData.id);
+        expect(rdoc.title).to.equal(expectedData.title);
+        expect(rdoc.body).to.equal(expectedData.body);
+
+        var actualComments = rdoc.comments;
+        var expectedComments = [ts.data.comments[3].id, ts.data.comments[4], ts.data.comments[5].id];
+        var expectedUsers = [ts.data.users[2].email, ts.data.users[2], ts.data.users[0].email];
+        var expectedCompany = ts.data.companies[2];
+
+        actualComments.forEach(function (ac, i) {
+          var expectedComment = expectedComments[i];
+          var expectedUser = expectedUsers[i];
+
+          if (typeof expectedComment === 'string') {
+            expect(ac).to.equal(expectedComment);
+          }
+          else {
+            expect(ac.id).to.equal(expectedComment.id);
+            expect(ac.title).to.equal(expectedComment.title);
+            expect(ac.body).to.equal(expectedComment.body);
+
+            if (typeof expectedUser === 'string') {
+              expect(ac.user).to.equal(expectedComment.user);
+            }
+            else {
+              expect(ac.user).to.be.ok;
+              expect(ac.user).to.be.an('object');
+              expect(ac.user).to.be.an.instanceof(User);
+              expect(ac.user.firstName.id).to.be.not.ok;
+              expect(ac.user.firstName).to.equal(expectedUser.firstName);
+              expect(ac.user.lastName).to.equal(expectedUser.lastName);
+              expect(ac.user.email).to.equal(expectedUser.email);
+              expect(ac.user.dateOfBirth).to.be.ok;
+              expect(ac.user.dateOfBirth).to.be.an.instanceof(Date);
+              expect(ac.user.company).to.be.ok;
+              expect(ac.user.company).to.be.an('object');
+              expect(ac.user.company).to.be.an.instanceof(Company);
+              expect(ac.user.company.name).to.be.equal(expectedCompany.name);
+              expect(ac.user.company.streetAddress).to.be.equal(expectedCompany.streetAddress);
+              expect(ac.user.company.city).to.be.equal(expectedCompany.city);
+              expect(ac.user.company.country).to.be.equal(expectedCompany.country);
+              expect(ac.user.company.postalCode).to.be.equal(expectedCompany.postalCode);
+              expect(ac.user.company.state).to.be.equal(expectedCompany.state);
+              expect(ac.user.company.founded).to.be.ok;
+              expect(ac.user.company.founded).to.be.an.instanceof(Date);
+            }
+          }
+        });
+
+        done();
+      });
+    });
+
+    it('should get and index specified and nested property and ignore unknown property as populate string option', function (done) {
+      var postId = ts.data.posts[2].id;
+      var expectedData = ts.data.posts[2];
+
+      Post.findById(postId, {populate: 'comments.1.user.foo'}, function (err, rdoc, missed) {
+        expect(err).to.not.be.ok;
+
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(Post);
+
+        expect(missed).to.be.an.instanceof(Array);
+        expect(missed.length).to.equal(0);
+
+        expect(rdoc.id).to.equal(expectedData.id);
+        expect(rdoc.title).to.equal(expectedData.title);
+        expect(rdoc.body).to.equal(expectedData.body);
+
+        var actualComments = rdoc.comments;
+        var expectedComments = [ts.data.comments[3].id, ts.data.comments[4], ts.data.comments[5].id];
+        var expectedUsers = [ts.data.users[2].email, ts.data.users[2], ts.data.users[0].email];
+
+        actualComments.forEach(function (ac, i) {
+          var expectedComment = expectedComments[i];
+          var expectedUser = expectedUsers[i];
+
+          if (typeof expectedComment === 'string') {
+            expect(ac).to.equal(expectedComment);
+          }
+          else {
+            expect(ac.id).to.equal(expectedComment.id);
+            expect(ac.title).to.equal(expectedComment.title);
+            expect(ac.body).to.equal(expectedComment.body);
+
+            if (typeof expectedUser === 'string') {
+              expect(ac.user).to.equal(expectedComment.user);
+            }
+            else {
+              expect(ac.user).to.be.ok;
+              expect(ac.user).to.be.an('object');
+              expect(ac.user).to.be.an.instanceof(User);
+              expect(ac.user.firstName.id).to.be.not.ok;
+              expect(ac.user.firstName).to.equal(expectedUser.firstName);
+              expect(ac.user.lastName).to.equal(expectedUser.lastName);
+              expect(ac.user.email).to.equal(expectedUser.email);
+              expect(ac.user.company).to.equal(expectedUser.company);
+              expect(ac.user.dateOfBirth).to.be.ok;
+              expect(ac.user.dateOfBirth).to.be.an.instanceof(Date);
+            }
+          }
+        });
+
+        done();
+      });
+    });
+
+    it('should get and index specified and nested property and ignore unknown property as populate string option', function (done) {
+      var postId = ts.data.posts[2].id;
+      var expectedData = ts.data.posts[2];
+
+      Post.findById(postId, {populate: 'comments.1.foo'}, function (err, rdoc, missed) {
+        expect(err).to.not.be.ok;
+
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(Post);
+
+        expect(missed).to.be.an.instanceof(Array);
+        expect(missed.length).to.equal(0);
+
+        expect(rdoc.id).to.equal(expectedData.id);
+        expect(rdoc.title).to.equal(expectedData.title);
+        expect(rdoc.body).to.equal(expectedData.body);
+
+        var actualComments = rdoc.comments;
+        var expectedComments = [ts.data.comments[3].id, ts.data.comments[4], ts.data.comments[5].id];
+
+        actualComments.forEach(function (ac, i) {
+          var expectedComment = expectedComments[i];
+
+          if (typeof expectedComment === 'string') {
+            expect(ac).to.equal(expectedComment);
+          }
+          else {
+            expect(ac.id).to.equal(expectedComment.id);
+            expect(ac.title).to.equal(expectedComment.title);
+            expect(ac.body).to.equal(expectedComment.body);
+            expect(ac.user).to.equal(expectedComment.user);
+          }
+        });
+
+        done();
+      });
+    });
+
+    it('should work with invalid array index in populate string', function (done) {
+      var postId = ts.data.posts[2].id;
+      var expectedData = ts.data.posts[2];
+
+      Post.findById(postId, {populate: 'comments.5.user.company'}, function (err, rdoc, missed) {
+        expect(err).to.not.be.ok;
+
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(Post);
+
+        expect(missed).to.be.an.instanceof(Array);
+        expect(missed.length).to.equal(0);
+
+        expect(rdoc.id).to.equal(expectedData.id);
+        expect(rdoc.title).to.equal(expectedData.title);
+        expect(rdoc.body).to.equal(expectedData.body);
+
+        var actualComments = rdoc.comments;
+        var expectedComments = [ts.data.comments[3].id, ts.data.comments[4].id, ts.data.comments[5].id];
+
+        actualComments.forEach(function (ac, i) {
+          var expectedComment = expectedComments[i];
+          expect(ac).to.equal(expectedComment);
+        });
+
+        done();
+      });
+    });
   });
 });
