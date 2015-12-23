@@ -9,7 +9,7 @@ var bucket;
 
 describe('Model save tests', function () {
   beforeEach(function (done) {
-    if(lounge) {
+    if (lounge) {
       lounge.disconnect();
     }
 
@@ -462,7 +462,7 @@ describe('Model save tests', function () {
     var userSchema = lounge.schema({
       firstName: String,
       lastName: String,
-      email: { type: String, key: true }
+      email: {type: String, key: true}
     });
 
     var User = lounge.model('User', userSchema);
@@ -967,6 +967,50 @@ describe('Model save tests', function () {
 
         expect(postDoc).to.deep.equal(expectedPost);
 
+        done();
+      });
+    });
+  });
+
+  describe('save pre hooks tests', function () {
+
+    it('should call sync pre save', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date
+      });
+
+      var preCalled = false;
+
+      userSchema.pre('save', function (next) {
+        if (this.email) {
+          this.email = this.email.toLowerCase();
+        }
+
+        preCalled = true;
+        next();
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('March 3, 1990 03:30:00');
+
+      var email = 'JOE@gmail.com';
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: email,
+        dateOfBirth: dob
+      });
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+        expect(savedDoc.email).to.equal(email.toLowerCase());
+        expect(preCalled).to.be.ok;
         done();
       });
     });
