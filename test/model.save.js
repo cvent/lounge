@@ -972,9 +972,10 @@ describe('Model save tests', function () {
     });
   });
 
-  describe('save pre hooks tests', function () {
+  describe('save() pre hooks tests', function () {
+    this.slow(200);
 
-    it('should call sync pre save', function () {
+    it('should call sync pre save', function (done) {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
@@ -1012,6 +1013,186 @@ describe('Model save tests', function () {
         expect(savedDoc.email).to.equal(email.toLowerCase());
         expect(preCalled).to.be.ok;
         done();
+      });
+    });
+
+    it('should call async pre save', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date
+      });
+
+      var preCalled = false;
+
+      userSchema.pre('save', true, function (next, done) {
+        var self = this;
+        setTimeout(function () {
+          if (self.email) {
+            self.email = self.email.toLowerCase();
+          }
+          done();
+          preCalled = true;
+        }, 100);
+        next();
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('March 3, 1990 03:30:00');
+
+      var email = 'JOE@gmail.com';
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: email,
+        dateOfBirth: dob
+      });
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+        expect(savedDoc.email).to.equal(email.toLowerCase());
+        expect(preCalled).to.be.ok;
+        done();
+      });
+    });
+
+    it('should call sync pre save and it should abort the save', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date
+      });
+
+      var preCalled = false;
+      var missingDOB = 'Missing date of birth';
+
+      userSchema.pre('save', function (next) {
+        if (this.email) {
+          this.email = this.email.toLowerCase();
+        }
+
+        preCalled = true;
+
+        if (!this.dob) {
+          return next(new Error(missingDOB));
+        }
+
+        next();
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var email = 'JOE@gmail.com';
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: email
+      });
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.be.ok;
+        expect(err.message).to.equal(missingDOB);
+        expect(preCalled).to.be.ok;
+
+        var docKey = User.getDocumentKeyValue(user.id, true);
+        bucket.get(docKey, function (err, doc) {
+          expect(doc).to.not.be.ok;
+          expect(err).to.be.ok;
+          expect(err.code).to.equal(couchbase.errors.keyNotFound);
+
+          done();
+        });
+      });
+    });
+  });
+
+  describe('save() post hooks tests', function () {
+    this.slow(200);
+
+    it('should call sync post save', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date
+      });
+
+      var postCalled = false;
+
+      userSchema.post('save', function () {
+        postCalled = true;
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('March 3, 1990 03:30:00');
+
+      var email = 'joe@gmail.com';
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: email,
+        dateOfBirth: dob
+      });
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+        expect(savedDoc.email).to.equal(email);
+
+        setTimeout(function () {
+          expect(postCalled).to.be.ok;
+          done();
+        }, 100);
+      });
+    });
+
+    it('should not call sync post save middleware on save error', function (done) {
+      process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL = true;
+
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date
+      });
+
+      var postCalled = false;
+
+      userSchema.post('save', function () {
+        postCalled = true;
+        next();
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('March 3, 1990 03:30:00');
+
+      var email = 'joe@gmail.com';
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: email,
+        dateOfBirth: dob
+      });
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.be.ok;
+        expect(savedDoc).to.not.be.ok;
+
+        setTimeout(function () {
+          expect(postCalled).to.not.be.ok;
+          process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL = false;
+          done();
+        }, 100);
       });
     });
   });

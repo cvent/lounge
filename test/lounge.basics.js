@@ -5,7 +5,6 @@ describe('Lounge basics', function () {
   it('Should export the proper functions', function () {
     // exported data
     expect(lounge.models).to.be.an('object');
-    expect(lounge.schemas).to.be.an('object');
     expect(lounge.config).to.be.an('object');
 
     // instance methods
