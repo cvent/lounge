@@ -1,8 +1,9 @@
 var lounge = require('../../lib');
 var async = require('async');
+var _ = require('lodash');
 var uuid = require('uuid');
 
-exports.data = {
+var data = {
   users: [{
     "firstName": "Bobby",
     "lastName": "Jordan",
@@ -153,6 +154,8 @@ var keymapping = {
 };
 
 exports.setup = function (bucket, fn) {
+  exports.data = _.cloneDeep(data);
+
   async.eachSeries(Object.keys(exports.data), function (key, easCb) {
     var objData = exports.data[key];
     async.each(objData, function (obj, eaCb) {
