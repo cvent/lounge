@@ -83,25 +83,6 @@ describe('Schema options', function () {
   describe('hooks', function () {
 
     describe('pre', function () {
-      it('Should call pre hook before function', function () {
-
-        var userSchema = lounge.schema({firstName: String, lastName: String});
-
-        userSchema.pre('toObject', function preFn(next) {
-          this.firstName = this.firstName.toUpperCase();
-          this.lastName = this.lastName.toUpperCase();
-          next();
-        });
-
-        var User = lounge.model('User', userSchema);
-
-        var user = new User({firstName: 'Joe', lastName: 'Smith'});
-
-        var obj = user.toObject();
-
-        expect(user.firstName).to.equal('JOE', 'Failed to call pre hook');
-        expect(user.lastName).to.equal('SMITH', 'Failed to call pre hook');
-      });
 
       it('Should call pre hook with params before function', function (done) {
 
@@ -136,28 +117,45 @@ describe('Schema options', function () {
           done();
         });
       });
-    });
 
-    describe('post', function () {
-      it('Should call post hook after function', function () {
+      it('Should pass error', function (done) {
 
         var userSchema = lounge.schema({firstName: String, lastName: String});
 
-        userSchema.post('toJSON', function postFn(next) {
+        userSchema.method('foo', function (firstName, lastName, cb) {
+          return process.nextTick(function () {
+            return cb(null, firstName + ' ' + lastName);
+          });
+        });
+
+        var datacheck = {};
+        var msg = 'some error';
+
+        userSchema.pre('foo', function preFn(next, param1, param2) {
+          datacheck.param1 = param1;
+          datacheck.param2 = param2;
           this.firstName = this.firstName.toUpperCase();
           this.lastName = this.lastName.toUpperCase();
-          next();
+          next(new Error(msg));
         });
 
         var User = lounge.model('User', userSchema);
 
         var user = new User({firstName: 'Joe', lastName: 'Smith'});
 
-        user.toJSON();
-
-        expect(user.firstName).to.equal('JOE', 'Failed to call post hook');
-        expect(user.lastName).to.equal('SMITH', 'Failed to call post hook');
+        user.foo('Led', 'Zep', function (err, res) {
+          expect(err).to.be.ok;
+          expect(err.message).to.equal(msg);
+          expect(datacheck.param1).to.equal('Led', 'Failed to call pre hook');
+          expect(datacheck.param2).to.equal('Zep', 'Failed to call pre hook');
+          expect(user.firstName).to.equal('JOE', 'Failed to call pre hook');
+          expect(user.lastName).to.equal('SMITH', 'Failed to call pre hook');
+          done();
+        });
       });
+    });
+
+    describe('post', function () {
 
       it('Should call post hook with return param after function', function (done) {
 
@@ -169,24 +167,52 @@ describe('Schema options', function () {
           });
         });
 
-        var datacheck = {};
+        var postCalled = false;
 
-        userSchema.post('foo', function postFn(next, param1) {
-          datacheck.param1 = param1;
-          this.firstName = this.firstName.toUpperCase();
-          this.lastName = this.lastName.toUpperCase();
-          next(null, param1);
+        userSchema.post('foo', true, function postFn(next, param) {
+          postCalled = true;
+          next(null, param);
         });
 
         var User = lounge.model('User', userSchema);
 
         var user = new User({firstName: 'Joe', lastName: 'Smith'});
 
-        user.foo('Led', 'Zep', function (err, res) {
-          expect(res).to.equal('Led Zep');
-          expect(datacheck.param1).to.equal('Led Zep', 'Failed to call post hook');
-          expect(user.firstName).to.equal('JOE', 'Failed to call post hook');
-          expect(user.lastName).to.equal('SMITH', 'Failed to call post hook');
+        user.foo('Led', 'Zep', function (err, param1) {
+          expect(param1).to.equal('Led Zep', 'Failed to call post hook');
+          expect(postCalled).to.be.ok;
+          expect(user.firstName).to.equal('Joe', 'Failed to call post hook');
+          expect(user.lastName).to.equal('Smith', 'Failed to call post hook');
+          done();
+        });
+      });
+
+      it('Should not call post hook if error in hooked function', function (done) {
+
+        var userSchema = lounge.schema({firstName: String, lastName: String});
+        var msg = 'some async error';
+
+        userSchema.method('foo', function (firstName, lastName, cb) {
+          return process.nextTick(function () {
+            return cb(new Error(msg), firstName + ' ' + lastName);
+          });
+        });
+
+        var postCalled = false;
+
+        userSchema.post('foo', true, function postFn(next, param) {
+          postCalled = true;
+          next(null, param);
+        });
+
+        var User = lounge.model('User', userSchema);
+
+        var user = new User({firstName: 'Joe', lastName: 'Smith'});
+
+        user.foo('Led', 'Zep', function (err, param1) {
+          expect(err).to.be.ok;
+          expect(err.message).to.equal(msg);
+          expect(postCalled).to.not.be.ok;
           done();
         });
       });
