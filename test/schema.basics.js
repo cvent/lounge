@@ -182,6 +182,114 @@ describe('Schema basics', function () {
     });
   });
 
+  describe('index', function () {
+    beforeEach(function () {
+      lounge = new lounge.Lounge(); // recreate it
+    });
+
+    it('should get the indexes correctly', function () {
+
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: {type: String, index: true}
+      });
+
+      var expected = {
+        'email': {
+          path: 'email'
+        }
+      };
+
+      expect(userSchema.indexes).to.deep.equal(expected);
+    });
+
+    it('should get the indexes correctly only when index = true', function () {
+
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: {type: String, index: false}
+      });
+
+      var expected = {};
+
+      expect(userSchema.indexes).to.deep.equal(expected);
+    });
+
+    it('should get the indexes correctly only when index = true 2', function () {
+
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: {type: String, index: 'true'}
+      });
+
+      var expected = {};
+
+      expect(userSchema.indexes).to.deep.equal(expected);
+    });
+
+    it('should get the index correctly if in array', function () {
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        posts: [
+          {type: String, index: true}
+        ]
+      });
+
+      var expected = {
+        posts: {
+          path: 'posts'
+        }
+      };
+
+      expect(userSchema.indexes).to.deep.equal(expected);
+    });
+
+    it('should get the indexes correctly in nested schema', function () {
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        blog: {
+          posts: [
+            {Type: String, index: true}
+          ]
+        }
+      });
+
+      var expected = {
+        'blog.posts': {
+          path: 'blog.posts'
+        }
+      };
+
+      expect(userSchema.indexes).to.deep.equal(expected);
+    });
+
+    it('should get the indexes correctly with multiple indexes', function () {
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: {type: String, index: true},
+        username: {type: String, index: true}
+      });
+
+      var expected = {
+        'email': {
+          path: 'email'
+        },
+        'username': {
+          path: 'username'
+        }
+      };
+
+      expect(userSchema.indexes).to.deep.equal(expected);
+    });
+
+  });
+
   describe('getDocumentKeyValue', function () {
     var userSchema, userSchema2, userSchema3;
     var id1, id2, id3, val;
