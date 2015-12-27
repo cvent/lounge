@@ -7,7 +7,7 @@ var Schema = lounge.Schema;
 
 var bucket;
 
-describe('Model index tests', function () {
+describe.only('Model index tests', function () {
   beforeEach(function (done) {
     if (lounge) {
       lounge.disconnect();
@@ -23,149 +23,212 @@ describe('Model index tests', function () {
     });
   });
 
-  it('should create index values for a simple document', function () {
-    var userSchema = new lounge.Schema({
-      firstName: String,
-      lastName: String,
-      email: {type: String, index: true}
+  describe('initial ref value and function creation tests', function () {
+    it('should create index values for a simple document', function () {
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: {type: String, index: true}
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      expect(User.findByEmail).to.be.ok;
+      expect(User.findByEmail).to.be.an.instanceof(Function);
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com'
+      });
+
+      var expected = {
+        email: {
+          path: 'email',
+          value: 'joe@gmail.com',
+          name: 'email'
+        }
+      };
+
+      expect(user.$_refValues).to.deep.equal(expected)
     });
 
-    var User = lounge.model('User', userSchema);
+    it('should create index values for array', function () {
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        usernames: [{type: String, index: true, indexName: 'username'}]
+      });
 
-    var user = new User({
-      firstName: 'Joe',
-      lastName: 'Smith',
-      email: 'joe@gmail.com'
+      var User = lounge.model('User', userSchema);
+
+      expect(User.findByUsername).to.be.ok;
+      expect(User.findByUsername).to.be.an.instanceof(Function);
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        usernames: ['user1', 'user2']
+      });
+
+      var expected = {
+        'username': {
+          path: 'usernames',
+          value: ['user1', 'user2'],
+          name: 'username'
+        }
+      };
+
+      expect(user.$_refValues).to.deep.equal(expected)
     });
 
-    var expected = [{
-      path: 'email',
-      value: 'joe@gmail.com',
-      name: 'email'
-    }];
+    it('should create index value for a ref field', function () {
+      var fooSchema = new lounge.Schema({
+        a: String,
+        b: String
+      });
 
-    expect(user.$_refValues).to.deep.equal(expected)
-  });
+      var Foo = lounge.model('Foo', fooSchema);
 
-  it('should create index values for array', function () {
-    var userSchema = new lounge.Schema({
-      firstName: String,
-      lastName: String,
-      usernames: [{type: String, index: true, indexName: 'username'}]
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: {type: String, index: true},
+        foo: {type: Foo, index: true, ref: 'Foo'}
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      expect(User.findByEmail).to.be.ok;
+      expect(User.findByEmail).to.be.an.instanceof(Function);
+      expect(User.findByFoo).to.be.ok;
+      expect(User.findByFoo).to.be.an.instanceof(Function);
+
+      var foo = new Foo({
+        a: 'a1',
+        b: 'b1'
+      });
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        foo: foo
+      });
+
+      var expected = {
+        'email': {
+          path: 'email',
+          value: 'joe@gmail.com',
+          name: 'email'
+        },
+        'foo': {
+          path: 'foo',
+          value: foo.id,
+          name: 'foo'
+        }
+      };
+
+      expect(user.$_refValues).to.deep.equal(expected)
     });
 
-    var User = lounge.model('User', userSchema);
+    it('should create index value for a ref field respecting key config', function () {
+      var fooSchema = new lounge.Schema({
+        a: {type: String, key: true, generate: false},
+        b: String
+      });
 
-    var user = new User({
-      firstName: 'Joe',
-      lastName: 'Smith',
-      usernames: ['user1', 'user2']
+      var Foo = lounge.model('Foo', fooSchema);
+
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: {type: String, index: true},
+        foo: {type: String, index: true, ref: 'Foo'}
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      expect(User.findByEmail).to.be.ok;
+      expect(User.findByEmail).to.be.an.instanceof(Function);
+      expect(User.findByFoo).to.be.ok;
+      expect(User.findByFoo).to.be.an.instanceof(Function);
+
+      var foo = new Foo({
+        a: 'a1',
+        b: 'b1'
+      });
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        foo: foo
+      });
+
+      var expected = {
+        'email': {
+          path: 'email',
+          value: 'joe@gmail.com',
+          name: 'email'
+        },
+        'foo': {
+          path: 'foo',
+          value: foo.a,
+          name: 'foo'
+        }
+      };
+
+      expect(user.$_refValues).to.deep.equal(expected)
     });
 
-    var expected = [{
-      path: 'usernames',
-      value: 'user1',
-      name: 'username'
-    }, {
-      path: 'usernames',
-      value: 'user2',
-      name: 'username'
-    }];
+    it('should create index value for untruthy values', function () {
+      var fooSchema = new lounge.Schema({
+        a: {type: String, key: true, generate: false},
+        b: String
+      });
 
-    expect(user.$_refValues).to.deep.equal(expected)
-  });
+      var Foo = lounge.model('Foo', fooSchema);
 
-  it('should create index value for a ref field', function () {
-    var fooSchema = new lounge.Schema({
-      a: String,
-      b: String
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: {type: String, index: true},
+        foo: {type: Foo, index: true, ref: 'Foo'}
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      expect(User.findByEmail).to.be.ok;
+      expect(User.findByEmail).to.be.an.instanceof(Function);
+      expect(User.findByFoo).to.be.ok;
+      expect(User.findByFoo).to.be.an.instanceof(Function);
+
+      var foo = new Foo({
+        a: 'a1',
+        b: 'b1'
+      });
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        foo: foo
+      });
+
+      var expected = {
+        'email': {
+          path: 'email',
+          value: null,
+          name: 'email'
+        },
+        'foo': {
+          path: 'foo',
+          value: foo.a,
+          name: 'foo'
+        }
+      };
+
+      expect(user.$_refValues).to.deep.equal(expected)
     });
-
-    var Foo = lounge.model('Foo', fooSchema);
-
-    var userSchema = new lounge.Schema({
-      firstName: String,
-      lastName: String,
-      email: {type: String, index: true},
-      foo: {type: Foo, index: true}
-    });
-
-    var User = lounge.model('User', userSchema);
-
-    var foo = new Foo({
-      a: 'a1',
-      b: 'b1'
-    });
-
-    var user = new User({
-      firstName: 'Joe',
-      lastName: 'Smith',
-      email: 'joe@gmail.com',
-      foo: foo
-    });
-
-    var expected = _.sortBy([
-      {
-        path: 'email',
-        value: 'joe@gmail.com',
-        name: 'email'
-      },
-      {
-        path: 'foo',
-        value: foo.id,
-        name: 'foo'
-      }
-    ], 'path');
-
-    var actual = _.sortBy(user.$_refValues, 'path');
-
-    expect(actual).to.deep.equal(expected)
-  });
-
-  it('should create index value for a ref field respecing key config', function () {
-    var fooSchema = new lounge.Schema({
-      a: {type: String, key: true, generate: false},
-      b: String
-    });
-
-    var Foo = lounge.model('Foo', fooSchema);
-
-    var userSchema = new lounge.Schema({
-      firstName: String,
-      lastName: String,
-      email: {type: String, index: true},
-      foo: {type: Foo, index: true}
-    });
-
-    var User = lounge.model('User', userSchema);
-
-    var foo = new Foo({
-      a: 'a1',
-      b: 'b1'
-    });
-
-    var user = new User({
-      firstName: 'Joe',
-      lastName: 'Smith',
-      email: 'joe@gmail.com',
-      foo: foo
-    });
-
-    var expected = _.sortBy([
-      {
-        path: 'email',
-        value: 'joe@gmail.com',
-        name: 'email'
-      },
-      {
-        path: 'foo',
-        value: foo.a,
-        name: 'foo'
-      }
-    ], 'path');
-
-    var actual = _.sortBy(user.$_refValues, 'path');
-
-    expect(actual).to.deep.equal(expected)
   });
 });
