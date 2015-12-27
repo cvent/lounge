@@ -7,7 +7,7 @@ var Schema = lounge.Schema;
 
 var bucket;
 
-describe('Model index on save tests', function () {
+describe.only('Model index on save tests', function () {
   beforeEach(function (done) {
     if (lounge) {
       lounge.disconnect();
@@ -139,6 +139,52 @@ describe('Model index on save tests', function () {
 
             done();
           });
+        });
+      });
+    });
+
+    it('should index using array of reference documents', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: {type: String, key: true, generate: false},
+        usernames: [{type: String, index: true, indexName: 'username'}]
+      }, {
+        refIndexKeyPrefix: 'app::dev::ref::',
+        delimiter: '::'
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        usernames: ['js1', 'js2', 'js3']
+      });
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+
+        var keys = _.map(user.usernames, function (un) {
+          return userSchema.getRefKey('username', un);
+        });
+
+        bucket.getMulti(keys, function (err, indexRes) {
+          expect(err).to.not.be.ok;
+          expect(indexRes).to.be.ok;
+
+          var resKeys = Object.keys(indexRes);
+
+          _.each(resKeys, function (ik) {
+            var v = indexRes[ik].value;
+            expect(v).to.be.ok;
+            expect(v.key).to.be.ok;
+            expect(v.key).to.be.equal(user.email);
+          });
+
+          done();
         });
       });
     });
