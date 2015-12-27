@@ -1190,7 +1190,7 @@ describe('Model save tests', function () {
 
         setTimeout(function () {
           expect(postCalled).to.not.be.ok;
-          delete process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL
+          delete process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL;
           done();
         }, 100);
       });

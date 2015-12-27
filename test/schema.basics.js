@@ -70,7 +70,7 @@ describe('Schema basics', function () {
     it('Should throw with key type not a Number or String', function () {
       expect(
         function () {
-          var siteSchema = new lounge.Schema({
+          var siteSchema = lounge.schema({
             ip: {type: Boolean, key: true},
             name: String,
             url: String
@@ -100,7 +100,7 @@ describe('Schema basics', function () {
 
     it('should get the refs correctly', function () {
 
-      var siteSchema = new lounge.Schema({
+      var siteSchema = lounge.schema({
         owner: {type: String, ref: 'User'},
         url: String
       });

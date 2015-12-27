@@ -7,7 +7,7 @@ var Schema = lounge.Schema;
 
 var bucket;
 
-describe.only('Model index tests', function () {
+describe('Model index tests', function () {
   beforeEach(function (done) {
     if (lounge) {
       lounge.disconnect();
@@ -83,14 +83,14 @@ describe.only('Model index tests', function () {
     });
 
     it('should create index value for a ref field', function () {
-      var fooSchema = new lounge.Schema({
+      var fooSchema = lounge.schema({
         a: String,
         b: String
       });
 
       var Foo = lounge.model('Foo', fooSchema);
 
-      var userSchema = new lounge.Schema({
+      var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
         email: {type: String, index: true},
@@ -133,14 +133,14 @@ describe.only('Model index tests', function () {
     });
 
     it('should create index value for a ref field respecting key config', function () {
-      var fooSchema = new lounge.Schema({
+      var fooSchema = lounge.schema({
         a: {type: String, key: true, generate: false},
         b: String
       });
 
       var Foo = lounge.model('Foo', fooSchema);
 
-      var userSchema = new lounge.Schema({
+      var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
         email: {type: String, index: true},
@@ -183,14 +183,14 @@ describe.only('Model index tests', function () {
     });
 
     it('should create index value for untruthy values', function () {
-      var fooSchema = new lounge.Schema({
+      var fooSchema = lounge.schema({
         a: {type: String, key: true, generate: false},
         b: String
       });
 
       var Foo = lounge.model('Foo', fooSchema);
 
-      var userSchema = new lounge.Schema({
+      var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
         email: {type: String, index: true},

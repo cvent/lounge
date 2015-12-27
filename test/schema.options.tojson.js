@@ -872,7 +872,7 @@ describe('Schema options', function () {
     });
 
     it('Should print id correctly when prefix and suffix specified and expand option in schema', function () {
-      var siteSchema = new lounge.Schema({
+      var siteSchema = lounge.schema({
         ip: {type: String, key: true, prefix: 'site:', suffix: ':site'},
         name: String,
         url: String
@@ -891,7 +891,7 @@ describe('Schema options', function () {
     });
 
     it('Should print id correctly when prefix and suffix specified and expand option inline', function () {
-      var siteSchema = new lounge.Schema({
+      var siteSchema = lounge.schema({
         ip: {type: String, key: true, prefix: 'site:', suffix: ':site'},
         name: String,
         url: String
