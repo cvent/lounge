@@ -197,7 +197,8 @@ describe('Schema basics', function () {
 
       var expected = {
         'email': {
-          path: 'email'
+          path: 'email',
+          name: 'email'
         }
       };
 
@@ -241,7 +242,8 @@ describe('Schema basics', function () {
 
       var expected = {
         posts: {
-          path: 'posts'
+          path: 'posts',
+          name: 'posts'
         }
       };
 
@@ -254,14 +256,15 @@ describe('Schema basics', function () {
         lastName: String,
         blog: {
           posts: [
-            {Type: String, index: true}
+            {Type: String, index: true, indexName: 'blogPost'}
           ]
         }
       });
 
       var expected = {
         'blog.posts': {
-          path: 'blog.posts'
+          path: 'blog.posts',
+          name: 'blogPost'
         }
       };
 
@@ -273,15 +276,17 @@ describe('Schema basics', function () {
         firstName: String,
         lastName: String,
         email: {type: String, index: true},
-        username: {type: String, index: true}
+        username: {type: String, index: true, indexName: 'userName'}
       });
 
       var expected = {
         'email': {
-          path: 'email'
+          path: 'email',
+          name: 'email'
         },
         'username': {
-          path: 'username'
+          path: 'username',
+          name: 'userName'
         }
       };
 
