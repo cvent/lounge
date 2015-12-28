@@ -5,6 +5,7 @@
 * Add comments and documentation
 * Add Github Page
 * Add EventEmitter interface and events for documents and actions.
+* Add error events
 * Add config option to specify `Date` format for saving.
 * Add init and `isNew` ?
 * Change from hooks-fixed to Kareem ?
