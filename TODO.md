@@ -6,7 +6,6 @@
 * Add Github Page
 * Add EventEmitter interface and events for documents and actions.
 * Add config option to specify `Date` format for saving.
-* Remove need for "ref" in type declaration for ref types ?
 * Add init and `isNew` ?
 * Change from hooks-fixed to Kareem ?
 * Fix transforms for inline options.

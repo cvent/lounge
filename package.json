@@ -30,8 +30,8 @@
     "inflection": "^1.8.0",
     "lodash": "^3.10.1",
     "mpath": "^0.2.1",
-    "prop-search": "^1.1.8",
     "sliced": "^1.0.1",
+    "traverse": "^0.6.6",
     "uuid": "^2.0.1"
   },
   "devDependencies": {

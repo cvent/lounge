@@ -52,14 +52,14 @@ describe('Model remove tests', function () {
             lastName: String,
             email: {type: String, key: true, generate: false},
             dateOfBirth: Date,
-            company: {type: Company, ref: 'Company'}
+            company: {type: Company}
           });
 
           User = lounge.model('User', userSchema);
 
           commentSchema = lounge.schema({
             body: String,
-            user: {type: User, ref: 'User'}
+            user: User
           });
 
           Comment = lounge.model('Comment', commentSchema);
@@ -67,7 +67,7 @@ describe('Model remove tests', function () {
           postSchema = lounge.schema({
             title: String,
             body: String,
-            comments: [{type: Comment, ref: 'Comment'}]
+            comments: [Comment]
           });
 
           Post = lounge.model('Post', postSchema);
@@ -320,7 +320,7 @@ describe('Model remove tests', function () {
             lastName: String,
             email: {type: String, key: true, generate: false},
             dateOfBirth: Date,
-            company: {type: Company, ref: 'Company'}
+            company: Company
           });
 
           ts.setup(bucket, done);
@@ -458,7 +458,7 @@ describe('Model remove tests', function () {
 
       commentSchema = lounge.schema({
         body: String,
-        user: {type: User, ref: 'User'}
+        user: {type: User}
       });
 
       commentSchema.pre('remove', function (next) {
@@ -472,7 +472,7 @@ describe('Model remove tests', function () {
       postSchema = lounge.schema({
         title: String,
         body: String,
-        comments: [{type: Comment, ref: 'Comment'}]
+        comments: [{type: Comment}]
       });
 
       Post = lounge.model('Post', postSchema);
@@ -580,7 +580,7 @@ describe('Model remove tests', function () {
             lastName: String,
             email: {type: String, key: true, generate: false},
             dateOfBirth: Date,
-            company: {type: Company, ref: 'Company'}
+            company: Company
           });
 
           ts.setup(bucket, done);
@@ -672,7 +672,7 @@ describe('Model remove tests', function () {
 
       commentSchema = lounge.schema({
         body: String,
-        user: {type: User, ref: 'User'}
+        user: User
       });
 
       commentSchema.post('remove', function () {
@@ -684,7 +684,7 @@ describe('Model remove tests', function () {
       postSchema = lounge.schema({
         title: String,
         body: String,
-        comments: [{type: Comment, ref: 'Comment'}]
+        comments: [Comment]
       });
 
       Post = lounge.model('Post', postSchema);

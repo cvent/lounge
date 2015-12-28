@@ -98,10 +98,56 @@ describe('Schema basics', function () {
       lounge = new lounge.Lounge(); // recreate it
     });
 
+    it('should not get any refs where there are none', function () {
+
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: String
+      });
+
+      var expected = {};
+
+      expect(userSchema.refs).to.deep.equal(expected, 'Refs are incorrect');
+    });
+
     it('should get the refs correctly', function () {
 
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: String
+      });
+
+      var User = lounge.model('User', userSchema);
+
       var siteSchema = lounge.schema({
-        owner: {type: String, ref: 'User'},
+        owner: {type: User},
+        url: String
+      });
+
+      var expected = {
+        'owner': {
+          path: 'owner',
+          ref: 'User'
+        }
+      };
+
+      expect(siteSchema.refs).to.deep.equal(expected, 'Refs are incorrect');
+    });
+
+    it('should get the refs correctly when referencing Model directly', function () {
+
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: String
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var siteSchema = lounge.schema({
+        owner: User,
         url: String
       });
 
@@ -116,11 +162,18 @@ describe('Schema basics', function () {
     });
 
     it('should get the refs correctly if in array', function () {
+      var postSchema = lounge.schema({
+        title: String,
+        body: String
+      });
+
+      var Post = lounge.model('Post', postSchema);
+
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
         posts: [
-          {type: String, ref: 'Post'}
+          {type: Post}
         ]
       });
 
@@ -135,13 +188,19 @@ describe('Schema basics', function () {
     });
 
     it('should get the refs correctly in nested schema', function () {
+
+      var postSchema = lounge.schema({
+        title: String,
+        body: String
+      });
+
+      var Post = lounge.model('Post', postSchema);
+
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
         blog: {
-          posts: [
-            {Type: String, ref: 'Post'}
-          ]
+          posts: [Post]
         }
       });
 
@@ -156,15 +215,32 @@ describe('Schema basics', function () {
     });
 
     it('should get the refs correctly with multiple refs', function () {
+
+      var postSchema = lounge.schema({
+        title: String,
+        body: String
+      });
+
+      var Post = lounge.model('Post', postSchema);
+
+      var addrSchema = lounge.schema({
+        street: String,
+        city: String,
+        postalCode: String,
+        country: String
+      });
+
+      var Address = lounge.model('Address', addrSchema);
+
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
         blog: {
           posts: [
-            {Type: String, ref: 'Post'}
+            {Type: Post}
           ]
         },
-        address: {Type: String, ref: 'Address'}
+        address: Address
       });
 
       var expected = {

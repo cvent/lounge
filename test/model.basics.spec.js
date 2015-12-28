@@ -193,7 +193,6 @@ describe('Schema basics', function () {
       }
     });
 
-
     expect(user instanceof User).to.be.ok;
     expect(user instanceof lounge.Document).to.be.ok;
     expect(user instanceof lounge.Model).to.be.ok;
@@ -281,7 +280,7 @@ describe('Schema basics', function () {
       firstName: String,
       lastName: String,
       email: String,
-      foo: [{type: Foo, ref: 'Foo'}]
+      foos: [Foo]
     });
 
     var User = lounge.model('User', userSchema);
@@ -301,12 +300,12 @@ describe('Schema basics', function () {
       firstName: 'Joe',
       lastName: 'Smith',
       email: 'joe@gmail.com',
-      foo: foos1
+      foos: foos1
     });
 
-    expect(user.foo).to.deep.equal(foos1);
+    expect(user.foos).to.deep.equal(foos1);
 
-    user.foo.push(new Foo({
+    user.foos.push(new Foo({
       a: 'a3',
       b: 'b3'
     }));
@@ -315,6 +314,11 @@ describe('Schema basics', function () {
       a: 'a3',
       b: 'b3'
     }));
+
+    user.foos.forEach(function(f, i) {
+      expect(f.a).to.equal(foos1[i].a);
+      expect(f.b).to.equal(foos1[i].b);
+    });
 
     var foos2 = [
       'newFooId1',
@@ -327,8 +331,11 @@ describe('Schema basics', function () {
         b: 'newb2'
       })];
 
-    user.foo = foos2;
+    user.foos = foos2;
 
-    expect(user.foo).to.deep.equal(foos2);
+    user.foos.forEach(function(f, i) {
+      expect(f.a).to.equal(foos2[i].a);
+      expect(f.b).to.equal(foos2[i].b);
+    });
   });
 });

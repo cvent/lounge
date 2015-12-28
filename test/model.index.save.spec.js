@@ -472,7 +472,7 @@ describe('Model index on save tests', function () {
     });
   });
 
-  it('should not create index ref document for a ref field', function () {
+  it('should not create index ref document for a ref field', function (done) {
     var fooSchema = lounge.schema({
       a: String,
       b: String
@@ -484,7 +484,7 @@ describe('Model index on save tests', function () {
       firstName: String,
       lastName: String,
       email: {type: String, index: true},
-      foo: {type: Foo, index: true, ref: 'Foo'}
+      foo: {type: Foo, index: true}
     });
 
     var User = lounge.model('User', userSchema);

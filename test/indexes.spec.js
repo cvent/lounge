@@ -94,7 +94,7 @@ describe('Model index tests', function () {
         firstName: String,
         lastName: String,
         email: {type: String, index: true},
-        foo: {type: Foo, index: true, ref: 'Foo'}
+        foo: {type: Foo}
       });
 
       var User = lounge.model('User', userSchema);
