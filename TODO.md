@@ -9,9 +9,10 @@
 * Add GitHub Page
 * Fix `Schema` constructor so that it picks up confi values for the lounge object
 * Add config option to specify `Date` format for saving.
+* More tests and improve coverage.
 * Add init and `isNew`?
 * Change from `hooks-fixed` to `Kareem` (Doesn't seem practical)?
-* Fix transforms for inline options ?
-* Add db cas support to save() somehow ?
-* Add db cas support to remove() somehow ?
+* Fix transforms for inline options?
+* Add db cas support to save() somehow?
+* Add db cas support to remove() somehow?
 
