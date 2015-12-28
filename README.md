@@ -16,21 +16,21 @@ Purpose and goals. Sample usage and overview.
 
 ## Documentation
 
-[Setup](#lounge)
-[Model](#model)
-[Embedded Documents](#embedded)
-[Middleware](#middleware)
-[Population](#population)
-[Indexes](#indexes)
-[Queries](#queries)
-[Events](#events)
+* [Setup](#lounge)
+* [Model](#model)
+* [Embedded Documents](#embedded)
+* [Middleware](#middleware)
+* [Population](#population)
+* [Indexes](#indexes)
+* [Queries](#queries)
+* [Events](#events)
 
-### Setup <a id="lounge"></a>
+#### Setup <a id="lounge"></a>
 
 * Lounge setup and connecting
 * Options
 
-### Model <a id="model"></a>
+#### Model <a id="model"></a>
 
 * Defining schema and model creation 
 * Options
@@ -43,29 +43,33 @@ Purpose and goals. Sample usage and overview.
 * Statics
 * Methods
 
-### Embedded Documents <a id="embedded"></a>
+#### Embedded Documents <a id="embedded"></a>
 
 Go deeper into embedded documents
 
-### Middleware <a id="middleware"></a>
+#### Middleware <a id="middleware"></a>
 
 Go deeper into pre and post middleware
 
-### Population <a id="population"></a>
+#### Population <a id="population"></a>
 
 Go deeper into population
 
-### Indexes <a id="indexes"></a>
+#### Indexes <a id="indexes"></a>
 
 Go deeper into indexes
 
-### Queries <a id="queries"></a>
+#### Queries <a id="queries"></a>
 
 Go deeper into indexes
 
-### Events <a id="events"></a>
+#### Events <a id="events"></a>
 
 Go deeper into events
+
+## TODO
+
+TODO
 
 ## License
 
