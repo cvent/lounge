@@ -71,6 +71,10 @@ Go deeper into events
 
 TODO
 
+## Credits
+
+Credits for draft, mongoose, other things.
+
 ## License
 
 Copyright 2015 Bojan Djurkovic
