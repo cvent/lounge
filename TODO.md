@@ -9,10 +9,12 @@
 * Add GitHub Page
 * Fix `Schema` constructor so that it picks up confi values for the lounge object
 * Add config option to specify `Date` format for saving.
-* More tests and improve coverage.
+* More tests and improve coverage. For example tests for different configs and more fail tests.
 * Add init and `isNew`?
 * Change from `hooks-fixed` to `Kareem` (Doesn't seem practical)?
 * Fix transforms for inline options?
 * Add db cas support to save() somehow?
 * Add db cas support to remove() somehow?
+* Add sample Express API application
+* Add promises?
 
