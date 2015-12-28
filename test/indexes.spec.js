@@ -82,7 +82,7 @@ describe('Model index tests', function () {
       expect(user.$_o.refValues).to.deep.equal(expected)
     });
 
-    it('should create index value for a ref field', function () {
+    it('should not create index value for a ref field', function () {
       var fooSchema = lounge.schema({
         a: String,
         b: String
@@ -101,8 +101,8 @@ describe('Model index tests', function () {
 
       expect(User.findByEmail).to.be.ok;
       expect(User.findByEmail).to.be.an.instanceof(Function);
-      expect(User.findByFoo).to.be.ok;
-      expect(User.findByFoo).to.be.an.instanceof(Function);
+      expect(User.findByFoo).to.not.be.ok;
+      expect(User.findByFoo).to.not.be.an.instanceof(Function);
 
       var foo = new Foo({
         a: 'a1',
@@ -121,61 +121,6 @@ describe('Model index tests', function () {
           path: 'email',
           value: 'joe@gmail.com',
           name: 'email'
-        },
-        'foo': {
-          path: 'foo',
-          value: foo.id,
-          name: 'foo'
-        }
-      };
-
-      expect(user.$_o.refValues).to.deep.equal(expected)
-    });
-
-    it('should create index value for a ref field respecting key config', function () {
-      var fooSchema = lounge.schema({
-        a: {type: String, key: true, generate: false},
-        b: String
-      });
-
-      var Foo = lounge.model('Foo', fooSchema);
-
-      var userSchema = lounge.schema({
-        firstName: String,
-        lastName: String,
-        email: {type: String, index: true},
-        foo: {type: String, index: true, ref: 'Foo'}
-      });
-
-      var User = lounge.model('User', userSchema);
-
-      expect(User.findByEmail).to.be.ok;
-      expect(User.findByEmail).to.be.an.instanceof(Function);
-      expect(User.findByFoo).to.be.ok;
-      expect(User.findByFoo).to.be.an.instanceof(Function);
-
-      var foo = new Foo({
-        a: 'a1',
-        b: 'b1'
-      });
-
-      var user = new User({
-        firstName: 'Joe',
-        lastName: 'Smith',
-        email: 'joe@gmail.com',
-        foo: foo
-      });
-
-      var expected = {
-        'email': {
-          path: 'email',
-          value: 'joe@gmail.com',
-          name: 'email'
-        },
-        'foo': {
-          path: 'foo',
-          value: foo.a,
-          name: 'foo'
         }
       };
 
@@ -183,36 +128,20 @@ describe('Model index tests', function () {
     });
 
     it('should create index value for untruthy values', function () {
-      var fooSchema = lounge.schema({
-        a: {type: String, key: true, generate: false},
-        b: String
-      });
-
-      var Foo = lounge.model('Foo', fooSchema);
-
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true},
-        foo: {type: Foo, index: true, ref: 'Foo'}
+        email: {type: String, index: true}
       });
 
       var User = lounge.model('User', userSchema);
 
       expect(User.findByEmail).to.be.ok;
       expect(User.findByEmail).to.be.an.instanceof(Function);
-      expect(User.findByFoo).to.be.ok;
-      expect(User.findByFoo).to.be.an.instanceof(Function);
-
-      var foo = new Foo({
-        a: 'a1',
-        b: 'b1'
-      });
 
       var user = new User({
         firstName: 'Joe',
-        lastName: 'Smith',
-        foo: foo
+        lastName: 'Smith'
       });
 
       var expected = {
@@ -220,11 +149,6 @@ describe('Model index tests', function () {
           path: 'email',
           value: null,
           name: 'email'
-        },
-        'foo': {
-          path: 'foo',
-          value: foo.a,
-          name: 'foo'
         }
       };
 

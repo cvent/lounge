@@ -152,6 +152,82 @@ describe('Model index on save tests', function () {
     });
   });
 
+  it('should index using simple reference document using key options - change', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: {type: String, index: true},
+      username: {type: String, key: true, generate: false}
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe@gmail.com',
+      username: 'jsmith'
+    });
+
+    function checkIndexRes(err, indexRes) {
+      expect(err).to.not.be.ok;
+      expect(indexRes).to.be.ok;
+      expect(indexRes.value).to.be.ok;
+      expect(indexRes.value.key).to.be.ok;
+      expect(indexRes.value.key).to.equal(user.getDocumentKeyValue(true));
+    }
+
+    function checkGetRes(err, gd) {
+      expect(err).to.not.be.ok;
+      expect(gd).to.be.ok;
+      expect(gd.value).to.be.ok;
+      expect(gd.value.email).to.be.equal(user.email);
+      expect(gd.value.username).to.be.equal(user.username);
+      expect(gd.value.firstName).to.be.equal(user.firstName);
+      expect(gd.value.lastName).to.be.equal(user.lastName);
+    }
+
+    user.save(function (err, savedDoc) {
+      expect(err).to.not.be.ok;
+      expect(savedDoc).to.be.ok;
+
+      var k = userSchema.getRefKey('email', user.email);
+      bucket.get(k, function (err, indexRes) {
+        checkIndexRes(err, indexRes);
+
+        bucket.get(indexRes.value.key, function (err, gd) {
+          checkGetRes(err, gd);
+
+          user.username = 'jsmith2';
+
+          user.save(function (err, savedDoc) {
+            expect(err).to.not.be.ok;
+            expect(savedDoc).to.be.ok;
+
+            k = userSchema.getRefKey('email', user.email);
+            bucket.get(k, function (err, indexRes) {
+              checkIndexRes(err, indexRes);
+
+              bucket.get(indexRes.value.key, function (err, gd) {
+                checkGetRes(err, gd);
+
+                // old one still sticks around
+                bucket.get('jsmith', function (err, gd) {
+                  expect(err).to.not.be.ok;
+                  expect(gd).to.be.ok;
+                  expect(gd.value).to.be.ok;
+                  expect(gd.value.username).to.be.equal('jsmith');
+
+                  done();
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+
   it('should index using multiple simple reference documents', function (done) {
     var userSchema = lounge.schema({
       firstName: String,
@@ -396,7 +472,7 @@ describe('Model index on save tests', function () {
     });
   });
 
-  it('should create index ref document for a ref field', function () {
+  it('should not create index ref document for a ref field', function () {
     var fooSchema = lounge.schema({
       a: String,
       b: String
@@ -415,8 +491,8 @@ describe('Model index on save tests', function () {
 
     expect(User.findByEmail).to.be.ok;
     expect(User.findByEmail).to.be.an.instanceof(Function);
-    expect(User.findByFoo).to.be.ok;
-    expect(User.findByFoo).to.be.an.instanceof(Function);
+    expect(User.findByFoo).to.not.be.ok;
+    expect(User.findByFoo).to.not.be.an.instanceof(Function);
 
     var foo = new Foo({
       a: 'a1',
@@ -442,7 +518,6 @@ describe('Model index on save tests', function () {
     user.save(function (err, savedDoc) {
       expect(err).to.not.be.ok;
       expect(savedDoc).to.be.ok;
-
 
       var emailKey = userSchema.getRefKey('email', user.email);
       var fooKey = userSchema.getRefKey('foo', user.foo.id);
@@ -451,236 +526,10 @@ describe('Model index on save tests', function () {
         checkRes(err, indexRes);
 
         bucket.get(fooKey, function (err, indexRes) {
-          checkRes(err, indexRes);
+          expect(err).to.be.ok;
+          expect(err.code).to.equal(couchbase.errors.keyNotFound);
 
           done();
-        });
-      });
-    });
-  });
-
-  it('should create index ref document for a ref field - change', function () {
-    var fooSchema = lounge.schema({
-      a: String,
-      b: String
-    });
-
-    var Foo = lounge.model('Foo', fooSchema);
-
-    var userSchema = lounge.schema({
-      firstName: String,
-      lastName: String,
-      email: {type: String, index: true},
-      foo: {type: Foo, index: true, ref: 'Foo'}
-    });
-
-    var User = lounge.model('User', userSchema);
-
-    expect(User.findByEmail).to.be.ok;
-    expect(User.findByEmail).to.be.an.instanceof(Function);
-    expect(User.findByFoo).to.be.ok;
-    expect(User.findByFoo).to.be.an.instanceof(Function);
-
-    var foo = new Foo({
-      a: 'a1',
-      b: 'b1'
-    });
-
-    var foo2 = new Foo({
-      a: 'a2',
-      b: 'b2'
-    });
-
-    var user = new User({
-      firstName: 'Joe',
-      lastName: 'Smith',
-      email: 'joe@gmail.com',
-      foo: foo
-    });
-
-    function checkRes(err, indexRes) {
-      expect(err).to.not.be.ok;
-      expect(indexRes).to.be.ok;
-      var v = indexRes.value;
-      expect(v).to.be.ok;
-      expect(v.key).to.be.ok;
-      expect(v.key).to.be.equal(user.id);
-    }
-
-    foo2.save(function(err, savedFoo) {
-      expect(err).to.not.be.ok;
-      expect(savedFoo).to.be.ok;
-      user.save(function (err, savedDoc) {
-        expect(err).to.not.be.ok;
-        expect(savedDoc).to.be.ok;
-
-
-        var emailKey = userSchema.getRefKey('email', user.email);
-        var fooKey = userSchema.getRefKey('foo', foo.id);
-
-        bucket.get(emailKey, function (err, indexRes) {
-          checkRes(err, indexRes);
-
-          bucket.get(fooKey, function (err, indexRes) {
-            checkRes(err, indexRes);
-
-            user.foo = foo2;
-
-            user.save(function(err, savedUser) {
-              expect(err).to.not.be.ok;
-              expect(savedUser).to.be.ok;
-
-              // old ones
-              bucket.get(fooKey, function (err, indexRes) {
-                expect(err).to.be.ok;
-                expect(err.code).to.equal(couchbase.errors.keyNotFound);
-
-                // new one
-                fooKey = userSchema.getRefKey('foo', foo2.id);
-                bucket.get(fooKey, function (err, indexRes) {
-                  checkRes(err, indexRes);
-                  done();
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  });
-
-  it('should create index ref document for a ref field respecting key options', function () {
-    var fooSchema = lounge.schema({
-      a: String,
-      b: String
-    });
-
-    var Foo = lounge.model('Foo', fooSchema);
-
-    var userSchema = lounge.schema({
-      firstName: String,
-      lastName: String,
-      email: {type: String, index: true},
-      foo: {type: Foo, index: true, ref: 'Foo'}
-    });
-
-    var User = lounge.model('User', userSchema);
-
-    expect(User.findByEmail).to.be.ok;
-    expect(User.findByEmail).to.be.an.instanceof(Function);
-    expect(User.findByFoo).to.be.ok;
-    expect(User.findByFoo).to.be.an.instanceof(Function);
-
-    var foo = new Foo({
-      a: {type: String, key: true, generate: false},
-      b: 'b1'
-    });
-
-    var user = new User({
-      firstName: 'Joe',
-      lastName: 'Smith',
-      email: 'joe@gmail.com',
-      foo: foo
-    });
-
-    user.save(function (err, savedDoc) {
-      expect(err).to.not.be.ok;
-      expect(savedDoc).to.be.ok;
-
-
-      var emailKey = userSchema.getRefKey('email', user.email);
-      var fooKey = userSchema.getRefKey('foo', user.foo.a);
-
-      bucket.get(emailKey, function (err, indexRes) {
-        expect(err).to.not.be.ok;
-        expect(indexRes).to.be.ok;
-
-        var v = indexRes.value;
-        expect(v).to.be.ok;
-        expect(v.key).to.be.ok;
-        expect(v.key).to.be.equal(user.id);
-
-        bucket.get(fooKey, function (err, indexRes) {
-          expect(err).to.not.be.ok;
-          expect(indexRes).to.be.ok;
-
-          var v = indexRes.value;
-          expect(v).to.be.ok;
-          expect(v.key).to.be.ok;
-          expect(v.key).to.be.equal(user.id);
-
-          done();
-        });
-      });
-    });
-  });
-
-  it('should create index ref document for a ref field respecting key options 2', function () {
-    var fooSchema = lounge.schema({
-      a: String,
-      b: String
-    });
-
-    var Foo = lounge.model('Foo', fooSchema);
-
-    var userSchema = lounge.schema({
-      firstName: String,
-      lastName: String,
-      email: {type: String, index: true},
-      foo: {type: Foo, index: true, ref: 'Foo'}
-    });
-
-    var User = lounge.model('User', userSchema);
-
-    expect(User.findByEmail).to.be.ok;
-    expect(User.findByEmail).to.be.an.instanceof(Function);
-    expect(User.findByFoo).to.be.ok;
-    expect(User.findByFoo).to.be.an.instanceof(Function);
-
-    var foo = new Foo({
-      a: {type: String, key: true, generate: false},
-      b: 'b1'
-    });
-
-    var user = new User({
-      firstName: 'Joe',
-      lastName: 'Smith',
-      email: 'joe@gmail.com',
-      foo: foo.a
-    });
-
-    foo.save(function (err, savedDoc) {
-      expect(err).to.not.be.ok;
-      expect(savedDoc).to.be.ok;
-
-      user.save(function (err, savedDoc) {
-        expect(err).to.not.be.ok;
-        expect(savedDoc).to.be.ok;
-
-
-        var emailKey = userSchema.getRefKey('email', user.email);
-        var fooKey = userSchema.getRefKey('foo', foo.a);
-
-        bucket.get(emailKey, function (err, indexRes) {
-          expect(err).to.not.be.ok;
-          expect(indexRes).to.be.ok;
-
-          var v = indexRes.value;
-          expect(v).to.be.ok;
-          expect(v.key).to.be.ok;
-          expect(v.key).to.be.equal(user.id);
-
-          bucket.get(fooKey, function (err, indexRes) {
-            expect(err).to.not.be.ok;
-            expect(indexRes).to.be.ok;
-
-            var v = indexRes.value;
-            expect(v).to.be.ok;
-            expect(v.key).to.be.ok;
-            expect(v.key).to.be.equal(user.id);
-
-            done();
-          });
         });
       });
     });
