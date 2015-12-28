@@ -34,16 +34,6 @@ describe('Model remove tests', function () {
             return done(err);
           }
 
-          userSchema = lounge.schema({
-            firstName: String,
-            lastName: String,
-            email: {type: String, key: true, generate: false},
-            dateOfBirth: Date,
-            company: {type: String, ref: 'Company'}
-          });
-
-          User = lounge.model('User', userSchema);
-
           companySchema = lounge.schema({
             id: {type: String, key: true, generate: true, prefix: 'company::'},
             name: String,
@@ -56,6 +46,16 @@ describe('Model remove tests', function () {
           });
 
           Company = lounge.model('Company', companySchema);
+
+          userSchema = lounge.schema({
+            firstName: String,
+            lastName: String,
+            email: {type: String, key: true, generate: false},
+            dateOfBirth: Date,
+            company: {type: Company, ref: 'Company'}
+          });
+
+          User = lounge.model('User', userSchema);
 
           commentSchema = lounge.schema({
             body: String,
@@ -320,7 +320,7 @@ describe('Model remove tests', function () {
             lastName: String,
             email: {type: String, key: true, generate: false},
             dateOfBirth: Date,
-            company: {type: String, ref: 'Company'}
+            company: {type: Company, ref: 'Company'}
           });
 
           ts.setup(bucket, done);
@@ -580,7 +580,7 @@ describe('Model remove tests', function () {
             lastName: String,
             email: {type: String, key: true, generate: false},
             dateOfBirth: Date,
-            company: {type: String, ref: 'Company'}
+            company: {type: Company, ref: 'Company'}
           });
 
           ts.setup(bucket, done);

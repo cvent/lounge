@@ -26,16 +26,6 @@ describe('Model populate tests', function () {
           return done(err);
         }
 
-        var userSchema = lounge.schema({
-          firstName: String,
-          lastName: String,
-          email: {type: String, key: true, generate: false},
-          dateOfBirth: Date,
-          company: {type: String, ref: 'Company'}
-        });
-
-        User = lounge.model('User', userSchema);
-
         var companySchema = lounge.schema({
           id: {type: String, key: true, generate: true, prefix: 'company::'},
           name: String,
@@ -48,6 +38,16 @@ describe('Model populate tests', function () {
         });
 
         Company = lounge.model('Company', companySchema);
+
+        var userSchema = lounge.schema({
+          firstName: String,
+          lastName: String,
+          email: {type: String, key: true, generate: false},
+          dateOfBirth: Date,
+          company: {type: Company, ref: 'Company'}
+        });
+
+        User = lounge.model('User', userSchema);
 
         var commentSchema = lounge.schema({
           body: String,
@@ -257,6 +257,7 @@ describe('Model populate tests', function () {
             expect(rdoc.company.founded).to.be.an.instanceof(Date);
 
             var cas2 = rdoc.company.cas;
+            expect(cas2).to.be.ok;
             expect(cas2).to.be.a('string');
 
             expect(cas).to.not.equal(cas2);

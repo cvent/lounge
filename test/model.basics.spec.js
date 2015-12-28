@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var expect = require('chai').expect;
 var lounge = require('../lib');
 var Schema = lounge.Schema;
@@ -239,5 +240,95 @@ describe('Schema basics', function () {
     expect(user.dateOfBirth).to.be.ok;
     expect(user.dateOfBirth).to.be.an.instanceof(Date);
     expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+  });
+
+  it('Should properly change array property', function () {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: {type: String, key: true, generate: false},
+      usernames: [{type: String}]
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var usernames1 = ['js1', 'js2', 'js3'].sort();
+    var usernames2 = ['jsnew1', 'js2', 'jsnew3'].sort();
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe@gmail.com',
+      usernames: usernames1
+    });
+
+    expect(user.usernames.sort()).to.deep.equal(usernames1);
+
+    user.set('usernames', usernames2);
+
+    expect(user.usernames.sort()).to.deep.equal(usernames2);
+  });
+
+  it('Should properly change array ref property', function () {
+    var fooSchema = lounge.schema({
+      a: String,
+      b: String
+    });
+
+    var Foo = lounge.model('Foo', fooSchema);
+
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String,
+      foo: [{type: Foo, ref: 'Foo'}]
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var foos1 = _.sortBy([
+      new Foo({
+        a: 'a1',
+        b: 'b1'
+      }),
+      new Foo({
+        a: 'a2',
+        b: 'b2'
+      })
+    ], 'a');
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe@gmail.com',
+      foo: foos1
+    });
+
+    expect(user.foo).to.deep.equal(foos1);
+
+    user.foo.push(new Foo({
+      a: 'a3',
+      b: 'b3'
+    }));
+
+    foos1.push(new Foo({
+      a: 'a3',
+      b: 'b3'
+    }));
+
+    var foos2 = [
+      'newFooId1',
+      new Foo({
+        a: 'newa1',
+        b: 'newb1'
+      }),
+      new Foo({
+        a: 'newa2',
+        b: 'newb2'
+      })];
+
+    user.foo = foos2;
+
+    expect(user.foo).to.deep.equal(foos2);
   });
 });
