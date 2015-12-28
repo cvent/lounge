@@ -50,7 +50,7 @@ describe('Model index tests', function () {
         }
       };
 
-      expect(user.$_refValues).to.deep.equal(expected)
+      expect(user.$_o.refValues).to.deep.equal(expected)
     });
 
     it('should create index values for array', function () {
@@ -79,7 +79,7 @@ describe('Model index tests', function () {
         }
       };
 
-      expect(user.$_refValues).to.deep.equal(expected)
+      expect(user.$_o.refValues).to.deep.equal(expected)
     });
 
     it('should create index value for a ref field', function () {
@@ -129,7 +129,7 @@ describe('Model index tests', function () {
         }
       };
 
-      expect(user.$_refValues).to.deep.equal(expected)
+      expect(user.$_o.refValues).to.deep.equal(expected)
     });
 
     it('should create index value for a ref field respecting key config', function () {
@@ -179,7 +179,7 @@ describe('Model index tests', function () {
         }
       };
 
-      expect(user.$_refValues).to.deep.equal(expected)
+      expect(user.$_o.refValues).to.deep.equal(expected)
     });
 
     it('should create index value for untruthy values', function () {
@@ -228,7 +228,7 @@ describe('Model index tests', function () {
         }
       };
 
-      expect(user.$_refValues).to.deep.equal(expected)
+      expect(user.$_o.refValues).to.deep.equal(expected)
     });
   });
 });
