@@ -67,7 +67,7 @@ var lounge = require('lounge');
 
 Module exports an instance of `Lounge` class.
 
-##### Lounge(options)
+#### Lounge(options)
 
 Creates a new instance of `Lounge` class. You rarely have to do this.
 
@@ -76,7 +76,7 @@ var lounge = require('lounge');
 var l = new lounge.Lounge();
 ```
 
-** Options **
+**Options**
 
 * `keyPrefix` - key prefix for all keys. No default. Generally useful if you wish to namespace documents. 
 Example: `app::env::`.
@@ -98,13 +98,14 @@ var lounge = require('lounge');
 lounge.setOption('delimiter', '::');
 console.log(lounge.getOption('delimiter');
 ```
-##### Lounge.connect(options, fn, mock)
+
+#### Lounge.connect(options, fn, mock)
 
 Connects to the database cluster based on `options`. When completed calls `fn` callback. Set `mock` to `true` to use
 [Couchbase mocking](https://github.com/couchbase/couchnode#mock-testing). Alternatively you can set
 `LOUNGE_COUCHBASE_MOCK` environment variable.
 
-** Options **
+**Options**
 
 * `connectionString` - connection string for the cluster. See [Cluster documentation](http://docs.couchbase.com/sdk-api/couchbase-node-client-2.1.2/Cluster.html).
 * `bucket` - name of the bucket to be used for [`openBucket`](http://docs.couchbase.com/sdk-api/couchbase-node-client-2.1.2/Cluster.html#openBucket)
@@ -119,21 +120,21 @@ lounge.connect('couchbase://127.0.0.1', function(err) {
 });
 ```
 
-##### Lounge.disconnect()
+#### Lounge.disconnect()
 
 Disconnect from the bucket. Deletes all defined models.
 
-##### Lounge.schema(descriptor, options)
+#### Lounge.schema(descriptor, options)
 
 Creates a new `Schema` based on `descriptor` and `options`. Prefer this over the actual `Schema` constructor as this
 will pass lounge config variables to the `Schema` constructor automatically. Same options.
 
-##### Lounge.model(name, schema, options)
+#### Lounge.model(name, schema, options)
 
 Defines a Model based on case sensitive model `name` and created `schema`, with given options. From there we can create
 instances of the Model;
 
-** Options **
+**Options**
 
 * `freeze` - to freeze the model. See `Object.freeze`. Default: `true`
 
@@ -156,11 +157,11 @@ var user = new User({
 console.log(user instanceof User) // true
 ```
 
-##### Lounge.modelNames()
+#### Lounge.modelNames()
 
 Returns and array of all defined model names.
 
-##### Bucket functions
+#### Bucket functions
 
 Lounge instance also inherits all public [`Bucket`](http://docs.couchbase.com/sdk-api/couchbase-node-client-2.1.2/Bucket.html)
  functions and properties.
@@ -171,7 +172,7 @@ lounge.get('mydocumentkey', function(err, res) {
 });
 ```
 
-##### Lounge.Schema
+#### Lounge.Schema
 
 Exported `Schema` constructor. You can use this as well as `lounge.schema()`, which is preferred.
 
@@ -179,11 +180,11 @@ Exported `Schema` constructor. You can use this as well as `lounge.schema()`, wh
 var userSchema = new lounge.Schema({ name: String });
 ```
 
-##### Lounge.Model
+#### Lounge.Model
 
 Exported `Model` constructor. You should never have to manually create a Model.
 
-##### Lounge.Document
+#### Lounge.Document
 
 Exported  internal `Document` constructor. You should never have to manually create a Document.
  
@@ -195,7 +196,7 @@ console.log(user instanceof lounge.Model) // true
 console.log(user instanceof lounge.Document) // true
 ```
 
-#### Modelling <a id="model"></a>
+### Modelling <a id="model"></a>
 
 * Defining schema and model creation 
 * Options
@@ -208,27 +209,27 @@ console.log(user instanceof lounge.Document) // true
 * Statics
 * Methods
 
-#### Embedded Documents <a id="embedded"></a>
+### Embedded Documents <a id="embedded"></a>
 
 Go deeper into embedded documents
 
-#### Middleware <a id="middleware"></a>
+### Middleware <a id="middleware"></a>
 
 Go deeper into pre and post middleware
 
-#### Population <a id="population"></a>
+### Population <a id="population"></a>
 
 Go deeper into population
 
-#### Indexes <a id="indexes"></a>
+### Indexes <a id="indexes"></a>
 
 Go deeper into indexes
 
-#### Queries <a id="queries"></a>
+### Queries <a id="queries"></a>
 
 Go deeper into indexes
 
-#### Events <a id="events"></a>
+### Events <a id="events"></a>
 
 Go deeper into events
 
