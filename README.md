@@ -47,6 +47,9 @@ kitty.save(function (err) {
  view lookup that it is impractical to accomplish anything sane within a simple ODM. This can easily be expanded
  on top of Lounge.
 * View queries. For same reasons this falls outside of the scope of Lounge.
+* Automatic document removal on key change. That is if a document key property changes, the new document is saved under
+the new key. The old document sticks around under the old key. There are too many implications if we start automatically
+handle document removal in this scenario. This should be handled by the user of this module.
 
 ## Documentation
 
