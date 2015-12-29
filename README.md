@@ -400,7 +400,7 @@ console.log(user.email); // 'bob@gmail.com'
 
 **Virtuals**
 
-Virtuals are document properties that you can get and set but that do not get persisted to teh database. 
+Virtuals are document properties that you can get and set but that do not get persisted to the database. 
 The getters are useful for formatting or combining fields, while setters are useful for de-composing a single value 
 into multiple values for storage.
 
@@ -476,7 +476,23 @@ We can also pass an object of function keys and function values, and they will a
 There is a special `init` method that if specified in schema definition will be called at the end of model creation. 
 You can do additional setup here. This method is not passed in any arguments.
 
-**$_data variable**
+**Useful member variables**
+
+All model instances come with a `modelName` read only property that you can use to access the model name. As well
+instances have `schema` property that represents the models schema used when creating the model with `model()` function.
+ 
+```js
+var userSchema = lounge.schema({
+  name: String,
+  email: String
+});
+
+var User = lounge.model('User', userSchema);
+var user = new User({name: 'Bob Smith'});
+
+console.log(user.modelName); // 'User'
+console.log(user.schema isntanceof lounge.Schema); //true
+```
 
 Since by default models are created using `strict` mode, Model instances setup and expose an internal `$_data` variable 
 that can be used for any internal storage that's not part of model definition as specified inside of schema. 
@@ -484,14 +500,13 @@ This variable is not saved into the database. This can be used in combination wi
 
 ```js
 var userSchema = lounge.schema({
-  firstName: String,
-  lastName: String,
+  name: String,
   email: String
 });
 
 userSchema.method('init', function() {
   // store any logic stuff into $_data
-  this.$_data.initialEmal = this.email;
+  this.$_data.initialEmail = this.email;
   // later we can see if email was changed for example
 });
 ```
@@ -658,6 +673,11 @@ var user = new User({
     country: 'USA'
   })
 });
+
+user.posts.push(new BlogPost({
+  title: 'Post 2',
+  body: 'Some more text!'
+});
 ```
 
 You can manipulate and work with subdocument just like any model instances. When the top level document is saved
@@ -723,7 +743,64 @@ config option `alwaysReturnArrays` to `true`. Default is `false`.
 
 ### Population <a id="population"></a>
 
-Go deeper into population
+`findById` comes with a second options parameter that can have one property `populate` that can be used to dictate 
+if and how we want to get any embedded sub documents. If `populate` option is `true` all embedded subdocuments are
+retrieved from the database.
+ 
+From our "Embedded Documents" example, if we were to retrieve the user document created:
+
+```js
+User.findById(userId, {populate: true}, function(err, doc) {
+  console.log(user instanceof User); // true
+  console.log(user.address instanceof Address); // true
+  console.log(user.posts[0] instanceof BlogPost); // true
+  
+  console.log(user); // full user document with retrieved address and posts subdocuments
+});
+```
+
+We can specify a single field to populate:
+
+```js
+User.findById(userId, {populate: 'address'}, function(err, doc) {
+  console.log(user instanceof User); // true
+  console.log(user.address instanceof Address); // true
+  console.log(user.posts[0] instanceof BlogPost); // false posts is an array if string keys
+  console.log(user.posts[0] instanceof String); // true
+});
+```
+
+```js
+User.findById(userId, {populate: 'posts'}, function(err, doc) {
+  console.log(user instanceof User); // true
+  console.log(user.address instanceof Address); // false
+  console.log(user.posts[0] instanceof BlogPost); // true
+});
+```
+
+We can explicitly specify array indexes to populate
+
+```js
+User.findById(userId, {populate: 'posts.1'}, function(err, doc) {
+  console.log(user instanceof User); // true
+  console.log(user.address instanceof Address); // false
+  console.log(user.posts[0] instanceof BlogPost); // false
+  console.log(user.posts[0] instanceof String); // true
+  console.log(user.posts[1] instanceof BlogPost); // true - fully populated
+});
+```
+
+Finally, `populate` can accept an array if fields to populate:
+ 
+```js
+User.findById(userId, {populate: ['address', 'posts.1']}, function(err, doc) {
+  console.log(user instanceof User); // true
+  console.log(user.address instanceof Address); // true - fully populated
+  console.log(user.posts[0] instanceof BlogPost); // false
+  console.log(user.posts[0] instanceof String); // true
+  console.log(user.posts[1] instanceof BlogPost); // true - fully populated
+});
+```
 
 ### Removing Documents <a id="removing"></a>
 

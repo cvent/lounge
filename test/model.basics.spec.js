@@ -107,6 +107,11 @@ describe('Schema basics', function () {
     expect(user.dateOfBirth).to.be.ok;
     expect(user.dateOfBirth).to.be.an.instanceof(Date);
     expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+
+    // should not be able to change modelName property
+    expect(user.modelName).to.equal('User');
+    user.modelName = 'Foo';
+    expect(user.modelName).to.equal('User');
   });
 
   it('Should properly create a model with sub documents and arrays', function () {

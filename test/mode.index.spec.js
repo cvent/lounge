@@ -137,7 +137,6 @@ describe('Model index function tests', function () {
 
           user.username = 'jsmith2';
 
-          console.log('index');
           user.index(function (err) {
             expect(err).to.not.be.ok;
 
