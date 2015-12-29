@@ -446,13 +446,13 @@ We can also pass an object of function keys and function values, and they will a
 
 **init() method**
 
-There is a special `init` method that if specified in schema will be called at the end of model creation. You can do 
-additional setup here.
+There is a special `init` method that if specified in schema definition will be called at the end of model creation. 
+You can do additional setup here. This method is not passed in any arguments.
 
 **$_data variable**
 
 Since by default models are created using `strict` mode, Model instances setup and expose an internal `$_data` variable 
-that can be used to any internal storage that are not part of model definition as specified inside of scheme. 
+that can be used for any internal storage that's not part of model definition as specified inside of schema. 
 This variable is not saved into the database. This can be used in combination with `init` function:
 
 ```js
