@@ -917,7 +917,29 @@ var userSchema = lounge.schema({
 ```
 
 Saving a document defined with this schema will save user document with key `'user::5c4bfd6d-9c80-452b-be3a-3e528e4f53f5'`
-and will save a lookup document with key `''user::$_ref_by_email::joe@gmail.com'`.
+and will save a lookup document with key `''user::$_ref_by_email::joe@gmail.com'`. Setting `refIndexKeyPrefix` can add
+additional customization.
+
+```js
+{
+  keyPrefix: 'user::',
+  delimiter: '::',
+  refIndexKeyPrefix: 'lookup_by_'
+}
+```
+This will result in lookup document key `user::lookup_by_email::joe@gmail.com`.
+
+Indexes can also be arrays:
+
+```js
+var userSchema = lounge.schema({
+  name: String
+  usernames: [{type: String, index: true}]
+});
+```
+
+A lookup document will be generated for each value in the array. Index lookup properties have to be of type `String` or
+`Number`.
 
 Index lookup documents are automatically managed by lounge when documents are saved and removed using `save()` and
 `remove()` functions. You can also manually kick of this process by calling `index()` function on any model instance.
@@ -941,7 +963,7 @@ We can specify the index "name" by passing along "indexName". For example:
 ```js
 var userSchema = lounge.schema({
   name: String
-  usernames: [{type: String, index: true, indexName: 'username'}
+  usernames: [{type: String, index: true, indexName: 'username'}]
 });
 
 var User = lounge.model('User', userSchema);
