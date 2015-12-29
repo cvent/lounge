@@ -52,8 +52,9 @@ kitty.save(function (err) {
 
 * [Setup](#lounge)
 * [Modelling](#model)
-* [Embedded Documents](#embedded)
 * [Middleware](#middleware)
+* [Schema Inheritance](#schema-extend)
+* [Embedded Documents](#embedded)
 * [Population](#population)
 * [Indexes](#indexes)
 * [Queries](#queries)
@@ -198,6 +199,8 @@ console.log(user instanceof lounge.Document) // true
 
 ### Modelling <a id="model"></a>
 
+**Basics**
+
 We begin defining a data model using a schema.
 
 ```js
@@ -243,6 +246,8 @@ var catSchema = lounge.schema({
 
 catSchema.set('delimiter', '::');
 ```
+
+**Document keys**
 
 By defualt schemas come with an `id` property as the document key, and the uatomatically geenrated value will be
 a [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) 
@@ -326,24 +331,84 @@ user.save();
 This will automatically generate a uuid `id` property and save the user document under key 
 similar to `user::110ec58a-a0f2-4ac4-8393-c866d813b8d1`.
 
-* Getters
-* Setters
-* Validation
-* Virtuals
-* Statics
-* Methods
-* Indexes
-* Embedded documents
-* Schema inheritance
+**Data manipulation**
 
+Data in Model instances can be access directly or using `get` function. Similarly it can be manipulated using 
+either assignment operator or using the `set` function. In either case the input value is validated to be of proper type.
+ 
+```js
+var userSchema = lounge.schema({
+  name: String
+  friends: Number,
+  dob: Date,
+  setup: Boolean
+});
 
-### Embedded Documents <a id="embedded"></a>
+var User = lounge.model('User', userSchema);
+var user = new User({name: 'Bob Smith'});
 
-Go deeper into embedded documents
+user.get('name'); // 'Bob Smith'
+user.name = 'Joe'; // OK
+console.log(user.name); // 'Joe'
+user.set('friends', 20); // OK
+user.friends = 'abc'; // nope. still 20
+user.dob = new Date('July 5, 1980');
+user.get('dob'); // instance of Date
+user.set('setup', 'yup'); // nope
+user.setup = true; // OK
+```
+
+**Virtuals**
+
+Virtuals are document properties that you can get and set but that do not get persisted to teh database. 
+The getters are useful for formatting or combining fields, while setters are useful for de-composing a single value 
+into multiple values for storage.
+
+```js
+var userSchema = lounge.schema({
+  firstName: String, 
+  lastName: String
+});
+
+userSchema.virtual('fullName', {
+  get: function () {
+    return this.firstName + ' ' + this.lastName;
+  },
+  set: function (v) {
+    if (v !== undefined) {
+      var parts = v.split(' ');
+      this.firstName = parts[0];
+      this.lastName = parts[1];
+    }
+  }
+});
+
+var User = lounge.model('User', userSchema);
+var user = new User({firstName: 'Bob', lastName: 'Smith'});
+console.log(user.firstName); // Bob Smith
+```
+
+If no `set` function is defined the virtual is read-only.
+
+**Statics**
+
+Statics here.
+
+**Methods**
+
+Methods here
 
 ### Middleware <a id="middleware"></a>
 
 Go deeper into pre and post middleware
+
+### Schema Inheritance <a id="schema-extend"></a>
+
+Go deeper into pre and post middleware
+
+### Embedded Documents <a id="embedded"></a>
+
+Go deeper into embedded documents
 
 ### Population <a id="population"></a>
 
