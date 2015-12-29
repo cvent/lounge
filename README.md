@@ -34,7 +34,7 @@ kitty.save(function (err) {
 * Schema definition
 * Strict modelling based on schema
 * Schema inheritance
-* Automatic type and custom validation
+* Automatic type validation
 * Document upsert and removal
 * Embedded (referenced) documents
 * Automatic and manual population of embedded (referenced) document

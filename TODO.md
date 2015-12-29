@@ -1,6 +1,7 @@
 ### TODO 
 
 * README
+* Add custom type validation function support
 * Add `EventEmitter` interface and events for documents and actions (kinda there)
 * Add `EventEmitter` interface to Model constructor to catch events on all instances 
 * Add error events

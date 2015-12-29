@@ -1,3 +1,4 @@
+var validator = require('validator');
 var expect = require('chai').expect;
 var lounge = require('../lib');
 var Schema = lounge.Schema;
@@ -445,6 +446,33 @@ describe('Schema basics', function () {
     it('should get document key value in full in schema with assigned prefix when passed in expanded value', function () {
       val = userSchema3.getDocumentKeyValue('user::' + id3);
       expect(val).to.equal(id3);
+    });
+  });
+
+  // TODO Fix this
+  describe.skip('custom validate', function () {
+    it('should use custom validate function', function () {
+
+      function valEmail(input) {
+        return validator.isEmail(input);
+      }
+
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: {type: String, validate: valEmail}
+      });
+
+      var User = lounge.model('User', userSchema);
+      var user = new User();
+
+      user.email = 'joe@gmail.com';
+
+      expect(user.email).to.equal('joe@gmail.com');
+
+      user.email = 'jsmith';
+
+      expect(user.email).to.equal('joe@gmail.com');
     });
   });
 });
