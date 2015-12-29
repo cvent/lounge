@@ -450,14 +450,18 @@ describe('Schema basics', function () {
   });
 
   describe('init()', function () {
-    it('should call init function after if defined as a method as part of constction', function() {
+    beforeEach(function () {
+      lounge = new lounge.Lounge(); // recreate it
+    });
+
+    it('should call init function after if defined as a method as part of construction', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
         email: String
       });
 
-      userSchema.method('init', function() {
+      userSchema.method('init', function () {
         this.$_data.initialEmal = this.email;
       });
 
@@ -484,18 +488,16 @@ describe('Schema basics', function () {
     });
   });
 
-  // TODO Fix this
-  describe.skip('custom validate', function () {
+  describe('custom validate', function () {
+    beforeEach(function () {
+      lounge = new lounge.Lounge(); // recreate it
+    });
+
     it('should use custom validate function', function () {
-
-      function valEmail(input) {
-        return validator.isEmail(input);
-      }
-
-      var userSchema = lounge.schema({
+      var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        email: {type: String, validate: valEmail}
+        email: {type: String, validator: validator.isEmail}
       });
 
       var User = lounge.model('User', userSchema);
