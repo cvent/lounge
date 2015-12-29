@@ -19,8 +19,8 @@
     "name": "Bojan Djurkovic <dbojan@gmail.com>"
   },
   "scripts": {
-    "test": "COUCHBASE_MOCK=true mocha",
-    "cover": "COUCHBASE_MOCK=true nyc mocha"
+    "test": "LOUNGE_COUCHBASE_MOCK=true mocha",
+    "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha"
   },
   "dependencies": {
     "async": "^1.5.0",

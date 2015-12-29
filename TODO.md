@@ -4,7 +4,7 @@
 * Add `EventEmitter` interface and events for documents and actions (kinda there)
 * Add `EventEmitter` interface to Model constructor to catch events on all instances 
 * Add error events
-* Add `debug()` logging.
+* Add `debug()` logging and `debug` config option.
 * Add comments and documentation
 * Add GitHub Page
 * Fix `Schema` constructor so that it picks up confi values for the lounge object
@@ -17,4 +17,5 @@
 * Add db cas support to remove() somehow?
 * Add sample Express API application
 * Add promises?
+* Make model name case-insensitive?
 
