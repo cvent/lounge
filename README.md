@@ -476,6 +476,48 @@ We can also pass an object of function keys and function values, and they will a
 There is a special `init` method that if specified in schema definition will be called at the end of model creation. 
 You can do additional setup here. This method is not passed in any arguments.
 
+**toObject()**
+
+Model instances come with `toObject` function that is automatically used for `console.log` inspection. 
+
+Options:
+
+* `transform` - function used to transform an object once it's been converted to plain javascript representation from a
+model instance.
+* `minimize` - to "minimize" the document by removing any empty properties. Default: `true`
+* `virtuals` - to apply virtual getters
+
+These settings can be applied on any invocation of `toObject` as well they can be set at schema level.
+
+```js
+var userSchema = lounge.schema({
+  name: String,
+  email: String,
+  password: String
+});
+
+var xform = function (doc, ret, options) {
+  delete ret.password;
+  return ret;
+};
+
+userSchema.set('toObject', {transform: xform});
+
+var User = lounge.model('User', userSchema);
+
+var user = new User({
+  name: 'Joe',
+  email: 'joe@gmail.com',
+  password: 'password'
+});
+
+console.log(user); // { name: 'Joe', email: 'joe@gmail.com' }
+```
+
+**toJSON()**
+
+Similar to `toObject`. The return value of this method is used in calls to `JSON.stringify`.
+
 **Useful member variables**
 
 All model instances come with a `modelName` read only property that you can use to access the model name. As well
@@ -491,7 +533,7 @@ var User = lounge.model('User', userSchema);
 var user = new User({name: 'Bob Smith'});
 
 console.log(user.modelName); // 'User'
-console.log(user.schema isntanceof lounge.Schema); //true
+console.log(user.schema isntanceof lounge.Schema); // true
 ```
 
 Since by default models are created using `strict` mode, Model instances setup and expose an internal `$_data` variable 
@@ -690,11 +732,16 @@ Saving documents is done using `save` function that every model instance has. Th
 'save' middleware and then perform Couchbase `upsert` operation on any subdocuments and the actual document. It will also
 perform lookup document updates and finally execute any post hook middleware.
 
+From our example code above:
+
 ```js
 user.save(function(err, savedDoc) {
   if(err) console.log(err);
 });
 ```
+
+All documents and subdocuments would be upserted into the database.
+
 **Model.save(data, options, fn)**
 
 `data` - any data to be set into the model before saving.
@@ -743,9 +790,9 @@ config option `alwaysReturnArrays` to `true`. Default is `false`.
 
 ### Population <a id="population"></a>
 
-`findById` comes with a second options parameter that can have one property `populate` that can be used to dictate 
-if and how we want to get any embedded sub documents. If `populate` option is `true` all embedded subdocuments are
-retrieved from the database.
+`findById` comes with an options parameter that can have one property `populate` that can be used to dictate 
+if and how we want to get any embedded subdocuments from the database. If `populate` option is `true` all embedded 
+subdocuments are retrieved from the database.
  
 From our "Embedded Documents" example, if we were to retrieve the user document created:
 
@@ -765,8 +812,8 @@ We can specify a single field to populate:
 User.findById(userId, {populate: 'address'}, function(err, doc) {
   console.log(user instanceof User); // true
   console.log(user.address instanceof Address); // true
-  console.log(user.posts[0] instanceof BlogPost); // false posts is an array if string keys
-  console.log(user.posts[0] instanceof String); // true
+  console.log(user.posts[0] instanceof BlogPost); // false 
+  console.log(user.posts[0] instanceof String); // true - posts is an array of string keys
 });
 ```
 
