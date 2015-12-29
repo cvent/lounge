@@ -92,13 +92,14 @@ Default: `'$_ref_by_'`
 This is prepended to the reference document key.
 * `waitForIndex` - When documents are saved, indexes are updated. We can wait for this operation to finish before 
 returning from `save()`. Default: `false`
+* `minimize` - "minimize" schemas by removing empty objects. Default: `true`
 
 Any of these options, or additional variables can be manipulated using the `setOption` and `getOption` methods.
   
 ```js
 var lounge = require('lounge');
-lounge.setOption('delimiter', '::');
-console.log(lounge.getOption('delimiter');
+lounge.setOption('alwaysReturnArrays', true);
+console.log(lounge.getOption('alwaysReturnArrays');
 ```
 
 #### Lounge.connect(options, fn, mock)
@@ -129,7 +130,20 @@ Disconnect from the bucket. Deletes all defined models.
 #### Lounge.schema(descriptor, options)
 
 Creates a new `Schema` based on `descriptor` and `options`. Prefer this over the actual `Schema` constructor as this
-will pass lounge config variables to the `Schema` constructor automatically. Same options.
+will pass lounge config variables to the `Schema` constructor automatically. 
+
+Schema construction options:
+
+* `keyPrefix` - key prefix for all keys. No default. Generally useful if you wish to namespace documents. Example: `app::env::`.
+* `keySuffix` - Similar as prefix but used as a suffix
+* `refIndexKeyPrefix` - reference lookup index document key prefix. The name of the index is appended. Default: '$_ref_by_'
+* `delimiter` - delimiter string used for concatenation in reference document key expansion / generation.
+Default: '_'. This is prepended to the reference document key.
+*`minimize` - "minimize" schemas by removing empty objects. Default: `true`
+* `toObject` - toObject method options: `transform`, `virtuals` and `minimize`
+* `toJSON` - toJSON method options, similar to above
+* `strict` - ensures that value passed in ot assigned that were not specified in our schema do not get saved. Default: `true`
+
 
 #### Lounge.model(name, schema, options)
 
@@ -242,10 +256,10 @@ var catSchema = lounge.schema({
   name: { type: String }
   breed: String,
 }, {
-  keyPrefix: 'cat'
+  keyPrefix: 'cat::'
 });
 
-catSchema.set('delimiter', '::');
+catSchema.set('refIndexKeyPrefix', '::');
 ```
 
 **Document keys**
@@ -296,13 +310,12 @@ options specified in the second options parameter to the `schema()` call or any 
 
 ```js
 var lounge = require('lounge');
-lounge.setOption('delimiter', '::');
 
 // ... connect
 
 var userSchema = lounge.schema({
   name: String
-  email: { type: String, key: true, generate: false, prefix: 'user'}
+  email: { type: String, key: true, generate: false, prefix: 'user::'}
 });
 
 var User = lounge.model('User', userSchema);
@@ -314,14 +327,13 @@ This will save the user document under key `user::bsmith@acme.com`.
 
 ```js
 var lounge = require('lounge');
-lounge.setOption('delimiter', '::');
 
 // ... connect
 
 var userSchema = lounge.schema({
   name: String
 }, {
-  keyPrefix: 'user'
+  keyPrefix: 'user::'
 });
 
 var User = lounge.model('User', userSchema);
@@ -431,6 +443,31 @@ user.fullName(); // 'Bob Smith'
 ```
 
 We can also pass an object of function keys and function values, and they will all be added.
+
+**init() method**
+
+There is a special `init` method that if specified in schema will be called at the end of model creation. You can do 
+additional setup here.
+
+**$_data variable**
+
+Since by default models are created using `strict` mode, Model instances setup and expose an internal `$_data` variable 
+that can be used to any internal storage that are not part of model definition as specified inside of scheme. 
+This variable is not saved into the database. This can be used in combination with `init` function:
+
+```js
+var userSchema = lounge.schema({
+  firstName: String,
+  lastName: String,
+  email: String
+});
+
+userSchema.method('init', function() {
+  // store any logic stuff into $_data
+  this.$_data.initialEmal = this.email;
+  // later we can see if email was changed for example
+});
+```
 
 ### Middleware <a id="middleware"></a>
 
