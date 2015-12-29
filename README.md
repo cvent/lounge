@@ -198,16 +198,125 @@ console.log(user instanceof lounge.Document) // true
 
 ### Modelling <a id="model"></a>
 
-* Defining schema and model creation 
-* Options
-* Validation
+We begin defining a data model using a schema.
+
+```js
+var userSchema = lounge.schema({
+  firstName: String,
+  lastName: String,
+  age: Number,
+  usernames: [String],
+  setup: Boolean
+  metadata: {
+    createdAt: Date,
+    updatedAt: Date
+  }
+});
+```
+
+We can add additional properties using `add` function:
+
+```js
+userSchema.add('name', String);
+```
+
+Alternatively we can explicitly specify the type using `type` property:
+
+```js
+var catSchema = lounge.schema({
+  name: { type: String }
+  breed: String,
+});
+
+catSchema.add('age', {type: String});
+```
+
+Schema options can be set at construction or using the `set` function.
+ 
+```js
+var catSchema = lounge.schema({
+  name: { type: String }
+  breed: String,
+}, {
+  keyPrefix: 'cat'
+});
+
+catSchema.set('delimiter', '::');
+```
+
+By defualt schemas come with an `id` property as the document key, and the uatomatically geenrated value will be
+a [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) 
+using [node-uuid](https://www.npmjs.com/package/node-uuid) `v4()` function. This should be most practical and most
+appropriate in a lot of cases. Alternatively you can specify explicit key properties:
+
+```js
+var userSchema = lounge.schema({
+  firstName: String,
+  lastName: String,
+  email: { type: String, key: true, generate: false }
+});
+```
+
+Here we desire `email` to be used as the document key and we specify `generate: false` because we do not want Lounge
+to automatically handle key property value generation. If we still want uuid generation but in a different property 
+we can specify so:
+
+```js
+var userSchema = lounge.schema({
+  firstName: String,
+  lastName: String,
+  email: String,
+  userId: {type: String, key: true, generate: true }
+});
+```
+
+`generate` does not have to be set explicitly to `true` as that is the default.
+ 
+We can specify additional prefix and/or suffix for keys. This will be used when wrigin to the database as the actual
+document key.
+
+```js
+var userSchema = lounge.schema({
+  firstName: String,
+  lastName: String,
+  email: { type: String, key: true, generate: false, prefix: 'user'}
+});
+```
+
+Note that setting prefix and suffix options like this will take presidence over any `keyPrefix` and `keySuffix` 
+options specified in the second options parameter to the `schema()` call or any settings in the lounge config.
+
+**Example**
+
+```js
+var lounge = require('lounge');
+// ... connect
+lounge.set('delimiter', '::');
+
+var userSchema = lounge.schema({
+  name: String
+  email: { type: String, key: true, generate: false, prefix: 'user'}
+});
+
+var User = lounge.model('User', userSchema);
+var user = new User({name: 'Bob Smith', email: 'bsmith@acme.com'});
+user.save();
+```
+
+This will save the user document under key `user::bsmith@acme.com`.
+
+* Defining schema and model creation
 * Key
+* Validation
+* Virtuals
 * Getters
 * Setters
-* Indexes
-* Embedded documents
 * Statics
 * Methods
+* Indexes
+* Embedded documents
+* Schema inheritance
+
 
 ### Embedded Documents <a id="embedded"></a>
 
