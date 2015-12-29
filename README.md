@@ -9,6 +9,7 @@ Simple Mongoose-inspired ODM for [Couchbase](http://www.couchbase.com).
 ## Stability
 
 This module is under development and there could be bugs. API may not be 100% locked down. 
+Documentation is still work in progress.
 
 ## Overview
 
@@ -639,7 +640,7 @@ var user = new User({
 ```
 
 You can manipulate and work with subdocument just like any model instances. When the top level document is saved
-all child sub-documents are saved as well. Subdocuments must if an instance of the Model defined in the schema or a 
+all child sub-documents are saved as well. Subdocuments **must** be an instance of the Model defined in the schema or a 
 `String` in which case it represents the key / id of the subdocument.
 
 ### Saving Documents <a id="saving"></a>
@@ -672,7 +673,7 @@ Go deeper into events
 
 ## TODO
 
-TODO
+See [TODO.md](https://github.com/bojand/lounge/blob/v1/TODO.md).
 
 ## Credits
 
