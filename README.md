@@ -88,7 +88,8 @@ Example: `app::env::`.
 a single key is passed in. Default: `false`
 * `refIndexKeyPrefix` - reference lookup index document key prefix. The name of the index is appended to this.
 Default: `'$_ref_by_'`
-* `delimiter` - delimiter string used for concatenation in key expansion / generation. default: `'_'`
+* `delimiter` - delimiter string used for concatenation in reference document key expansion / generation. default: `'_'` 
+This is prepended to the reference document key.
 * `waitForIndex` - When documents are saved, indexes are updated. We can wait for this operation to finish before 
 returning from `save()`. Default: `false`
 

@@ -142,7 +142,6 @@ describe('Schema basics', function () {
       }
     });
 
-
     expect(user instanceof User).to.be.ok;
     expect(user instanceof lounge.Document).to.be.ok;
     expect(user instanceof lounge.Model).to.be.ok;

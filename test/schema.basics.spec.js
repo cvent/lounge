@@ -449,6 +449,41 @@ describe('Schema basics', function () {
     });
   });
 
+  describe('init()', function () {
+    it('should call init function after if defined as a method as part of constction', function() {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String
+      });
+
+      userSchema.method('init', function() {
+        this.$_data.initialEmal = this.email;
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      expect(User.init).to.not.be.ok;
+
+      var user = new User({
+        firstName: 'Bob',
+        lastName: 'Smith',
+        email: 'bsmith@gmail.com'
+      });
+
+      expect(user.init).to.be.ok;
+      expect(user.init).to.be.instanceof(Function);
+      expect(user.$_data).to.be.ok;
+      expect(user.$_data).to.be.an('object');
+      expect(user.$_data.initialEmal).to.equal('bsmith@gmail.com');
+
+      user.email = 'bobsmith@gmail.com';
+
+      expect(user.email).to.equal('bobsmith@gmail.com');
+      expect(user.$_data.initialEmal).to.equal('bsmith@gmail.com');
+    });
+  });
+
   // TODO Fix this
   describe.skip('custom validate', function () {
     it('should use custom validate function', function () {

@@ -12,6 +12,7 @@
 * Add config option to specify `Date` format for saving.
 * More tests and improve coverage. For example tests for different configs and more fail tests.
 * Add init and `isNew`?
+* Optimize
 * Change from `hooks-fixed` to `Kareem` (Doesn't seem practical)?
 * Fix transforms for inline options?
 * Add db cas support to save() somehow?
