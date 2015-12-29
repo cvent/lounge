@@ -286,7 +286,7 @@ var userSchema = lounge.schema({
 Note that setting prefix and suffix options like this will take presidence over any `keyPrefix` and `keySuffix` 
 options specified in the second options parameter to the `schema()` call or any settings in the lounge config.
 
-**Example**
+**Examples**
 
 ```js
 var lounge = require('lounge');
@@ -305,12 +305,29 @@ user.save();
 
 This will save the user document under key `user::bsmith@acme.com`.
 
-* Defining schema and model creation
-* Key
-* Validation
-* Virtuals
+```js
+var lounge = require('lounge');
+// ... connect
+lounge.set('delimiter', '::');
+
+var userSchema = lounge.schema({
+  name: String
+}, {
+  keyPrefix: 'user'
+});
+
+var User = lounge.model('User', userSchema);
+var user = new User({name: 'Bob Smith'});
+user.save();
+```
+
+This will automatically generate a uuid `id` property and save the user document under key 
+similar to `user::110ec58a-a0f2-4ac4-8393-c866d813b8d1`.
+
 * Getters
 * Setters
+* Validation
+* Virtuals
 * Statics
 * Methods
 * Indexes
