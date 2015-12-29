@@ -33,7 +33,7 @@ kitty.save(function (err) {
 
 * Schema definition
 * Strict modelling based on schema
-* Schema inheritance
+* Schema extension
 * Automatic type validation
 * Document upsert and removal
 * Embedded (referenced) documents
@@ -53,7 +53,7 @@ kitty.save(function (err) {
 * [Setup](#lounge)
 * [Modelling](#model)
 * [Middleware](#middleware)
-* [Schema Inheritance](#schema-extend)
+* [Schema Extension](#schema-extend)
 * [Embedded Documents](#embedded)
 * [Population](#population)
 * [Indexes](#indexes)
@@ -473,9 +473,9 @@ userSchema.method('init', function() {
 
 Go deeper into pre and post middleware
 
-### Schema Inheritance <a id="schema-extend"></a>
+### Schema Extension <a id="schema-extend"></a>
 
-Go deeper into schema inheritance
+Go deeper into schema extension
 
 ### Embedded Documents <a id="embedded"></a>
 
