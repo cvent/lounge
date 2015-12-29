@@ -110,6 +110,7 @@ describe('Schema extend tests', function () {
   it('should be able to create an object with extended schema properties and respect base and our hooks', function (done) {
     var baseSchema = lounge.schema({
       metadata: {
+        doc_type: String,
         createdAt: Date,
         updatedAt: Date
       }
@@ -125,6 +126,7 @@ describe('Schema extend tests', function () {
       }
 
       this.metadata.updatedAt = new Date();
+      this.metadata.doc_type = this.modelName.toLowerCase();
 
       next();
     });
@@ -240,9 +242,9 @@ describe('Schema extend tests', function () {
       lastName: String,
       email: String,
       dateOfBirth: Date,
-      profile : {
-        email : String,
-        age : Number
+      profile: {
+        email: String,
+        age: Number
       }
     });
 
