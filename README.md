@@ -404,7 +404,7 @@ Go deeper into pre and post middleware
 
 ### Schema Inheritance <a id="schema-extend"></a>
 
-Go deeper into pre and post middleware
+Go deeper into schema inheritance
 
 ### Embedded Documents <a id="embedded"></a>
 
