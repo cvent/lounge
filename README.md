@@ -290,8 +290,9 @@ options specified in the second options parameter to the `schema()` call or any 
 
 ```js
 var lounge = require('lounge');
-// ... connect
 lounge.setOption('delimiter', '::');
+
+// ... connect
 
 var userSchema = lounge.schema({
   name: String
@@ -307,8 +308,9 @@ This will save the user document under key `user::bsmith@acme.com`.
 
 ```js
 var lounge = require('lounge');
-// ... connect
 lounge.setOption('delimiter', '::');
+
+// ... connect
 
 var userSchema = lounge.schema({
   name: String
