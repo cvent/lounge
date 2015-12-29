@@ -392,11 +392,44 @@ If no `set` function is defined the virtual is read-only.
 
 **Statics**
 
-Statics here.
+Adding static methods to Models can be accomplished using `static()` schema function
+
+```js
+var userSchema = lounge.schema({
+  firstName: String, 
+  lastName: String
+});
+
+userSchema.static('foo', function(p, q) {
+  return p + q;
+});
+
+var User = lounge.model('User', userSchema);
+User.foo(1, 2); // 3
+```
+
+We can also pass an object of function keys and function values, and they will all be added.
 
 **Methods**
 
-Methods here
+Similarly adding instance methods to Models can be done using `method()` schema function. 
+
+```js
+var userSchema = lounge.schema({
+  firstName: String, 
+  lastName: String
+});
+
+userSchema.method('fullName', function() {
+  return this.firstName + ' ' + this.lastName;
+});
+
+var User = lounge.model('User', userSchema);
+var user = new User({firstName: 'Bob', lastName: 'Smith'});
+user.fullName(); // 'Bob Smith'
+```
+
+We can also pass an object of function keys and function values, and they will all be added.
 
 ### Middleware <a id="middleware"></a>
 
