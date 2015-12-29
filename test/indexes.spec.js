@@ -53,11 +53,11 @@ describe('Model index tests', function () {
       expect(user.$_o.refValues).to.deep.equal(expected)
     });
 
-    it('should create index values for array', function () {
+    it('should create index values for array and automatically singularize', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        usernames: [{type: String, index: true, indexName: 'username'}]
+        usernames: [{type: String, index: true}]
       });
 
       var User = lounge.model('User', userSchema);
@@ -76,6 +76,35 @@ describe('Model index tests', function () {
           path: 'usernames',
           value: ['user1', 'user2'],
           name: 'username'
+        }
+      };
+
+      expect(user.$_o.refValues).to.deep.equal(expected)
+    });
+
+    it('should create index values for array and  respect indexName', function () {
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        usernames: [{type: String, index: true, indexName: 'UN'}]
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      expect(User.findByUN).to.be.ok;
+      expect(User.findByUN).to.be.an.instanceof(Function);
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        usernames: ['user1', 'user2']
+      });
+
+      var expected = {
+        'UN': {
+          path: 'usernames',
+          value: ['user1', 'user2'],
+          name: 'UN'
         }
       };
 

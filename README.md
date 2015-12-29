@@ -958,17 +958,18 @@ User.findByEmail('joe@gmail.com', function(err, doc) {
 });
 ```
 
+We automatically singularize and camelize property key to derive inde name. So `usernames` becomes `findByUsername`.
 We can specify the index "name" by passing along "indexName". For example:
 
 ```js
 var userSchema = lounge.schema({
   name: String
-  usernames: [{type: String, index: true, indexName: 'username'}]
+  usernames: [{type: String, index: true, indexName: 'UN'}]
 });
 
 var User = lounge.model('User', userSchema);
 
-User.findByUsername('user1', function(err, doc) {
+User.findByUN('user1', function(err, doc) {
   if(err) console.log(err);
   else console.log(doc);
 });

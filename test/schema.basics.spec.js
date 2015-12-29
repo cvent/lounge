@@ -320,7 +320,7 @@ describe('Schema basics', function () {
       var expected = {
         posts: {
           path: 'posts',
-          name: 'posts'
+          name: 'post'
         }
       };
 
