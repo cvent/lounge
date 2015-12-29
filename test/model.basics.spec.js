@@ -314,7 +314,7 @@ describe('Schema basics', function () {
       b: 'b3'
     }));
 
-    user.foos.forEach(function(f, i) {
+    user.foos.forEach(function (f, i) {
       expect(f.a).to.equal(foos1[i].a);
       expect(f.b).to.equal(foos1[i].b);
     });
@@ -332,9 +332,239 @@ describe('Schema basics', function () {
 
     user.foos = foos2;
 
-    user.foos.forEach(function(f, i) {
+    user.foos.forEach(function (f, i) {
       expect(f.a).to.equal(foos2[i].a);
       expect(f.b).to.equal(foos2[i].b);
     });
+  });
+
+  describe('Nested properties tests', function () {
+    it('Should properly get and set nested properties', function () {
+      var userSchema = lounge.schema({
+        name: String,
+        profile: {
+          email: String,
+          age: Number
+        }
+      });
+
+      var User = lounge.model('User', userSchema);
+      var user = new User({
+        name: 'Bob Smith'
+      });
+
+      expect(user.name).to.equal(user.name);
+      expect(user.profile).to.deep.equal({email: undefined, age: undefined});
+
+      // this should work
+      user.set('profile', {
+        email: 'bsmith5@gmail.com',
+        age: 25
+      });
+
+      expect(user.profile.email).to.equal('bsmith5@gmail.com');
+      expect(user.profile.age).to.equal(25);
+
+      user.profile.email = 'bsmith@gmail.com';
+      user.profile.age = 20;
+
+      expect(user.profile.email).to.equal('bsmith@gmail.com');
+      expect(user.profile.age).to.equal(20);
+
+      // this doesn't work
+      user.profile = {
+        email: 'bsmith2@gmail.com',
+        age: 22,
+        foo: 'bar'
+      };
+
+      expect(user.profile).to.deep.equal({
+        email: 'bsmith@gmail.com',
+        age: 20
+      });
+
+      user.profile.email = 123;
+
+      expect(user.profile).to.deep.equal({
+        email: 'bsmith@gmail.com',
+        age: 20
+      });
+
+      // this should work
+      user.set('profile', {
+        email: 'bsmith3@gmail.com',
+        age: 23
+      });
+
+      expect(user.profile).to.deep.equal({
+        email: 'bsmith3@gmail.com',
+        age: 23
+      });
+
+      user.profile.set({
+        email: 'bsmith3@gmail.com',
+        age: 23
+      });
+
+      expect(user.profile).to.deep.equal({
+        email: 'bsmith3@gmail.com',
+        age: 23
+      });
+    });
+
+    it('Should properly get and set nested properties 2', function () {
+      var userSchema = lounge.schema({
+        name: String,
+        profile: {
+          email: String,
+          age: Number
+        }
+      });
+
+      var User = lounge.model('User', userSchema);
+      var user = new User({
+        name: 'Bob Smith',
+        profile: {
+          email: 'bsmith2@gmail.com',
+          age: 22
+        }
+      });
+
+      expect(user.name).to.equal(user.name);
+      expect(user.profile).to.deep.equal({email: 'bsmith2@gmail.com', age: 22});
+
+      user.profile.set({
+        email: 'bsmith@gmail.com',
+        age: 20,
+        foo: 'bar'
+      });
+
+      expect(user.profile).to.deep.equal({
+        email: 'bsmith@gmail.com',
+        age: 20
+      });
+
+      user.profile.email = 123;
+
+      expect(user.profile).to.deep.equal({
+        email: 'bsmith@gmail.com',
+        age: 20
+      });
+    });
+
+    it('Should properly work with object in an array', function () {
+      var userSchema = lounge.schema({
+        name: String,
+        profiles: [{
+          email: String,
+          age: Number
+        }]
+      });
+
+      var User = lounge.model('User', userSchema);
+      var user = new User({
+        name: 'Bob Smith'
+      });
+
+      expect(user.name).to.equal(user.name);
+      expect(user.profiles).to.deep.equal([]);
+
+      user.profiles.push({
+        email: 'bsmith@gmail.com',
+        age: 20
+      });
+
+      expect(user.profiles).to.deep.equal([{email: 'bsmith@gmail.com', age: 20}]);
+
+      user.profiles = [
+        {
+          email: 'bsmith2@gmail.com',
+          age: 21
+        },
+        {
+          email: 'bsmith3@gmail.com',
+          age: 22
+        }
+      ];
+
+      expect(user.profiles).to.deep.equal([
+        {
+          email: 'bsmith2@gmail.com',
+          age: 21
+        },
+        {
+          email: 'bsmith3@gmail.com',
+          age: 22
+        }
+      ]);
+    });
+
+    it('Should properly work with basic types in an array', function () {
+      var userSchema = lounge.schema({
+        name: String,
+        usernames: [String]
+      });
+
+      var User = lounge.model('User', userSchema);
+      var user = new User({
+        name: 'Bob Smith'
+      });
+
+      expect(user.name).to.equal(user.name);
+      expect(user.usernames).to.deep.equal([]);
+
+      // should not work
+      user.usernames.push({
+        email: 'bsmith@gmail.com',
+        age: 20
+      });
+
+      expect(user.usernames).to.deep.equal([]);
+
+      user.usernames.push('user1');
+
+      expect(user.usernames).to.deep.equal(['user1']);
+
+      // should not work
+      user.usernames = [
+        {
+          email: 'bsmith2@gmail.com',
+          age: 21
+        },
+        {
+          email: 'bsmith3@gmail.com',
+          age: 22
+        }
+      ];
+
+      expect(user.usernames).to.deep.equal(['user1']);
+
+      // should not work
+      user.usernames.set([
+        {
+          email: 'bsmith2@gmail.com',
+          age: 21
+        },
+        {
+          email: 'bsmith3@gmail.com',
+          age: 22
+        }
+      ]);
+
+      expect(user.usernames).to.deep.equal(['user1']);
+
+      user.usernames.set(['user2', 'user3']);
+
+      expect(user.usernames).to.deep.equal(['user2', 'user3']);
+
+      user.usernames = ['user4', 'user5', 'user6'];
+
+      expect(user.usernames).to.deep.equal(['user4', 'user5', 'user6']);
+
+      // should not work
+      user.usernames = ['user7', 'user8', true, 'user8'];
+
+      expect(user.usernames).to.deep.equal(['user4', 'user5', 'user6']);
+    })
   });
 });
