@@ -376,7 +376,7 @@ describe('Model save tests', function () {
       title: String,
       content: String,
       date: Date,
-      owner: {type: User, ref: 'User'}
+      owner: User
     });
 
     var Post = lounge.model('Post', postSchema);
@@ -471,7 +471,7 @@ describe('Model save tests', function () {
       title: String,
       content: String,
       date: Date,
-      owner: {type: User, ref: 'User'}
+      owner: {type: User}
     });
 
     var Post = lounge.model('Post', postSchema);
@@ -565,7 +565,7 @@ describe('Model save tests', function () {
       title: String,
       content: String,
       date: Date,
-      comments: [{type: Comment, ref: 'Comment'}]
+      comments: [Comment]
     });
 
     var Post = lounge.model('Post', postSchema);
@@ -702,7 +702,7 @@ describe('Model save tests', function () {
       title: String,
       content: String,
       date: Date,
-      owner: {type: User, ref: 'User'}
+      owner: User
     });
 
     var Post = lounge.model('Post', postSchema);
@@ -816,7 +816,7 @@ describe('Model save tests', function () {
     var commentSchema = lounge.schema({
       content: String,
       date: Date,
-      owner: {type: User, ref: 'User'}
+      owner: User
     });
 
     var Comment = lounge.model('Comment', commentSchema);
@@ -825,8 +825,8 @@ describe('Model save tests', function () {
       title: String,
       content: String,
       date: Date,
-      owner: {type: User, ref: 'User'},
-      comments: [{type: Comment, ref: 'Comment'}]
+      owner: User,
+      comments: [Comment]
     });
 
     var Post = lounge.model('Post', postSchema);

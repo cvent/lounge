@@ -44,14 +44,14 @@ describe('Model populate tests', function () {
           lastName: String,
           email: {type: String, key: true, generate: false},
           dateOfBirth: Date,
-          company: {type: Company, ref: 'Company'}
+          company: Company
         });
 
         User = lounge.model('User', userSchema);
 
         var commentSchema = lounge.schema({
           body: String,
-          user: {type: User, ref: 'User'}
+          user: User
         });
 
         Comment = lounge.model('Comment', commentSchema);
@@ -59,7 +59,7 @@ describe('Model populate tests', function () {
         var postSchema = lounge.schema({
           title: String,
           body: String,
-          comments: [{type: Comment, ref: 'Comment'}]
+          comments: [Comment]
         });
 
         Post = lounge.model('Post', postSchema);
