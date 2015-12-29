@@ -1,6 +1,7 @@
 ### TODO 
 
 * README
+* Fix subdoc getting and setting. See TODO note in document.js
 * Add custom type validation function support
 * Add `EventEmitter` interface and events for documents and actions (kinda done)
 * Add `EventEmitter` interface to Model constructor to catch events on all instances 

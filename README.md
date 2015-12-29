@@ -267,7 +267,7 @@ catSchema.set('refIndexKeyPrefix', '::');
 
 **Document keys**
 
-By defualt schemas come with an `id` property as the document key, and the uatomatically geenrated value will be
+By defualt schemas come with an `id` property as the document key, and the automatically generated value will be
 a [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) 
 using [node-uuid](https://www.npmjs.com/package/node-uuid) `v4()` function. This should be most practical and most
 appropriate in a lot of cases. Alternatively you can specify explicit key properties:
@@ -524,7 +524,71 @@ doc.save(function(err, savedDoc) {
 
 ### Schema Extension <a id="schema-extend"></a>
 
-Go deeper into schema extension
+It is useful to have a common base schema, that all other schemas / models would extend or "inherit" properties from.
+This can be accomplished by either using the `Schema.extend` function. When performed all property definitions, virtuals,
+methods, statics, and middleware that are present in the base schema **but not** present in destination schema are copied 
+into the destination schema.
+
+```js
+ var baseSchema = lounge.schema({
+  metadata: {
+    createdAt: Date,
+    updatedAt: Date
+  }
+});
+
+baseSchema.pre('save', function (next) {
+  if (!this.metadata) {
+    this.metadata = {};
+  }
+
+  var now = new Date();
+
+  if (!this.metadata.createdAt) {
+    this.metadata.createdAt = now;
+  }
+
+  this.metadata.updatedAt = now;
+
+  next();
+});
+
+baseSchema.method('baseFoo', function () {
+  console.log('base foo');
+});
+
+var userSchema = lounge.schema({
+  name: String,
+  email: String,
+});
+
+userSchema.pre('save', function (next) {
+  if (this.email) {
+    this.email = this.email.toLowerCase();
+  }
+
+  next();
+});
+
+userSchema.method('userFoo', function () {
+  console.log('user foo');
+});
+
+userSchema.extend(baseSchema);
+var User = lounge.model('User', userSchema);
+
+user = new User({
+  name: 'Bob Smith',
+  email: 'bsmith@gmail.com'
+});
+
+user.baseFoo() // prints 'base foo'
+user.userFoo() // prints 'user foo'
+
+user.save(function(err, savedDoc) {
+  console.log(user.metadata.updatedAt); // Sat Dec 29 2015 03:30:00 GMT-0400 (AST)
+});
+```
 
 ### Embedded Documents <a id="embedded"></a>
 

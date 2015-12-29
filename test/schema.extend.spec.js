@@ -239,7 +239,11 @@ describe('Schema extend tests', function () {
       firstName: String,
       lastName: String,
       email: String,
-      dateOfBirth: Date
+      dateOfBirth: Date,
+      profile : {
+        email : String,
+        age : Number
+      }
     });
 
     userSchema.pre('save', function (next) {
