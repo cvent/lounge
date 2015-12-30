@@ -18,7 +18,10 @@ to provide modeling tool framework for working with Couchbase databases in an as
 
 ```js
 var lounge = require('lounge');
-lounge.connect('couchbase://127.0.0.1');
+lounge.connect({ 
+  connectionString: 'couchbase://127.0.0.1',
+  bucket: 'lounge_test'
+});
 
 var schema = lounge.schema({ name: String });
 var Cat = lounge.model('Cat', schema);
@@ -124,7 +127,10 @@ or the actual, already connected, Couchbase `bucket` instance.
 
 ```js
 var lounge = require('lounge');
-var bucket = lounge.connect('couchbase://127.0.0.1', function(err, bucket) {
+var bucket = lounge.connect({ 
+  connectionString: 'couchbase://127.0.0.1',
+  bucket: 'lounge_test'
+}, function(err, bucket) {
   // ... connected
 });
 ```
