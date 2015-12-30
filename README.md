@@ -145,7 +145,7 @@ Schema construction options:
 * `refIndexKeyPrefix` - reference lookup index document key prefix. The name of the index is appended. Default: '$_ref_by_'
 * `delimiter` - delimiter string used for concatenation in reference document key expansion / generation.
 Default: '_'. This is prepended to the reference document key.
-*`minimize` - "minimize" schemas by removing empty objects. Default: `true`
+* `minimize` - "minimize" schemas by removing empty objects. Default: `true`
 * `toObject` - toObject method options: `transform`, `virtuals` and `minimize`
 * `toJSON` - toJSON method options, similar to above
 * `strict` - ensures that value passed in ot assigned that were not specified in our schema do not get saved. Default: `true`
