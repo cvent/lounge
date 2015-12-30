@@ -562,6 +562,18 @@ model instance.</li>
 
 <p>Similar to <code>toObject</code>. The return value of this method is used in calls to <code>JSON.stringify</code>.</p>
 
+<p><strong>CAS</strong></p>
+
+<p>All document instances have a read-only property <code>cas</code> that returns the string representation of the CAS object retrieved
+from the database. The <code>cas</code> property is initialized only once a document has been retrieved from the database using one
+of query functions, or once it has been saved. Alternatively we can use the method <code>getCAS(raw)</code> to get the cas value.
+If <code>raw</code> is <code>true</code> then we return the raw CAS object. Otherwise we return string representation. This can be useful
+for computation of ETag values for example.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">doc</span>.<span class="pl-smi">cas</span>); <span class="pl-c">// String: 00000000a71626e4</span>
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">doc</span>.<span class="pl-en">getCAS</span>()); <span class="pl-c">// String: 00000000a71626e4</span>
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">doc</span>.<span class="pl-en">getCAS</span>(<span class="pl-c1">true</span>)); <span class="pl-c">// Object: CouchbaseCas&lt;11338961768815788032&gt;</span></pre></div>
+
 <p><strong>Useful member variables</strong></p>
 
 <p>All model instances come with a <code>modelName</code> read only property that you can use to access the model name. As well
