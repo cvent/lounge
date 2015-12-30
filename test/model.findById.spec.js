@@ -1,5 +1,6 @@
 var couchbase = require('couchbase');
 var _ = require('lodash');
+var testUtil = require('./helpers/utils');
 var expect = require('chai').expect;
 var ts = require('./helpers/findbyid_setup');
 
@@ -17,7 +18,7 @@ describe('Model findById tests', function () {
 
     lounge = new lounge.Lounge(); // recreate it
 
-    var cluster = new couchbase.Mock.Cluster('couchbase://127.0.0.1');
+    var cluster = testUtil.getCluser();
     bucket = cluster.openBucket('lounge_test', function (err) {
       lounge.connect({
         bucket: bucket
@@ -26,7 +27,12 @@ describe('Model findById tests', function () {
           return done(err);
         }
 
-        ts.setup(bucket, done);
+        bucket.manager().flush(function (err) {
+          if (err) {
+            return done(err);
+          }
+          ts.setup(bucket, done);
+        });
       });
     });
   });
@@ -70,7 +76,7 @@ describe('Model findById tests', function () {
         expect(cas1).to.be.a('string');
 
         var cas2 = rdoc.getCAS(true);
-        expect(cas2).to.be.an('object');
+        expect(cas2).to.be.instanceof(Object);
 
         var cas3 = rdoc.cas;
         expect(cas3).to.be.a('string');
@@ -113,7 +119,7 @@ describe('Model findById tests', function () {
           expect(cas1).to.be.a('string');
 
           var cas2 = au.getCAS(true);
-          expect(cas2).to.be.an('object');
+          expect(cas2).to.be.instanceof(Object);
 
           var cas3 = au.cas;
           expect(cas3).to.be.a('string');
@@ -162,7 +168,7 @@ describe('Model findById tests', function () {
           expect(cas1).to.be.a('string');
 
           var cas2 = au.getCAS(true);
-          expect(cas2).to.be.an('object');
+          expect(cas2).to.be.instanceof(Object);
 
           var cas3 = au.cas;
           expect(cas3).to.be.a('string');
@@ -215,7 +221,7 @@ describe('Model findById tests', function () {
         expect(cas1).to.be.a('string');
 
         var cas2 = rdoc.getCAS(true);
-        expect(cas2).to.be.an('object');
+        expect(cas2).to.be.instanceof(Object);
 
         var cas3 = rdoc.cas;
         expect(cas3).to.be.a('string');
@@ -266,7 +272,7 @@ describe('Model findById tests', function () {
           expect(cas1).to.be.a('string');
 
           var cas2 = rdoc.getCAS(true);
-          expect(cas2).to.be.an('object');
+          expect(cas2).to.be.instanceof(Object);
 
           var cas3 = rdoc.cas;
           expect(cas3).to.be.a('string');
@@ -324,7 +330,7 @@ describe('Model findById tests', function () {
           expect(cas1).to.be.a('string');
 
           var cas2 = rdoc.getCAS(true);
-          expect(cas2).to.be.an('object');
+          expect(cas2).to.be.instanceof(Object);
 
           var cas3 = rdoc.cas;
           expect(cas3).to.be.a('string');

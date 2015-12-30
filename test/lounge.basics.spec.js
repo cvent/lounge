@@ -1,4 +1,5 @@
 var expect = require('chai').expect;
+var testUtil = require('./helpers/utils');
 var lounge = require('../lib');
 
 describe('Lounge basics', function () {
@@ -25,8 +26,10 @@ describe('Lounge basics', function () {
 
   describe('connect()', function () {
     it('should connect ok given a connection string and bucket name', function (done) {
+      lounge.disconnect();
+
       lounge.connect({
-        connectionString: 'couchbase://10.4.4.1',
+        connectionString: 'couchbase://127.0.0.1',
         bucket: 'lounge_test'
       }, function (err) {
         expect(err).to.not.be.ok;

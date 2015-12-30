@@ -158,12 +158,14 @@ exports.setup = function (bucket, fn) {
 
   async.eachSeries(Object.keys(exports.data), function (key, easCb) {
     var objData = exports.data[key];
-    async.each(objData, function (obj, eaCb) {
+    async.eachSeries(objData, function (obj, eaCb) {
       var docId = obj[keymapping[key]] || obj.id || uuid.v4();
-      if(key === 'companies') {
+      if (key === 'companies') {
         // companies we save with prefix
         docId = 'company::'.concat(docId);
       }
+
+      // console.log('upsert %s', docId);
       bucket.upsert(docId, obj, eaCb);
     }, easCb);
   }, fn);

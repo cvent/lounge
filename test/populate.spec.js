@@ -1,4 +1,5 @@
 var couchbase = require('couchbase');
+var testUtil = require('./helpers/utils');
 var _ = require('lodash');
 var expect = require('chai').expect;
 var ts = require('./helpers/pop_setup');
@@ -10,6 +11,12 @@ var bucket;
 var User, Company, Post, Comment;
 
 describe('Model populate tests', function () {
+
+  beforeEach(function (done) {
+    var t = process.env.LOUNGE_COUCHBASE_MOCK ? 10 : 100;
+    setTimeout(done, t);
+  });
+
   before(function (done) {
     if (lounge) {
       lounge.disconnect();
@@ -17,8 +24,9 @@ describe('Model populate tests', function () {
 
     lounge = new lounge.Lounge(); // recreate it
 
-    var cluster = new couchbase.Mock.Cluster('couchbase://127.0.0.1');
+    var cluster = testUtil.getCluser();
     bucket = cluster.openBucket('lounge_test', function (err) {
+      if (err) return done(err);
       lounge.connect({
         bucket: bucket
       }, function (err) {
@@ -26,45 +34,52 @@ describe('Model populate tests', function () {
           return done(err);
         }
 
-        var companySchema = lounge.schema({
-          id: {type: String, key: true, generate: true, prefix: 'company::'},
-          name: String,
-          streetAddress: String,
-          city: String,
-          country: String,
-          state: String,
-          postalCode: String,
-          founded: Date
+
+        bucket.manager().flush(function(err) {
+          if (err) {
+            return done(err);
+          }
+
+          var companySchema = lounge.schema({
+            id: {type: String, key: true, generate: true, prefix: 'company::'},
+            name: String,
+            streetAddress: String,
+            city: String,
+            country: String,
+            state: String,
+            postalCode: String,
+            founded: Date
+          });
+
+          Company = lounge.model('Company', companySchema);
+
+          var userSchema = lounge.schema({
+            firstName: String,
+            lastName: String,
+            email: {type: String, key: true, generate: false},
+            dateOfBirth: Date,
+            company: Company
+          });
+
+          User = lounge.model('User', userSchema);
+
+          var commentSchema = lounge.schema({
+            body: String,
+            user: User
+          });
+
+          Comment = lounge.model('Comment', commentSchema);
+
+          var postSchema = lounge.schema({
+            title: String,
+            body: String,
+            comments: [Comment]
+          });
+
+          Post = lounge.model('Post', postSchema);
+
+          ts.setup(bucket, done);
         });
-
-        Company = lounge.model('Company', companySchema);
-
-        var userSchema = lounge.schema({
-          firstName: String,
-          lastName: String,
-          email: {type: String, key: true, generate: false},
-          dateOfBirth: Date,
-          company: Company
-        });
-
-        User = lounge.model('User', userSchema);
-
-        var commentSchema = lounge.schema({
-          body: String,
-          user: User
-        });
-
-        Comment = lounge.model('Comment', commentSchema);
-
-        var postSchema = lounge.schema({
-          title: String,
-          body: String,
-          comments: [Comment]
-        });
-
-        Post = lounge.model('Post', postSchema);
-
-        ts.setup(bucket, done);
       });
     });
   });

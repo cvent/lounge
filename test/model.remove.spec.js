@@ -1,4 +1,5 @@
 var couchbase = require('couchbase');
+var testUtil = require('./helpers/utils');
 var _ = require('lodash');
 var async = require('async');
 var expect = require('chai').expect;
@@ -25,7 +26,7 @@ describe('Model remove tests', function () {
 
       lounge = new lounge.Lounge(); // recreate it
 
-      var cluster = new couchbase.Mock.Cluster('couchbase://127.0.0.1');
+      var cluster = testUtil.getCluser();
       bucket = cluster.openBucket('lounge_test', function (err) {
         lounge.connect({
           bucket: bucket
@@ -34,45 +35,51 @@ describe('Model remove tests', function () {
             return done(err);
           }
 
-          companySchema = lounge.schema({
-            id: {type: String, key: true, generate: true, prefix: 'company::'},
-            name: String,
-            streetAddress: String,
-            city: String,
-            country: String,
-            state: String,
-            postalCode: String,
-            founded: Date
+          bucket.manager().flush(function (err) {
+            if (err) {
+              return done(err);
+            }
+
+            companySchema = lounge.schema({
+              id: {type: String, key: true, generate: true, prefix: 'company::'},
+              name: String,
+              streetAddress: String,
+              city: String,
+              country: String,
+              state: String,
+              postalCode: String,
+              founded: Date
+            });
+
+            Company = lounge.model('Company', companySchema);
+
+            userSchema = lounge.schema({
+              firstName: String,
+              lastName: String,
+              email: {type: String, key: true, generate: false},
+              dateOfBirth: Date,
+              company: {type: Company}
+            });
+
+            User = lounge.model('User', userSchema);
+
+            commentSchema = lounge.schema({
+              body: String,
+              user: User
+            });
+
+            Comment = lounge.model('Comment', commentSchema);
+
+            postSchema = lounge.schema({
+              title: String,
+              body: String,
+              comments: [Comment]
+            });
+
+            Post = lounge.model('Post', postSchema);
+
+            ts.setup(bucket, done);
           });
-
-          Company = lounge.model('Company', companySchema);
-
-          userSchema = lounge.schema({
-            firstName: String,
-            lastName: String,
-            email: {type: String, key: true, generate: false},
-            dateOfBirth: Date,
-            company: {type: Company}
-          });
-
-          User = lounge.model('User', userSchema);
-
-          commentSchema = lounge.schema({
-            body: String,
-            user: User
-          });
-
-          Comment = lounge.model('Comment', commentSchema);
-
-          postSchema = lounge.schema({
-            title: String,
-            body: String,
-            comments: [Comment]
-          });
-
-          Post = lounge.model('Post', postSchema);
-
-          ts.setup(bucket, done);
         });
       });
     });
@@ -293,7 +300,7 @@ describe('Model remove tests', function () {
       userSchema = companySchema = commentSchema = postSchema = null;
       User = Company = Post = Comment = null;
 
-      var cluster = new couchbase.Mock.Cluster('couchbase://127.0.0.1');
+      var cluster = testUtil.getCluser();
       bucket = cluster.openBucket('lounge_test', function (err) {
         lounge.connect({
           bucket: bucket
@@ -553,7 +560,7 @@ describe('Model remove tests', function () {
       userSchema = companySchema = commentSchema = postSchema = null;
       User = Company = Post = Comment = null;
 
-      var cluster = new couchbase.Mock.Cluster('couchbase://127.0.0.1');
+      var cluster = testUtil.getCluser();
       bucket = cluster.openBucket('lounge_test', function (err) {
         lounge.connect({
           bucket: bucket

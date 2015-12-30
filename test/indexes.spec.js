@@ -1,5 +1,6 @@
 var couchbase = require('couchbase');
 var _ = require('lodash');
+var testUtil = require('./helpers/utils');
 var expect = require('chai').expect;
 
 var lounge = require('../lib');
@@ -15,11 +16,13 @@ describe('Model index tests', function () {
 
     lounge = new lounge.Lounge(); // recreate it
 
-    var cluster = new couchbase.Mock.Cluster('couchbase://127.0.0.1');
+    var cluster = testUtil.getCluser();
     bucket = cluster.openBucket('lounge_test', function (err) {
       lounge.connect({
         bucket: bucket
-      }, done);
+      }, function () {
+        bucket.manager().flush(done);
+      });
     });
   });
 

@@ -1,4 +1,5 @@
 var validator = require('validator');
+var testUtil = require('./helpers/utils');
 var expect = require('chai').expect;
 var lounge = require('../lib');
 var Schema = lounge.Schema;

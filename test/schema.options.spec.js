@@ -1,4 +1,5 @@
 var expect = require('chai').expect;
+var testUtil = require('./helpers/utils');
 var lounge = require('../lib');
 
 describe('Schema options', function () {

@@ -1,15 +1,18 @@
 var _ = require('lodash');
+var testUtil = require('./helpers/utils');
 var expect = require('chai').expect;
 var lounge = require('../lib');
 var Schema = lounge.Schema;
 
-describe('Schema basics', function () {
+describe('Model basics', function () {
   beforeEach(function (done) {
     lounge = new lounge.Lounge(); // recreate it
-    lounge.connect({
+    var bucket = lounge.connect({
       connectionString: 'couchbase://127.0.0.1',
       bucket: 'lounge_test'
-    }, done);
+    }, function () {
+      bucket.manager().flush(done);
+    });
   });
 
   describe('Should define a tree instance after instantiation', function () {

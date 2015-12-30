@@ -1,4 +1,5 @@
 var couchbase = require('couchbase');
+var testUtil = require('./helpers/utils');
 var _ = require('lodash');
 var async = require('async');
 var expect = require('chai').expect;
@@ -32,17 +33,21 @@ var mockData = [
 
 describe('Driver helper bucket tests', function () {
   before(function (done) {
-    var cluster = new couchbase.Mock.Cluster('couchbase://127.0.0.1');
+    var cluster = testUtil.getCluser();
     bucket = cluster.openBucket('lounge_test', function (err) {
       if (err) {
         return done(err);
       }
 
-      driver = wrapper.wrap(bucket);
+      bucket.manager().flush(function (err) {
+        if (err) return done(err);
 
-      async.each(mockData, function (data, eacb) {
-        bucket.upsert(data.key, data.value, eacb)
-      }, done)
+        driver = wrapper.wrap(bucket);
+
+        async.each(mockData, function (data, eacb) {
+          bucket.upsert(data.key, data.value, eacb)
+        }, done)
+      });
     });
   });
 
@@ -53,7 +58,7 @@ describe('Driver helper bucket tests', function () {
       expect(res).to.be.ok;
       expect(res).to.be.an('object');
       expect(res.cas).to.be.ok;
-      expect(res.cas).to.be.an('object');
+      expect(res.cas).to.be.instanceof(Object);
       expect(res.value).to.be.ok;
       expect(res.value).to.be.an('object');
       expect(res.value).to.deep.equal(mockData[0].value);
