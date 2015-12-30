@@ -44,8 +44,8 @@ kitty.save(function (err) {
 
 ##### Outside of the scope of this module:
 
-* Document and view management. There are two many patterns and ways of performing document and view management and 
- view lookup that it is impractical to accomplish anything sane within a simple ODM. This can easily be expanded
+* Document and view management. There are too many patterns and ways of performing document and view management and 
+ view lookup that it is impractical to accommodate anything sane within a simple ODM. This can easily be expanded
  on top of Lounge.
 * View queries. For same reasons this falls outside of the scope of Lounge.
 * Automatic document removal on key change. That is if a document key property changes, the new document is saved under
@@ -112,7 +112,7 @@ console.log(lounge.getOption('alwaysReturnArrays');
 
 Connects to the database cluster based on `options`. When completed calls `fn` callback. Set `mock` to `true` to use
 [Couchbase mocking](https://github.com/couchbase/couchnode#mock-testing). Alternatively you can set
-`LOUNGE_COUCHBASE_MOCK` environment variable.
+`LOUNGE_COUCHBASE_MOCK` environment variable. Returns an instance of Couchbase `bucket`.
 
 **Options**
 
@@ -124,7 +124,7 @@ or the actual, already connected, Couchbase `bucket` instance.
 
 ```js
 var lounge = require('lounge');
-lounge.connect('couchbase://127.0.0.1', function(err) {
+var bucket = lounge.connect('couchbase://127.0.0.1', function(err, bucket) {
   // ... connected
 });
 ```
@@ -143,13 +143,13 @@ Schema construction options:
 * `keyPrefix` - key prefix for all keys. No default. Generally useful if you wish to namespace documents. Example: `app::env::`.
 * `keySuffix` - Similar as prefix but used as a suffix
 * `refIndexKeyPrefix` - reference lookup index document key prefix. The name of the index is appended. Default: '$_ref_by_'
+Reference / lookup document keys are also treated using `keyPrefix` and `keySuffix` settings.  
 * `delimiter` - delimiter string used for concatenation in reference document key expansion / generation.
 Default: '_'. This is prepended to the reference document key.
 * `minimize` - "minimize" schemas by removing empty objects. Default: `true`
 * `toObject` - toObject method options: `transform`, `virtuals` and `minimize`
 * `toJSON` - toJSON method options, similar to above
 * `strict` - ensures that value passed in ot assigned that were not specified in our schema do not get saved. Default: `true`
-
 
 #### Lounge.model(name, schema, options)
 
@@ -270,9 +270,9 @@ catSchema.set('refIndexKeyPrefix', '::');
 
 **Document keys**
 
-By defualt schemas come with an `id` property as the document key, and the automatically generated value will be
+By default schemas come with an `id` property as the document key, and the automatically generated value will be
 a [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) 
-using [node-uuid](https://www.npmjs.com/package/node-uuid) `v4()` function. This should be most practical and most
+using [node-uuid](https://www.npmjs.com/package/node-uuid) `v4()` function. This should be most practical and 
 appropriate in a lot of cases. Alternatively you can specify explicit key properties:
 
 ```js
@@ -368,6 +368,7 @@ var user = new User({name: 'Bob Smith'});
 
 user.get('name'); // 'Bob Smith'
 user.name = 'Joe'; // OK
+user.name.set('Joe'); // OK
 console.log(user.name); // 'Joe'
 user.set('friends', 20); // OK
 user.friends = 'abc'; // nope. still 20
@@ -383,7 +384,7 @@ Lounge does automatic validation against input data using the type information s
 We can provide custom validation in schema definition by providing `validator` function.
  
 ```js
-var validator = require('validator'); // validator module
+var validator = require('validator'); // Node validator module
 
 var userSchema = lounge.schema({
   name: String
@@ -547,7 +548,7 @@ var User = lounge.model('User', userSchema);
 var user = new User({name: 'Bob Smith'});
 
 console.log(user.modelName); // 'User'
-console.log(user.schema isntanceof lounge.Schema); // true
+console.log(user.schema instanceof lounge.Schema); // true
 ```
 
 Since by default models are created using `strict` mode, Model instances setup and expose an internal `$_data` variable 
@@ -598,7 +599,7 @@ userSchema.post('remove', function () {
 Important note here is that post 'save' and 'remove' hooks do not receive any form of control flow. There are no
 callbacks passed.
 
-The callback passed into pre hooks can be used to control flow of logic:
+The callback passed into pre hooks have be used to control flow of logic and execution:
 
 ```js
 schema.pre('save', function (next) {
@@ -737,7 +738,7 @@ user.posts.push(new BlogPost({
 ```
 
 You can manipulate and work with subdocument just like any model instances. When the top level document is saved
-all child sub-documents are saved as well. Subdocuments **must** be an instance of the Model defined in the schema or a 
+all child subdocuments are saved as well. Subdocuments **must** be an instance of the Model defined in the schema or a 
 `String` in which case it represents the key / id of the subdocument.
 
 ### Saving Documents <a id="saving"></a>
@@ -868,7 +869,7 @@ User.findById(userId, {populate: ['address', 'posts.1']}, function(err, doc) {
 Removing documents is done using `remove` function that every model instance has. This will execute all pre 
 'remove' middleware and then perform Couchbase `remove` operation. It will also perform lookup document updates 
 and finally execute any post hook middleware. By default this function **does not** remove embedded documents. To do
-this set `removeRefs` options to true.
+this set `removeRefs` options to `true`.
 
 ```js
 user.remove(function(err, doc) {
@@ -972,8 +973,8 @@ User.findByEmail('joe@gmail.com', function(err, doc) {
 });
 ```
 
-We automatically singularize and camelize property key to derive inde name. So `usernames` becomes `findByUsername`.
-We can specify the index "name" by passing along "indexName". For example:
+We automatically singularize and camelize property key to derive the index name. So `usernames` becomes `findByUsername`.
+We can specify the index "name" by passing along the `indexName` property. For example:
 
 ```js
 var userSchema = lounge.schema({
@@ -1022,6 +1023,12 @@ user.on('save', function (doc) {
   console.log('document saved');
 });
 ```
+
+## TESTS
+
+Module automated tests can be run using `npm test` command. The tests are executed using [Couchbase mocking](https://github.com/couchbase/couchnode#mock-testing).
+To run tests against an actual local database create a bucket `lounge_test` and remove `LOUNGE_COUCHBASE_MOCK=true` from
+`test` script property in `package.json`.
 
 ## TODO
 
