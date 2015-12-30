@@ -1,7 +1,7 @@
 {
   "name": "lounge",
-  "description": "coming soon",
-  "version": "0.1.0",
+  "description": "Simple Mongoose-inspired ODM for Couchbase",
+  "version": "0.1.1",
   "homepage": "https://github.com/bojand/lounge",
   "license": "MIT",
   "repository": {
@@ -40,6 +40,20 @@
     "nyc": "^5.0.0",
     "validator": "^4.4.0"
   },
+  "keywords": [
+    "couchbase",
+    "document",
+    "model",
+    "schema",
+    "database",
+    "odm",
+    "data",
+    "datastore",
+    "query",
+    "nosql",
+    "orm",
+    "db"
+  ],
   "config": {
     "nyc": {
       "include": [
