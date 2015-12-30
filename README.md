@@ -621,7 +621,7 @@ doc.save(function(err, savedDoc) {
 ### Schema Extension <a id="schema-extend"></a>
 
 It is useful to have a common base schema, that all other schemas / models would extend or "inherit" properties from.
-This can be accomplished by either using the `Schema.extend` function. When performed all property definitions, virtuals,
+This can be accomplished by using the `Schema.extend` function. When used all properties, virtuals,
 methods, statics, and middleware that are present in the base schema **but not** present in destination schema are copied 
 into the destination schema.
 
@@ -672,6 +672,7 @@ userSchema.method('userFoo', function () {
   console.log('user foo');
 });
 
+// make user schema extend the base schema 
 userSchema.extend(baseSchema);
 var User = lounge.model('User', userSchema);
 
