@@ -73,8 +73,8 @@ to provide modeling tool framework for working with Couchbase databases in an as
 <a id="outside-of-the-scope-of-this-module" class="anchor" href="#outside-of-the-scope-of-this-module" aria-hidden="true"><span class="octicon octicon-link"></span></a>Outside of the scope of this module:</h5>
 
 <ul>
-<li>Document and view management. There are two many patterns and ways of performing document and view management and 
-view lookup that it is impractical to accomplish anything sane within a simple ODM. This can easily be expanded
+<li>Document and view management. There are too many patterns and ways of performing document and view management and 
+view lookup that it is impractical to accommodate anything sane within a simple ODM. This can easily be expanded
 on top of Lounge.</li>
 <li>View queries. For same reasons this falls outside of the scope of Lounge.</li>
 <li>Automatic document removal on key change. That is if a document key property changes, the new document is saved under
@@ -158,7 +158,7 @@ returning from <code>save()</code>. Default: <code>false</code>
 
 <p>Connects to the database cluster based on <code>options</code>. When completed calls <code>fn</code> callback. Set <code>mock</code> to <code>true</code> to use
 <a href="https://github.com/couchbase/couchnode#mock-testing">Couchbase mocking</a>. Alternatively you can set
-<code>LOUNGE_COUCHBASE_MOCK</code> environment variable.</p>
+<code>LOUNGE_COUCHBASE_MOCK</code> environment variable. Returns an instance of Couchbase <code>bucket</code>.</p>
 
 <p><strong>Options</strong></p>
 
@@ -176,7 +176,7 @@ or the actual, already connected, Couchbase <code>bucket</code> instance.</li>
 </ul>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> lounge <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>lounge<span class="pl-pds">'</span></span>);
-<span class="pl-smi">lounge</span>.<span class="pl-en">connect</span>(<span class="pl-s"><span class="pl-pds">'</span>couchbase://127.0.0.1<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">err</span>) {
+<span class="pl-k">var</span> bucket <span class="pl-k">=</span> <span class="pl-smi">lounge</span>.<span class="pl-en">connect</span>(<span class="pl-s"><span class="pl-pds">'</span>couchbase://127.0.0.1<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">err</span>, <span class="pl-smi">bucket</span>) {
   <span class="pl-c">// ... connected</span>
 });</pre></div>
 
@@ -199,7 +199,9 @@ will pass lounge config variables to the <code>Schema</code> constructor automat
 <li>
 <code>keySuffix</code> - Similar as prefix but used as a suffix</li>
 <li>
-<code>refIndexKeyPrefix</code> - reference lookup index document key prefix. The name of the index is appended. Default: '$<em>ref_by</em>'</li>
+<code>refIndexKeyPrefix</code> - reference lookup index document key prefix. The name of the index is appended. Default: '$<em>ref_by</em>'
+Reference / lookup document keys are also treated using <code>keyPrefix</code> and <code>keySuffix</code> settings.<br>
+</li>
 <li>
 <code>delimiter</code> - delimiter string used for concatenation in reference document key expansion / generation.
 Default: '_'. This is prepended to the reference document key.</li>
@@ -331,9 +333,9 @@ User <span class="pl-k">=</span> <span class="pl-smi">lounge</span>.<span class=
 
 <p><strong>Document keys</strong></p>
 
-<p>By defualt schemas come with an <code>id</code> property as the document key, and the automatically generated value will be
+<p>By default schemas come with an <code>id</code> property as the document key, and the automatically generated value will be
 a <a href="https://en.wikipedia.org/wiki/Universally_unique_identifier">UUID</a> 
-using <a href="https://www.npmjs.com/package/node-uuid">node-uuid</a> <code>v4()</code> function. This should be most practical and most
+using <a href="https://www.npmjs.com/package/node-uuid">node-uuid</a> <code>v4()</code> function. This should be most practical and 
 appropriate in a lot of cases. Alternatively you can specify explicit key properties:</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> userSchema <span class="pl-k">=</span> <span class="pl-smi">lounge</span>.<span class="pl-en">schema</span>({
@@ -418,6 +420,7 @@ either assignment operator or using the <code>set</code> function. In either cas
 
 <span class="pl-smi">user</span>.<span class="pl-en">get</span>(<span class="pl-s"><span class="pl-pds">'</span>name<span class="pl-pds">'</span></span>); <span class="pl-c">// 'Bob Smith'</span>
 <span class="pl-smi">user</span>.<span class="pl-c1">name</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>Joe<span class="pl-pds">'</span></span>; <span class="pl-c">// OK</span>
+<span class="pl-smi">user</span>.<span class="pl-c1">name</span>.<span class="pl-en">set</span>(<span class="pl-s"><span class="pl-pds">'</span>Joe<span class="pl-pds">'</span></span>); <span class="pl-c">// OK</span>
 <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">user</span>.<span class="pl-c1">name</span>); <span class="pl-c">// 'Joe'</span>
 <span class="pl-smi">user</span>.<span class="pl-en">set</span>(<span class="pl-s"><span class="pl-pds">'</span>friends<span class="pl-pds">'</span></span>, <span class="pl-c1">20</span>); <span class="pl-c">// OK</span>
 <span class="pl-smi">user</span>.<span class="pl-smi">friends</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>abc<span class="pl-pds">'</span></span>; <span class="pl-c">// nope. still 20</span>
@@ -431,7 +434,7 @@ either assignment operator or using the <code>set</code> function. In either cas
 <p>Lounge does automatic validation against input data using the type information specified in the schema definition.
 We can provide custom validation in schema definition by providing <code>validator</code> function.</p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> validator <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>validator<span class="pl-pds">'</span></span>); <span class="pl-c">// validator module</span>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> validator <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>validator<span class="pl-pds">'</span></span>); <span class="pl-c">// Node validator module</span>
 
 <span class="pl-k">var</span> userSchema <span class="pl-k">=</span> <span class="pl-smi">lounge</span>.<span class="pl-en">schema</span>({
   name<span class="pl-k">:</span> <span class="pl-c1">String</span>
@@ -589,7 +592,7 @@ instances have <code>schema</code> property that represents the models schema us
 <span class="pl-k">var</span> user <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">User</span>({name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Bob Smith<span class="pl-pds">'</span></span>});
 
 <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">user</span>.<span class="pl-smi">modelName</span>); <span class="pl-c">// 'User'</span>
-<span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">user</span>.<span class="pl-smi">schema</span> isntanceof <span class="pl-smi">lounge</span>.<span class="pl-smi">Schema</span>); <span class="pl-c">// true</span></pre></div>
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-smi">user</span>.<span class="pl-smi">schema</span> <span class="pl-k">instanceof</span> <span class="pl-smi">lounge</span>.<span class="pl-smi">Schema</span>); <span class="pl-c">// true</span></pre></div>
 
 <p>Since by default models are created using <code>strict</code> mode, Model instances setup and expose an internal <code>$_data</code> variable 
 that can be used for any internal storage that's not part of model definition as specified inside of schema. 
@@ -636,7 +639,7 @@ setup for any method including <code>toObject</code> and <code>toJON</code> meth
 <p>Important note here is that post 'save' and 'remove' hooks do not receive any form of control flow. There are no
 callbacks passed.</p>
 
-<p>The callback passed into pre hooks can be used to control flow of logic:</p>
+<p>The callback passed into pre hooks have be used to control flow of logic and execution:</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-smi">schema</span>.<span class="pl-en">pre</span>(<span class="pl-s"><span class="pl-pds">'</span>save<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">next</span>) {
   <span class="pl-c">// some custom validation method</span>
@@ -773,7 +776,7 @@ user <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-e
 });</pre></div>
 
 <p>You can manipulate and work with subdocument just like any model instances. When the top level document is saved
-all child sub-documents are saved as well. Subdocuments <strong>must</strong> be an instance of the Model defined in the schema or a 
+all child subdocuments are saved as well. Subdocuments <strong>must</strong> be an instance of the Model defined in the schema or a 
 <code>String</code> in which case it represents the key / id of the subdocument.</p>
 
 <h3>
@@ -909,7 +912,7 @@ subdocuments are retrieved from the database.</p>
 <p>Removing documents is done using <code>remove</code> function that every model instance has. This will execute all pre 
 'remove' middleware and then perform Couchbase <code>remove</code> operation. It will also perform lookup document updates 
 and finally execute any post hook middleware. By default this function <strong>does not</strong> remove embedded documents. To do
-this set <code>removeRefs</code> options to true.</p>
+this set <code>removeRefs</code> options to <code>true</code>.</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-smi">user</span>.<span class="pl-en">remove</span>(<span class="pl-k">function</span>(<span class="pl-smi">err</span>, <span class="pl-smi">doc</span>) {
   <span class="pl-k">if</span>(err) <span class="pl-en">console</span>.<span class="pl-c1">log</span>(err);
@@ -1001,8 +1004,8 @@ For example code above:</p>
   <span class="pl-k">else</span> <span class="pl-en">console</span>.<span class="pl-c1">log</span>(doc);
 });</pre></div>
 
-<p>We automatically singularize and camelize property key to derive inde name. So <code>usernames</code> becomes <code>findByUsername</code>.
-We can specify the index "name" by passing along "indexName". For example:</p>
+<p>We automatically singularize and camelize property key to derive the index name. So <code>usernames</code> becomes <code>findByUsername</code>.
+We can specify the index "name" by passing along the <code>indexName</code> property. For example:</p>
 
 <div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> userSchema <span class="pl-k">=</span> <span class="pl-smi">lounge</span>.<span class="pl-en">schema</span>({
   name<span class="pl-k">:</span> <span class="pl-c1">String</span>
@@ -1054,6 +1057,13 @@ emit three events:</p>
 <span class="pl-smi">user</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>save<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">doc</span>) {
   <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>document saved<span class="pl-pds">'</span></span>);
 });</pre></div>
+
+<h2>
+<a id="tests" class="anchor" href="#tests" aria-hidden="true"><span class="octicon octicon-link"></span></a>TESTS</h2>
+
+<p>Module automated tests can be run using <code>npm test</code> command. The tests are executed using <a href="https://github.com/couchbase/couchnode#mock-testing">Couchbase mocking</a>.
+To run tests against an actual local database create a bucket <code>lounge_test</code> and remove <code>LOUNGE_COUCHBASE_MOCK=true</code> from
+<code>test</code> script property in <code>package.json</code>.</p>
 
 <h2>
 <a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>TODO</h2>
