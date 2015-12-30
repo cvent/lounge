@@ -1,7 +1,7 @@
 {
   "name": "lounge",
   "description": "Simple Mongoose-inspired ODM for Couchbase",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://github.com/bojand/lounge",
   "license": "MIT",
   "repository": {
@@ -12,7 +12,7 @@
     "url": "http://github.com/bojand/lounge/issues"
   },
   "engines": {
-    "node": ">= 0.12.0"
+    "node": ">=0.10.0"
   },
   "main": "./index.js",
   "author": {

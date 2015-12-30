@@ -518,6 +518,20 @@ console.log(user); // { name: 'Joe', email: 'joe@gmail.com' }
 
 Similar to `toObject`. The return value of this method is used in calls to `JSON.stringify`.
 
+**CAS**
+
+All document instances have a read-only property `cas` that returns the string representation of the CAS object retrieved
+from the database. The `cas` property is initialized only once a document has been retrieved from the database using one
+of query functions, or once it has been saved. Alternatively we can use the method `getCAS(raw)` to get the cas value.
+If `raw` is `true` then we return the raw CAS object. Otherwise we return string representation. This can be useful
+for computation of ETag values for example.
+
+```js
+console.log(doc.cas); // String: 00000000a71626e4
+console.log(doc.getCAS()); // String: 00000000a71626e4
+console.log(doc.getCAS(true)); // Object: CouchbaseCas<11338961768815788032>
+```
+
 **Useful member variables**
 
 All model instances come with a `modelName` read only property that you can use to access the model name. As well
