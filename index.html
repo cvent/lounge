@@ -661,7 +661,7 @@ callbacks passed.</p>
 </h3>
 
 <p>It is useful to have a common base schema, that all other schemas / models would extend or "inherit" properties from.
-This can be accomplished by either using the <code>Schema.extend</code> function. When performed all property definitions, virtuals,
+This can be accomplished by using the <code>Schema.extend</code> function. When used all properties, virtuals,
 methods, statics, and middleware that are present in the base schema <strong>but not</strong> present in destination schema are copied 
 into the destination schema.</p>
 
@@ -711,6 +711,7 @@ into the destination schema.</p>
   <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>user foo<span class="pl-pds">'</span></span>);
 });
 
+<span class="pl-c">// make user schema extend the base schema </span>
 <span class="pl-smi">userSchema</span>.<span class="pl-en">extend</span>(baseSchema);
 <span class="pl-k">var</span> User <span class="pl-k">=</span> <span class="pl-smi">lounge</span>.<span class="pl-en">model</span>(<span class="pl-s"><span class="pl-pds">'</span>User<span class="pl-pds">'</span></span>, userSchema);
 
