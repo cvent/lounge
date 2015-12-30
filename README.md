@@ -977,15 +977,46 @@ User.findByUN('user1', function(err, doc) {
 
 ### Events <a id="events"></a>
 
-Go deeper into events
+All model instances inherit [`EventEmitter`](https://nodejs.org/api/events.html#events_class_events_eventemitter), and 
+emit three events:
+
+* `index` - when indexing of lookup documents finished regardless if successful or not. Emits `error` if there was any.
+* `save` - when the document was successfully saved.
+* `remove` - when the document was successfully removed.
+
+```js
+var userSchema = lounge.schema({
+  name: String,
+  email: {type: String, index: true}
+});
+
+var User = lounge.model('User', userSchema);
+var user = new User({
+  name: 'Bob Smith',
+  email: 'bob@gmail.com'
+});
+
+user.on('index', function (err) {
+  if(err) console.log('Error indexing document' + err.message);
+});
+
+user.on('remove', function (doc) {
+  console.log('document removed');
+});
+
+user.on('save', function (doc) {
+  console.log('document saved');
+});
+```
 
 ## TODO
 
-See [TODO.md](https://github.com/bojand/lounge/blob/v1/TODO.md).
+See [TODO.md](https://github.com/bojand/lounge/blob/master/TODO.md).
 
 ## Credits
 
-Credits for draft, mongoose, other things.
+Lots of code and design inspired by [Mongoose](http://mongoosejs.com/).
+Uses modified version of [Draft](https://github.com/jwerle/draft) for schema and modelling.
 
 ## License
 
