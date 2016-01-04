@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Lounge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/cayman.css">
+    <link rel="stylesheet" href="css/prism.css">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Lounge</h1>
+      <h2 class="project-tagline">Simple Mongoose-inspired ODM for Couchbase</h2><a href="https://github.com/bojand/lounge" target="_blank" class="btn">View on GitHub</a><a href="https://npmjs.com/package/lounge" target="_blank" class="btn">View on npm</a>
+    </section>
+    <section data-spy="scroll" data-target=".scrollspy" class="main-content">
+      <div class="row">
+        <div class="col-md-3 col-xs-3 bs-docs-sidebar">
+          <ul id="sidebar" class="nav nav-stacked fixed">
+            <li><a href="index.html">Main</a></li>
+            <li><a href="couchdoc.js.html">couchdoc.js</a></li>
+            <li><a href="document.js.html">document.js</a></li>
+            <li><a href="driver.js.html">driver.js</a></li>
+            <li><a href="index.js.html">index.js</a></li>
+            <li class="active"><a href="model.js.html">model.js
+                <ul class="nav nav-stacked">
+                  <li><a href="#__proto__"><i class="alert alert-success"></i><span>__proto__</span></a>
+                  </li>
+                  <li><a href="#compile"><i class="alert alert-info"></i><span>compile</span></a>
+                  </li>
+                </ul></a></li>
+            <li><a href="schema.js.html">schema.js</a></li>
+            <li><a href="tree.js.html">tree.js</a></li>
+            <li><a href="type.js.html">type.js</a></li>
+            <li><a href="utils.js.html">utils.js</a></li>
+          </ul>
+        </div>
+        <div class="col-md-9">
+          <div class="description"><p>Set up middleware support</p></div>
+          <pre><code class="language-javascript">var k;
+for (k in hooks) {
+  Model.prototype[k] = Model[k] = hooks[k];
+}</code></pre>
+          <section id="__proto__">
+            <h1>__proto__</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>Model.prototype.__proto__</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <div class="description"><p>Inherits from CouchbaseDocument.</p></div>
+          <pre><code class="language-javascript">Model.prototype.__proto__ = CouchbaseDocument.prototype;
+
+// inherited statics
+for (k in CouchbaseDocument) {
+  Model[k] = CouchbaseDocument[k];
+}</code></pre>
+          <section id="compile">
+            <h1>compile</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Model.compile()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>name</td>
+                <td>String</td>
+                <td><p>name of the model</p></td>
+              </tr>
+              <tr>
+                <td>schema</td>
+                <td>Schema</td>
+                <td><p>schema definition</p></td>
+              </tr>
+              <tr>
+                <td>db</td>
+                <td>Driver</td>
+                <td><p>the database driver</p></td>
+              </tr>
+              <tr>
+                <td>config</td>
+                <td>Object</td>
+                <td><p>the Lounge config</p></td>
+              </tr>
+              <tr>
+                <td>options</td>
+                <td>Object</td>
+                <td><pre><code>           - freeze - to freeze the model. see Object.freeze()
+</code></pre></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Creates a new Model class based on name and schema</p></div>
+          <pre><code class="language-javascript">Model.compile = function (name, schema, db, config, options) {
+
+  function InstanceModel(data) {
+    if (!(this instanceof InstanceModel))
+      return new InstanceModel(data);
+    return Model.apply(this, arguments);
+  }
+
+  var BaseProto = Model.prototype;
+  var Base = Model;
+
+  // inherit
+  InstanceModel.prototype = Object.create(BaseProto);
+  // reset constructor
+  InstanceModel.prototype.constructor = InstanceModel;
+
+  InstanceModel.__proto__ = Base;
+  InstanceModel.prototype.__proto__ = BaseProto;
+
+  // attach schema instance
+  InstanceModel.schema = InstanceModel.prototype.schema = schema;
+
+  // model name
+  InstanceModel.modelName = InstanceModel.prototype.modelName = name;
+
+  // connection
+  InstanceModel.db = InstanceModel.prototype.db = db;
+
+  // config
+  InstanceModel.config = InstanceModel.prototype.config = config;
+
+  // only scan top level
+  for (var item in schema.tree) {
+    // prevent overrides
+    if (!utils.isUndefined(InstanceModel[item])) continue;
+    // it must be defined and have a valid function value
+    if (schema.tree[item].static === true &amp;&amp; !utils.isUndefined(schema.tree[item].value)) {
+      InstanceModel[item] = schema.tree[item].value;
+    }
+    if (schema.tree[item].method === true &amp;&amp; !utils.isUndefined(schema.tree[item].value)) {
+      InstanceModel.prototype[item] = schema.tree[item].value;
+    }
+  }
+
+  setupHooks(InstanceModel);
+
+  setupIndexFunctions(InstanceModel);
+
+  // if the user wants to allow modifications
+  if (options.freeze !== false) utils.freeze(InstanceModel);
+
+  return InstanceModel;
+};</code></pre>
+          <div class="footer site-footer">
+            <div class="span site-footer-owner"><a href="https://github.com/mr-doc/mr-doc-theme-cayman">Cayman</a> is maintained by <a href="https://github.com/iwatakeshi">iwatakeshi</a>.</div>
+            <div class="span site-footer-credits">This page was generated by <a href="https://github.com/mr-doc/mr-doc">Mr. Doc</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/affix.js"></script>
+    <script src="js/dropdown.js"></script>
+    <script src="js/scrollspy.js"></script>
+    <script src="js/prism.js"></script>
+    <script src="js/prism-bash.js"></script>
+    <script>
+      $(document).ready(function(){
+        $('body').scrollspy({
+          target: ".bs-docs-sidebar",
+          offset: 40
+        });
+        $('#sidebar').affix({
+          offset:{
+            bottom:60,
+            top: 60
+          }
+        }) 
+      });
+    </script>
+  </body>
+</html>

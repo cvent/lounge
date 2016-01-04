@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Lounge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/cayman.css">
+    <link rel="stylesheet" href="css/prism.css">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Lounge</h1>
+      <h2 class="project-tagline">Simple Mongoose-inspired ODM for Couchbase</h2><a href="https://github.com/bojand/lounge" target="_blank" class="btn">View on GitHub</a><a href="https://npmjs.com/package/lounge" target="_blank" class="btn">View on npm</a>
+    </section>
+    <section data-spy="scroll" data-target=".scrollspy" class="main-content">
+      <div class="row">
+        <div class="col-md-3 col-xs-3 bs-docs-sidebar">
+          <ul id="sidebar" class="nav nav-stacked fixed">
+            <li><a href="index.html">Main</a></li>
+            <li><a href="couchdoc.js.html">couchdoc.js</a></li>
+            <li class="active"><a href="document.js.html">document.js
+                <ul class="nav nav-stacked">
+                  <li><a href="#Document"><i class="alert alert-success"></i><span>Document</span></a>
+                  </li>
+                  <li><a href="#schema"><i class="alert alert-success"></i><span>schema</span></a>
+                  </li>
+                  <li><a href="#refresh"><i class="alert alert-info"></i><span>refresh</span></a>
+                  </li>
+                  <li><a href="#set"><i class="alert alert-info"></i><span>set</span></a>
+                  </li>
+                  <li><a href="#toObject"><i class="alert alert-info"></i><span>toObject</span></a>
+                  </li>
+                  <li><a href="#toJSON"><i class="alert alert-info"></i><span>toJSON</span></a>
+                  </li>
+                  <li><a href="#inspect"><i class="alert alert-info"></i><span>inspect</span></a>
+                  </li>
+                  <li><a href="#toString"><i class="alert alert-success"></i><span>toString</span></a>
+                  </li>
+                  <li><a href="#getDocumentKeyValue"><i class="alert alert-info"></i><span>getDocumentKeyValue</span></a>
+                  </li>
+                  <li><a href="#getDocumentKeyValue"><i class="alert alert-info"></i><span>getDocumentKeyValue</span></a>
+                  </li>
+                  <li><a href="#getDocumentKeyKey"><i class="alert alert-info"></i><span>getDocumentKeyKey</span></a>
+                  </li>
+                  <li><a href="#modelName"><i class="alert alert-success"></i><span>modelName</span></a>
+                  </li>
+                  <li><a href="#valueOf"><i class="alert alert-info"></i><span>valueOf</span></a>
+                  </li>
+                </ul></a></li>
+            <li><a href="driver.js.html">driver.js</a></li>
+            <li><a href="index.js.html">index.js</a></li>
+            <li><a href="model.js.html">model.js</a></li>
+            <li><a href="schema.js.html">schema.js</a></li>
+            <li><a href="tree.js.html">tree.js</a></li>
+            <li><a href="type.js.html">type.js</a></li>
+            <li><a href="utils.js.html">utils.js</a></li>
+          </ul>
+        </div>
+        <div class="col-md-9">
+          <section id="Document">
+            <h1>Document</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-success radius ctx-type">constructor</div><span>&nbsp;</span><span>Document()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>data</td>
+                <td>Object</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Base constructor for all created Model instances<br />Represents just the document data and generic properties and functions.</p></div>
+          <pre><code class="language-javascript">function Document(data) {
+  if (!(this instanceof Document))
+    return new Document(data);
+
+  var self = this;
+
+  this.$_emitter = new EventEmitter();
+
+  // exposed internal data variable for some extra storage that's not part of document
+  this.$_data = {};
+
+  // internal memory
+  var table = this.$_table = {};
+
+  // ensure an object if not undefined
+  if (data !== undefined &amp;&amp; typeof data !== 'object') throw new TypeError('Model expects an object. Got \&quot;' + typeof data + '\&quot;');
+
+  // ensure the schema set
+  if (!this.schema || !(this.schema instanceof Schema)) throw new TypeError('.schema hasn\'t been set');
+
+  var build = function (data, tree, object) {
+    tree = (tree instanceof Tree) ? tree : self.schema.tree;
+    object = (typeof object === 'object') ? object : this;
+    for (var prop in data) {
+      if (data.hasOwnProperty(prop)) {
+        // encapsulate each iteration in a scope
+        !function (prop) {
+          // if not in tree, return and continue on
+          if (!tree[prop]) return;
+          // if the property is an object, check if the tree property
+          // is a Tree instance object too
+          if (typeof data[prop] === 'object' &amp;&amp; tree[prop] instanceof Tree) {
+            // define setter for object
+            utils.define(data[prop], 'set', {
+              writable: false,
+              enumerable: false,
+              configurable: false,
+              value: function (value) {
+                object[prop] = value;
+              }
+            });
+            // define getter for object
+            utils.define(data[prop], 'get', {
+              writable: false,
+              enumerable: false,
+              configurable: false,
+              value: function () {
+                return object[prop]
+              }
+            });
+
+            build(data[prop], tree[prop], object[prop]);
+          }
+          // we've reached some kind of scalar value
+          // that exists in the schema tree and the object
+          else {
+            object[prop] = data[prop];
+          }
+        }.call(this, prop);
+      }
+    }
+  }.bind(this);
+
+  // overload refresh method on prototype
+  var refresh = function () {
+    if (utils.isFrozen(this)) return false;
+    var defineFromTree = function (tree, scope, table) {
+      var item;
+      for (item in tree) {
+        if (tree.hasOwnProperty(item)) {
+          !function (item) {
+            if (tree[item] === null || typeof tree[item] !== 'object') return;
+            // we don't want this as a possible field
+            if (tree[item].static) return;
+            if (tree[item].method) return;
+
+            if (tree[item].virtual === true) {
+              var getter = utils.isFunction(tree[item].value.get) ? tree[item].value.get : undefined;
+              var setter = utils.isFunction(tree[item].value.set) ? tree[item].value.set : undefined;
+
+              utils.define(scope, item, {
+                configurable: false,
+                enumerable: false,
+                get: getter,
+                set: setter
+              });
+
+              return;
+            }
+
+            // it must be an instance of Type
+            if (tree[item] instanceof Type) {
+              // only set on plain objects
+              if (!utils.isArray(scope)) {
+                // if it doesn't exist in the internal table
+                // then set it to undefined
+                table[item] = table[item] || undefined;
+                // create descriptor for property item on scope
+                // from tree descriptor
+                utils.define(scope, item, {
+                  configurable: false,
+                  enumerable: true,
+                  get: function () {
+                    return table[item] ? tree[item].get(table[item]) : undefined;
+                  },
+                  set: function (value) {
+                    if (utils.isFunction(tree[item].validate) &amp;&amp; tree[item].validate(value)) {
+                      table[item] = tree[item].set(value);
+                      return table[item];
+                    } else {
+                      return false;
+                    }
+                  }
+                });
+              }
+
+              if (!utils.isUndefined(tree[item].default)) {
+                scope[item] = tree[item].default;
+              }
+            }
+
+            // if it is a tree instance then we need
+            // to do a recursive call to define the
+            // descriptors needed for the object
+            else if (tree[item] instanceof Tree || utils.isArray(tree[item])) {
+              table[item] = utils.isArray(tree[item]) ? [] : {};
+
+              if (utils.isArray(tree[item])) {
+                utils.define(scope, item, {
+                  configurable: false,
+                  enumerable: true,
+                  get: function () {
+                    return table[item];
+                  },
+                  set: function (value) {
+                    if (utils.isFunction(tree[item].validate) &amp;&amp; tree[item].validate(value)) {
+                      table[item] = tree[item].set(value);
+                      return table[item];
+                    } else if (utils.isArray(value) &amp;&amp; utils.isArray(tree[item]) &amp;&amp; tree[item].type
+                      &amp;&amp; tree[item].type instanceof Type &amp;&amp; utils.isFunction(tree[item].type.validate)) {
+                      var c = _.every(value, tree[item].type.validate, tree[item].type);
+                      if (c) {
+                        table[item] = value;
+                        return table[item];
+                      }
+                      else {
+                        return false;
+                      }
+                    } else if (Array.isArray(value) &amp;&amp; _.isEmpty(tree[item])) {
+                      // just an array of object
+                      table[item] = value;
+                    } else {
+                      return false;
+                    }
+                  }
+                });
+
+                // custom set for the array so we can do obj.arrayProp.set([...]);
+                utils.define(scope[item], 'set', {
+                  configurable: false,
+                  enumerable: false,
+                  writable: false,
+                  value: function (value) {
+                    // use scope[item] so that the above set is invoked
+                    scope[item] = value;
+                    return scope[item];
+                  }
+                });
+              }
+              else {
+                // this doesn't allow sub objects to be set using assignment operator
+                // user.metadata = { foo: 'bar' };
+                // we have to do user.metadata.foo = 'bar';
+                // we also have to get data using user.metadata.foo;
+                // we can also use user.metadata.set({...});
+
+                utils.define(scope, item, {
+                  configurable: false,
+                  enumerable: true,
+                  writable: false,
+                  value: {}
+                });
+
+                // at least over ride inspect so we can get proper console.log
+                utils.define(scope[item], 'inspect', {
+                  configurable: false,
+                  enumerable: false,
+                  writable: false,
+                  value: function () {
+                    if (!Array.isArray(tree[item]) &amp;&amp; !tree[item].Constructor) {
+                      var keys = Object.keys(tree[item]);
+                      var ret = {};
+                      keys.forEach(function (k) {
+                        ret[k] = table[item][k];
+                      });
+                      return ret;
+                    }
+                    else {
+                      return table[item];
+                    }
+                  }
+                });
+
+                utils.define(scope[item], 'set', {
+                  configurable: false,
+                  enumerable: false,
+                  writable: false,
+                  value: function (value) {
+                    if (!tree[item].Constructor) {
+                      // it's just a plain object
+                      var allowedKeys = Object.keys(tree[item]);
+                      var dataToSet = _.pick(value, allowedKeys);
+                      allowedKeys.forEach(function (k) {
+                        if (tree[item][k].validate &amp;&amp; utils.isFunction(tree[item][k].validate)) {
+                          if (tree[item][k].validate(dataToSet[k])) {
+                            table[item][k] = dataToSet[k];
+                          }
+                        }
+                      });
+
+                      return table[item];
+                    }
+                    else {
+                      table[item] = value;
+                      return table[item];
+                    }
+                  }
+                });
+              }
+
+              utils.define(scope[item], 'get', {
+                configurable: false,
+                enumerable: false,
+                writable: false,
+                value: function (key) {
+                  return table[item][key];
+                }
+              });
+
+              // overload array methods
+              if (utils.isArray(tree[item])) {
+                [
+                  'concat', 'every', 'filter', 'forEach', 'indexOf', 'join', 'lastIndexOf', 'map', 'pop',
+                  'push', 'reduce', 'reduceRight', 'reverse', 'shift', 'slice', 'some', 'sort', 'splice',
+                  'toString', 'unshift', 'valueOf'
+                ].map(function (method) {
+                    if (utils.isFunction([][method])) {
+                      utils.define(scope[item], method, {
+                        configurable: false,
+                        enumerable: false,
+                        writable: false,
+                        value: function (value) {
+                          if (value !== undefined) {
+                            if (tree[item].type instanceof Type &amp;&amp; utils.isFunction(tree[item].type.validate)) {
+                              if (tree[item].type.validate(value)) {
+                                return [][method].apply(table[item], arguments)
+                              }
+                              else {
+                                return false;
+                              }
+                            }
+                            else {
+                              return [][method].apply(table[item], arguments)
+                            }
+                          }
+                          else {
+                            return [][method].apply(table[item], arguments);
+                          }
+                        }.bind(null)
+                      });
+                    }
+                  });
+              }
+
+              // recursive call to define descriptors
+              defineFromTree.call(self, tree[item], scope[item], table[item]);
+            }
+          }.call(self, item);
+        }
+      }
+    }.bind(this);
+    // define
+    defineFromTree(self.schema.tree, this, table);
+    // free if in strict mode
+    if (this.schema.options.strict) utils.freeze(this);
+  };
+
+  // overload set method on prototype
+  utils.define(this, 'set', {
+    configurable: false,
+    enumerable: false,
+    writable: true,
+    value: function (key, value) {
+      // if set for prop is defined try it with that
+      if (this[key] &amp;&amp; utils.isFunction(this[key].set)) {
+        return this[key].set(value)
+      }
+      return this[key] = value;
+    }
+  });
+
+  utils.define(this, 'get', {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: function (key) {
+      if (table[key]) {
+        return table[key];
+      }
+      else if (self.schema.virtuals[key]) {
+        // could be virtual key, shortcut to it
+        return this[key];
+      }
+
+      return undefined;
+    }
+  });
+
+  utils.define(this, 'refresh', {
+    configurable: false,
+    enumerable: false,
+    writable: false,
+    value: refresh
+  });
+
+  var idKey = this.getDocumentKeyKey();
+
+  // call a refresh to init schema
+  this.refresh();
+
+  // set  data
+  data &amp;&amp; build(data);
+
+  // handle incoming arrays
+  if ('object' == typeof data) {
+    var prop;
+    for (prop in data) {
+      if (utils.isArray(data[prop]) &amp;&amp; utils.isArray(this[prop])) {
+        data[prop].forEach(function (v) {
+          this.push(v);
+        }, this[prop]);
+      }
+    }
+  }
+
+  // auto generate document key if needed
+  if (this.schema.key.generate === true &amp;&amp; !self.$_table[idKey]) {
+    self.set([idKey], uuid.v4());
+  }
+
+  // if they supplied init() method
+  if (this.init &amp;&amp; typeof this.init === 'function') {
+    this.init();
+  }
+
+  return this;
+}</code></pre>
+          <div class="description"><p>Document exposes the NodeJS event emitter API, so you can use<br /><code>on</code>, <code>once</code>, etc.</p></div>
+          <pre><code class="language-javascript">['on', 'once', 'emit', 'listeners', 'removeListener', 'setMaxListeners',
+  'removeAllListeners', 'addListener'].forEach(
+  function (emitterFn) {
+    Document.prototype[emitterFn] = function () {
+      return this.$_emitter[emitterFn].apply(this.$_emitter, arguments);
+    };
+  });</code></pre>
+          <section id="schema">
+            <h1>schema</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>Document.prototype.schema</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <div class="description"><p>A reference to the schema instance for the model</p></div>
+          <pre><code class="language-javascript">Document.prototype.schema;</code></pre>
+          <section id="refresh">
+            <h1>refresh</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Document.prototype.refresh()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <div class="description"><p>Refreshes the state of the model based on its schema</p></div>
+          <pre><code class="language-javascript">Document.prototype.refresh = function () {
+};</code></pre>
+          <section id="set">
+            <h1>set</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Document.prototype.set()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <div class="description"><p>Sets data on the model based on the schema</p></div>
+          <pre><code class="language-javascript">Document.prototype.set = function () {
+};</code></pre>
+          <section id="toObject">
+            <h1>toObject</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Document.prototype.toObject()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>options</td>
+                <td>Object</td>
+                <td><pre><code>     - transform - transform function
+     - virtuals - whether to include virtuals. Default: false
+     - minimize - to remove empty properties from outout object. Default: true
+</code></pre></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Returns a plain object representation of the model used for console.log</p></div>
+          <pre><code class="language-javascript">Document.prototype.toObject = function (options) {
+  return this.$_toObject(options);
+};</code></pre>
+          <section id="toJSON">
+            <h1>toJSON</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Document.prototype.toJSON()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>options</td>
+                <td>Object</td>
+                <td><pre><code>     - transform - transform function
+     - virtuals - whether to include virtuals. Default: false
+     - minimize - to remove empty properties from outout object. Default: true
+</code></pre></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Similar as toObject but called with JSON.stringify</p></div>
+          <pre><code class="language-javascript">Document.prototype.toJSON = function (options) {
+  return this.$_toObject(options, true);
+};</code></pre>
+          <section id="inspect">
+            <h1>inspect</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Document.prototype.inspect()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <div class="description"><p>Helper for console.log. Just invokes default toObject.</p></div>
+          <pre><code class="language-javascript">Document.prototype.inspect = function () {
+  return inspect(this.toObject({}));
+};</code></pre>
+          <section id="toString">
+            <h1>toString</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>Document.prototype.toString</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <div class="description"><p>Helper for console.log. Alias for inspect.</p></div>
+          <pre><code class="language-javascript">Document.prototype.toString = Document.prototype.inspect;</code></pre>
+          <section id="getDocumentKeyValue">
+            <h1>getDocumentKeyValue</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Document.prototype.getDocumentKeyValue()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>full</td>
+                <td>Boolean</td>
+                <td><p>if true the full expanded value of the key will be returned if             there were any suffix and / or prefix applied in schema definition</p></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Helper function to get the document key</p></div>
+          <pre><code class="language-javascript">Document.prototype.getDocumentKeyValue = function (full) {
+  var idKey = this.getDocumentKeyKey();
+
+  return this.schema.getDocumentKeyValue(this.$_table[idKey], full)
+};</code></pre>
+          <section id="getDocumentKeyValue">
+            <h1>getDocumentKeyValue</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Document.getDocumentKeyValue()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>id</td>
+                <td>String</td>
+                <td><p>id of the document</p></td>
+              </tr>
+              <tr>
+                <td>full</td>
+                <td>Boolean</td>
+                <td><p>if we want the full version of the key value</p></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Static version of getDocumentKeyValue</p></div>
+          <pre><code class="language-javascript">Document.getDocumentKeyValue = function (id, full) {
+  return this.schema.getDocumentKeyValue(id, full);
+};</code></pre>
+          <section id="getDocumentKeyKey">
+            <h1>getDocumentKeyKey</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Document.prototype.getDocumentKeyKey()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <div class="description"><p>Gets the Document key key</p></div>
+          <pre><code class="language-javascript">Document.prototype.getDocumentKeyKey = function () {
+  return this.schema.key.docKeyKey;
+};</code></pre>
+          <section id="modelName">
+            <h1>modelName</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>Document.prototype.modelName</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <div class="description"><p>The name of the model</p></div>
+          <pre><code class="language-javascript">Document.prototype.modelName;</code></pre>
+          <section id="valueOf">
+            <h1>valueOf</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Document.prototype.valueOf()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <div class="description"><p>Returns a value representation of a Model instance</p></div>
+          <pre><code class="language-javascript">Document.prototype.valueOf = function () {
+  return this.toObject();
+};
+
+module.exports = Document;</code></pre>
+          <div class="footer site-footer">
+            <div class="span site-footer-owner"><a href="https://github.com/mr-doc/mr-doc-theme-cayman">Cayman</a> is maintained by <a href="https://github.com/iwatakeshi">iwatakeshi</a>.</div>
+            <div class="span site-footer-credits">This page was generated by <a href="https://github.com/mr-doc/mr-doc">Mr. Doc</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/affix.js"></script>
+    <script src="js/dropdown.js"></script>
+    <script src="js/scrollspy.js"></script>
+    <script src="js/prism.js"></script>
+    <script src="js/prism-bash.js"></script>
+    <script>
+      $(document).ready(function(){
+        $('body').scrollspy({
+          target: ".bs-docs-sidebar",
+          offset: 40
+        });
+        $('#sidebar').affix({
+          offset:{
+            bottom:60,
+            top: 60
+          }
+        }) 
+      });
+    </script>
+  </body>
+</html>

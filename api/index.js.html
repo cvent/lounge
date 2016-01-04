@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Lounge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/cayman.css">
+    <link rel="stylesheet" href="css/prism.css">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Lounge</h1>
+      <h2 class="project-tagline">Simple Mongoose-inspired ODM for Couchbase</h2><a href="https://github.com/bojand/lounge" target="_blank" class="btn">View on GitHub</a><a href="https://npmjs.com/package/lounge" target="_blank" class="btn">View on npm</a>
+    </section>
+    <section data-spy="scroll" data-target=".scrollspy" class="main-content">
+      <div class="row">
+        <div class="col-md-3 col-xs-3 bs-docs-sidebar">
+          <ul id="sidebar" class="nav nav-stacked fixed">
+            <li><a href="index.html">Main</a></li>
+            <li><a href="couchdoc.js.html">couchdoc.js</a></li>
+            <li><a href="document.js.html">document.js</a></li>
+            <li><a href="driver.js.html">driver.js</a></li>
+            <li class="active"><a href="index.js.html">index.js
+                <ul class="nav nav-stacked">
+                  <li><a href="#Lounge"><i class="alert alert-info"></i><span>Lounge</span></a>
+                  </li>
+                  <li><a href="#connect"><i class="alert alert-info"></i><span>connect</span></a>
+                  </li>
+                  <li><a href="#disconnect"><i class="alert alert-info"></i><span>disconnect</span></a>
+                  </li>
+                  <li><a href="#schema"><i class="alert alert-info"></i><span>schema</span></a>
+                  </li>
+                  <li><a href="#model"><i class="alert alert-info"></i><span>model</span></a>
+                  </li>
+                  <li><a href="#setOption"><i class="alert alert-info"></i><span>setOption</span></a>
+                  </li>
+                  <li><a href="#getOption"><i class="alert alert-success"></i><span>getOption</span></a>
+                  </li>
+                  <li><a href="#modelNames"><i class="alert alert-info"></i><span>modelNames</span></a>
+                  </li>
+                  <li><a href="#Schema"><i class="alert alert-success"></i><span>Schema</span></a>
+                  </li>
+                  <li><a href="#Model"><i class="alert alert-success"></i><span>Model</span></a>
+                  </li>
+                  <li><a href="#Document"><i class="alert alert-success"></i><span>Document</span></a>
+                  </li>
+                  <li><a href="#Lounge"><i class="alert alert-success"></i><span>Lounge</span></a>
+                  </li>
+                </ul></a></li>
+            <li><a href="model.js.html">model.js</a></li>
+            <li><a href="schema.js.html">schema.js</a></li>
+            <li><a href="tree.js.html">tree.js</a></li>
+            <li><a href="type.js.html">type.js</a></li>
+            <li><a href="utils.js.html">utils.js</a></li>
+          </ul>
+        </div>
+        <div class="col-md-9">
+          <section id="Lounge">
+            <h1>Lounge</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">function</div><span>&nbsp;</span><span>Lounge()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>options</td>
+                <td></td>
+                <td><pre><code>   keyPrefix             - key prefix for all keys. No default. Generally useful if you wish to namespace
+                           documents. Example: `app::env::`.
+   keySuffix             - Similar as prefix but used as a suffix
+   storeFullReferenceId  - whether to store embedded document keys as fully expanded keys
+                           (with prefix and suffix applied) or just the minimized version. default: false
+   storeFullKey          - Similarly to store the fully expanded document key inside the key property. default: false
+   alwaysReturnArrays    - set to true to force `findyById` to always return an array of documents even if only
+                           a single key is passed in
+   refIndexKeyPrefix     - reference lookup index document key prefix. The name of the index is appended.
+                           default: &#39;$_ref_by_&#39;
+   delimiter             - delimiter string used for concatenation in reference document key expansion / generation.
+                           default: &#39;_&#39;. This is prepended to the reference document key.
+   waitForIndex          - When documents are saved, indexes are updated. We can wait for this operation to
+                           finish before returning from `save()`. Default: false
+   minimize              - &quot;minimize&quot; schemas by removing empty objects. Default: true
+</code></pre></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Lounge constructor.</p><p>The exports object of the <code>lounge</code> module is an instance of this class.<br />Most apps will only use this one instance.</p></div>
+          <pre><code class="language-javascript">function Lounge(options) {
+  this.models = {};
+  this.bucket = null;
+  this.db = null;
+  this.config = _.defaults(options || {}, utils.defaultOptions);
+}</code></pre>
+          <section id="connect">
+            <h1>connect</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Lounge.prototype.connect()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>options</td>
+                <td></td>
+                <td><pre><code>     connectionString - connection string for the cluster
+     bucket - name of the bucket or the actual Couchbase `bucket` instance
+     password - password
+     certpath - certpath for cluster
+</code></pre></td>
+              </tr>
+              <tr>
+                <td>fn</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>mock</td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Connect to database</p></div>
+          <pre><code class="language-javascript">Lounge.prototype.connect = function (options, fn, mock) {
+  if (typeof fn === 'boolean') {
+    mock = fn;
+    fn = _.noop;
+  }
+
+  if (!fn) {
+    fn = _.noop;
+  }
+
+  function retFn(err, bucket) {
+    fn(err, bucket || this.bucket);
+  }
+
+  if (options.bucket &amp;&amp; typeof options.bucket === 'object') {
+    this.bucket = options.bucket;
+
+    if (this.bucket) {
+      this.db = driver.wrap(this.bucket);
+      this.db.models = this.models;
+    }
+
+    retFn(null, this.bucket);
+  }
+  else if (options.bucket &amp;&amp; typeof options.bucket === 'string' &amp;&amp;
+    options.connectionString &amp;&amp; typeof options.connectionString === 'string') {
+    var cluster;
+    var custerOpts = options.certpath ? {certpath: options.certpath} : null;
+
+    if (mock || process.env.LOUNGE_COUCHBASE_MOCK) {
+      cluster = new couchbase.Mock.Cluster(options.connectionString, custerOpts);
+    }
+    else {
+      cluster = new couchbase.Cluster(options.connectionString, custerOpts);
+    }
+
+    if (options.password) {
+      this.bucket = cluster.openBucket(options.bucket, options.password, retFn);
+    }
+    else {
+      this.bucket = cluster.openBucket(options.bucket, retFn);
+    }
+
+    if (this.bucket) {
+      this.db = driver.wrap(this.bucket);
+      this.db.models = this.models;
+    }
+  }
+
+  return this.bucket;
+};</code></pre>
+          <section id="disconnect">
+            <h1>disconnect</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Lounge.prototype.disconnect()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <div class="description"><p>Disconnect from the bucket. Deletes all defined models.</p></div>
+          <pre><code class="language-javascript">Lounge.prototype.disconnect = function () {
+  if (this.bucket) {
+    this.bucket.disconnect();
+  }
+
+  delete this.models;
+  delete this.db;
+
+  this.models = {};
+  this.db = null;
+};</code></pre>
+          <section id="schema">
+            <h1>schema</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Lounge.prototype.schema()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>descriptor</td>
+                <td>Object</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>options</td>
+                <td>Object</td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Creates a schema. Prefer to use this over Schema conststructor as this will pass along Lounge config settings.</p></div>
+          <pre><code class="language-javascript">Lounge.prototype.schema = function (descriptor, options) {
+  var opts = _.defaults(options || {}, _.pick(this.config, schemaConfigOptions));
+  return new Schema(descriptor, opts);
+};</code></pre>
+          <section id="model">
+            <h1>model</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Lounge.prototype.model()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>name</td>
+                <td>String</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>schema</td>
+                <td>Schema</td>
+                <td><p>instance</p></td>
+              </tr>
+              <tr>
+                <td>options</td>
+                <td>Object</td>
+                <td><pre><code>               freeze - to Freeze model. See `Object.freeze`. Default: true
+</code></pre></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Creates a model from a schema</p></div>
+          <pre><code class="language-javascript">Lounge.prototype.model = function (name, schema, options) {
+  if (!(schema instanceof Schema))
+    throw new TypeError('lounge.model expects an instance of Schema. Got \'' + typeof schema + '\'');
+  else {
+    options = (utils.isPlainObject(options)) ? options : {};
+
+    if (this.models[name])
+      return this.models[name];
+
+    var m = Model.compile(name, schema, this.db, this.config, options);
+    this.models[name] = m;
+    return m;
+  }
+};</code></pre>
+          <section id="setOption">
+            <h1>setOption</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Lounge.prototype.setOption()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <table class="table table-bordered table-striped">
+            <thead>
+              <tr>
+                <th style="width:20%">Option name</th>
+                <th style="width:20%">Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>key</td>
+                <td></td>
+                <td><p>{String}</p></td>
+              </tr>
+              <tr>
+                <td>value</td>
+                <td></td>
+                <td><p>{mixed}</p></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="description"><p>Sets lounge config options</p><p>####Example:</p><pre><code>lounge.setOption(&#39;debug&#39;, true) // enable logging collection methods + arguments to the console
+</code></pre></div>
+          <pre><code class="language-javascript">Lounge.prototype.setOption = function (key, value) {
+  if (arguments.length === 1) {
+    return this.config[key];
+  }
+
+  this.config[key] = value;
+  return this;
+};</code></pre>
+          <section id="getOption">
+            <h1>getOption</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>Lounge.prototype.getOption</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <div class="description"><p>Get config option</p></div>
+          <pre><code class="language-javascript">Lounge.prototype.getOption = Lounge.prototype.setOption;</code></pre>
+          <section id="modelNames">
+            <h1>modelNames</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Lounge.prototype.modelNames()</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <div class="description"><p>Returns an array of model names created on this instance of Mongoose.</p></div>
+          <pre><code class="language-javascript">Lounge.prototype.modelNames = function () {
+  return Object.keys(this.models);
+};</code></pre>
+          <div class="description"><p>Inherit all Couchbase Bucket functions and apply them to our bucket</p></div>
+          <pre><code class="language-javascript">[
+  'append', 'counter', 'get', 'getAndLock', 'getAndTouch', 'getMulti', 'getReplica', 'insert', 'manager', 'prepend',
+  'query', 'remove', 'replace', 'set', 'setTranscoder', 'touch', 'unlock', 'upsert'
+
+].forEach(function (key) {
+    Lounge.prototype[key] = function () {
+      if (this.bucket) {
+        return this.bucket[key].apply(this.bucket, arguments);
+      }
+    }
+  });</code></pre>
+          <div class="description"><p>Inherit all Couchbase Bucket properties and apply them to our bucket</p></div>
+          <pre><code class="language-javascript">[
+  'configThrottle', 'connectionTimeout', 'durabilityInterval', 'durabilityTimeout', 'managementTimeout',
+  'nodeConnectionTimeout', 'operationTimeout', 'viewTimeout'
+].forEach(function (key) {
+    Object.defineProperty(Lounge.prototype, key, {
+      get: propertyGetWrapper(key),
+      set: propertySetWrapper(key)
+    });
+  });
+
+function propertyGetWrapper(key) {
+  return function () {
+    if (this.bucket) {
+      return this.bucket[key];
+    }
+  }
+}
+function propertySetWrapper(key) {
+  return function (value) {
+    if (this.bucket) {
+      return this.bucket[key] = value;
+    }
+  }
+}</code></pre>
+          <section id="Schema">
+            <h1>Schema</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>Lounge.prototype.Schema</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <div class="description"><p>The Lounge <a href="#schema_Schema">Schema</a> constructor</p><p>####Example:</p><pre><code>var lounge = require(&#39;lounge&#39;);
+var Schema = lounge.Schema;
+var CatSchema = new Schema(..);
+</code></pre></div>
+          <pre><code class="language-javascript">Lounge.prototype.Schema = Schema;</code></pre>
+          <section id="Model">
+            <h1>Model</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>Lounge.prototype.Model</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <div class="description"><p>The Lounge <a href="#model_Model">Model</a> constructor.</p></div>
+          <pre><code class="language-javascript">Lounge.prototype.Model = Model;</code></pre>
+          <section id="Document">
+            <h1>Document</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>Lounge.prototype.Document</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <div class="description"><p>The Lounge [Document] constructor.</p></div>
+          <pre><code class="language-javascript">Lounge.prototype.Document = Document;</code></pre>
+          <section id="Lounge">
+            <h1>Lounge</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>Lounge.prototype.Lounge</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <div class="description"><p>The Lounge constructor</p><p>The exports of the Lounge module is an instance of this class.</p><p>####Example:</p><pre><code>var lounge = require(&#39;lounge&#39;);
+var lounge = new lounge.Lounge();
+</code></pre></div>
+          <pre><code class="language-javascript">Lounge.prototype.Lounge = Lounge;
+
+module.exports = new Lounge;</code></pre>
+          <div class="footer site-footer">
+            <div class="span site-footer-owner"><a href="https://github.com/mr-doc/mr-doc-theme-cayman">Cayman</a> is maintained by <a href="https://github.com/iwatakeshi">iwatakeshi</a>.</div>
+            <div class="span site-footer-credits">This page was generated by <a href="https://github.com/mr-doc/mr-doc">Mr. Doc</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/affix.js"></script>
+    <script src="js/dropdown.js"></script>
+    <script src="js/scrollspy.js"></script>
+    <script src="js/prism.js"></script>
+    <script src="js/prism-bash.js"></script>
+    <script>
+      $(document).ready(function(){
+        $('body').scrollspy({
+          target: ".bs-docs-sidebar",
+          offset: 40
+        });
+        $('#sidebar').affix({
+          offset:{
+            bottom:60,
+            top: 60
+          }
+        }) 
+      });
+    </script>
+  </body>
+</html>
