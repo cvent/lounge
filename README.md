@@ -1032,7 +1032,7 @@ user.on('save', function (doc) {
 });
 ```
 
-### API Documentation <a id="events"></a>
+### API Documentation <a id="apidocs"></a>
 
 [API Documentation](http://bojand.github.io/lounge/api)
 
