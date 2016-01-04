@@ -55,7 +55,7 @@ kitty.save(function (err) {
 the new key. The old document sticks around under the old key. There are too many implications if we start automatically
 handle document removal in this scenario. This should be handled by the user of this module.
 
-## Documentation
+## Guide
 
 * [Setup](#lounge)
 * [Modelling](#model)
@@ -68,6 +68,7 @@ handle document removal in this scenario. This should be handled by the user of 
 * [Indexes](#indexes)
 * [Queries](#queries)
 * [Events](#events)
+* [API Documentation](#apidocs)
 
 ### Setup <a id="lounge"></a>
 
@@ -1030,6 +1031,10 @@ user.on('save', function (doc) {
   console.log('document saved');
 });
 ```
+
+### API Documentation <a id="events"></a>
+
+[API Documentation](http://bojand.github.io/lounge/api)
 
 ## TESTS
 
