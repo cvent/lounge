@@ -21,7 +21,7 @@
   "scripts": {
     "test": "LOUNGE_COUCHBASE_MOCK=true mocha",
     "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha",
-    "docs": "mr-doc -s lib/ -o apidocs/ -n \"Lounge\" -t \"cayman\""
+    "docs": "mr-doc -s lib/ --readme api.md -o apidocs/ -n \"Lounge\" -t \"cayman\""
   },
   "dependencies": {
     "async": "^1.5.0",
