@@ -84,23 +84,24 @@
               <tr>
                 <td>options</td>
                 <td>Object</td>
-                <td><pre><code>    - keyPrefix - key prefix for all keys. No default. Generally useful if you wish to namespace documents.
-                Example: `app::env::`.
-    - keySuffix - Similar as prefix but used as a suffix
-    - refIndexKeyPrefix - reference lookup index document key prefix. The name of the index is appended.
-                        default: &#39;$_ref_by_&#39;
-    - delimiter - delimiter string used for concatenation in reference document key expansion / generation.
-                default: &#39;_&#39;. This is prepended to the reference document key.
-     - minimize - &quot;minimize&quot; schemas by removing empty objects. Default: true
-     - toObject - toObject method options, transform, virtuals and minimize
-     - toJSON - toJSON method options, similar to above
-     - strict - ensures that value passed in ot assigned that were not specified in our schema do not get saved
-</code></pre></td>
+                <td><ul>
+<li>keyPrefix - key prefix for all keys. No default. Generally useful if you wish to namespace documents. Example: <code>app::env::</code>.</li>
+<li>keySuffix - Similar as prefix but used as a suffix</li>
+<li>refIndexKeyPrefix - reference lookup index document key prefix. The name of the index is appended. Default: &#39;$_ref<em>by</em>&#39;</li>
+<li>delimiter - delimiter string used for concatenation in reference document key expansion / generation.<br />default: &#39;_&#39;. This is prepended to the reference document key.</li>
+<li>minimize - &quot;minimize&quot; schemas by removing empty objects. Default: true</li>
+<li>toObject - toObject method options, transform, virtuals and minimize</li>
+<li>toJSON - toJSON method options, similar to above</li>
+<li>strict - ensures that value passed in ot assigned that were not specified in our schema do not get saved</li>
+</ul>
+</td>
               </tr>
             </tbody>
           </table>
           <div class="description"><p>Creates an object schema</p></div>
           <pre><code class="language-javascript">function Schema(descriptor, options) {
+  if (!(this instanceof Schema))
+    return new Schema(obj, options);
 
   this.callQueue = [];
   this.virtuals = {};
@@ -162,18 +163,12 @@
               <tr>
                 <td>key</td>
                 <td>String</td>
-                <td><ul>
-<li>the key for new property</li>
-</ul>
-</td>
+                <td><p>the key for new property</p></td>
               </tr>
               <tr>
                 <td>descriptor</td>
                 <td>Object</td>
-                <td><ul>
-<li>the property / type descriptor</li>
-</ul>
-</td>
+                <td><p>the property / type descriptor</p></td>
               </tr>
             </tbody>
           </table>
@@ -234,16 +229,16 @@
               <tr>
                 <td>name</td>
                 <td>String</td>
-                <td></td>
+                <td><p>name of the statuc function</p></td>
               </tr>
               <tr>
                 <td>func</td>
                 <td>Function</td>
-                <td></td>
+                <td><p>the actual function</p></td>
               </tr>
             </tbody>
           </table>
-          <div class="description"><p>Creates a static function for the created model</p></div>
+          <div class="description"><p>Creates a static function for the created model.<br />An object of function names and functions can also be passed in.</p></div>
           <pre><code class="language-javascript">Schema.prototype.static = function (name, func) {
   if (utils.isPlainObject(name)) {
     for (func in name) {
@@ -275,16 +270,16 @@
               <tr>
                 <td>name</td>
                 <td>String</td>
-                <td></td>
+                <td><p>the name of the method</p></td>
               </tr>
               <tr>
                 <td>func</td>
                 <td>Function</td>
-                <td></td>
+                <td><p>the actual function implementation</p></td>
               </tr>
             </tbody>
           </table>
-          <div class="description"><p>Creates a instance method for the created model</p></div>
+          <div class="description"><p>Creates a instance method for the created model.<br />An object of function names and functions can also be passed in.</p></div>
           <pre><code class="language-javascript">Schema.prototype.method = function (name, func) {
   if (utils.isPlainObject(name)) {
     for (func in name) {
@@ -316,12 +311,15 @@
               <tr>
                 <td>name</td>
                 <td>String</td>
-                <td></td>
+                <td><p>name of the virtual property</p></td>
               </tr>
               <tr>
                 <td>options</td>
                 <td>Object</td>
-                <td></td>
+                <td><p>virtual options - get - the virtual getter function</p><ul>
+<li>set - the virtual setter function</li>
+</ul>
+</td>
               </tr>
             </tbody>
           </table>
@@ -416,6 +414,11 @@
                 <td>String</td>
                 <td><p>option name</p></td>
               </tr>
+              <tr>
+                <td>return</td>
+                <td></td>
+                <td><p>the option value</p></td>
+              </tr>
             </tbody>
           </table>
           <div class="description"><p>Gets a schema option.</p></div>
@@ -446,7 +449,7 @@
               <tr>
                 <td>full</td>
                 <td></td>
-                <td><p>if true the full expanded value of the key will be returned if             there were any suffix and / or prefix applied in schema definition<br />            We test if the passed in id already satisfies expansion.</p></td>
+                <td><p>If <code>true</code> the full expanded value of the key will be returned if there were any suffix and / or prefix defined in schema they are also applied. We test if the passed in id already satisfies expansion.</p></td>
               </tr>
             </tbody>
           </table>

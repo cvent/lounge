@@ -82,9 +82,8 @@
               </tr>
             </tbody>
           </table>
-          <div class="description"><p>CouchbaseDocument inherits Document and handles all the database related actions.</p></div>
+          <div class="description"><p>CouchbaseDocument inherits Document and handles all the database related actions.<br />Clients should never have to call this directly.</p></div>
           <pre><code class="language-javascript">function CouchbaseDocument(data, cas) {
-
   var self = this;
 
   this.$_casv = cas;
@@ -125,7 +124,7 @@ for (k in Document) {
               <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>CouchbaseDocument.prototype.db</span><span>&nbsp;</span>
             </p>
           </section>
-          <div class="description"><p>Connection the model uses.</p></div>
+          <div class="description"><p>Connection the model uses. <code>Driver</code> instance.</p></div>
           <pre><code class="language-javascript">CouchbaseDocument.prototype.db;</code></pre>
           <section id="bucket">
             <h1>bucket</h1>
@@ -134,7 +133,7 @@ for (k in Document) {
               <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>CouchbaseDocument.prototype.bucket</span><span>&nbsp;</span>
             </p>
           </section>
-          <div class="description"><p>Bucket the model uses.</p></div>
+          <div class="description"><p>Couchbase Bucket the model uses.</p></div>
           <pre><code class="language-javascript">CouchbaseDocument.prototype.bucket;</code></pre>
           <section id="getCAS">
             <h1>getCAS</h1>
@@ -155,7 +154,7 @@ for (k in Document) {
               <tr>
                 <td>raw</td>
                 <td>Boolean</td>
-                <td><p>if true returns the raw CAS document. If false, returns string representation of CAS. Default false.</p></td>
+                <td><p>If <code>true</code> returns the raw CAS document. If <code>false</code> returns string representation of CAS.                  Defaults to <code>false</code>.</p></td>
               </tr>
             </tbody>
           </table>
@@ -207,27 +206,28 @@ for (k in Document) {
               <tr>
                 <td>data</td>
                 <td>Object</td>
-                <td><p>optional sets the objects params to data</p></td>
+                <td><p>Optional. Sets the objects data.</p></td>
               </tr>
               <tr>
                 <td>options</td>
                 <td>Object</td>
-                <td><p>save options. All options not present here are first looked up from schema options, and then                from config options.</p><pre><code>     - storeFullReferenceId - whether to save embedded document property values as full document keys or just
-                            the base value
-     - storeFullKey - whether to save the internal document key property as fully expanded value or as the simple value
-     - refIndexKeyPrefix - lookup index document key prefix.
-     - waitForIndex - whether we want to wait for indexing to finish before returning. default is false.
-     - virtuals - whether we want to save virtuals. default is false.
-     - minimize - to &quot;minimize&quot; the document by removing any empty properties. Default: true
-     - expiry - couchbase upsert option
-     - persist_to - couchbase persist_to option
-     - replicate_to - couchbase option
-</code></pre></td>
+                <td><p>The save options. All options not present here are first looked up from schema options, and then from config options.</p><ul>
+<li><code>storeFullReferenceId</code> - whether to save embedded document property values as full document keys or just the base value</li>
+<li><code>storeFullKey</code> - whether to save the internal document key property as fully expanded value or as the simple value</li>
+<li><code>refIndexKeyPrefix</code> - lookup index document key prefix.</li>
+<li><code>waitForIndex</code> - whether we want to wait for indexing to finish before returning. default is false.</li>
+<li><code>virtuals</code> - whether we want to save virtuals. default is false.</li>
+<li><code>minimize</code> - to &quot;minimize&quot; the document by removing any empty properties. Default: true</li>
+<li><code>expiry</code> - couchbase upsert option</li>
+<li><code>persist_to</code> - couchbase persist_to option</li>
+<li><code>replicate_to</code> - couchbase option</li>
+</ul>
+</td>
               </tr>
               <tr>
                 <td>fn</td>
                 <td></td>
-                <td></td>
+                <td><p>{Function} callback</p></td>
               </tr>
             </tbody>
           </table>
@@ -345,13 +345,15 @@ for (k in Document) {
               <tr>
                 <td>options</td>
                 <td>Object</td>
-                <td><pre><code>    - storeFullReferenceId - whether we store full document id in reference documents
-</code></pre></td>
+                <td><ul>
+<li><code>storeFullReferenceId</code> - whether we store full document id in reference documents</li>
+</ul>
+</td>
               </tr>
               <tr>
                 <td>fn</td>
                 <td></td>
-                <td><p>callback</p></td>
+                <td><p>{Function} callback</p></td>
               </tr>
             </tbody>
           </table>
@@ -405,16 +407,16 @@ for (k in Document) {
               <tr>
                 <td>options</td>
                 <td>Object</td>
-                <td><p>options to be passed to the couchbase remove function.</p></td>
+                <td><p>Options to be passed to the Couchbase <code>Bucket.remove()</code> function.</p></td>
               </tr>
               <tr>
                 <td>fn</td>
                 <td></td>
-                <td></td>
+                <td><p>{Function} callback</p></td>
               </tr>
             </tbody>
           </table>
-          <div class="description"><p>Removes the instance from the database.<br />Calls the db remove function. Options can be passed to the driver.</p></div>
+          <div class="description"><p>Removes the instance from the database.<br />Calls the bucket <code>remove()</code> function. Options can be passed to the driver.</p></div>
           <pre><code class="language-javascript">CouchbaseDocument.prototype.remove = function (options, fn) {
   if (typeof options === 'function') {
     fn = options;
@@ -495,13 +497,15 @@ for (k in Document) {
               <tr>
                 <td>options</td>
                 <td>Object</td>
-                <td><pre><code>   - storeFullReferenceId - whether we store full document id in reference documents
-</code></pre></td>
+                <td><ul>
+<li><code>storeFullReferenceId</code> - whether we store full document id in reference documents</li>
+</ul>
+</td>
               </tr>
               <tr>
                 <td>fn</td>
                 <td></td>
-                <td><p>callback</p></td>
+                <td><p>{Function} callback</p></td>
               </tr>
             </tbody>
           </table>
@@ -583,13 +587,15 @@ for (k in Document) {
               <tr>
                 <td>options</td>
                 <td>Object</td>
-                <td><pre><code>    - populate - populate options
-</code></pre></td>
+                <td><ul>
+<li><code>populate</code> - populate options, can be a <code>Boolean</code>, <code>String</code> representing a path, or an <code>Array</code> of <code>String</code> paths</li>
+</ul>
+</td>
               </tr>
               <tr>
                 <td>fn</td>
                 <td></td>
-                <td><p>callback</p></td>
+                <td><p>{Function} callback</p></td>
               </tr>
             </tbody>
           </table>

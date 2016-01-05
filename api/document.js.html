@@ -83,11 +83,8 @@
               </tr>
             </tbody>
           </table>
-          <div class="description"><p>Base constructor for all created Model instances<br />Represents just the document data and generic properties and functions.</p></div>
+          <div class="description"><p>Base constructor for all created Model instances.<br />Represents just the document data and generic properties and functions.<br />Clients should never have to call this directly.</p></div>
           <pre><code class="language-javascript">function Document(data) {
-  if (!(this instanceof Document))
-    return new Document(data);
-
   var self = this;
 
   this.$_emitter = new EventEmitter();
@@ -257,7 +254,6 @@
                 // this doesn't allow sub objects to be set using assignment operator
                 // user.metadata = { foo: 'bar' };
                 // we have to do user.metadata.foo = 'bar';
-                // we also have to get data using user.metadata.foo;
                 // we can also use user.metadata.set({...});
 
                 utils.define(scope, item, {
@@ -267,7 +263,7 @@
                   value: {}
                 });
 
-                // at least over ride inspect so we can get proper console.log
+                // at least over ride inspect so we can properly get property
                 utils.define(scope[item], 'inspect', {
                   configurable: false,
                   enumerable: false,
@@ -287,6 +283,7 @@
                   }
                 });
 
+                // special set for nested objects
                 utils.define(scope[item], 'set', {
                   configurable: false,
                   enumerable: false,
@@ -377,11 +374,22 @@
     enumerable: false,
     writable: true,
     value: function (key, value) {
-      // if set for prop is defined try it with that
-      if (this[key] &amp;&amp; utils.isFunction(this[key].set)) {
-        return this[key].set(value)
+      // allow setting full object data
+      if (typeof key === 'object' &amp;&amp; !value) {
+        for (var k in key) {
+          if (key.hasOwnProperty(k)) {
+            this.set(k, key[k]);
+          }
+        }
+        return this;
       }
-      return this[key] = value;
+      else if (key &amp;&amp; value) {
+        // if set for prop is defined try it with that
+        if (this[key] &amp;&amp; utils.isFunction(this[key].set)) {
+          return this[key].set(value)
+        }
+        return this[key] = value;
+      }
     }
   });
 
@@ -441,7 +449,7 @@
 
   return this;
 }</code></pre>
-          <div class="description"><p>Document exposes the NodeJS event emitter API, so you can use<br /><code>on</code>, <code>once</code>, etc.</p></div>
+          <div class="description"><p>Document exposes the NodeJS event emitter API, so you can use <code>on</code>, <code>once</code>, etc.</p></div>
           <pre><code class="language-javascript">['on', 'once', 'emit', 'listeners', 'removeListener', 'setMaxListeners',
   'removeAllListeners', 'addListener'].forEach(
   function (emitterFn) {
@@ -456,7 +464,7 @@
               <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>Document.prototype.schema</span><span>&nbsp;</span>
             </p>
           </section>
-          <div class="description"><p>A reference to the schema instance for the model</p></div>
+          <div class="description"><p>A reference to the schema instance for the model.</p></div>
           <pre><code class="language-javascript">Document.prototype.schema;</code></pre>
           <section id="refresh">
             <h1>refresh</h1>
@@ -465,7 +473,7 @@
               <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Document.prototype.refresh()</span><span>&nbsp;</span>
             </p>
           </section>
-          <div class="description"><p>Refreshes the state of the model based on its schema</p></div>
+          <div class="description"><p>Refreshes the state of the model based on its schema.</p></div>
           <pre><code class="language-javascript">Document.prototype.refresh = function () {
 };</code></pre>
           <section id="set">
@@ -475,7 +483,7 @@
               <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Document.prototype.set()</span><span>&nbsp;</span>
             </p>
           </section>
-          <div class="description"><p>Sets data on the model based on the schema</p></div>
+          <div class="description"><p>Sets data on the model based on the schema.<br />Accepts a key of property and value for the property, or object representing the data for document.</p></div>
           <pre><code class="language-javascript">Document.prototype.set = function () {
 };</code></pre>
           <section id="toObject">
@@ -497,14 +505,21 @@
               <tr>
                 <td>options</td>
                 <td>Object</td>
-                <td><pre><code>     - transform - transform function
-     - virtuals - whether to include virtuals. Default: false
-     - minimize - to remove empty properties from outout object. Default: true
-</code></pre></td>
+                <td><ul>
+<li><code>transform</code> - a transform function to apply to the resulting document before returning</li>
+<li><code>virtuals</code> - apply virtual getters (defaults to false)</li>
+<li><code>minimize</code> - remove empty objects (defaults to true)</li>
+</ul>
+</td>
+              </tr>
+              <tr>
+                <td>return</td>
+                <td>Object</td>
+                <td><p>Plain javascript object representation of document.</p></td>
               </tr>
             </tbody>
           </table>
-          <div class="description"><p>Returns a plain object representation of the model used for console.log</p></div>
+          <div class="description"><p>Converts this document into a plain javascript object.</p></div>
           <pre><code class="language-javascript">Document.prototype.toObject = function (options) {
   return this.$_toObject(options);
 };</code></pre>
@@ -527,14 +542,16 @@
               <tr>
                 <td>options</td>
                 <td>Object</td>
-                <td><pre><code>     - transform - transform function
-     - virtuals - whether to include virtuals. Default: false
-     - minimize - to remove empty properties from outout object. Default: true
-</code></pre></td>
+                <td><ul>
+<li><code>transform</code> - a transform function to apply to the resulting document before returning</li>
+<li><code>virtuals</code> - apply virtual getters (defaults to false)</li>
+<li><code>minimize</code> - remove empty objects (defaults to true)</li>
+</ul>
+</td>
               </tr>
             </tbody>
           </table>
-          <div class="description"><p>Similar as toObject but called with JSON.stringify</p></div>
+          <div class="description"><p>Similar as toObject but applied when JSON.stringify is called</p></div>
           <pre><code class="language-javascript">Document.prototype.toJSON = function (options) {
   return this.$_toObject(options, true);
 };</code></pre>
@@ -577,11 +594,11 @@
               <tr>
                 <td>full</td>
                 <td>Boolean</td>
-                <td><p>if true the full expanded value of the key will be returned if             there were any suffix and / or prefix applied in schema definition</p></td>
+                <td><p>If <code>true</code> the full expanded value of the key will be returned.                  If there were any suffix and / or prefix defined in schema they are applied.</p></td>
               </tr>
             </tbody>
           </table>
-          <div class="description"><p>Helper function to get the document key</p></div>
+          <div class="description"><p>Helper function to get the document key.</p></div>
           <pre><code class="language-javascript">Document.prototype.getDocumentKeyValue = function (full) {
   var idKey = this.getDocumentKeyKey();
 
@@ -611,11 +628,11 @@
               <tr>
                 <td>full</td>
                 <td>Boolean</td>
-                <td><p>if we want the full version of the key value</p></td>
+                <td><p>If <code>true</code> the full expanded value of the key will be returned.                  If there were any suffix and / or prefix defined in schema they are applied.</p></td>
               </tr>
             </tbody>
           </table>
-          <div class="description"><p>Static version of getDocumentKeyValue</p></div>
+          <div class="description"><p>Static version of getDocumentKeyValue.</p></div>
           <pre><code class="language-javascript">Document.getDocumentKeyValue = function (id, full) {
   return this.schema.getDocumentKeyValue(id, full);
 };</code></pre>
@@ -626,7 +643,7 @@
               <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Document.prototype.getDocumentKeyKey()</span><span>&nbsp;</span>
             </p>
           </section>
-          <div class="description"><p>Gets the Document key key</p></div>
+          <div class="description"><p>Gets the Document key property name.</p></div>
           <pre><code class="language-javascript">Document.prototype.getDocumentKeyKey = function () {
   return this.schema.key.docKeyKey;
 };</code></pre>
@@ -637,7 +654,7 @@
               <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>Document.prototype.modelName</span><span>&nbsp;</span>
             </p>
           </section>
-          <div class="description"><p>The name of the model</p></div>
+          <div class="description"><p>The name of the model.</p></div>
           <pre><code class="language-javascript">Document.prototype.modelName;</code></pre>
           <section id="valueOf">
             <h1>valueOf</h1>

@@ -45,6 +45,8 @@
                   </li>
                   <li><a href="#Model"><i class="alert alert-success"></i><span>Model</span></a>
                   </li>
+                  <li><a href="#CouchbaseDocument"><i class="alert alert-success"></i><span>CouchbaseDocument</span></a>
+                  </li>
                   <li><a href="#Document"><i class="alert alert-success"></i><span>Document</span></a>
                   </li>
                   <li><a href="#Lounge"><i class="alert alert-success"></i><span>Lounge</span></a>
@@ -77,22 +79,18 @@
               <tr>
                 <td>options</td>
                 <td></td>
-                <td><pre><code>   keyPrefix             - key prefix for all keys. No default. Generally useful if you wish to namespace
-                           documents. Example: `app::env::`.
-   keySuffix             - Similar as prefix but used as a suffix
-   storeFullReferenceId  - whether to store embedded document keys as fully expanded keys
-                           (with prefix and suffix applied) or just the minimized version. default: false
-   storeFullKey          - Similarly to store the fully expanded document key inside the key property. default: false
-   alwaysReturnArrays    - set to true to force `findyById` to always return an array of documents even if only
-                           a single key is passed in
-   refIndexKeyPrefix     - reference lookup index document key prefix. The name of the index is appended.
-                           default: &#39;$_ref_by_&#39;
-   delimiter             - delimiter string used for concatenation in reference document key expansion / generation.
-                           default: &#39;_&#39;. This is prepended to the reference document key.
-   waitForIndex          - When documents are saved, indexes are updated. We can wait for this operation to
-                           finish before returning from `save()`. Default: false
-   minimize              - &quot;minimize&quot; schemas by removing empty objects. Default: true
-</code></pre></td>
+                <td><ul>
+<li><code>keyPrefix</code> - key prefix for all keys. No default. Generally useful if you wish to namespace documents. Example: <code>app::env::</code>.</li>
+<li><code>keySuffix</code> - Similar as prefix but used as a suffix</li>
+<li><code>storeFullReferenceId</code> - whether to store embedded document keys as fully expanded keys (with prefix and suffix applied)<br />or just the minimized version. default: false</li>
+<li><code>storeFullKey</code> - Similarly to store the fully expanded document key inside the key property. default: false</li>
+<li><code>alwaysReturnArrays</code> - set to true to force <code>findyById</code> to always return an array of documents even if only<br />a single key is passed in</li>
+<li><code>refIndexKeyPrefix</code> - reference lookup index document key prefix. The name of the index is appended. default: &#39;$_ref<em>by</em>&#39;</li>
+<li><code>delimiter</code> - delimiter string used for concatenation in reference document key expansion / generation.<br />default: &#39;_&#39;. This is prepended to the reference document key.</li>
+<li><code>waitForIndex</code> - When documents are saved, indexes are updated. We can wait for this operation to finish before<br />returning from <code>save()</code>. Default: false</li>
+<li><code>minimize</code> - &quot;minimize&quot; schemas by removing empty objects. Default: true</li>
+</ul>
+</td>
               </tr>
             </tbody>
           </table>
@@ -122,21 +120,28 @@
               <tr>
                 <td>options</td>
                 <td></td>
-                <td><pre><code>     connectionString - connection string for the cluster
-     bucket - name of the bucket or the actual Couchbase `bucket` instance
-     password - password
-     certpath - certpath for cluster
-</code></pre></td>
+                <td><ul>
+<li><code>connectionString</code> - connection string for the cluster</li>
+<li><code>bucket</code> - name of the bucket or the actual Couchbase <code>bucket</code> instance</li>
+<li><code>password</code> - password</li>
+<li><code>certpath</code> - certpath for cluster</li>
+</ul>
+</td>
               </tr>
               <tr>
                 <td>fn</td>
                 <td></td>
-                <td></td>
+                <td><p>{Function} callback</p></td>
               </tr>
               <tr>
                 <td>mock</td>
                 <td></td>
-                <td></td>
+                <td><p>{Boolean} whether to use Couchbase mocking mechanism</p></td>
+              </tr>
+              <tr>
+                <td>return</td>
+                <td>Object</td>
+                <td><p>Couchbase Bucket instance</p></td>
               </tr>
             </tbody>
           </table>
@@ -235,11 +240,16 @@
               <tr>
                 <td>options</td>
                 <td>Object</td>
-                <td></td>
+                <td><p>Schema options</p></td>
+              </tr>
+              <tr>
+                <td>return</td>
+                <td>Object</td>
+                <td><p>created Schema instance</p></td>
               </tr>
             </tbody>
           </table>
-          <div class="description"><p>Creates a schema. Prefer to use this over Schema conststructor as this will pass along Lounge config settings.</p></div>
+          <div class="description"><p>Creates a schema. Prefer to use this over Schema constructor as this will pass along Lounge config settings.</p></div>
           <pre><code class="language-javascript">Lounge.prototype.schema = function (descriptor, options) {
   var opts = _.defaults(options || {}, _.pick(this.config, schemaConfigOptions));
   return new Schema(descriptor, opts);
@@ -263,7 +273,7 @@
               <tr>
                 <td>name</td>
                 <td>String</td>
-                <td></td>
+                <td><p>name of the model.</p></td>
               </tr>
               <tr>
                 <td>schema</td>
@@ -273,12 +283,14 @@
               <tr>
                 <td>options</td>
                 <td>Object</td>
-                <td><pre><code>               freeze - to Freeze model. See `Object.freeze`. Default: true
-</code></pre></td>
+                <td><ul>
+<li><code>freeze</code> - to Freeze model. See <code>Object.freeze</code>. Default: true</li>
+</ul>
+</td>
               </tr>
             </tbody>
           </table>
-          <div class="description"><p>Creates a model from a schema</p></div>
+          <div class="description"><p>Creates a model from a schema.</p></div>
           <pre><code class="language-javascript">Lounge.prototype.model = function (name, schema, options) {
   if (!(schema instanceof Schema))
     throw new TypeError('lounge.model expects an instance of Schema. Got \'' + typeof schema + '\'');
@@ -312,17 +324,16 @@
               <tr>
                 <td>key</td>
                 <td></td>
-                <td><p>{String}</p></td>
+                <td><p>{String} the config key</p></td>
               </tr>
               <tr>
                 <td>value</td>
                 <td></td>
-                <td><p>{mixed}</p></td>
+                <td><p>{*} option value</p></td>
               </tr>
             </tbody>
           </table>
-          <div class="description"><p>Sets lounge config options</p><p>####Example:</p><pre><code>lounge.setOption(&#39;debug&#39;, true) // enable logging collection methods + arguments to the console
-</code></pre></div>
+          <div class="description"><p>Sets lounge config options</p></div>
           <pre><code class="language-javascript">Lounge.prototype.setOption = function (key, value) {
   if (arguments.length === 1) {
     return this.config[key];
@@ -338,7 +349,7 @@
               <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>Lounge.prototype.getOption</span><span>&nbsp;</span>
             </p>
           </section>
-          <div class="description"><p>Get config option</p></div>
+          <div class="description"><p>Get config option.</p></div>
           <pre><code class="language-javascript">Lounge.prototype.getOption = Lounge.prototype.setOption;</code></pre>
           <section id="modelNames">
             <h1>modelNames</h1>
@@ -347,7 +358,7 @@
               <div class="label label-info radius ctx-type">method</div><span>&nbsp;</span><span>Lounge.prototype.modelNames()</span><span>&nbsp;</span>
             </p>
           </section>
-          <div class="description"><p>Returns an array of model names created on this instance of Mongoose.</p></div>
+          <div class="description"><p>Returns an array of model names created on this instance of Lounge.</p></div>
           <pre><code class="language-javascript">Lounge.prototype.modelNames = function () {
   return Object.keys(this.models);
 };</code></pre>
@@ -395,10 +406,7 @@ function propertySetWrapper(key) {
               <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>Lounge.prototype.Schema</span><span>&nbsp;</span>
             </p>
           </section>
-          <div class="description"><p>The Lounge <a href="#schema_Schema">Schema</a> constructor</p><p>####Example:</p><pre><code>var lounge = require(&#39;lounge&#39;);
-var Schema = lounge.Schema;
-var CatSchema = new Schema(..);
-</code></pre></div>
+          <div class="description"><p>The Lounge Schema constructor</p></div>
           <pre><code class="language-javascript">Lounge.prototype.Schema = Schema;</code></pre>
           <section id="Model">
             <h1>Model</h1>
@@ -407,8 +415,17 @@ var CatSchema = new Schema(..);
               <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>Lounge.prototype.Model</span><span>&nbsp;</span>
             </p>
           </section>
-          <div class="description"><p>The Lounge <a href="#model_Model">Model</a> constructor.</p></div>
+          <div class="description"><p>The Lounge Model constructor.</p></div>
           <pre><code class="language-javascript">Lounge.prototype.Model = Model;</code></pre>
+          <section id="CouchbaseDocument">
+            <h1>CouchbaseDocument</h1>
+            <h5 class="subheader"></h5>
+            <p>
+              <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>Lounge.prototype.CouchbaseDocument</span><span>&nbsp;</span>
+            </p>
+          </section>
+          <div class="description"><p>The Lounge CouchbaseDocument constructor.</p></div>
+          <pre><code class="language-javascript">Lounge.prototype.CouchbaseDocument = CouchbaseDocument;</code></pre>
           <section id="Document">
             <h1>Document</h1>
             <h5 class="subheader"></h5>
@@ -416,7 +433,7 @@ var CatSchema = new Schema(..);
               <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>Lounge.prototype.Document</span><span>&nbsp;</span>
             </p>
           </section>
-          <div class="description"><p>The Lounge [Document] constructor.</p></div>
+          <div class="description"><p>The Lounge Document constructor.</p></div>
           <pre><code class="language-javascript">Lounge.prototype.Document = Document;</code></pre>
           <section id="Lounge">
             <h1>Lounge</h1>
@@ -425,9 +442,7 @@ var CatSchema = new Schema(..);
               <div class="label label-success radius ctx-type">property</div><span>&nbsp;</span><span>Lounge.prototype.Lounge</span><span>&nbsp;</span>
             </p>
           </section>
-          <div class="description"><p>The Lounge constructor</p><p>The exports of the Lounge module is an instance of this class.</p><p>####Example:</p><pre><code>var lounge = require(&#39;lounge&#39;);
-var lounge = new lounge.Lounge();
-</code></pre></div>
+          <div class="description"><p>The Lounge constructor</p><p>The exports of the Lounge module is an instance of this class.</p></div>
           <pre><code class="language-javascript">Lounge.prototype.Lounge = Lounge;
 
 module.exports = new Lounge;</code></pre>
