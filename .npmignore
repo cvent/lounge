@@ -6,3 +6,4 @@ dump.rdb
 npm-debug.log
 .nyc_output
 test
+apidocs

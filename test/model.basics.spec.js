@@ -273,6 +273,22 @@ describe('Model basics', function () {
     user.set('usernames', usernames2);
 
     expect(user.usernames.sort()).to.deep.equal(usernames2);
+
+    user.set({
+      firstName: 'Bob',
+      lastName: 'Jones',
+      email: 'bjones@gmail.com',
+      usernames: usernames1
+    });
+
+    var expectedData = {
+      firstName: 'Bob',
+      lastName: 'Jones',
+      email: 'bjones@gmail.com',
+      usernames: usernames1
+    };
+
+    expect(user.toObject()).to.deep.equal(expectedData);
   });
 
   it('Should properly change array ref property', function () {

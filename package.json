@@ -1,7 +1,7 @@
 {
   "name": "lounge",
   "description": "Simple Mongoose-inspired ODM for Couchbase",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "homepage": "https://github.com/bojand/lounge",
   "license": "MIT",
   "repository": {
@@ -20,7 +20,8 @@
   },
   "scripts": {
     "test": "LOUNGE_COUCHBASE_MOCK=true mocha",
-    "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha"
+    "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha",
+    "docs": "mr-doc -s lib/ -o apidocs/ -n \"Lounge\" -t \"cayman\""
   },
   "dependencies": {
     "async": "^1.5.0",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "chai": "^3.4.1",
     "mocha": "^2.3.3",
+    "mr-doc": "^3.0.7",
     "mr-doc-theme-cayman": "^1.0.3",
     "nyc": "^5.0.0",
     "validator": "^4.4.0"
