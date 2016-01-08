@@ -1,13 +1,9 @@
 ### TODO 
 
-* README
-* Break up docs into separate files / sections and provide deeper documentation and examples.
-* Improve full API documentation.
 * Improve comments and documentation.
 * Improve `EventEmitter` utilization.
 * Add `EventEmitter` interface to Model constructor to catch events on all instances. 
 * Add `'error'` events.
-* Add `debug()` logging and `debug` config option.
 * Fix `Schema` constructor so that it picks up config values for the lounge object.
 * Add config option to specify `Date` format for saving.
 * More tests and improve coverage. 
