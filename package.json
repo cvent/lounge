@@ -1,0 +1,17 @@
+{
+  "name": "guide.js",
+  "description": "Github page build scripts",
+  "author": "Bojan D.",
+  "version": "0.1.0",
+  "main": "guide.js",
+  "repository": "git://github.com/bojand/lounge.git",
+  "homepage": "http://bojand.github.io/lounde",
+  "bugs": {
+    "url": "http://github.com/bojand/lounge/issues"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "marked": "~0.3.5",
+    "lodash": "~3.10.0"
+  }
+}
