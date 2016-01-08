@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="UTF-8">
+    <title>Lounge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/cayman.css">
+    <link rel="stylesheet" href="css/prism.css">
+</head>
+<body>
+<section class="page-header">
+    <h1 class="project-name">Lounge</h1>
+
+    <h2 class="project-tagline">Simple Mongoose-inspired ODM for Couchbase</h2><a
+        href="https://github.com/bojand/lounge" target="_blank" class="btn">View on GitHub</a><a
+        href="https://npmjs.com/package/lounge" target="_blank" class="btn">View on npm</a>
+</section>
+<section data-spy="scroll" data-target=".scrollspy" class="main-content">
+    <div class="row">
+        <div class="col-md-3 col-xs-3 bs-docs-sidebar">
+            <ul id="sidebar" class="nav nav-stacked fixed">
+                <li><a href="header.html">Setup</a></li>
+                <li><a href="model.html">Modelling</a></li>
+                <li><a href="mw.html">Middleware</a></li>
+                <li><a href="extend.html">Schema Extension</a></li>
+                <li><a href="embedded.html">Embedded</a></li>
+                <li><a href="saving.html">Saving Documents</a></li>
+                <li><a href="getting.md">Retrieving Documents</a></li>
+                <li><a href="removing.md">Removing Documents</a></li>
+                <li><a href="populate.html">Population</a></li>
+                <li><a href="indexes.html">Indexes</a></li>
+                <li><a href="events.html">Events</a></li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <section id="Main" class="readme">
+<h3 id="setup-a-id-lounge-a-">Setup <a id="lounge"></a></h3>
+<pre><code class="lang-js">var lounge = require(&#39;lounge&#39;);
+</code></pre>
+<p>Module exports an instance of <code>Lounge</code> class.</p>
+<h4 id="lounge-options-">Lounge(options)</h4>
+<p>Creates a new instance of <code>Lounge</code> class. You rarely have to do this.</p>
+<pre><code class="lang-js">var lounge = require(&#39;lounge&#39;);
+var l = new lounge.Lounge();
+</code></pre>
+<p><strong>Options</strong></p>
+<ul>
+<li><code>keyPrefix</code> - key prefix for all keys. No default. Generally useful if you wish to namespace documents. 
+Example: <code>app::env::</code>.</li>
+<li><code>storeFullReferenceId</code> - whether to store embedded document keys as fully expanded keys 
+(with prefix and suffix applied) or just the minimized version. default: <code>false</code>. </li>
+<li><code>storeFullKey</code> - Similarly, to store the fully expanded document key inside the key property. default: <code>false</code></li>
+<li><code>alwaysReturnArrays</code> - set to true to force <code>findyById</code> to always return an array of documents even if only
+a single key is passed in. Default: <code>false</code></li>
+<li><code>refIndexKeyPrefix</code> - reference lookup index document key prefix. The name of the index is appended to this.
+Default: <code>&#39;$_ref_by_&#39;</code></li>
+<li><code>delimiter</code> - delimiter string used for concatenation in reference document key expansion / generation. default: <code>&#39;_&#39;</code> 
+This is prepended to the reference document key.</li>
+<li><code>waitForIndex</code> - When documents are saved, indexes are updated. We can wait for this operation to finish before 
+returning from <code>save()</code>. Default: <code>false</code></li>
+<li><code>minimize</code> - &quot;minimize&quot; schemas by removing empty objects. Default: <code>true</code></li>
+</ul>
+<p>Any of these options, or additional variables can be manipulated using the <code>setOption</code> and <code>getOption</code> methods.</p>
+<pre><code class="lang-js">var lounge = require(&#39;lounge&#39;);
+lounge.setOption(&#39;alwaysReturnArrays&#39;, true);
+console.log(lounge.getOption(&#39;alwaysReturnArrays&#39;);
+</code></pre>
+<h4 id="lounge-connect-options-fn-mock-">Lounge.connect(options, fn, mock)</h4>
+<p>Connects to the database cluster based on <code>options</code>. When completed calls <code>fn</code> callback. Set <code>mock</code> to <code>true</code> to use
+<a href="https://github.com/couchbase/couchnode#mock-testing">Couchbase mocking</a>. Alternatively you can set
+<code>LOUNGE_COUCHBASE_MOCK</code> environment variable. Returns an instance of Couchbase <code>bucket</code>.</p>
+<p><strong>Options</strong></p>
+<ul>
+<li><code>connectionString</code> - connection string for the cluster. See <a href="http://docs.couchbase.com/sdk-api/couchbase-node-client-2.1.2/Cluster.html">Cluster documentation</a>.</li>
+<li><code>bucket</code> - name of the bucket to be used for <a href="http://docs.couchbase.com/sdk-api/couchbase-node-client-2.1.2/Cluster.html#openBucket"><code>openBucket</code></a>
+or the actual, already connected, Couchbase <code>bucket</code> instance.</li>
+<li><code>password</code> - password for <a href="http://docs.couchbase.com/sdk-api/couchbase-node-client-2.1.2/Cluster.html#openBucket"><code>openBucket</code></a></li>
+<li><code>certpath</code> - certpath for <a href="http://docs.couchbase.com/sdk-api/couchbase-node-client-2.1.2/Cluster.html">cluster constructor</a>.</li>
+</ul>
+<pre><code class="lang-js">var lounge = require(&#39;lounge&#39;);
+var bucket = lounge.connect({ 
+  connectionString: &#39;couchbase://127.0.0.1&#39;,
+  bucket: &#39;lounge_test&#39;
+}, function(err, bucket) {
+  // ... connected
+});
+</code></pre>
+<h4 id="lounge-disconnect-">Lounge.disconnect()</h4>
+<p>Disconnect from the bucket. Deletes all defined models.</p>
+<h4 id="lounge-schema-descriptor-options-">Lounge.schema(descriptor, options)</h4>
+<p>Creates a new <code>Schema</code> based on <code>descriptor</code> and <code>options</code>. Prefer this over the actual <code>Schema</code> constructor as this
+will pass lounge config variables to the <code>Schema</code> constructor automatically. </p>
+<p>Schema construction options:</p>
+<ul>
+<li><code>keyPrefix</code> - key prefix for all keys. No default. Generally useful if you wish to namespace documents. Example: <code>app::env::</code>.</li>
+<li><code>keySuffix</code> - Similar as prefix but used as a suffix</li>
+<li><code>refIndexKeyPrefix</code> - reference lookup index document key prefix. The name of the index is appended. Default: &#39;$_ref<em>by</em>&#39;
+Reference / lookup document keys are also treated using <code>keyPrefix</code> and <code>keySuffix</code> settings.  </li>
+<li><code>delimiter</code> - delimiter string used for concatenation in reference document key expansion / generation.
+Default: &#39;_&#39;. This is prepended to the reference document key.</li>
+<li><code>minimize</code> - &quot;minimize&quot; schemas by removing empty objects. Default: <code>true</code></li>
+<li><code>toObject</code> - toObject method options: <code>transform</code>, <code>virtuals</code> and <code>minimize</code></li>
+<li><code>toJSON</code> - toJSON method options, similar to above</li>
+<li><code>strict</code> - ensures that value passed in ot assigned that were not specified in our schema do not get saved. Default: <code>true</code></li>
+</ul>
+<h4 id="lounge-model-name-schema-options-">Lounge.model(name, schema, options)</h4>
+<p>Defines a Model based on case sensitive model <code>name</code> and created <code>schema</code>, with given options. From there we can create
+instances of the Model;</p>
+<p><strong>Options</strong></p>
+<ul>
+<li><code>freeze</code> - to freeze the model. See <code>Object.freeze</code>. Default: <code>true</code></li>
+</ul>
+<pre><code class="lang-js">var userSchema = lounge.schema({
+  firstName: String,
+  lastName: String,
+  email: String,
+  dateOfBirth: Date,
+});
+
+User = lounge.model(&#39;User&#39;, userSchema);
+var user = new User({
+  firstName: &#39;Joe&#39;,
+  lastName: &#39;Smith&#39;,
+  email: &#39;joe@gmail.com&#39;,
+  dateOfBirth: new Date()
+});
+
+console.log(user instanceof User) // true
+</code></pre>
+<h4 id="lounge-modelnames-">Lounge.modelNames()</h4>
+<p>Returns and array of all defined model names.</p>
+<h4 id="bucket-functions">Bucket functions</h4>
+<p>Lounge instance also inherits all public <a href="http://docs.couchbase.com/sdk-api/couchbase-node-client-2.1.2/Bucket.html"><code>Bucket</code></a>
+ functions and properties.</p>
+<pre><code class="lang-js">lounge.get(&#39;mydocumentkey&#39;, function(err, res) {
+  // .. save as if we did normal bucket.get()
+});
+</code></pre>
+<h4 id="lounge-schema">Lounge.Schema</h4>
+<p>Exported <code>Schema</code> constructor. You can use this as well as <code>lounge.schema()</code>, which is preferred.</p>
+<pre><code class="lang-js">var userSchema = new lounge.Schema({ name: String });
+</code></pre>
+<h4 id="lounge-model">Lounge.Model</h4>
+<p>Exported <code>Model</code> constructor. You should never have to manually create a Model.</p>
+<h4 id="lounge-document">Lounge.Document</h4>
+<p>Exported  internal <code>Document</code> constructor. You should never have to manually create a Document.</p>
+<pre><code class="lang-js">// already defined User model
+var user = new User({name: &#39;Bob&#39;});
+console.log(user instanceof User) // true
+console.log(user instanceof lounge.Model) // true
+console.log(user instanceof lounge.Document) // true
+</code></pre>
+</section>
+</div>
+</div>
+</section>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/affix.js"></script>
+<script src="js/dropdown.js"></script>
+<script src="js/scrollspy.js"></script>
+<script src="js/prism.js"></script>
+<script src="js/prism-bash.js"></script>
+<script>
+    $(document).ready(function () {
+        $('body').scrollspy({
+            target: ".bs-docs-sidebar",
+            offset: 40
+        });
+        $('#sidebar').affix({
+            offset: {
+                bottom: 60,
+                top: 60
+            }
+        })
+    });
+</script>
+</body>
+</html>

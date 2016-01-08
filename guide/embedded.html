@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="UTF-8">
+    <title>Lounge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/cayman.css">
+    <link rel="stylesheet" href="css/prism.css">
+</head>
+<body>
+<section class="page-header">
+    <h1 class="project-name">Lounge</h1>
+
+    <h2 class="project-tagline">Simple Mongoose-inspired ODM for Couchbase</h2><a
+        href="https://github.com/bojand/lounge" target="_blank" class="btn">View on GitHub</a><a
+        href="https://npmjs.com/package/lounge" target="_blank" class="btn">View on npm</a>
+</section>
+<section data-spy="scroll" data-target=".scrollspy" class="main-content">
+    <div class="row">
+        <div class="col-md-3 col-xs-3 bs-docs-sidebar">
+            <ul id="sidebar" class="nav nav-stacked fixed">
+                <li><a href="header.html">Setup</a></li>
+                <li><a href="model.html">Modelling</a></li>
+                <li><a href="mw.html">Middleware</a></li>
+                <li><a href="extend.html">Schema Extension</a></li>
+                <li><a href="embedded.html">Embedded</a></li>
+                <li><a href="saving.html">Saving Documents</a></li>
+                <li><a href="getting.md">Retrieving Documents</a></li>
+                <li><a href="removing.md">Removing Documents</a></li>
+                <li><a href="populate.html">Population</a></li>
+                <li><a href="indexes.html">Indexes</a></li>
+                <li><a href="events.html">Events</a></li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <section id="Main" class="readme">
+<h3 id="embedded-documents-a-id-embedded-a-">Embedded Documents <a id="embedded"></a></h3>
+<p>Lounge allows for embedding and referencing other Models within schema.</p>
+<pre><code class="lang-js">var addressSchema = lounge.schema({
+  street: String,
+  city: String,
+  country: String
+});
+
+var Address = lounge.model(&#39;Address&#39;, addressSchema);
+
+var blogPostSchema = lounge.schema({
+  title: String,
+  body: String,
+});
+
+var BlogPost = lounge.model(&#39;BlogPost&#39;, blogPostSchema);
+
+var userSchema = lounge.schema({
+  name: String,
+  address: Address,
+  posts: [BlogPost]
+});
+
+var post = new BlogPost({
+  title: &#39;Foo&#39;,
+  body: &#39;Lorem ipsum&#39;
+});
+
+var user = new User({
+  name: &#39;Bob Smith&#39;,
+  posts: [post],
+  address: new Address({
+    street: &#39;123 Fake Street&#39;,
+    city: &#39;Springfield&#39;,
+    country: &#39;USA&#39;
+  })
+});
+
+user.posts.push(new BlogPost({
+  title: &#39;Post 2&#39;,
+  body: &#39;Some more text!&#39;
+});
+</code></pre>
+<p>You can manipulate and work with subdocument just like any model instances. When the top level document is saved
+all child subdocuments are saved as well. Subdocuments <strong>must</strong> be an instance of the Model defined in the schema or a 
+<code>String</code> in which case it represents the key / id of the subdocument.</p>
+<h3 id="saving-documents-a-id-saving-a-">Saving Documents <a id="saving"></a></h3>
+<p>Saving documents is done using <code>save</code> function that every model instance has. This will execute all pre 
+&#39;save&#39; middleware and then perform Couchbase <code>upsert</code> operation on any subdocuments and the actual document. It will also
+perform lookup document updates and finally execute any post hook middleware.</p>
+<p>From our example code above:</p>
+<pre><code class="lang-js">user.save(function(err, savedDoc) {
+  if(err) console.log(err);
+});
+</code></pre>
+<p>All documents and subdocuments would be upserted into the database.</p>
+<p><strong>Model.save(data, options, fn)</strong></p>
+<p><code>data</code> - any data to be set into the model before saving.</p>
+<p><strong>options</strong></p>
+<p>All options not present here are first looked up from schema options, and then from config options.</p>
+<ul>
+<li><code>storeFullReferenceId</code> - whether to save embedded document property values as full document keys or just the base value</li>
+<li><code>storeFullKey</code> - whether to save the internal document key property as fully expanded value or as the simple value</li>
+<li><code>refIndexKeyPrefix</code> - lookup index document key prefix.</li>
+<li><code>waitForIndex</code> - whether we want to wait for indexing to finish before returning. default is false.</li>
+<li><code>virtuals</code> - whether we want to save virtuals. default is <code>false</code>.</li>
+<li><code>minimize</code> - to &quot;minimize&quot; the document by removing any empty properties. Default: <code>true</code></li>
+<li><code>expiry</code> - couchbase upsert option</li>
+<li><code>persist_to</code> - couchbase persist_to option</li>
+<li><code>replicate_to</code> - couchbase option</li>
+</ul>
+</section>
+</div>
+</div>
+</section>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/affix.js"></script>
+<script src="js/dropdown.js"></script>
+<script src="js/scrollspy.js"></script>
+<script src="js/prism.js"></script>
+<script src="js/prism-bash.js"></script>
+<script>
+    $(document).ready(function () {
+        $('body').scrollspy({
+            target: ".bs-docs-sidebar",
+            offset: 40
+        });
+        $('#sidebar').affix({
+            offset: {
+                bottom: 60,
+                top: 60
+            }
+        })
+    });
+</script>
+</body>
+</html>

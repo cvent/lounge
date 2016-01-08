@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="UTF-8">
+    <title>Lounge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/cayman.css">
+    <link rel="stylesheet" href="css/prism.css">
+</head>
+<body>
+<section class="page-header">
+    <h1 class="project-name">Lounge</h1>
+
+    <h2 class="project-tagline">Simple Mongoose-inspired ODM for Couchbase</h2><a
+        href="https://github.com/bojand/lounge" target="_blank" class="btn">View on GitHub</a><a
+        href="https://npmjs.com/package/lounge" target="_blank" class="btn">View on npm</a>
+</section>
+<section data-spy="scroll" data-target=".scrollspy" class="main-content">
+    <div class="row">
+        <div class="col-md-3 col-xs-3 bs-docs-sidebar">
+            <ul id="sidebar" class="nav nav-stacked fixed">
+                <li><a href="header.html">Setup</a></li>
+                <li><a href="model.html">Modelling</a></li>
+                <li><a href="mw.html">Middleware</a></li>
+                <li><a href="extend.html">Schema Extension</a></li>
+                <li><a href="embedded.html">Embedded</a></li>
+                <li><a href="saving.html">Saving Documents</a></li>
+                <li><a href="getting.md">Retrieving Documents</a></li>
+                <li><a href="removing.md">Removing Documents</a></li>
+                <li><a href="populate.html">Population</a></li>
+                <li><a href="indexes.html">Indexes</a></li>
+                <li><a href="events.html">Events</a></li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <section id="Main" class="readme">
+<h3 id="schema-extension-a-id-schema-extend-a-">Schema Extension <a id="schema-extend"></a></h3>
+<p>It is useful to have a common base schema, that all other schemas / models would extend or &quot;inherit&quot; properties from.
+This can be accomplished by using the <code>Schema.extend</code> function. When used all properties, virtuals,
+methods, statics, and middleware that are present in the base schema <strong>but not</strong> present in destination schema are copied 
+into the destination schema.</p>
+<pre><code class="lang-js"> var baseSchema = lounge.schema({
+  metadata: {
+    doc_type: String,
+    createdAt: Date,
+    updatedAt: Date
+  }
+});
+
+baseSchema.pre(&#39;save&#39;, function (next) {
+  if (!this.metadata) {
+    this.metadata = {};
+  }
+
+  var now = new Date();
+
+  if (!this.metadata.createdAt) {
+    this.metadata.createdAt = now;
+  }
+
+  this.metadata.updatedAt = now;
+  this.metadata.doc_type = this.modelName;
+
+  next();
+});
+
+baseSchema.method(&#39;baseFoo&#39;, function () {
+  console.log(&#39;base foo&#39;);
+});
+
+var userSchema = lounge.schema({
+  name: String,
+  email: String,
+});
+
+userSchema.pre(&#39;save&#39;, function (next) {
+  if (this.email) {
+    this.email = this.email.toLowerCase();
+  }
+
+  next();
+});
+
+userSchema.method(&#39;userFoo&#39;, function () {
+  console.log(&#39;user foo&#39;);
+});
+
+// make user schema extend the base schema 
+userSchema.extend(baseSchema);
+var User = lounge.model(&#39;User&#39;, userSchema);
+
+user = new User({
+  name: &#39;Bob Smith&#39;,
+  email: &#39;BSmith@gmail.com&#39;
+});
+
+user.baseFoo() // prints &#39;base foo&#39;
+user.userFoo() // prints &#39;user foo&#39;
+
+user.save(function(err, savedDoc) {
+  console.log(user.metadata.updatedAt); // Sat Dec 29 2015 03:30:00 GMT-0400 (AST)
+  console.log(user.metadata.doc_type); // &#39;user&#39;
+  console.log(user.email); // &#39;bsmith@gmail.com&#39;
+});
+</code></pre>
+</section>
+</div>
+</div>
+</section>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/affix.js"></script>
+<script src="js/dropdown.js"></script>
+<script src="js/scrollspy.js"></script>
+<script src="js/prism.js"></script>
+<script src="js/prism-bash.js"></script>
+<script>
+    $(document).ready(function () {
+        $('body').scrollspy({
+            target: ".bs-docs-sidebar",
+            offset: 40
+        });
+        $('#sidebar').affix({
+            offset: {
+                bottom: 60,
+                top: 60
+            }
+        })
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="UTF-8">
+    <title>Lounge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/cayman.css">
+    <link rel="stylesheet" href="css/prism.css">
+</head>
+<body>
+<section class="page-header">
+    <h1 class="project-name">Lounge</h1>
+
+    <h2 class="project-tagline">Simple Mongoose-inspired ODM for Couchbase</h2><a
+        href="https://github.com/bojand/lounge" target="_blank" class="btn">View on GitHub</a><a
+        href="https://npmjs.com/package/lounge" target="_blank" class="btn">View on npm</a>
+</section>
+<section data-spy="scroll" data-target=".scrollspy" class="main-content">
+    <div class="row">
+        <div class="col-md-3 col-xs-3 bs-docs-sidebar">
+            <ul id="sidebar" class="nav nav-stacked fixed">
+                <li><a href="header.html">Setup</a></li>
+                <li><a href="model.html">Modelling</a></li>
+                <li><a href="mw.html">Middleware</a></li>
+                <li><a href="extend.html">Schema Extension</a></li>
+                <li><a href="embedded.html">Embedded</a></li>
+                <li><a href="saving.html">Saving Documents</a></li>
+                <li><a href="getting.md">Retrieving Documents</a></li>
+                <li><a href="removing.md">Removing Documents</a></li>
+                <li><a href="populate.html">Population</a></li>
+                <li><a href="indexes.html">Indexes</a></li>
+                <li><a href="events.html">Events</a></li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <section id="Main" class="readme">
+<h3 id="getting-documents-a-id-getting-a-">Getting Documents <a id="getting"></a></h3>
+<p>All models created come with a static function <code>findById</code> that can be used to look up a single or multiple keys and
+retrieve documents from the database. If key does not exist and document is not found we <strong>do not</strong> return an error
+but also no model is generated. This is different than present couchbase module behaviour.</p>
+<pre><code class="lang-js">User.findById(&#39;user123&#39;, function(err, doc) {
+if(err) console.log(err); // there was an error looking up the key
+else if(!doc) console.log(&#39;no document found&#39;);
+else console.log(doc); // doc is instance of User and will print it out
+});
+</code></pre>
+<p>We can get multiple keys using an array as the first parameter. In this case, the callback invoked is passed 3 arguments
+in form <code>(err, documents, misses)</code>.</p>
+<pre><code class="lang-js">User.findById([&#39;user123&#39;, &#39;user456&#39;], function(err, docs, misses) {
+if(err) console.log(err); // there was an error looking up the key
+console.dir(docs);        // array of Users found
+console.dir(misses);      // array if keys not found.
+});
+</code></pre>
+<p>When <code>findById</code> is invoked using a single string argument the result returned is a single model instance. When an array
+is passed in we return the results as described above. To force &quot;array&quot; type of returns in ALL cases, set the Lounge
+config option <code>alwaysReturnArrays</code> to <code>true</code>. Default is <code>false</code>.</p>
+</section>
+</div>
+</div>
+</section>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/affix.js"></script>
+<script src="js/dropdown.js"></script>
+<script src="js/scrollspy.js"></script>
+<script src="js/prism.js"></script>
+<script src="js/prism-bash.js"></script>
+<script>
+    $(document).ready(function () {
+        $('body').scrollspy({
+            target: ".bs-docs-sidebar",
+            offset: 40
+        });
+        $('#sidebar').affix({
+            offset: {
+                bottom: 60,
+                top: 60
+            }
+        })
+    });
+</script>
+</body>
+</html>

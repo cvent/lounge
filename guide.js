@@ -13,6 +13,6 @@ filenames.forEach(function (filename) {
     var content = fs.readFileSync('./guide/'.concat(filename), 'utf8');
     var html = marked(content);
     var output = header.concat(html, footer);
-    fs.writeFileSync('./guide/'.concat(path.basename(filename), '.html'), output);
+    fs.writeFileSync('./guide/'.concat(path.basename(filename, '.md'), '.html'), output);
   }
 });

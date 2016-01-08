@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="UTF-8">
+    <title>Lounge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" type="text/css">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/cayman.css">
+    <link rel="stylesheet" href="css/prism.css">
+</head>
+<body>
+<section class="page-header">
+    <h1 class="project-name">Lounge</h1>
+
+    <h2 class="project-tagline">Simple Mongoose-inspired ODM for Couchbase</h2><a
+        href="https://github.com/bojand/lounge" target="_blank" class="btn">View on GitHub</a><a
+        href="https://npmjs.com/package/lounge" target="_blank" class="btn">View on npm</a>
+</section>
+<section data-spy="scroll" data-target=".scrollspy" class="main-content">
+    <div class="row">
+        <div class="col-md-3 col-xs-3 bs-docs-sidebar">
+            <ul id="sidebar" class="nav nav-stacked fixed">
+                <li><a href="header.html">Setup</a></li>
+                <li><a href="model.html">Modelling</a></li>
+                <li><a href="mw.html">Middleware</a></li>
+                <li><a href="extend.html">Schema Extension</a></li>
+                <li><a href="embedded.html">Embedded</a></li>
+                <li><a href="saving.html">Saving Documents</a></li>
+                <li><a href="getting.md">Retrieving Documents</a></li>
+                <li><a href="removing.md">Removing Documents</a></li>
+                <li><a href="populate.html">Population</a></li>
+                <li><a href="indexes.html">Indexes</a></li>
+                <li><a href="events.html">Events</a></li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <section id="Main" class="readme">
+<h3 id="middleware-a-id-middleware-a-">Middleware <a id="middleware"></a></h3>
+<p>Similar to Mongoose middleware, Lounge exposes <code>pre</code> and <code>post</code> <a href="https://www.npmjs.com/package/hooks-fixed">hooks</a>.
+Normally this is used to do additional validation pre save, and cleanup post document removal. Although the hooks can be
+setup for any method including <code>toObject</code> and <code>toJON</code> methods.</p>
+<pre><code class="lang-js">var userSchema = lounge.schema({
+  firstName: String,
+  lastName: String,
+  email: String
+});
+
+userSchema.pre(&#39;save&#39;, function (next) {
+  if (this.email) {
+    this.email = this.email.toLowerCase();
+  }
+
+  // we must call next to continue control flow 
+  next();
+});
+
+userSchema.post(&#39;remove&#39;, function () {
+  console.log(&#39;document %s removed&#39;, this.id);
+});
+</code></pre>
+<p>Important note here is that post &#39;save&#39; and &#39;remove&#39; hooks do not receive any form of control flow. There are no
+callbacks passed.</p>
+<p>The callback passed into pre hooks have be used to control flow of logic and execution:</p>
+<pre><code class="lang-js">schema.pre(&#39;save&#39;, function (next) {
+  // some custom validation method
+  if (!this.validate()) {
+    return next(new Error(&#39;Validation error!&#39;));
+  }
+
+  next();
+});
+
+// elsewhere...
+
+doc.save(function(err, savedDoc) {
+  if(err) console.log(err); // &#39;Validation error!&#39; Document was not saved
+});
+</code></pre>
+</section>
+</div>
+</div>
+</section>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/affix.js"></script>
+<script src="js/dropdown.js"></script>
+<script src="js/scrollspy.js"></script>
+<script src="js/prism.js"></script>
+<script src="js/prism-bash.js"></script>
+<script>
+    $(document).ready(function () {
+        $('body').scrollspy({
+            target: ".bs-docs-sidebar",
+            offset: 40
+        });
+        $('#sidebar').affix({
+            offset: {
+                bottom: 60,
+                top: 60
+            }
+        })
+    });
+</script>
+</body>
+</html>
