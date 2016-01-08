@@ -630,6 +630,9 @@ for (k in Document) {
     })
   }
 
+  var modelName = this.prototype.modelName;
+  debug(modelName + '.findById. id: ' + id);
+
   if (Array.isArray(id)) {
     var fullIds = _.map(id, function (curId) {
       return self.getDocumentKeyValue(curId, true);

@@ -172,6 +172,9 @@
   }
   else if (options.bucket &amp;&amp; typeof options.bucket === 'string' &amp;&amp;
     options.connectionString &amp;&amp; typeof options.connectionString === 'string') {
+
+    debug('connect. cluster: ' + options.connectionString + ' bucket: '+ options.bucket);
+
     var cluster;
     var custerOpts = options.certpath ? {certpath: options.certpath} : null;
 
@@ -206,6 +209,7 @@
           </section>
           <div class="description"><p>Disconnect from the bucket. Deletes all defined models.</p></div>
           <pre><code class="language-javascript">Lounge.prototype.disconnect = function () {
+  debug('disconnect');
   if (this.bucket) {
     this.bucket.disconnect();
   }

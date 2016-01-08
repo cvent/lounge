@@ -120,6 +120,7 @@
   }
 
   if (Array.isArray(keys)) {
+    debug('driver.getMulti. keys: ' + keys);
     this.bucket.getMulti(keys, function (err, getRes) {
       var misses = [];
       var results = [];
@@ -150,6 +151,7 @@
     });
   }
   else {
+    debug('driver.get. keys: ' + keys);
     this.bucket.get(keys, options, function (err, getRes) {
       if (err &amp;&amp; utils.isKeyNotFound(err)) {
         err = null;
@@ -209,6 +211,7 @@
     });
   }
 
+  debug('Driver.remove. key: ' + key);
   this.bucket.remove(key, options, function (err, rres) {
     if (err &amp;&amp; utils.isKeyNotFound(err)) {
       err = null;
