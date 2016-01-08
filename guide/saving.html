@@ -63,27 +63,6 @@ perform lookup document updates and finally execute any post hook middleware.</p
 <li><code>persist_to</code> - couchbase persist_to option</li>
 <li><code>replicate_to</code> - couchbase option</li>
 </ul>
-<h3 id="getting-documents-a-id-getting-a-">Getting Documents <a id="getting"></a></h3>
-<p>All models created come with a static function <code>findById</code> that can be used to look up a single or multiple keys and 
-retrieve documents from the database. If key does not exist and document is not found we <strong>do not</strong> return an error
-but also no model is generated. This is different than present couchbase module behaviour.</p>
-<pre><code class="lang-js">User.findById(&#39;user123&#39;, function(err, doc) {
-  if(err) console.log(err); // there was an error looking up the key
-  else if(!doc) console.log(&#39;no document found&#39;);
-  else console.log(doc); // doc is instance of User and will print it out 
-});
-</code></pre>
-<p>We can get multiple keys using an array as the first parameter. In this case, the callback invoked is passed 3 arguments
-in form <code>(err, documents, misses)</code>. </p>
-<pre><code class="lang-js">User.findById([&#39;user123&#39;, &#39;user456&#39;], function(err, docs, misses) {
-  if(err) console.log(err); // there was an error looking up the key
-  console.dir(docs);        // array of Users found
-  console.dir(misses);      // array if keys not found.
-});
-</code></pre>
-<p>When <code>findById</code> is invoked using a single string argument the result returned is a single model instance. When an array
-is passed in we return the results as described above. To force &quot;array&quot; type of returns in ALL cases, set the Lounge
-config option <code>alwaysReturnArrays</code> to <code>true</code>. Default is <code>false</code>.</p>
 </section>
 </div>
 </div>
