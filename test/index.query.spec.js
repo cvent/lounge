@@ -9,7 +9,7 @@ var Schema = lounge.Schema;
 
 var bucket;
 
-describe.only('Model index query tests', function () {
+describe('Model index query tests', function () {
 
   describe('index query tests without populate', function () {
     beforeEach(function (done) {
