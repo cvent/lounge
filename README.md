@@ -66,10 +66,6 @@ Module automated tests can be run using `npm test` command. The tests are execut
 To run tests against an actual local database create a bucket `lounge_test` and remove `LOUNGE_COUCHBASE_MOCK=true` from
 `test` script property in `package.json`.
 
-## TODO
-
-See [TODO.md](https://github.com/bojand/lounge/blob/master/TODO.md).
-
 ## Credits
 
 Lots of code and design inspired by [Mongoose](http://mongoosejs.com/).
