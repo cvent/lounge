@@ -177,7 +177,7 @@ describe('Model index query tests', function () {
         lounge.connect({
           bucket: bucket
         }, function () {
-          bucket.manager().flush(function(err) {
+          bucket.manager().flush(function (err) {
             if (err) {
               return done(err);
             }
