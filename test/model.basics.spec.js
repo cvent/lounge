@@ -362,6 +362,39 @@ describe('Model basics', function () {
     });
   });
 
+  it('should properly create a model with manual ref of a model that is later defined', function() {
+    var siteSchema = lounge.schema({
+      owner: {type: lounge.Model, modelName: 'User'},
+      url: String
+    });
+
+    var Site = lounge.model('Site', siteSchema);
+
+    var userSchema = lounge.schema({
+      email: String,
+      name: String
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var user = new User({
+      name: 'Joe Smith',
+      email: 'jsmith@gmail.com'
+    });
+
+    var site = new Site({
+      url: 'http://wwww.mysite.org',
+      owner: user
+    });
+
+    expect(site).to.be.instanceof(Site);
+    expect(site.owner).to.be.ok;
+    expect(site.owner).to.be.instanceof(User);
+    expect(site.url).to.equal('http://wwww.mysite.org');
+    expect(site.owner.name).to.equal('Joe Smith');
+    expect(site.owner.email).to.equal('jsmith@gmail.com');
+  });
+
   describe('Nested properties tests', function () {
     it('Should properly get and set nested properties', function () {
       var userSchema = lounge.schema({
