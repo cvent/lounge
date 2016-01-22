@@ -67,7 +67,7 @@ describe('Driver helper bucket tests', function () {
   });
 
   it('should get an array of documents using the custom get', function (done) {
-    var keys = _.pluck(mockData, 'key');
+    var keys = _.map(mockData, 'key');
 
     driver.get(keys, function (errors, results, misses) {
       expect(errors).to.not.be.ok;
@@ -77,8 +77,8 @@ describe('Driver helper bucket tests', function () {
 
       expect(results).to.be.instanceOf(Array);
 
-      var actual = _.pluck(results, 'value');
-      var expected = _.pluck(mockData, 'value');
+      var actual = _.map(results, 'value');
+      var expected = _.map(mockData, 'value');
 
       expect(actual).to.deep.equal(expected);
 
@@ -99,8 +99,8 @@ describe('Driver helper bucket tests', function () {
 
       expect(results).to.be.instanceOf(Array);
 
-      var actual = _.pluck(results, 'value');
-      var expected = _.pluck(mockData, 'value');
+      var actual = _.map(results, 'value');
+      var expected = _.map(mockData, 'value');
 
       expect(actual).to.deep.equal(expected);
 
@@ -139,7 +139,7 @@ describe('Driver helper bucket tests', function () {
   });
 
   it('should get an array of documents using the custom get', function (done) {
-    var keys = _.pluck(mockData, 'key');
+    var keys = _.map(mockData, 'key');
     keys.push('driver_test_mock_4');
 
     driver.get(keys, function (errors, results, misses) {
@@ -150,9 +150,9 @@ describe('Driver helper bucket tests', function () {
 
       expect(results).to.be.instanceOf(Array);
 
-      var actual = _.pluck(results, 'value');
-      var expected = _.pluck(mockData, 'value');
-      expected.push({somedata: 1234})
+      var actual = _.map(results, 'value');
+      var expected = _.map(mockData, 'value');
+      expected.push({somedata: 1234});
 
       expect(actual).to.deep.equal(expected);
 

@@ -21,6 +21,10 @@ describe('Model index query tests', function () {
 
       var cluster = testUtil.getCluser();
       bucket = cluster.openBucket('lounge_test', function (err) {
+        if (err) {
+          return done(err);
+        }
+
         lounge.connect({
           bucket: bucket
         }, function () {
@@ -174,6 +178,10 @@ describe('Model index query tests', function () {
 
       var cluster = testUtil.getCluser();
       bucket = cluster.openBucket('lounge_test', function (err) {
+        if (err) {
+          return done(err);
+        }
+
         lounge.connect({
           bucket: bucket
         }, function () {

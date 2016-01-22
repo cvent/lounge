@@ -26,7 +26,10 @@ describe('Model populate tests', function () {
 
     var cluster = testUtil.getCluser();
     bucket = cluster.openBucket('lounge_test', function (err) {
-      if (err) return done(err);
+      if (err) {
+        return done(err);
+      }
+
       lounge.connect({
         bucket: bucket
       }, function (err) {
@@ -210,7 +213,7 @@ describe('Model populate tests', function () {
     });
 
     it('should work with arrays in findById', function (done) {
-      var userIds = _.pluck(ts.data.users, 'email');
+      var userIds = _.map(ts.data.users, 'email');
 
       User.findById(userIds, {populate: true}, function (err, rdocs, missed) {
         expect(err).to.not.be.ok;
@@ -630,7 +633,7 @@ describe('Model populate tests', function () {
     });
 
     it('should work with arrays in findById', function (done) {
-      var userIds = _.pluck(ts.data.users, 'email');
+      var userIds = _.map(ts.data.users, 'email');
 
       User.findById(userIds, {populate: 'company'}, function (err, rdocs, missed) {
         expect(err).to.not.be.ok;
@@ -1458,7 +1461,7 @@ describe('Model populate tests', function () {
     });
 
     it('should work with arrays in findById', function (done) {
-      var userIds = _.pluck(ts.data.users, 'email');
+      var userIds = _.map(ts.data.users, 'email');
 
       User.findById(userIds, {populate: ['company']}, function (err, rdocs, missed) {
         expect(err).to.not.be.ok;

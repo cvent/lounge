@@ -20,6 +20,10 @@ describe('Model findById tests', function () {
 
     var cluster = testUtil.getCluser();
     bucket = cluster.openBucket('lounge_test', function (err) {
+      if (err) {
+        return done(err);
+      }
+
       lounge.connect({
         bucket: bucket
       }, function (err) {
@@ -86,7 +90,7 @@ describe('Model findById tests', function () {
     });
 
     it('should find an array of documents', function (done) {
-      var userIds = _.pluck(ts.data.users, 'id');
+      var userIds = _.map(ts.data.users, 'id');
       var expectedUsers = _.sortBy(ts.data.users, 'id');
 
       User1.findById(userIds, function (err, docs, missing) {
@@ -131,7 +135,7 @@ describe('Model findById tests', function () {
 
     it('should find an array of documents and also return missing keys', function (done) {
 
-      var userIds = _.pluck(ts.data.users, 'id');
+      var userIds = _.map(ts.data.users, 'id');
 
       var missingId = 'd2bed65a-1910-4730-b032-0c4ea0f831dd';
       userIds.splice(2, 0, missingId);
@@ -232,7 +236,7 @@ describe('Model findById tests', function () {
 
     it('should find an array of documents', function (done) {
 
-      var docIds = _.pluck(ts.data.companies, 'id');
+      var docIds = _.map(ts.data.companies, 'id');
       docIds = _.map(docIds, function (docid) {
         return docid.replace(/company::/i, '');
       });
@@ -283,7 +287,7 @@ describe('Model findById tests', function () {
     });
 
     it('should find an array of documents and also return missing keys', function (done) {
-      var docIds = _.pluck(ts.data.companies, 'id');
+      var docIds = _.map(ts.data.companies, 'id');
       docIds = _.map(docIds, function (docid) {
         return docid.replace(/company::/i, '');
       });
@@ -377,7 +381,7 @@ describe('Model findById tests', function () {
 
     it('should find an array of documents', function (done) {
 
-      var userIds = _.pluck(ts.data.users2, 'email');
+      var userIds = _.map(ts.data.users2, 'email');
       var expectedUsers = _.sortBy(ts.data.users2, 'email');
 
       User2.findById(userIds, function (err, docs, missing) {
@@ -410,7 +414,7 @@ describe('Model findById tests', function () {
 
     it('should find an array of documents and also return missing keys', function (done) {
 
-      var userIds = _.pluck(ts.data.users2, 'email');
+      var userIds = _.map(ts.data.users2, 'email');
 
       var missingId = 'test@gmail.com';
       userIds.splice(2, 0, missingId);
@@ -485,7 +489,7 @@ describe('Model findById tests', function () {
 
     it('should find an array of documents', function (done) {
 
-      var userIds = _.pluck(ts.data.users3, 'username');
+      var userIds = _.map(ts.data.users3, 'username');
       userIds = _.map(userIds, function (cid) {
         return cid.replace(/user::/i, '');
       });
@@ -524,7 +528,7 @@ describe('Model findById tests', function () {
     it('should find an array of documents and also return missing keys', function (done) {
 
 
-      var userIds = _.pluck(ts.data.users3, 'username');
+      var userIds = _.map(ts.data.users3, 'username');
 
       userIds = _.map(userIds, function (cid) {
         return cid.replace(/user::/i, '');

@@ -18,6 +18,10 @@ describe('Model save tests', function () {
 
     var cluster = testUtil.getCluser();
     bucket = cluster.openBucket('lounge_test', function (err) {
+      if (err) {
+        return done(err);
+      }
+
       lounge.connect({
         bucket: bucket
       }, function () {
@@ -658,7 +662,7 @@ describe('Model save tests', function () {
 
         expect(postDoc).to.deep.equal(expectedPostDoc);
 
-        var commentDocKeys = _.pluck(commentDocs, 'id');
+        var commentDocKeys = _.map(commentDocs, 'id');
         commentDocKeys.sort();
 
         expect(commentDocKeys).to.deep.equal(commentKeys);
