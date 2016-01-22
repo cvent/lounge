@@ -18,6 +18,10 @@ describe('Model index tests', function () {
 
     var cluster = testUtil.getCluser();
     bucket = cluster.openBucket('lounge_test', function (err) {
+      if (err) {
+        return done(err);
+      }
+
       lounge.connect({
         bucket: bucket
       }, function () {
@@ -53,7 +57,7 @@ describe('Model index tests', function () {
         }
       };
 
-      expect(user.$_o.refValues).to.deep.equal(expected)
+      expect(user.$_o.refValues).to.deep.equal(expected);
     });
 
     it('should create index values for array and automatically singularize', function () {
@@ -82,7 +86,7 @@ describe('Model index tests', function () {
         }
       };
 
-      expect(user.$_o.refValues).to.deep.equal(expected)
+      expect(user.$_o.refValues).to.deep.equal(expected);
     });
 
     it('should create index values for array and  respect indexName', function () {
@@ -111,7 +115,7 @@ describe('Model index tests', function () {
         }
       };
 
-      expect(user.$_o.refValues).to.deep.equal(expected)
+      expect(user.$_o.refValues).to.deep.equal(expected);
     });
 
     it('should not create index value for a ref field', function () {
@@ -156,7 +160,7 @@ describe('Model index tests', function () {
         }
       };
 
-      expect(user.$_o.refValues).to.deep.equal(expected)
+      expect(user.$_o.refValues).to.deep.equal(expected);
     });
 
     it('should create index value for untruthy values', function () {
@@ -184,7 +188,7 @@ describe('Model index tests', function () {
         }
       };
 
-      expect(user.$_o.refValues).to.deep.equal(expected)
+      expect(user.$_o.refValues).to.deep.equal(expected);
     });
   });
 });

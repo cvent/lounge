@@ -26,7 +26,10 @@ describe('Model populate tests', function () {
 
     var cluster = testUtil.getCluser();
     bucket = cluster.openBucket('lounge_test', function (err) {
-      if (err) return done(err);
+      if (err) {
+        return done(err);
+      }
+
       lounge.connect({
         bucket: bucket
       }, function (err) {
