@@ -258,6 +258,23 @@ describe('Schema basics', function () {
 
       expect(userSchema.refs).to.deep.equal(expected, 'Refs are incorrect');
     });
+
+    it('should get the refs correctly in manual ref setup scenario', function () {
+
+      var siteSchema = lounge.schema({
+        owner: {type: lounge.Model, modelName: 'User'},
+        url: String
+      });
+
+      var expected = {
+        'owner': {
+          path: 'owner',
+          ref: 'User'
+        }
+      };
+
+      expect(siteSchema.refs).to.deep.equal(expected, 'Refs are incorrect');
+    });
   });
 
   describe('index', function () {
