@@ -662,7 +662,7 @@ describe('Model save tests', function () {
 
         expect(postDoc).to.deep.equal(expectedPostDoc);
 
-        var commentDocKeys = _.pluck(commentDocs, 'id');
+        var commentDocKeys = _.map(commentDocs, 'id');
         commentDocKeys.sort();
 
         expect(commentDocKeys).to.deep.equal(commentKeys);
