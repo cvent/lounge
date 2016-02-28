@@ -59,7 +59,7 @@ handle document removal in this scenario. This should be handled by the user of 
 
 ## Documentation
 
-* [Guide && API Documentation](http://bojand.github.io/lounge)
+* [Guide & API Documentation](http://bojand.github.io/lounge)
 
 ## Tests
 
