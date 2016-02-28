@@ -1,0 +1,2738 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Lounge</title>
+    
+    <meta name="description" content="Simple Mongoose-inspired ODM for Couchbase" />
+    
+    
+    
+    <meta property="og:title" content=""/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content=""/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
+    
+    
+    <script>
+    var config = {"monospaceLinks":true,"cleverLinks":true,"default":{"outputSourceFiles":true},"applicationName":"Lounge","disqus":"","googleAnalytics":"","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"Lounge","description":"Simple Mongoose-inspired ODM for Couchbase","keyword":""},"linenums":true};
+    </script>
+    
+
+    
+</head>
+<body>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="index.html">Lounge</a></h3>
+
+    <div class="search">
+        <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
+    </div>
+    <ul class="list">
+
+    
+        <li class="item" data-name="">
+            <span class="title">
+                <a href="-_.html"></a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="#cas"><a href="global.html#cas">cas</a></li>
+            
+                <li data-name="#config"><a href="global.html#config">config</a></li>
+            
+                <li data-name="#db"><a href="global.html#db">db</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="#getCAS"><a href="global.html#getCAS">getCAS</a></li>
+            
+                <li data-name="#index"><a href="global.html#index">index</a></li>
+            
+                <li data-name="#remove"><a href="global.html#remove">remove</a></li>
+            
+                <li data-name="#removeIndexes"><a href="global.html#removeIndexes">removeIndexes</a></li>
+            
+                <li data-name="#save"><a href="global.html#save">save</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="BaseObject">
+            <span class="title">
+                <a href="BaseObject.html">BaseObject</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="BaseObject#schema"><a href="BaseObject.html#schema">schema</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="BaseObject#clear"><a href="BaseObject.html#clear">clear</a></li>
+            
+                <li data-name="BaseObject#clearErrors"><a href="BaseObject.html#clearErrors">clearErrors</a></li>
+            
+                <li data-name="BaseObject#getErrors"><a href="BaseObject.html#getErrors">getErrors</a></li>
+            
+                <li data-name="BaseObject#hasErrors"><a href="BaseObject.html#hasErrors">hasErrors</a></li>
+            
+                <li data-name="BaseObject#inspect"><a href="BaseObject.html#inspect">inspect</a></li>
+            
+                <li data-name="BaseObject#set"><a href="BaseObject.html#set">set</a></li>
+            
+                <li data-name="BaseObject#toJSON"><a href="BaseObject.html#toJSON">toJSON</a></li>
+            
+                <li data-name="BaseObject#toObject"><a href="BaseObject.html#toObject">toObject</a></li>
+            
+                <li data-name="BaseObject#toString"><a href="BaseObject.html#toString">toString</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="CouchbaseDocument">
+            <span class="title">
+                <a href="CouchbaseDocument.html">CouchbaseDocument</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="CouchbaseDocument#cas"><a href="CouchbaseDocument.html#cas">cas</a></li>
+            
+                <li data-name="CouchbaseDocument#config"><a href="CouchbaseDocument.html#config">config</a></li>
+            
+                <li data-name="CouchbaseDocument#db"><a href="CouchbaseDocument.html#db">db</a></li>
+            
+                <li data-name="CouchbaseDocument#modelName"><a href="CouchbaseDocument.html#modelName">modelName</a></li>
+            
+                <li data-name="CouchbaseDocument#schema"><a href="CouchbaseDocument.html#schema">schema</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="CouchbaseDocument#index"><a href="CouchbaseDocument.html#index">index</a></li>
+            
+                <li data-name="CouchbaseDocument.findById"><a href="CouchbaseDocument.html#.findById">findById</a></li>
+            
+                <li data-name="CouchbaseDocument#save"><a href="CouchbaseDocument.html#save">save</a></li>
+            
+                <li data-name="CouchbaseDocument#removeIndexes"><a href="CouchbaseDocument.html#removeIndexes">removeIndexes</a></li>
+            
+                <li data-name="CouchbaseDocument#getCAS"><a href="CouchbaseDocument.html#getCAS">getCAS</a></li>
+            
+                <li data-name="CouchbaseDocument#remove"><a href="CouchbaseDocument.html#remove">remove</a></li>
+            
+                <li data-name="CouchbaseDocument.remove"><a href="CouchbaseDocument.html#.remove">remove</a></li>
+            
+                <li data-name="CouchbaseDocument#clearErrors"><a href="CouchbaseDocument.html#clearErrors">clearErrors</a></li>
+            
+                <li data-name="CouchbaseDocument#getErrors"><a href="CouchbaseDocument.html#getErrors">getErrors</a></li>
+            
+                <li data-name="CouchbaseDocument#getDocumentKeyValue"><a href="CouchbaseDocument.html#getDocumentKeyValue">getDocumentKeyValue</a></li>
+            
+                <li data-name="CouchbaseDocument#inspect"><a href="CouchbaseDocument.html#inspect">inspect</a></li>
+            
+                <li data-name="CouchbaseDocument#getDocumentKeyKey"><a href="CouchbaseDocument.html#getDocumentKeyKey">getDocumentKeyKey</a></li>
+            
+                <li data-name="CouchbaseDocument#hasErrors"><a href="CouchbaseDocument.html#hasErrors">hasErrors</a></li>
+            
+                <li data-name="CouchbaseDocument#clear"><a href="CouchbaseDocument.html#clear">clear</a></li>
+            
+                <li data-name="CouchbaseDocument#set"><a href="CouchbaseDocument.html#set">set</a></li>
+            
+                <li data-name="CouchbaseDocument#toJSON"><a href="CouchbaseDocument.html#toJSON">toJSON</a></li>
+            
+                <li data-name="CouchbaseDocument#toObject"><a href="CouchbaseDocument.html#toObject">toObject</a></li>
+            
+                <li data-name="CouchbaseDocument#toString"><a href="CouchbaseDocument.html#toString">toString</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="Document">
+            <span class="title">
+                <a href="Document.html">Document</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="Document#modelName"><a href="Document.html#modelName">modelName</a></li>
+            
+                <li data-name="Document#schema"><a href="Document.html#schema">schema</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Document.getDocumentKeyValue"><a href="Document.html#.getDocumentKeyValue">getDocumentKeyValue</a></li>
+            
+                <li data-name="Document#getDocumentKeyKey"><a href="Document.html#getDocumentKeyKey">getDocumentKeyKey</a></li>
+            
+                <li data-name="Document#getDocumentKeyValue"><a href="Document.html#getDocumentKeyValue">getDocumentKeyValue</a></li>
+            
+                <li data-name="Document#toString"><a href="Document.html#toString">toString</a></li>
+            
+                <li data-name="Document#clearErrors"><a href="Document.html#clearErrors">clearErrors</a></li>
+            
+                <li data-name="Document#getErrors"><a href="Document.html#getErrors">getErrors</a></li>
+            
+                <li data-name="Document#clear"><a href="Document.html#clear">clear</a></li>
+            
+                <li data-name="Document#inspect"><a href="Document.html#inspect">inspect</a></li>
+            
+                <li data-name="Document#set"><a href="Document.html#set">set</a></li>
+            
+                <li data-name="Document#toJSON"><a href="Document.html#toJSON">toJSON</a></li>
+            
+                <li data-name="Document#toObject"><a href="Document.html#toObject">toObject</a></li>
+            
+                <li data-name="Document#hasErrors"><a href="Document.html#hasErrors">hasErrors</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="Driver">
+            <span class="title">
+                <a href="Driver.html">Driver</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Driver.wrap"><a href="Driver.html#.wrap">wrap</a></li>
+            
+                <li data-name="Driver#get"><a href="Driver.html#get">get</a></li>
+            
+                <li data-name="Driver#remove"><a href="Driver.html#remove">remove</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="Lounge">
+            <span class="title">
+                <a href="Lounge.html">Lounge</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="Lounge#CouchbaseDocument"><a href="Lounge.html#CouchbaseDocument">CouchbaseDocument</a></li>
+            
+                <li data-name="Lounge#Document"><a href="Lounge.html#Document">Document</a></li>
+            
+                <li data-name="Lounge#Lounge"><a href="Lounge.html#Lounge">Lounge</a></li>
+            
+                <li data-name="Lounge#Model"><a href="Lounge.html#Model">Model</a></li>
+            
+                <li data-name="Lounge#Schema"><a href="Lounge.html#Schema">Schema</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Lounge#connect"><a href="Lounge.html#connect">connect</a></li>
+            
+                <li data-name="Lounge#disconnect"><a href="Lounge.html#disconnect">disconnect</a></li>
+            
+                <li data-name="Lounge#getModel"><a href="Lounge.html#getModel">getModel</a></li>
+            
+                <li data-name="Lounge#getOption"><a href="Lounge.html#getOption">getOption</a></li>
+            
+                <li data-name="Lounge#model"><a href="Lounge.html#model">model</a></li>
+            
+                <li data-name="Lounge#modelNames"><a href="Lounge.html#modelNames">modelNames</a></li>
+            
+                <li data-name="Lounge#schema"><a href="Lounge.html#schema">schema</a></li>
+            
+                <li data-name="Lounge#setOption"><a href="Lounge.html#setOption">setOption</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="MemoDriver">
+            <span class="title">
+                <a href="MemoDriver.html">MemoDriver</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="MemoDriver#get"><a href="MemoDriver.html#get">get</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="MemoDriver#clear"><a href="MemoDriver.html#clear">clear</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ModelInstance">
+            <span class="title">
+                <a href="ModelInstance.html">ModelInstance</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="ModelInstance.config"><a href="ModelInstance.html#.config">config</a></li>
+            
+                <li data-name="ModelInstance.db"><a href="ModelInstance.html#.db">db</a></li>
+            
+                <li data-name="ModelInstance.modelName"><a href="ModelInstance.html#.modelName">modelName</a></li>
+            
+                <li data-name="ModelInstance.schema"><a href="ModelInstance.html#.schema">schema</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ObjectArray">
+            <span class="title">
+                <a href="ObjectArray.html">ObjectArray</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="Schema">
+            <span class="title">
+                <a href="Schema.html">Schema</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Schema#method"><a href="Schema.html#method">method</a></li>
+            
+                <li data-name="Schema#add"><a href="Schema.html#add">add</a></li>
+            
+                <li data-name="Schema#get"><a href="Schema.html#get">get</a></li>
+            
+                <li data-name="Schema#getDocumentKeyValue"><a href="Schema.html#getDocumentKeyValue">getDocumentKeyValue</a></li>
+            
+                <li data-name="Schema#getRefKey"><a href="Schema.html#getRefKey">getRefKey</a></li>
+            
+                <li data-name="Schema#hasRefPath"><a href="Schema.html#hasRefPath">hasRefPath</a></li>
+            
+                <li data-name="Schema#extend"><a href="Schema.html#extend">extend</a></li>
+            
+                <li data-name="Schema#post"><a href="Schema.html#post">post</a></li>
+            
+                <li data-name="Schema#pre"><a href="Schema.html#pre">pre</a></li>
+            
+                <li data-name="Schema#set"><a href="Schema.html#set">set</a></li>
+            
+                <li data-name="Schema#static"><a href="Schema.html#static">static</a></li>
+            
+                <li data-name="Schema#virtual"><a href="Schema.html#virtual">virtual</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+    </ul>
+</div>
+    <div class="main">
+        <h1 class="page-title" data-filename="Schema.html">Class: Schema</h1>
+        
+
+
+
+<section>
+    
+<header>
+    <h2>
+    Schema
+    </h2>
+    
+        <div class="class-description"><p>Schema class represents the schema definition. It includes properties, methods, static methods, and any<br>middleware we want to define.</p></div>
+    
+</header>  
+
+<article>
+    <div class="container-overview">
+    
+    
+    
+        
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="Schema">
+            
+            
+            new Schema<span class="signature">(descriptor, options)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="schema.js.html">schema.js</a>, <a href="schema.js.html#line56">line 56</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates an object schema</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>descriptor</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>the schema definition</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>strict</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>By default (<code>true</code>), allow only values in the schema to be set.<br>                                  When this is <code>false</code>, setting new fields will dynamically add the field<br>                                  to the schema as type &quot;any&quot;.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>dotNotation</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Allow fields to be set via dot notation. Default: <code>true</code>.<br>                                     <code>obj['user.name'] = 'Joe'; -&gt; obj: { user: 'Joe' }</code></p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>minimize</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>&quot;minimize&quot; schemas by removing empty objects. Default: <code>true</code></p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>toObject</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p><code>toObject</code> method options.</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>minimize</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>&quot;minimize&quot; schemas by removing empty objects. Default: <code>true</code></p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>transform</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>transform function</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>virtuals</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>whether to include virtual properties. Default: <code>false</code></p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>dateToISO</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>convert dates to string in ISO format using <code>Date.toISOString()</code>. Default:  <code>false</code></p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>toJSON</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>options for <code>toJSON</code> method options, similar to above</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>strict</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>ensures that value passed in ot assigned that were not specified in our<br>                                  schema do not get saved</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>onBeforeValueSet</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>function called when write operations on an object takes place. Currently,<br>it will only notify of write operations on the object itself and will not notify you when child objects are written to.<br>If you return false or throw an error within the onBeforeValueSet handler, the write operation will be cancelled.<br>Throwing an error will add the error to the error stack.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>onValueSet</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Similar to <code>onBeforeValueSet</code>, but called after we've set a value on the key,</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Examples</h5>
+        
+
+    
+    <pre class="prettyprint"><code><p>var schema = new lounge.Schema({ name: String });</p></code></pre>
+    
+
+        <p class="code-caption">with <code>onBeforeValueSet</code></p>
+    
+
+    
+    <pre class="prettyprint"><code><br>var User = lounge.schema({ name: String }, {<br>  onBeforeValueSet: function(key, value) {<br>    if(key === 'name' &amp;&amp; value.indexOf('Joe') &gt;= 0) {<br>      return false;<br>    });<br>  }<br>});</p>
+<p>var User = lounge.model('User', schema);<br>var user = new User();<br>user.name = 'Bill'; // name not set<br>user.name = 'Joe Smith'; //  { name: 'Joe Smith' }</p></code></pre>
+    
+
+    
+</dd>
+
+    
+    </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        <h3 class="subsection-title">Methods</h3>
+        
+        <dl>
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="method">
+            
+            
+            method<span class="signature">(name, func)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="schema.js.html">schema.js</a>, <a href="schema.js.html#line203">line 203</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates a instance method for the created model.<br>An object of function names and functions can also be passed in.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>the name of the method</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>func</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>the actual function implementation</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code><p>var userSchema = lounge.schema({<br>  firstName: String,<br>  lastName: String<br>});</p>
+<p>userSchema.method('getFullName', function () {<br>  return this.firstName + ' ' + this.lastName<br>});</p>
+<p>var User = lounge.model('User', userSchema);<br>var user = new User({<br>  firstName: 'Joe',<br>  lastName: 'Smith'<br>});</p>
+<p>console.log(user.getFullName()); // Joe Smith</p></code></pre>
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="add">
+            
+            
+            add<span class="signature">(key, descriptor)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="schema.js.html">schema.js</a>, <a href="schema.js.html#line384">line 384</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Adds the descriptor to the schema at the given key. Or add an <code>object</code> as a descriptor.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>the property key</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>descriptor</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>the property descriptor</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code><p>var userSchema = lounge.schema({firstName: String });<br>userSchema.add('lastName', String);<br>userSchema.add({ email: String });</p></code></pre>
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="get">
+            
+            
+            get<span class="signature">(key)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{*}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="schema.js.html">schema.js</a>, <a href="schema.js.html#line338">line 338</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Gets a schema option.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>option name</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        *
+                        
+                    
+            </td>
+            <td class="description last">the option value</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="getDocumentKeyValue">
+            
+            
+            getDocumentKeyValue<span class="signature">(id, full)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{String}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="schema.js.html">schema.js</a>, <a href="schema.js.html#line463">line 463</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Helper function to get the document key</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>id</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>the id</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>full</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>If <code>true</code> the full expanded value of the key will be returned if there were any suffix and / or prefix<br>defined in schema they are also applied. We test if the passed in id already satisfies expansion.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        String
+                        
+                    
+            </td>
+            <td class="description last"></td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code><p>var schema = lounge.schema({ email: String }, {keyPrefix: 'user::' });<br>console.log(schema.getDocumentKeyValue('114477a8-1901-4146-8c90-0fc9eec57a58', true)); // user::114477a8-1901-4146-8c90-0fc9eec57a58<br>console.log(schema.getDocumentKeyValue('user::114477a8-1901-4146-8c90-0fc9eec57a58', true)); // user::114477a8-1901-4146-8c90-0fc9eec57a58<br>console.log(schema.getDocumentKeyValue('user::114477a8-1901-4146-8c90-0fc9eec57a58', false)); // 114477a8-1901-4146-8c90-0fc9eec57a58<br>console.log(schema.getDocumentKeyValue('114477a8-1901-4146-8c90-0fc9eec57a58', false)); // 114477a8-1901-4146-8c90-0fc9eec57a58</p></code></pre>
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="getRefKey">
+            
+            
+            getRefKey<span class="signature">(name, v)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{string}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="schema.js.html">schema.js</a>, <a href="schema.js.html#line494">line 494</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Gets the reference document key value</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>index name</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>v</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>index value</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        string
+                        
+                    
+            </td>
+            <td class="description last"></td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="hasRefPath">
+            
+            
+            hasRefPath<span class="signature">(path)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{boolean}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="schema.js.html">schema.js</a>, <a href="schema.js.html#line505">line 505</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Returns whether this schema has the specified reference path</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>path</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>path to check</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        boolean
+                        
+                    
+            </td>
+            <td class="description last"></td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="extend">
+            
+            
+            extend<span class="signature">(other)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="schema.js.html">schema.js</a>, <a href="schema.js.html#line435">line 435</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Extends other schema. Copies descriptor properties, methods, statics, virtuals and middleware.<br>If this schema has a named property already, the property is not copied.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>other</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Schema.html">Schema</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>the schema to extend.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="post">
+            
+            
+            post<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="schema.js.html">schema.js</a>, <a href="schema.js.html#line354">line 354</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Defines a post hook for the schema.<br>See <a target="_blank" href="https://www.npmjs.com/package/hooks-fixed">hooks-fixed</a>.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="pre">
+            
+            
+            pre<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="schema.js.html">schema.js</a>, <a href="schema.js.html#line346">line 346</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Defines a pre hook for the schema.<br>See <a target="_blank" href="https://www.npmjs.com/package/hooks-fixed">hooks-fixed</a>.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="set">
+            
+            
+            set<span class="signature">(key, <span class="optional">value</span>)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="schema.js.html">schema.js</a>, <a href="schema.js.html#line321">line 321</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Sets/gets a schema option.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>key</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                    
+                        
+                    
+                
+                <p>option name</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                    
+                        <span class="optional">optional</span>
+                    
+                    
+                        
+                    
+                
+                <p>if not passed, the current option value is returned</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="static">
+            
+            
+            static<span class="signature">(name, func)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="schema.js.html">schema.js</a>, <a href="schema.js.html#line235">line 235</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates a static function for the created model.<br>An object of function names and functions can also be passed in.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>name of the statuc function</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>func</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>the actual function</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code><p>var userSchema = lounge.schema({ name: String });<br>userSchema.static('foo', function () {<br>  return 'bar';<br>});</p>
+<p>var User = lounge.model('User', userSchema);</p>
+<p>console.log(User.foo()); // 'bar'</p></code></pre>
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="virtual">
+            
+            
+            virtual<span class="signature">(name, type, options)</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="schema.js.html">schema.js</a>, <a href="schema.js.html#line286">line 286</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Creates a virtual property for the created model with the given object<br>specifying the get and optionally set function</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>name</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>name of the virtual property</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>type</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+|
+
+<span class="param-type">function</span>
+|
+
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>optional type to be used for the virtual property. If not provided default is<br>                                     <code>'any'</code> type.</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>virtual options</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>get</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>the virtual getter function</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>set</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>the virtual setter function. If not provided the virtual becomes read-only.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code><p>var userSchema = lounge.schema({firstName: String, lastName: String});</p>
+<p>userSchema.virtual('fullName', String, {<br>  get: function () {<br>    return this.firstName + ' ' + this.lastName;<br>  },<br>  set: function (v) {<br>    if (v !== undefined) {<br>      var parts = v.split(' ');<br>      this.firstName = parts[0];<br>      this.lastName = parts[1];<br>    }<br>  }<br>});</p>
+<p>var User = lounge.model('User', userSchema);</p>
+<p>var user = new User({firstName: 'Joe', lastName: 'Smith'});<br>console.log(user.fullName); // Joe Smith<br>user.fullName = 'Bill Jones';<br>console.log(user.firstName); // Bill<br>console.log(user.lastName); // Jones<br>console.log(user.fullName); // Bill Jones</p></code></pre>
+    
+
+    
+</dd>
+
+        </dl>
+    
+    
+    
+    
+    
+</article>
+
+</section>  
+
+
+
+
+
+        
+
+        <footer>
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Feb 28 2016 13:47:57 GMT-0400 (AST)
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+<script src="scripts/main.js"></script>
+</body>
+</html>

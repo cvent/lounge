@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Lounge</title>
+    
+    <meta name="description" content="Simple Mongoose-inspired ODM for Couchbase" />
+    
+    
+    
+    <meta property="og:title" content=""/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content=""/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
+    
+    
+    <script>
+    var config = {"monospaceLinks":true,"cleverLinks":true,"default":{"outputSourceFiles":true},"applicationName":"Lounge","disqus":"","googleAnalytics":"","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"Lounge","description":"Simple Mongoose-inspired ODM for Couchbase","keyword":""},"linenums":true};
+    </script>
+    
+
+    
+</head>
+<body>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="index.html">Lounge</a></h3>
+
+    <div class="search">
+        <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
+    </div>
+    <ul class="list">
+
+    
+        <li class="item" data-name="">
+            <span class="title">
+                <a href="-_.html"></a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="#cas"><a href="global.html#cas">cas</a></li>
+            
+                <li data-name="#config"><a href="global.html#config">config</a></li>
+            
+                <li data-name="#db"><a href="global.html#db">db</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="#getCAS"><a href="global.html#getCAS">getCAS</a></li>
+            
+                <li data-name="#index"><a href="global.html#index">index</a></li>
+            
+                <li data-name="#remove"><a href="global.html#remove">remove</a></li>
+            
+                <li data-name="#removeIndexes"><a href="global.html#removeIndexes">removeIndexes</a></li>
+            
+                <li data-name="#save"><a href="global.html#save">save</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="BaseObject">
+            <span class="title">
+                <a href="BaseObject.html">BaseObject</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="BaseObject#schema"><a href="BaseObject.html#schema">schema</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="BaseObject#clear"><a href="BaseObject.html#clear">clear</a></li>
+            
+                <li data-name="BaseObject#clearErrors"><a href="BaseObject.html#clearErrors">clearErrors</a></li>
+            
+                <li data-name="BaseObject#getErrors"><a href="BaseObject.html#getErrors">getErrors</a></li>
+            
+                <li data-name="BaseObject#hasErrors"><a href="BaseObject.html#hasErrors">hasErrors</a></li>
+            
+                <li data-name="BaseObject#inspect"><a href="BaseObject.html#inspect">inspect</a></li>
+            
+                <li data-name="BaseObject#set"><a href="BaseObject.html#set">set</a></li>
+            
+                <li data-name="BaseObject#toJSON"><a href="BaseObject.html#toJSON">toJSON</a></li>
+            
+                <li data-name="BaseObject#toObject"><a href="BaseObject.html#toObject">toObject</a></li>
+            
+                <li data-name="BaseObject#toString"><a href="BaseObject.html#toString">toString</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="CouchbaseDocument">
+            <span class="title">
+                <a href="CouchbaseDocument.html">CouchbaseDocument</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="CouchbaseDocument#cas"><a href="CouchbaseDocument.html#cas">cas</a></li>
+            
+                <li data-name="CouchbaseDocument#config"><a href="CouchbaseDocument.html#config">config</a></li>
+            
+                <li data-name="CouchbaseDocument#db"><a href="CouchbaseDocument.html#db">db</a></li>
+            
+                <li data-name="CouchbaseDocument#modelName"><a href="CouchbaseDocument.html#modelName">modelName</a></li>
+            
+                <li data-name="CouchbaseDocument#schema"><a href="CouchbaseDocument.html#schema">schema</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="CouchbaseDocument.findById"><a href="CouchbaseDocument.html#.findById">findById</a></li>
+            
+                <li data-name="CouchbaseDocument.remove"><a href="CouchbaseDocument.html#.remove">remove</a></li>
+            
+                <li data-name="CouchbaseDocument#clear"><a href="CouchbaseDocument.html#clear">clear</a></li>
+            
+                <li data-name="CouchbaseDocument#clearErrors"><a href="CouchbaseDocument.html#clearErrors">clearErrors</a></li>
+            
+                <li data-name="CouchbaseDocument#getCAS"><a href="CouchbaseDocument.html#getCAS">getCAS</a></li>
+            
+                <li data-name="CouchbaseDocument#getDocumentKeyKey"><a href="CouchbaseDocument.html#getDocumentKeyKey">getDocumentKeyKey</a></li>
+            
+                <li data-name="CouchbaseDocument#getDocumentKeyValue"><a href="CouchbaseDocument.html#getDocumentKeyValue">getDocumentKeyValue</a></li>
+            
+                <li data-name="CouchbaseDocument#getErrors"><a href="CouchbaseDocument.html#getErrors">getErrors</a></li>
+            
+                <li data-name="CouchbaseDocument#hasErrors"><a href="CouchbaseDocument.html#hasErrors">hasErrors</a></li>
+            
+                <li data-name="CouchbaseDocument#index"><a href="CouchbaseDocument.html#index">index</a></li>
+            
+                <li data-name="CouchbaseDocument#inspect"><a href="CouchbaseDocument.html#inspect">inspect</a></li>
+            
+                <li data-name="CouchbaseDocument#remove"><a href="CouchbaseDocument.html#remove">remove</a></li>
+            
+                <li data-name="CouchbaseDocument#removeIndexes"><a href="CouchbaseDocument.html#removeIndexes">removeIndexes</a></li>
+            
+                <li data-name="CouchbaseDocument#save"><a href="CouchbaseDocument.html#save">save</a></li>
+            
+                <li data-name="CouchbaseDocument#set"><a href="CouchbaseDocument.html#set">set</a></li>
+            
+                <li data-name="CouchbaseDocument#toJSON"><a href="CouchbaseDocument.html#toJSON">toJSON</a></li>
+            
+                <li data-name="CouchbaseDocument#toObject"><a href="CouchbaseDocument.html#toObject">toObject</a></li>
+            
+                <li data-name="CouchbaseDocument#toString"><a href="CouchbaseDocument.html#toString">toString</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="Document">
+            <span class="title">
+                <a href="Document.html">Document</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="Document#modelName"><a href="Document.html#modelName">modelName</a></li>
+            
+                <li data-name="Document#schema"><a href="Document.html#schema">schema</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Document.getDocumentKeyValue"><a href="Document.html#.getDocumentKeyValue">getDocumentKeyValue</a></li>
+            
+                <li data-name="Document#clear"><a href="Document.html#clear">clear</a></li>
+            
+                <li data-name="Document#clearErrors"><a href="Document.html#clearErrors">clearErrors</a></li>
+            
+                <li data-name="Document#getDocumentKeyKey"><a href="Document.html#getDocumentKeyKey">getDocumentKeyKey</a></li>
+            
+                <li data-name="Document#getDocumentKeyValue"><a href="Document.html#getDocumentKeyValue">getDocumentKeyValue</a></li>
+            
+                <li data-name="Document#getErrors"><a href="Document.html#getErrors">getErrors</a></li>
+            
+                <li data-name="Document#hasErrors"><a href="Document.html#hasErrors">hasErrors</a></li>
+            
+                <li data-name="Document#inspect"><a href="Document.html#inspect">inspect</a></li>
+            
+                <li data-name="Document#set"><a href="Document.html#set">set</a></li>
+            
+                <li data-name="Document#toJSON"><a href="Document.html#toJSON">toJSON</a></li>
+            
+                <li data-name="Document#toObject"><a href="Document.html#toObject">toObject</a></li>
+            
+                <li data-name="Document#toString"><a href="Document.html#toString">toString</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="Driver">
+            <span class="title">
+                <a href="Driver.html">Driver</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Driver.wrap"><a href="Driver.html#.wrap">wrap</a></li>
+            
+                <li data-name="Driver#get"><a href="Driver.html#get">get</a></li>
+            
+                <li data-name="Driver#remove"><a href="Driver.html#remove">remove</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="Lounge">
+            <span class="title">
+                <a href="Lounge.html">Lounge</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="Lounge#CouchbaseDocument"><a href="Lounge.html#CouchbaseDocument">CouchbaseDocument</a></li>
+            
+                <li data-name="Lounge#Document"><a href="Lounge.html#Document">Document</a></li>
+            
+                <li data-name="Lounge#Lounge"><a href="Lounge.html#Lounge">Lounge</a></li>
+            
+                <li data-name="Lounge#Model"><a href="Lounge.html#Model">Model</a></li>
+            
+                <li data-name="Lounge#Schema"><a href="Lounge.html#Schema">Schema</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Lounge#connect"><a href="Lounge.html#connect">connect</a></li>
+            
+                <li data-name="Lounge#disconnect"><a href="Lounge.html#disconnect">disconnect</a></li>
+            
+                <li data-name="Lounge#getModel"><a href="Lounge.html#getModel">getModel</a></li>
+            
+                <li data-name="Lounge#getOption"><a href="Lounge.html#getOption">getOption</a></li>
+            
+                <li data-name="Lounge#model"><a href="Lounge.html#model">model</a></li>
+            
+                <li data-name="Lounge#modelNames"><a href="Lounge.html#modelNames">modelNames</a></li>
+            
+                <li data-name="Lounge#schema"><a href="Lounge.html#schema">schema</a></li>
+            
+                <li data-name="Lounge#setOption"><a href="Lounge.html#setOption">setOption</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="MemoDriver">
+            <span class="title">
+                <a href="MemoDriver.html">MemoDriver</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="MemoDriver#get"><a href="MemoDriver.html#get">get</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="MemoDriver#clear"><a href="MemoDriver.html#clear">clear</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ModelInstance">
+            <span class="title">
+                <a href="ModelInstance.html">ModelInstance</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="ModelInstance.config"><a href="ModelInstance.html#.config">config</a></li>
+            
+                <li data-name="ModelInstance.db"><a href="ModelInstance.html#.db">db</a></li>
+            
+                <li data-name="ModelInstance.modelName"><a href="ModelInstance.html#.modelName">modelName</a></li>
+            
+                <li data-name="ModelInstance.schema"><a href="ModelInstance.html#.schema">schema</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ObjectArray">
+            <span class="title">
+                <a href="ObjectArray.html">ObjectArray</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="Schema">
+            <span class="title">
+                <a href="Schema.html">Schema</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Schema#add"><a href="Schema.html#add">add</a></li>
+            
+                <li data-name="Schema#extend"><a href="Schema.html#extend">extend</a></li>
+            
+                <li data-name="Schema#get"><a href="Schema.html#get">get</a></li>
+            
+                <li data-name="Schema#getDocumentKeyValue"><a href="Schema.html#getDocumentKeyValue">getDocumentKeyValue</a></li>
+            
+                <li data-name="Schema#getRefKey"><a href="Schema.html#getRefKey">getRefKey</a></li>
+            
+                <li data-name="Schema#hasRefPath"><a href="Schema.html#hasRefPath">hasRefPath</a></li>
+            
+                <li data-name="Schema#method"><a href="Schema.html#method">method</a></li>
+            
+                <li data-name="Schema#post"><a href="Schema.html#post">post</a></li>
+            
+                <li data-name="Schema#pre"><a href="Schema.html#pre">pre</a></li>
+            
+                <li data-name="Schema#set"><a href="Schema.html#set">set</a></li>
+            
+                <li data-name="Schema#static"><a href="Schema.html#static">static</a></li>
+            
+                <li data-name="Schema#virtual"><a href="Schema.html#virtual">virtual</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+    </ul>
+</div>
+    <div class="main">
+        <h1 class="page-title" data-filename="lounge.js.html">Source: lounge.js</h1>
+        
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const _ = require('lodash');
+var couchbase = require('couchbase');
+var debug = require('debug')('lounge');
+
+import { Schema } from './schema'
+import { Document } from './document'
+import { CouchbaseDocument } from './cbdocument'
+import { compile, Model } from './model'
+import { Driver } from './driver';
+
+var utils = require('./utils');
+
+var schemaConfigOptions = utils.schemaConfigOptionKeys;
+
+export class Lounge {
+  /**
+   * @classdesc The Lounge module
+   * The exports object of the &lt;code>lounge&lt;/code> module is an instance of this class.
+   * Most apps will only use this one instance. We copy all Couchbase &lt;code>Bucket&lt;/code> methods and properties
+   * so you can call them generically from this instance as well.
+   *
+   * @description The Lounge constructor
+   * @class
+   * @augments Bucket
+   * @param {Object} options
+   * @param {String} options.keyPrefix - key prefix for all keys. No default. Generally useful if you wish to namespace documents. Example: &lt;code>app::env::&lt;/code>.
+   * @param {String} options.keySuffix - Similar as prefix but used as a suffix
+   * @param {Boolean} options.storeFullReferenceId - whether to store embedded document keys as fully expanded keys (with prefix and suffix applied)
+   * or just the minimized version. default: &lt;code>false&lt;/code>
+   * @param {Boolean} options.storeFullKey - Similarly to store the fully expanded document key inside the key property. default: &lt;code>false&lt;/code>
+   * @param {Boolean} options.alwaysReturnArrays - set to true to force &lt;code>findyById&lt;/code> to always return an array of documents even if only a single key is passed in
+   * @param {String} options.refIndexKeyPrefix - reference lookup index document key prefix. The name of the index is appended. default: &lt;code>$_ref_by_&lt;/code>
+   * @param {String} options.delimiter - delimiter string used for concatenation in reference document key expansion / generation. default: &lt;code>'_'&lt;/code>. This is prepended to the reference document key.
+   * @param {Boolean} options.waitForIndex - When documents are saved, indexes are updated. We can wait for this operation to finish before
+   * returning from &lt;code>save()&lt;/code>. Default: &lt;code>false&lt;/code>
+   * @param {Boolean} options.minimize - "minimize" schemas by removing empty objects. Default: &lt;code>true&lt;/code>
+   * @returns {Lounge}
+   */
+  constructor(options = {}) {
+    this.models = {};
+    this.bucket = null;
+    this.db = null;
+    this.config = _.defaults(options || {}, utils.defaultOptions);
+  }
+
+  /**
+   * Connect to database
+   * @api public
+   * @param {Object} options
+   * @param {String} options.connectionString - connection string for the cluster
+   * @param {String|Bucket} options.bucket - name of the bucket or the actual Couchbase &lt;code>bucket&lt;/code> instance
+   * @param {String} options.password - password
+   * @param {String} options.certpath - certpath for cluster
+   * @param {Function} fn callback
+   * @param mock {Boolean} whether to use Couchbase mocking mechanism
+   * @return {Bucket} Couchbase &lt;code>Bucket&lt;/code> instance
+   * @example
+   * lounge.connect({
+   *   connectionString: 'couchbase://127.0.0.1',
+   *   bucket: 'lounge_test'
+   * });
+   */
+  connect(options, fn, mock) {
+    if (typeof fn === 'boolean') {
+      mock = fn;
+      fn = _.noop;
+    }
+
+    if (!fn) {
+      fn = _.noop;
+    }
+
+    var self = this;
+
+    function retFn(err, bucket) {
+      fn(err, bucket || self.bucket);
+    }
+
+    if (options.bucket &amp;&amp; typeof options.bucket === 'object') {
+      this.bucket = options.bucket;
+
+      if (this.bucket) {
+        this.db = Driver.wrap(this.bucket);
+        this.db.models = this.models;
+      }
+
+      retFn(null, this.bucket);
+    }
+    else if (options.bucket &amp;&amp; typeof options.bucket === 'string' &amp;&amp;
+      options.connectionString &amp;&amp; typeof options.connectionString === 'string') {
+
+      debug('connect. cluster: ' + options.connectionString + ' bucket: ' + options.bucket);
+
+      var cluster;
+      var custerOpts = options.certpath ? {certpath: options.certpath} : null;
+      var clusterCtor = mock || process.env.LOUNGE_COUCHBASE_MOCK ? couchbase.Mock.Cluster : couchbase.Cluster;
+      var args = options.password ? [options.bucket, options.password, retFn] : [options.bucket, retFn];
+
+      cluster = new clusterCtor(options.connectionString, custerOpts);
+      this.bucket = cluster.openBucket.apply(cluster, args);
+
+      if (this.bucket) {
+        this.db = Driver.wrap(this.bucket);
+        this.db.models = this.models;
+      }
+    }
+
+    return this.bucket;
+  }
+
+  /**
+   * Disconnect from the bucket. Deletes all defined models.
+   */
+  disconnect() {
+    debug('disconnect');
+    if (this.bucket) {
+      this.bucket.disconnect();
+    }
+
+    delete this.models;
+    delete this.db;
+
+    this.models = {};
+    this.db = null;
+  }
+
+  /**
+   * Creates a schema. Prefer to use this over Schema constructor as this will pass along Lounge config settings.
+   *
+   * @api public
+   * @param {Object} descriptor the schema descriptor
+   * @param {Object} options Schema options
+   * @return {Schema} created &lt;code>Schema&lt;/code> instance
+   * @example
+   * var schema = lounge.schema({ name: String });
+   */
+  schema(descriptor, options) {
+    var opts = _.defaults(options || {}, _.pick(this.config, schemaConfigOptions));
+    return new Schema(descriptor, opts);
+  }
+
+  /**
+   * Creates a model from a schema.
+   *
+   * @api public
+   * @param {String} name name of the model.
+   * @param {Schema} schema instance
+   * @param {Object} options
+   * @param {Object} options.freeze - to Freeze model. See &lt;code>Object.freeze&lt;/code>. Default: &lt;code>true&lt;/code>
+   * @returns {ModelInstance} The created &lt;code>ModelInstance&lt;/code> class.
+   * @example
+   * var Cat = lounge.model('Cat', schema);
+   */
+  model(name, schema, options) {
+    if (!(schema instanceof Schema)) {
+      var opts = _.defaults(options || {}, _.pick(this.config, schemaConfigOptions));
+      schema = new Schema(schema, opts);
+    }
+
+    if (this.models[name])
+      return this.models[name];
+
+    const M = compile(schema, options, name, this.db, this.config);
+    this.models[name] = M;
+    return M;
+  }
+
+
+  /**
+   * Returns the model given the name.
+   * @param name
+   * @returns {Model|undefined} The &lt;code>ModelInstance&lt;/code> or &lt;code>undefined&lt;/code> if the model by that name does
+   * not exist.
+   * @example
+   * var Cat = lounge.getModel('Cat');
+   */
+  getModel(name) {
+    return this.models[name];
+  }
+
+  /**
+   * Sets lounge config options
+   *
+   * @api public
+   * @param key {String} the config key
+   * @param value {*} option value
+   */
+  setOption(key, value) {
+    if (arguments.length === 1) {
+      return this.config[key];
+    }
+
+    this.config[key] = value;
+    return this;
+  }
+
+  /**
+   * Get config option.
+   * @param key {String} the config key
+   * @return {*} Option value
+   */
+  getOption(key) {
+    return this.setOption(key);
+  }
+
+  /**
+   * Returns an array of model names created on this instance of Lounge.
+   *
+   * @api public
+   * @return {Array} Array of model names registered.
+   * @example
+   * console.log(lounge.modelNames()); // [ 'Cat', 'Dog' ]
+   */
+  modelNames() {
+    return Object.keys(this.models);
+  }
+
+  /**
+   * The Lounge Schema constructor
+   *
+   */
+  get Schema() {
+    return Schema;
+  }
+
+  /**
+   * The Lounge Model constructor.
+   */
+  get Model() {
+    return Model;
+  }
+
+  /**
+   * The Lounge CouchbaseDocument constructor.
+   */
+  get CouchbaseDocument() {
+    return CouchbaseDocument;
+  }
+
+  /**
+   * The Lounge Document constructor.
+   *
+   */
+  get Document() {
+    return Document;
+  }
+
+  /**
+   * The Lounge constructor
+   * The exports of the Lounge module is an instance of this class.
+   */
+  get Lounge() {
+    return Lounge;
+  }
+}
+
+/**
+ * Inherit all Couchbase Bucket functions and apply them to our bucket
+ */
+[
+  'append', 'counter', 'get', 'getAndLock', 'getAndTouch', 'getMulti', 'getReplica', 'insert', 'manager', 'prepend',
+  'query', 'remove', 'replace', 'set', 'setTranscoder', 'touch', 'unlock', 'upsert'
+
+].forEach(function (key) {
+  Lounge.prototype[key] = function () {
+    if (this.bucket) {
+      return this.bucket[key].apply(this.bucket, arguments);
+    }
+  };
+});
+
+/**
+ * Inherit all Couchbase Bucket properties and apply them to our bucket
+ */
+[
+  'configThrottle', 'connectionTimeout', 'durabilityInterval', 'durabilityTimeout', 'managementTimeout',
+  'nodeConnectionTimeout', 'operationTimeout', 'viewTimeout'
+].forEach(function (key) {
+  Object.defineProperty(Lounge.prototype, key, {
+    get: propertyGetWrapper(key),
+    set: propertySetWrapper(key)
+  });
+});
+
+function propertyGetWrapper(key) {
+  return function () {
+    if (this.bucket) {
+      return this.bucket[key];
+    }
+  };
+}
+function propertySetWrapper(key) {
+  return function (value) {
+    if (this.bucket) {
+      this.bucket[key] = value;
+    }
+  };
+}
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+
+
+        
+
+        <footer>
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Feb 28 2016 13:47:57 GMT-0400 (AST)
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+<script src="scripts/main.js"></script>
+</body>
+</html>

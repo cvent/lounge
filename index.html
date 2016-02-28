@@ -1,64 +1,491 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="UTF-8">
-    <title>Lounge by bojand</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
-    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
-  </head>
-  <body>
-    <section class="page-header">
-      <h1 class="project-name">Lounge</h1>
-      <h2 class="project-tagline">Simple Mongoose-inspired ODM for Couchbase.</h2>
-      <a href="https://github.com/bojand/lounge" class="btn">View on GitHub</a>
-      <a href="https://github.com/bojand/lounge/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/bojand/lounge/tarball/master" class="btn">Download .tar.gz</a>
-    </section>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Lounge</title>
+    
+    <meta name="description" content="Simple Mongoose-inspired ODM for Couchbase" />
+    
+    
+    
+    <meta property="og:title" content=""/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content=""/>
+    
+    <meta property="og:url" content=""/>
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/jquery.min.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/jaguar.css">
+    
+    
+    <script>
+    var config = {"monospaceLinks":true,"cleverLinks":true,"default":{"outputSourceFiles":true},"applicationName":"Lounge","disqus":"","googleAnalytics":"","openGraph":{"title":"","type":"website","image":"","site_name":"","url":""},"meta":{"title":"Lounge","description":"Simple Mongoose-inspired ODM for Couchbase","keyword":""},"linenums":true};
+    </script>
+    
 
-    <section class="main-content">
-      <h1>
-<a id="lounge" class="anchor" href="#lounge" aria-hidden="true"><span class="octicon octicon-link"></span></a>Lounge</h1>
+    
+</head>
+<body>
+<div id="wrap" class="clearfix">
+    
+<div class="navigation">
+    <h3 class="applicationName"><a href="index.html">Lounge</a></h3>
 
-<p>Simple Mongoose-inspired ODM for <a href="http://www.couchbase.com">Couchbase</a>.</p>
+    <div class="search">
+        <input id="search" type="text" class="form-control input-sm" placeholder="Search Documentations">
+    </div>
+    <ul class="list">
 
-<h2>
-<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+    
+        <li class="item" data-name="">
+            <span class="title">
+                <a href="-_.html"></a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="#cas"><a href="global.html#cas">cas</a></li>
+            
+                <li data-name="#config"><a href="global.html#config">config</a></li>
+            
+                <li data-name="#db"><a href="global.html#db">db</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="#getCAS"><a href="global.html#getCAS">getCAS</a></li>
+            
+                <li data-name="#index"><a href="global.html#index">index</a></li>
+            
+                <li data-name="#remove"><a href="global.html#remove">remove</a></li>
+            
+                <li data-name="#removeIndexes"><a href="global.html#removeIndexes">removeIndexes</a></li>
+            
+                <li data-name="#save"><a href="global.html#save">save</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="BaseObject">
+            <span class="title">
+                <a href="BaseObject.html">BaseObject</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="BaseObject#schema"><a href="BaseObject.html#schema">schema</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="BaseObject#clear"><a href="BaseObject.html#clear">clear</a></li>
+            
+                <li data-name="BaseObject#clearErrors"><a href="BaseObject.html#clearErrors">clearErrors</a></li>
+            
+                <li data-name="BaseObject#getErrors"><a href="BaseObject.html#getErrors">getErrors</a></li>
+            
+                <li data-name="BaseObject#hasErrors"><a href="BaseObject.html#hasErrors">hasErrors</a></li>
+            
+                <li data-name="BaseObject#inspect"><a href="BaseObject.html#inspect">inspect</a></li>
+            
+                <li data-name="BaseObject#set"><a href="BaseObject.html#set">set</a></li>
+            
+                <li data-name="BaseObject#toJSON"><a href="BaseObject.html#toJSON">toJSON</a></li>
+            
+                <li data-name="BaseObject#toObject"><a href="BaseObject.html#toObject">toObject</a></li>
+            
+                <li data-name="BaseObject#toString"><a href="BaseObject.html#toString">toString</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="CouchbaseDocument">
+            <span class="title">
+                <a href="CouchbaseDocument.html">CouchbaseDocument</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="CouchbaseDocument#cas"><a href="CouchbaseDocument.html#cas">cas</a></li>
+            
+                <li data-name="CouchbaseDocument#config"><a href="CouchbaseDocument.html#config">config</a></li>
+            
+                <li data-name="CouchbaseDocument#db"><a href="CouchbaseDocument.html#db">db</a></li>
+            
+                <li data-name="CouchbaseDocument#modelName"><a href="CouchbaseDocument.html#modelName">modelName</a></li>
+            
+                <li data-name="CouchbaseDocument#schema"><a href="CouchbaseDocument.html#schema">schema</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="CouchbaseDocument.findById"><a href="CouchbaseDocument.html#.findById">findById</a></li>
+            
+                <li data-name="CouchbaseDocument.remove"><a href="CouchbaseDocument.html#.remove">remove</a></li>
+            
+                <li data-name="CouchbaseDocument#clear"><a href="CouchbaseDocument.html#clear">clear</a></li>
+            
+                <li data-name="CouchbaseDocument#clearErrors"><a href="CouchbaseDocument.html#clearErrors">clearErrors</a></li>
+            
+                <li data-name="CouchbaseDocument#getCAS"><a href="CouchbaseDocument.html#getCAS">getCAS</a></li>
+            
+                <li data-name="CouchbaseDocument#getDocumentKeyKey"><a href="CouchbaseDocument.html#getDocumentKeyKey">getDocumentKeyKey</a></li>
+            
+                <li data-name="CouchbaseDocument#getDocumentKeyValue"><a href="CouchbaseDocument.html#getDocumentKeyValue">getDocumentKeyValue</a></li>
+            
+                <li data-name="CouchbaseDocument#getErrors"><a href="CouchbaseDocument.html#getErrors">getErrors</a></li>
+            
+                <li data-name="CouchbaseDocument#hasErrors"><a href="CouchbaseDocument.html#hasErrors">hasErrors</a></li>
+            
+                <li data-name="CouchbaseDocument#index"><a href="CouchbaseDocument.html#index">index</a></li>
+            
+                <li data-name="CouchbaseDocument#inspect"><a href="CouchbaseDocument.html#inspect">inspect</a></li>
+            
+                <li data-name="CouchbaseDocument#remove"><a href="CouchbaseDocument.html#remove">remove</a></li>
+            
+                <li data-name="CouchbaseDocument#removeIndexes"><a href="CouchbaseDocument.html#removeIndexes">removeIndexes</a></li>
+            
+                <li data-name="CouchbaseDocument#save"><a href="CouchbaseDocument.html#save">save</a></li>
+            
+                <li data-name="CouchbaseDocument#set"><a href="CouchbaseDocument.html#set">set</a></li>
+            
+                <li data-name="CouchbaseDocument#toJSON"><a href="CouchbaseDocument.html#toJSON">toJSON</a></li>
+            
+                <li data-name="CouchbaseDocument#toObject"><a href="CouchbaseDocument.html#toObject">toObject</a></li>
+            
+                <li data-name="CouchbaseDocument#toString"><a href="CouchbaseDocument.html#toString">toString</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="Document">
+            <span class="title">
+                <a href="Document.html">Document</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="Document#modelName"><a href="Document.html#modelName">modelName</a></li>
+            
+                <li data-name="Document#schema"><a href="Document.html#schema">schema</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Document.getDocumentKeyValue"><a href="Document.html#.getDocumentKeyValue">getDocumentKeyValue</a></li>
+            
+                <li data-name="Document#clear"><a href="Document.html#clear">clear</a></li>
+            
+                <li data-name="Document#clearErrors"><a href="Document.html#clearErrors">clearErrors</a></li>
+            
+                <li data-name="Document#getDocumentKeyKey"><a href="Document.html#getDocumentKeyKey">getDocumentKeyKey</a></li>
+            
+                <li data-name="Document#getDocumentKeyValue"><a href="Document.html#getDocumentKeyValue">getDocumentKeyValue</a></li>
+            
+                <li data-name="Document#getErrors"><a href="Document.html#getErrors">getErrors</a></li>
+            
+                <li data-name="Document#hasErrors"><a href="Document.html#hasErrors">hasErrors</a></li>
+            
+                <li data-name="Document#inspect"><a href="Document.html#inspect">inspect</a></li>
+            
+                <li data-name="Document#set"><a href="Document.html#set">set</a></li>
+            
+                <li data-name="Document#toJSON"><a href="Document.html#toJSON">toJSON</a></li>
+            
+                <li data-name="Document#toObject"><a href="Document.html#toObject">toObject</a></li>
+            
+                <li data-name="Document#toString"><a href="Document.html#toString">toString</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="Driver">
+            <span class="title">
+                <a href="Driver.html">Driver</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Driver.wrap"><a href="Driver.html#.wrap">wrap</a></li>
+            
+                <li data-name="Driver#get"><a href="Driver.html#get">get</a></li>
+            
+                <li data-name="Driver#remove"><a href="Driver.html#remove">remove</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="Lounge">
+            <span class="title">
+                <a href="Lounge.html">Lounge</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="Lounge#CouchbaseDocument"><a href="Lounge.html#CouchbaseDocument">CouchbaseDocument</a></li>
+            
+                <li data-name="Lounge#Document"><a href="Lounge.html#Document">Document</a></li>
+            
+                <li data-name="Lounge#Lounge"><a href="Lounge.html#Lounge">Lounge</a></li>
+            
+                <li data-name="Lounge#Model"><a href="Lounge.html#Model">Model</a></li>
+            
+                <li data-name="Lounge#Schema"><a href="Lounge.html#Schema">Schema</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Lounge#connect"><a href="Lounge.html#connect">connect</a></li>
+            
+                <li data-name="Lounge#disconnect"><a href="Lounge.html#disconnect">disconnect</a></li>
+            
+                <li data-name="Lounge#getModel"><a href="Lounge.html#getModel">getModel</a></li>
+            
+                <li data-name="Lounge#getOption"><a href="Lounge.html#getOption">getOption</a></li>
+            
+                <li data-name="Lounge#model"><a href="Lounge.html#model">model</a></li>
+            
+                <li data-name="Lounge#modelNames"><a href="Lounge.html#modelNames">modelNames</a></li>
+            
+                <li data-name="Lounge#schema"><a href="Lounge.html#schema">schema</a></li>
+            
+                <li data-name="Lounge#setOption"><a href="Lounge.html#setOption">setOption</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="MemoDriver">
+            <span class="title">
+                <a href="MemoDriver.html">MemoDriver</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="MemoDriver#get"><a href="MemoDriver.html#get">get</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="MemoDriver#clear"><a href="MemoDriver.html#clear">clear</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ModelInstance">
+            <span class="title">
+                <a href="ModelInstance.html">ModelInstance</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            <span class="subtitle">Members</span>
+            
+                <li data-name="ModelInstance.config"><a href="ModelInstance.html#.config">config</a></li>
+            
+                <li data-name="ModelInstance.db"><a href="ModelInstance.html#.db">db</a></li>
+            
+                <li data-name="ModelInstance.modelName"><a href="ModelInstance.html#.modelName">modelName</a></li>
+            
+                <li data-name="ModelInstance.schema"><a href="ModelInstance.html#.schema">schema</a></li>
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="ObjectArray">
+            <span class="title">
+                <a href="ObjectArray.html">ObjectArray</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+        <li class="item" data-name="Schema">
+            <span class="title">
+                <a href="Schema.html">Schema</a>
+                
+            </span>
+            <ul class="members itemMembers">
+            
+            </ul>
+            <ul class="typedefs itemMembers">
+            
+            </ul>
+            <ul class="methods itemMembers">
+            
+            <span class="subtitle">Methods</span>
+            
+                <li data-name="Schema#add"><a href="Schema.html#add">add</a></li>
+            
+                <li data-name="Schema#extend"><a href="Schema.html#extend">extend</a></li>
+            
+                <li data-name="Schema#get"><a href="Schema.html#get">get</a></li>
+            
+                <li data-name="Schema#getDocumentKeyValue"><a href="Schema.html#getDocumentKeyValue">getDocumentKeyValue</a></li>
+            
+                <li data-name="Schema#getRefKey"><a href="Schema.html#getRefKey">getRefKey</a></li>
+            
+                <li data-name="Schema#hasRefPath"><a href="Schema.html#hasRefPath">hasRefPath</a></li>
+            
+                <li data-name="Schema#method"><a href="Schema.html#method">method</a></li>
+            
+                <li data-name="Schema#post"><a href="Schema.html#post">post</a></li>
+            
+                <li data-name="Schema#pre"><a href="Schema.html#pre">pre</a></li>
+            
+                <li data-name="Schema#set"><a href="Schema.html#set">set</a></li>
+            
+                <li data-name="Schema#static"><a href="Schema.html#static">static</a></li>
+            
+                <li data-name="Schema#virtual"><a href="Schema.html#virtual">virtual</a></li>
+            
+            </ul>
+            <ul class="events itemMembers">
+            
+            </ul>
+        </li>
+    
+    </ul>
+</div>
+    <div class="main">
+        <h1 class="page-title" data-filename="index.html">Index</h1>
+        
 
-<p><code>npm install lounge</code></p>
 
-<h2>
-<a id="stability" class="anchor" href="#stability" aria-hidden="true"><span class="octicon octicon-link"></span></a>Stability</h2>
+    
 
-<p>This module is under development and there could be bugs. API may not be 100% locked down. 
-Documentation is still work in progress.</p>
 
-<h2>
-<a id="overview" class="anchor" href="#overview" aria-hidden="true"><span class="octicon octicon-link"></span></a>Overview</h2>
+    <h3> </h3>
 
-<p>Lounge is a simple, somewhat opinionated, Mongoose-inspired ODM for <a href="http://www.couchbase.com">Couchbase</a>. Main goal is
-to provide modeling tool framework for working with Couchbase databases in an asynchronous environment of Node.js. </p>
 
-<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> lounge <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>lounge<span class="pl-pds">'</span></span>);
-<span class="pl-smi">lounge</span>.<span class="pl-en">connect</span>({ 
-  connectionString<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>couchbase://127.0.0.1<span class="pl-pds">'</span></span>,
-  bucket<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>lounge_test<span class="pl-pds">'</span></span>
+
+
+
+
+
+
+    
+
+
+
+
+    <section>
+        <article class="readme"><h1>Lounge</h1><p>Simple Mongoose-inspired ODM for <a target="_blank" href="http://www.couchbase.com">Couchbase</a>.</p>
+<h2>Installation</h2><p><code>npm install lounge</code></p>
+<p><strong>Node.js &gt;= 0.12 supported. For all features, run node with the harmony <code>--harmony</code> and harmony proxies <code>--harmony_proxies</code> flags.</strong></p>
+<h2>Stability</h2><p>This module is under development and there could be bugs. API may not be 100% locked down.<br>Documentation is still work in progress.</p>
+<h2>Overview</h2><p>Lounge is a simple, somewhat opinionated, Mongoose-inspired ODM for <a target="_blank" href="http://www.couchbase.com">Couchbase</a>. Main goal is<br>to provide modeling tool framework for working with Couchbase databases in an asynchronous environment of Node.js. </p>
+<pre class="prettyprint source lang-js"><code>var lounge = require('lounge');
+lounge.connect({ 
+  connectionString: 'couchbase://127.0.0.1',
+  bucket: 'lounge_test'
 });
 
-<span class="pl-k">var</span> schema <span class="pl-k">=</span> <span class="pl-smi">lounge</span>.<span class="pl-en">schema</span>({ name<span class="pl-k">:</span> <span class="pl-c1">String</span> });
-<span class="pl-k">var</span> Cat <span class="pl-k">=</span> <span class="pl-smi">lounge</span>.<span class="pl-en">model</span>(<span class="pl-s"><span class="pl-pds">'</span>Cat<span class="pl-pds">'</span></span>, schema);
+var schema = lounge.schema({ name: String });
+var Cat = lounge.model('Cat', schema);
 
-<span class="pl-k">var</span> kitty <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Cat</span>({ name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>Zildjian<span class="pl-pds">'</span></span> });
-<span class="pl-smi">kitty</span>.<span class="pl-en">save</span>(<span class="pl-k">function</span> (<span class="pl-smi">err</span>) {
-  <span class="pl-k">if</span> (err) <span class="pl-c">// ...</span>
-  <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>meow<span class="pl-pds">'</span></span>);
-});</pre></div>
-
-<h5>
-<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features:</h5>
-
+var kitty = new Cat({ name: 'Zildjian' });
+kitty.save(function (err) {
+  if (err) // ...
+  console.log('meow');
+});</code></pre><p><strong>Features</strong></p>
 <ul>
 <li>Schema definition</li>
 <li>Strict modelling based on schema</li>
@@ -68,64 +495,623 @@ to provide modeling tool framework for working with Couchbase databases in an as
 <li>Embedded (referenced) documents</li>
 <li>Automatic and manual population of embedded (referenced) document</li>
 <li>Middleware including pre and post hooks</li>
-<li>Indexing using <a href="http://docs.couchbase.com/developer/dev-guide-3.0/lookups.html">reference lookup documents</a>
-</li>
+<li>Indexing using <a target="_blank" href="http://docs.couchbase.com/developer/dev-guide-3.0/lookups.html">reference lookup documents</a></li>
 </ul>
-
-<h5>
-<a id="outside-of-the-scope-of-this-module" class="anchor" href="#outside-of-the-scope-of-this-module" aria-hidden="true"><span class="octicon octicon-link"></span></a>Outside of the scope of this module:</h5>
-
+<p><strong>Outside of the scope of this module</strong></p>
 <ul>
-<li>Document and view management. There are too many patterns and ways of performing document and view management and 
-view lookup that it is impractical to accommodate anything sane within a simple ODM. This can easily be expanded
-on top of Lounge.</li>
+<li>Document and view management. There are too many patterns and ways of performing document and view management and<br>view lookup that it is impractical to accommodate anything sane within a simple ODM. This can easily be expanded<br>on top of Lounge.</li>
 <li>View queries. For same reasons this falls outside of the scope of Lounge.</li>
-<li>Automatic document removal on key change. That is if a document key property changes, the new document is saved under
-the new key. The old document sticks around under the old key. There are too many implications if we start automatically
-handle document removal in this scenario. This should be handled by the user of this module.</li>
+<li>Automatic document removal on key change. That is if a document key property changes, the new document is saved under<br>the new key. The old document sticks around under the old key. There are too many implications if we start automatically<br>handle document removal in this scenario. This should be handled by the user of this module.</li>
 </ul>
+<h2>Guide</h2><ul>
+<li><a href="#model">Modelling</a></li>
+<li><a href="#types">Types</a></li>
+<li><a href="#middleware">Middleware</a></li>
+<li><a href="#extend">Schema Extending</a></li>
+<li><a href="#embedded">Embedded Documents</a></li>
+<li><a href="#saving">Saving Documents</a></li>
+<li><a href="#getting">Getting Documents</a></li>
+<li><a href="#removing">Removing Documents</a></li>
+<li><a href="#population">Population</a></li>
+<li><a href="#indexes">Indexes</a></li>
+<li><a href="#events">Events</a></li>
+<li><a href="#errors">Errors</a></li>
+</ul>
+<h2>Modelling <a id="model"></a></h2><p><strong>Basics</strong></p>
+<p>We begin defining a data model using a schema.</p>
+<pre class="prettyprint source lang-js"><code>var userSchema = lounge.schema({
+  firstName: String,
+  lastName: String,
+  age: Number,
+  usernames: [String],
+  setup: Boolean
+  metadata: {
+    createdAt: Date,
+    updatedAt: Date
+  }
+});</code></pre><p>We can add additional properties using <code>add</code> function:</p>
+<pre class="prettyprint source lang-js"><code>userSchema.add('name', String);</code></pre><p>Alternatively we can explicitly specify the type using <code>type</code> property:</p>
+<pre class="prettyprint source lang-js"><code>var catSchema = lounge.schema({
+  name: { type: String }
+  breed: String,
+});
 
-<h2>
-<a id="documentation" class="anchor" href="#documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Documentation</h2>
+catSchema.add('age', {type: String});</code></pre><p>Schema options can be set at construction or using the <code>set</code> function.</p>
+<pre class="prettyprint source lang-js"><code>var catSchema = lounge.schema({
+  name: { type: String }
+  breed: String,
+});
 
+catSchema.set('minimize', false);</code></pre><p><strong>Document keys</strong></p>
+<p>By default schemas come with an <code>id</code> property as the document key, and the automatically generated value will be<br>a <a target="_blank" href="https://en.wikipedia.org/wiki/Universally_unique_identifier">UUID</a><br>using <a target="_blank" href="https://www.npmjs.com/package/node-uuid">node-uuid</a> <code>v4()</code> function. This should be most practical and<br>appropriate in a lot of cases. Alternatively you can specify explicit key properties:</p>
+<pre class="prettyprint source lang-js"><code>var userSchema = lounge.schema({
+  firstName: String,
+  lastName: String,
+  email: { type: String, key: true, generate: false }
+});</code></pre><p>Here we desire <code>email</code> to be used as the document key and we specify <code>generate: false</code> because we do not want Lounge<br>to automatically handle key property value generation. If we still want uuid generation but in a different property<br>we can specify so:</p>
+<pre class="prettyprint source lang-js"><code>var userSchema = lounge.schema({
+  firstName: String,
+  lastName: String,
+  email: String,
+  userId: {type: String, key: true, generate: true }
+});</code></pre><p><code>generate</code> does not have to be set explicitly to <code>true</code> as that is the default.</p>
+<p>We can specify additional prefix and/or suffix for keys. This will be used when wrigin to the database as the actual<br>document key.</p>
+<pre class="prettyprint source lang-js"><code>var userSchema = lounge.schema({
+  firstName: String,
+  lastName: String,
+  email: { type: String, key: true, generate: false, prefix: 'user'}
+});</code></pre><p>Note that setting prefix and suffix options like this will take presidence over any <code>keyPrefix</code> and <code>keySuffix</code><br>options specified in the second options parameter to the <code>schema()</code> call or any settings in the lounge config.</p>
+<p><strong>Examples</strong></p>
+<pre class="prettyprint source lang-js"><code>var lounge = require('lounge');
+
+// ... connect
+
+var userSchema = lounge.schema({
+  name: String
+  email: { type: String, key: true, generate: false, prefix: 'user::'}
+});
+
+var User = lounge.model('User', userSchema);
+var user = new User({name: 'Bob Smith', email: 'bsmith@acme.com'});
+user.save();</code></pre><p>This will save the user document under key <code>user::bsmith@acme.com</code>.</p>
+<pre class="prettyprint source lang-js"><code>var lounge = require('lounge');
+
+// ... connect
+
+var userSchema = lounge.schema({
+  name: String
+}, {
+  keyPrefix: 'user::'
+});
+
+var User = lounge.model('User', userSchema);
+var user = new User({name: 'Bob Smith'});
+user.save();</code></pre><p>This will automatically generate a uuid <code>id</code> property and save the user document under key<br>similar to <code>user::110ec58a-a0f2-4ac4-8393-c866d813b8d1</code>.</p>
+<p><strong>Data manipulation</strong></p>
+<p>Data in Model instances can be access directly or using <code>get</code> function. Similarly it can be manipulated using<br>either assignment operator or using the <code>set</code> function. In either case the input value is validated to be of proper type.</p>
+<pre class="prettyprint source lang-js"><code>var userSchema = lounge.schema({
+  name: String
+  friends: Number,
+  dob: Date,
+  setup: Boolean
+});
+
+var User = lounge.model('User', userSchema);
+var user = new User({name: 'Bob Smith'});
+
+user.get('name'); // 'Bob Smith'
+user.name = 'Joe'; // OK
+user.name.set('Joe'); // OK
+console.log(user.name); // 'Joe'
+user.set('friends', 20); // OK
+user.friends = 'abc'; // nope. still 20
+user.dob = new Date('July 5, 1980');
+user.get('dob'); // instance of Date
+user.set('setup', 'yup'); // nope
+user.setup = true; // OK</code></pre><p><strong>Validation</strong></p>
+<p>Lounge does automatic validation against input data using the type information specified in the schema definition.<br>We can provide custom validation in schema definition by providing <code>validator</code> function.</p>
+<pre class="prettyprint source lang-js"><code>var validator = require('validator'); // Node validator module
+
+var userSchema = lounge.schema({
+  name: String
+  email: {type: String, validate: validator.isEmail}
+});
+
+var User = lounge.model('User', userSchema);
+var user = new User({ name: 'Bob Smith' });
+
+user.email = 'bob@gmail.com'; // OK
+user.email = 'bsmith'; // Nope
+console.log(user.email); // 'bob@gmail.com'</code></pre><p><strong>Virtuals</strong></p>
+<p>Virtuals are document properties that you can get and set but that do not get persisted to the database.<br>The getters are useful for formatting or combining fields, while setters are useful for de-composing a single value<br>into multiple values for storage.</p>
+<pre class="prettyprint source lang-js"><code>var userSchema = lounge.schema({
+  firstName: String, 
+  lastName: String
+});
+
+userSchema.virtual('fullName', {
+  get: function () {
+    return this.firstName + ' ' + this.lastName;
+  },
+  set: function (v) {
+    if (v !== undefined) {
+      var parts = v.split(' ');
+      this.firstName = parts[0];
+      this.lastName = parts[1];
+    }
+  }
+});
+
+var User = lounge.model('User', userSchema);
+var user = new User({firstName: 'Bob', lastName: 'Smith'});
+console.log(user.fullName); // Bob Smith
+user.fullName = 'Jim Jones';
+console.log(user.fullName); // Jim Jones
+console.log(user.firstName); // Jim
+console.log(user.lastName); // Jones</code></pre><p>If no <code>set</code> function is defined the virtual is read-only.</p>
+<p><strong>Statics</strong></p>
+<p>Adding static methods to Models can be accomplished using <code>static()</code> schema function</p>
+<pre class="prettyprint source lang-js"><code>var userSchema = lounge.schema({
+  firstName: String, 
+  lastName: String
+});
+
+userSchema.static('foo', function(p, q) {
+  return p + q;
+});
+
+var User = lounge.model('User', userSchema);
+User.foo(1, 2); // 3</code></pre><p>We can also pass an object of function keys and function values, and they will all be added.</p>
+<p><strong>Methods</strong></p>
+<p>Similarly adding instance methods to Models can be done using <code>method()</code> schema function. </p>
+<pre class="prettyprint source lang-js"><code>var userSchema = lounge.schema({
+  firstName: String, 
+  lastName: String
+});
+
+userSchema.method('fullName', function() {
+  return this.firstName + ' ' + this.lastName;
+});
+
+var User = lounge.model('User', userSchema);
+var user = new User({firstName: 'Bob', lastName: 'Smith'});
+user.fullName(); // 'Bob Smith'</code></pre><p>We can also pass an object of function keys and function values, and they will all be added.</p>
+<p><strong>init() method</strong></p>
+<p>There is a special <code>init</code> method that if specified in schema definition will be called at the end of model creation.<br>You can do additional setup here. This method is not passed in any arguments.</p>
+<p><strong>toObject()</strong></p>
+<p>Model instances come with <code>toObject</code> function that is automatically used for <code>console.log</code> inspection. </p>
+<p>Options:</p>
 <ul>
-<li><a href="http://bojand.github.io/lounge/guide">Guide</a></li>
-<li><a href="http://bojand.github.io/lounge/api">API Documentation</a></li>
+<li><code>transform</code> - function used to transform an object once it's been converted to plain javascript representation from a<br>model instance.</li>
+<li><code>minimize</code> - to &quot;minimize&quot; the document by removing any empty properties. Default: <code>true</code></li>
+<li><code>virtuals</code> - to apply virtual getters</li>
 </ul>
+<p>These settings can be applied on any invocation of <code>toObject</code> as well they can be set at schema level.</p>
+<pre class="prettyprint source lang-js"><code>var userSchema = lounge.schema({
+  name: String,
+  email: String,
+  password: String
+});
 
-<h2>
-<a id="tests" class="anchor" href="#tests" aria-hidden="true"><span class="octicon octicon-link"></span></a>TESTS</h2>
+var xform = function (doc, ret, options) {
+  delete ret.password;
+  return ret;
+};
 
-<p>Module automated tests can be run using <code>npm test</code> command. The tests are executed using <a href="https://github.com/couchbase/couchnode#mock-testing">Couchbase mocking</a>.
-To run tests against an actual local database create a bucket <code>lounge_test</code> and remove <code>LOUNGE_COUCHBASE_MOCK=true</code> from
-<code>test</code> script property in <code>package.json</code>.</p>
+userSchema.set('toObject', {transform: xform});
 
-<h2>
-<a id="todo" class="anchor" href="#todo" aria-hidden="true"><span class="octicon octicon-link"></span></a>TODO</h2>
+var User = lounge.model('User', userSchema);
 
-<p>See <a href="https://github.com/bojand/lounge/blob/master/TODO.md">TODO.md</a>.</p>
+var user = new User({
+  name: 'Joe',
+  email: 'joe@gmail.com',
+  password: 'password'
+});
 
-<h2>
-<a id="credits" class="anchor" href="#credits" aria-hidden="true"><span class="octicon octicon-link"></span></a>Credits</h2>
+console.log(user); // { name: 'Joe', email: 'joe@gmail.com' }</code></pre><p><strong>toJSON()</strong></p>
+<p>Similar to <code>toObject</code>. The return value of this method is used in calls to <code>JSON.stringify</code>.</p>
+<p><strong>CAS</strong></p>
+<p>All document instances have a read-only property <code>cas</code> that returns the string representation of the CAS object retrieved<br>from the database. The <code>cas</code> property is initialized only once a document has been retrieved from the database using one<br>of query functions, or once it has been saved. Alternatively we can use the method <code>getCAS(raw)</code> to get the cas value.<br>If <code>raw</code> is <code>true</code> then we return the raw CAS object. Otherwise we return string representation. This can be useful<br>for computation of ETag values for example.</p>
+<pre class="prettyprint source lang-js"><code>console.log(doc.cas); // String: 00000000a71626e4
+console.log(doc.getCAS()); // String: 00000000a71626e4
+console.log(doc.getCAS(true)); // Object: CouchbaseCas&lt;11338961768815788032></code></pre><p><strong>Useful member variables</strong></p>
+<p>All model instances come with a <code>modelName</code> read only property that you can use to access the model name. As well<br>instances have <code>schema</code> property that represents the models schema used when creating the model with <code>model()</code> function.</p>
+<pre class="prettyprint source lang-js"><code>var userSchema = lounge.schema({
+  name: String,
+  email: String
+});
 
-<p>Lots of code and design inspired by <a href="http://mongoosejs.com/">Mongoose</a>.
-Uses modified version of <a href="https://github.com/jwerle/draft">Draft</a> for schema and modelling.</p>
+var User = lounge.model('User', userSchema);
+var user = new User({name: 'Bob Smith'});
 
-<h2>
-<a id="license" class="anchor" href="#license" aria-hidden="true"><span class="octicon octicon-link"></span></a>License</h2>
+console.log(user.modelName); // 'User'
+console.log(user.schema instanceof lounge.Schema); // true</code></pre><h2>Types <a id="types"></a></h2><p>Supported types:</p>
+<ul>
+<li>String</li>
+<li>Number</li>
+<li>Boolean</li>
+<li>Date</li>
+<li>Array (including types within Array)</li>
+<li>Object (including typed Models for sub-schemas)</li>
+<li>'any'</li>
+</ul>
+<p>When a type is specified, it will be enforced. Typecasting is enforced on all types except 'any'. If a value cannot be typecasted to the correct type, the original value will remain untouched.</p>
+<p>Types can be extended with a variety of attributes. Some attributes are type-specific and some apply to all types.</p>
+<p>Custom types can be created by defining an object with type properties.</p>
+<pre class="prettyprint source lang-js"><code>var NotEmptyString = {type: String, minLength: 1};
+country: {type: NotEmptyString, default: 'USA'}</code></pre><h4>General attributes</h4><p><strong>transform</strong><br>Called immediately when value is set and before any typecast is done.</p>
+<pre class="prettyprint source lang-js"><code>name: {type: String, transform: function(value) {
+  // Modify the value here...
+  return value;
+}}</code></pre><p><strong>validate</strong><br>Called immediately when value is set and before any typecast is done. Can be used for validating input data.<br>If you return <code>false</code> the write operation will be cancelled.</p>
+<pre class="prettyprint source lang-js"><code>name: {type: String, validate: function(value) {
+  // check
+  return value;
+}}</code></pre><p><strong>default</strong><br>Provide default value. You may pass value directly or pass a function which will be executed when the object is initialized. The function is executed in the context of the object and can use &quot;this&quot; to access other properties (which .</p>
+<pre class="prettyprint source lang-js"><code>country: {type: String, default: 'USA'}</code></pre><p><strong>get</strong><br>Provide function to transform value when retrieved. Executed in the context of the object and can use &quot;this&quot; to access properties.</p>
+<pre class="prettyprint source lang-js"><code>string: {type: String, getter: function(value) { return value.toUpperCase(); }}</code></pre><p><strong>readOnly</strong><br>If true, the value can be read but cannot be written to. This can be useful for creating fields that reflect other values.</p>
+<pre class="prettyprint source lang-js"><code>fullName: {type: String, readOnly: true, default: function(value) {
+  return (this.firstName + ' ' + this.lastName).trim();
+}}</code></pre><p><strong>invisible</strong><br>If true, the value can be written to but isn't outputted as an index when <code>toObject()</code> is called.<br>This can be useful for hiding internal variables.</p>
+<h4>String</h4><p><strong>stringTransform</strong><br>Called after value is typecast to string <strong>if</strong> value was successfully typecast but called before all validation.</p>
+<pre class="prettyprint source lang-js"><code>postalCode: {type: String, stringTransform: function(string) {
+  // Type will ALWAYS be String, so using string prototype is OK.
+  return string.toUpperCase();
+}}</code></pre><p><strong>regex</strong><br>Validates string against Regular Expression. If string doesn't match, it's rejected.</p>
+<pre class="prettyprint source lang-js"><code>memberCode: {type: String, regex: new RegExp('^([0-9A-Z]{4})$')}</code></pre><p><strong>enum</strong><br>Validates string against array of strings. If not present, it's rejected.</p>
+<pre class="prettyprint source lang-js"><code>gender: {type: String, enum: ['m', 'f']}</code></pre><p><strong>minLength</strong><br>Enforces minimum string length.</p>
+<pre class="prettyprint source lang-js"><code>notEmpty: {type: String, minLength: 1}</code></pre><p><strong>maxLength</strong><br>Enforces maximum string length.</p>
+<pre class="prettyprint source lang-js"><code>stateAbbrev: {type: String, maxLength: 2}</code></pre><p><strong>clip</strong><br>If true, clips string to maximum string length instead of rejecting string.</p>
+<pre class="prettyprint source lang-js"><code>bio: {type: String, maxLength: 255, clip: true}</code></pre><h4>Number</h4><p><strong>min</strong><br>Number must be &gt; min attribute or it's rejected.</p>
+<pre class="prettyprint source lang-js"><code>positive: {type: Number, min: 0}</code></pre><p><strong>max</strong><br>Number must be &lt; max attribute or it's rejected.</p>
+<pre class="prettyprint source lang-js"><code>negative: {type: Number, max: 0}</code></pre><h4>Array</h4><p><strong>unique</strong><br>Ensures duplicate-free array, using === to test object equality.</p>
+<pre class="prettyprint source lang-js"><code>emails: {type: Array, unique: true, arrayType: String}</code></pre><p><strong>arrayType</strong><br>Elements within the array will be typed to the attributes defined.</p>
+<pre class="prettyprint source lang-js"><code>aliases: {type: Array, arrayType: {type: String, minLength: 1}}</code></pre><p>An alternative shorthand version is also available -- wrap the properties within array brackets.</p>
+<pre class="prettyprint source lang-js"><code>aliases: [{type: String, minLength: 1}]</code></pre><h4>Object</h4><p><strong>objectType</strong><br>Allows you to define a typed object.</p>
+<pre class="prettyprint source lang-js"><code>company: {type: Object, objectType: {
+  name: String
+}}</code></pre><p>An alternative shorthand version is also available -- simply pass a descriptor.</p>
+<pre class="prettyprint source lang-js"><code>company: {
+  name: String
+}</code></pre><h4>Alias</h4><p><strong>index (required)</strong></p>
+<p>The index key of the property being aliased.</p>
+<pre class="prettyprint source lang-js"><code>zip: String,
+postalCode: {type: 'alias', target: 'zip'}
+// this.postalCode = 12345 -> this.toObject() -> {zip: '12345'}</code></pre><h2>Middleware <a id="middleware"></a></h2><p>Similar to Mongoose middleware, Lounge exposes <code>pre</code> and <code>post</code> <a target="_blank" href="https://www.npmjs.com/package/hooks-fixed">hooks</a>.<br>Normally this is used to do additional validation pre save, and cleanup post document removal. Although the hooks can be<br>setup for any method including <code>toObject</code> and <code>toJON</code> methods.</p>
+<pre class="prettyprint source lang-js"><code>var userSchema = lounge.schema({
+  firstName: String,
+  lastName: String,
+  email: String
+});
 
-<p>Copyright 2015 Bojan Djurkovic</p>
+userSchema.pre('save', function (next) {
+  if (this.email) {
+    this.email = this.email.toLowerCase();
+  }
 
-<p>Licensed under the MIT License.</p>
+  // we must call next to continue control flow 
+  next();
+});
 
-      <footer class="site-footer">
-        <span class="site-footer-owner"><a href="https://github.com/bojand/lounge">Lounge</a> is maintained by <a href="https://github.com/bojand">bojand</a>.</span>
+userSchema.post('remove', function () {
+  console.log('document %s removed', this.id);
+});</code></pre><p>Important note here is that post 'save' and 'remove' hooks do not receive any form of control flow. There are no<br>callbacks passed.</p>
+<p>The callback passed into pre hooks have be used to control flow of logic and execution:</p>
+<pre class="prettyprint source lang-js"><code>schema.pre('save', function (next) {
+  // some custom validation method
+  if (!this.validate()) {
+    return next(new Error('Validation error!'));
+  }
 
-        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
-      </footer>
+  next();
+});
 
+// elsewhere...
+
+doc.save(function(err, savedDoc) {
+  if(err) console.log(err); // 'Validation error!' Document was not saved
+});</code></pre><p><strong>onBeforeValueSet(key, value) / onValueSet(key, value)</strong></p>
+<p><code>onBeforeValueSet</code> / <code>onValueSet</code> allow you to bind an event handler to all write operations on an object.<br>Currently, it will only notify of write operations on the object itself and will not notify you when child objects are<br>written to. If you return false or throw an error within the <code>onBeforeValueSet</code> handler, the write operation will be<br>cancelled. Throwing an error will add the error to the error stack.</p>
+<pre class="prettyprint source lang-js"><code>var User = lounge.schema({ name: String }, {
+  onBeforeValueSet: function(key, value) {
+    if(key === 'name' && value.indexOf('Joe') >= 0) {
+      return false;
+    });
+  }
+});
+
+var User = lounge.model('User', schema);
+var user = new User();
+user.name = 'Bill'; // { name: undefined }
+user.name = 'Joe Smith'; //  { name: 'Joe Smith' }</code></pre><h2>Schema Extension <a id="extend"></a></h2><p>It is useful to have a common base schema, that all other schemas / models would extend or &quot;inherit&quot; properties from.<br>This can be accomplished by using the <code>Schema.extend</code> function. When used all properties, virtuals,<br>methods, statics, and middleware that are present in the base schema <strong>but not</strong> present in destination schema are copied<br>into the destination schema.</p>
+<pre class="prettyprint source lang-js"><code> var baseSchema = lounge.schema({
+  metadata: {
+    doc_type: String,
+    createdAt: Date,
+    updatedAt: Date
+  }
+});
+
+baseSchema.pre('save', function (next) {
+  if (!this.metadata) {
+    this.metadata = {};
+  }
+
+  var now = new Date();
+
+  if (!this.metadata.createdAt) {
+    this.metadata.createdAt = now;
+  }
+
+  this.metadata.updatedAt = now;
+  this.metadata.doc_type = this.modelName;
+
+  next();
+});
+
+baseSchema.method('baseFoo', function () {
+  console.log('base foo');
+});
+
+var userSchema = lounge.schema({
+  name: String,
+  email: String,
+});
+
+userSchema.pre('save', function (next) {
+  if (this.email) {
+    this.email = this.email.toLowerCase();
+  }
+
+  next();
+});
+
+userSchema.method('userFoo', function () {
+  console.log('user foo');
+});
+
+// make user schema extend the base schema 
+userSchema.extend(baseSchema);
+var User = lounge.model('User', userSchema);
+
+user = new User({
+  name: 'Bob Smith',
+  email: 'BSmith@gmail.com'
+});
+
+user.baseFoo() // prints 'base foo'
+user.userFoo() // prints 'user foo'
+
+user.save(function(err, savedDoc) {
+  console.log(user.metadata.updatedAt); // Sat Dec 29 2015 03:30:00 GMT-0400 (AST)
+  console.log(user.metadata.doc_type); // 'user'
+  console.log(user.email); // 'bsmith@gmail.com'
+});</code></pre><h2>Embedded Documents <a id="embedded"></a></h2><p>Lounge allows for embedding and referencing other Models within schema.</p>
+<pre class="prettyprint source lang-js"><code>var addressSchema = lounge.schema({
+  street: String,
+  city: String,
+  country: String
+});
+
+var Address = lounge.model('Address', addressSchema);
+
+var blogPostSchema = lounge.schema({
+  title: String,
+  body: String,
+});
+
+var BlogPost = lounge.model('BlogPost', blogPostSchema);
+
+var userSchema = lounge.schema({
+  name: String,
+  address: Address,
+  posts: [BlogPost]
+});
+
+var post = new BlogPost({
+  title: 'Foo',
+  body: 'Lorem ipsum'
+});
+
+var user = new User({
+  name: 'Bob Smith',
+  posts: [post],
+  address: new Address({
+    street: '123 Fake Street',
+    city: 'Springfield',
+    country: 'USA'
+  })
+});
+
+user.posts.push(new BlogPost({
+  title: 'Post 2',
+  body: 'Some more text!'
+});</code></pre><p>You can manipulate and work with subdocument just like any model instances. When the top level document is saved<br>all child subdocuments are saved as well. Subdocuments <strong>must</strong> be an instance of the Model defined in the schema or a<br><code>String</code> in which case it represents the key / id of the subdocument.</p>
+<h2>Saving Documents <a id="saving"></a></h2><p>Saving documents is done using <code>save</code> function that every model instance has. This will execute all pre<br>'save' middleware and then perform Couchbase <code>upsert</code> operation on any subdocuments and the actual document. It will also<br>perform lookup document updates and finally execute any post hook middleware.</p>
+<p>From our example code above:</p>
+<pre class="prettyprint source lang-js"><code>user.save(function(err, savedDoc) {
+  if(err) console.log(err);
+});</code></pre><p>All documents and subdocuments would be upserted into the database.</p>
+<p><strong>Model.save(data, options, fn)</strong></p>
+<p><code>data</code> - any data to be set into the model before saving.</p>
+<p><strong>options</strong></p>
+<p>All options not present here are first looked up from schema options, and then from config options.</p>
+<ul>
+<li><code>storeFullReferenceId</code> - whether to save embedded document property values as full document keys or just the base value</li>
+<li><code>storeFullKey</code> - whether to save the internal document key property as fully expanded value or as the simple value</li>
+<li><code>refIndexKeyPrefix</code> - lookup index document key prefix.</li>
+<li><code>waitForIndex</code> - whether we want to wait for indexing to finish before returning. default is false.</li>
+<li><code>virtuals</code> - whether we want to save virtuals. default is <code>false</code>.</li>
+<li><code>minimize</code> - to &quot;minimize&quot; the document by removing any empty properties. Default: <code>true</code></li>
+<li><code>expiry</code> - couchbase upsert option</li>
+<li><code>persist_to</code> - couchbase persist_to option</li>
+<li><code>replicate_to</code> - couchbase option</li>
+</ul>
+<h2>Getting Documents <a id="getting"></a></h2><p>All models created come with a static function <code>findById</code> that can be used to look up a single or multiple keys and<br>retrieve documents from the database. If key does not exist and document is not found we <strong>do not</strong> return an error<br>but also no model is generated. This is different than present couchbase module behaviour.</p>
+<pre class="prettyprint source lang-js"><code>User.findById('user123', function(err, doc) {
+if(err) console.log(err); // there was an error looking up the key
+else if(!doc) console.log('no document found');
+else console.log(doc); // doc is instance of User and will print it out
+});</code></pre><p>We can get multiple keys using an array as the first parameter. In this case, the callback invoked is passed 3 arguments<br>in form <code>(err, documents, misses)</code>.</p>
+<pre class="prettyprint source lang-js"><code>User.findById(['user123', 'user456'], function(err, docs, misses) {
+if(err) console.log(err); // there was an error looking up the key
+console.dir(docs);        // array of Users found
+console.dir(misses);      // array if keys not found.
+});</code></pre><p>When <code>findById</code> is invoked using a single string argument the result returned is a single model instance. When an array<br>is passed in we return the results as described above. To force &quot;array&quot; type of returns in ALL cases, set the Lounge<br>config option <code>alwaysReturnArrays</code> to <code>true</code>. Default is <code>false</code>.</p>
+<h2>Removing Documents <a id="removing"></a></h2><p>Removing documents is done using <code>remove</code> function that every model instance has. This will execute all pre<br>'remove' middleware and then perform Couchbase <code>remove</code> operation. It will also perform lookup document updates<br>and finally execute any post hook middleware. By default this function <strong>does not</strong> remove embedded documents. To do<br>this set <code>removeRefs</code> options to <code>true</code>.</p>
+<pre class="prettyprint source lang-js"><code>user.remove(function(err, doc) {
+  if(err) console.log(err);
+});</code></pre><p>If we want all subdocuments to be removed:</p>
+<pre class="prettyprint source lang-js"><code>user.remove(function(err, {removeRefs: true}, doc) {
+  if(err) console.log(err);
+});</code></pre><p>This will execute removal, hooks and indexing operations for all documents and subdocuments.</p>
+<h2>Population <a id="population"></a></h2><p><code>findById</code> comes with an options parameter that can have one property <code>populate</code> that can be used to dictate<br>if and how we want to get any embedded subdocuments from the database. If <code>populate</code> option is <code>true</code> all embedded<br>subdocuments are retrieved from the database.</p>
+<p>From our &quot;Embedded Documents&quot; example, if we were to retrieve the user document created:</p>
+<pre class="prettyprint source lang-js"><code>User.findById(userId, {populate: true}, function(err, doc) {
+  console.log(user instanceof User); // true
+  console.log(user.address instanceof Address); // true
+  console.log(user.posts[0] instanceof BlogPost); // true
+
+  console.log(user); // full user document with retrieved address and posts subdocuments
+});</code></pre><p>We can specify a single field to populate:</p>
+<pre class="prettyprint source lang-js"><code>User.findById(userId, {populate: 'address'}, function(err, doc) {
+  console.log(user instanceof User); // true
+  console.log(user.address instanceof Address); // true
+  console.log(user.posts[0] instanceof BlogPost); // false 
+  console.log(user.posts[0] instanceof String); // true - posts is an array of string keys
+});</code></pre><pre class="prettyprint source lang-js"><code>User.findById(userId, {populate: 'posts'}, function(err, doc) {
+  console.log(user instanceof User); // true
+  console.log(user.address instanceof Address); // false
+  console.log(user.posts[0] instanceof BlogPost); // true
+});</code></pre><p>We can explicitly specify array indexes to populate</p>
+<pre class="prettyprint source lang-js"><code>User.findById(userId, {populate: 'posts.1'}, function(err, doc) {
+  console.log(user instanceof User); // true
+  console.log(user.address instanceof Address); // false
+  console.log(user.posts[0] instanceof BlogPost); // false
+  console.log(user.posts[0] instanceof String); // true
+  console.log(user.posts[1] instanceof BlogPost); // true - fully populated
+});</code></pre><p>Finally, <code>populate</code> can accept an array if fields to populate:</p>
+<pre class="prettyprint source lang-js"><code>User.findById(userId, {populate: ['address', 'posts.1']}, function(err, doc) {
+  console.log(user instanceof User); // true
+  console.log(user.address instanceof Address); // true - fully populated
+  console.log(user.posts[0] instanceof BlogPost); // false
+  console.log(user.posts[0] instanceof String); // true
+  console.log(user.posts[1] instanceof BlogPost); // true - fully populated
+});</code></pre><h2>Indexes <a id="indexes"></a></h2><p>Lounge provides Indexing mechanism using <a target="_blank" href="http://docs.couchbase.com/developer/dev-guide-3.0/lookups.html">reference lookup documents</a>.<br>This allows us to set up simple one to one lookups for easier document retrieval where we do not need to do create view<br>indexes. Specifying an index property is done at schema level:</p>
+<pre class="prettyprint source lang-js"><code>var userSchema = lounge.schema({
+  name: String,
+  email: {type: String, index: true}
+});</code></pre><p>Here we wish <code>User</code> models to have their own <code>id</code> as document key, but we want to be able to look up documents via email<br>as well as that is also unique property for users. Lounge will automatically manage (remove and upsert) lookup documents,<br>as user is <code>saved</code> or <code>removed</code>. </p>
+<pre class="prettyprint source lang-js"><code>var user = new User({
+  name: 'Joe Smith',
+  email: 'joe@gmail.com'
+});
+
+user.save();</code></pre><p>This will create the a lookup document similar to:</p>
+<pre class="prettyprint source"><code>{ key: '2ba8a471-063b-420a-aa83-31debe58f46f' }</code></pre><p>with document key <code>'$_ref_by_email_joe@gmail.com'</code>. We can manipulate this behaviour using schema options.</p>
+<pre class="prettyprint source lang-js"><code>var userSchema = lounge.schema({
+  name: String,
+  email: {type: String, index: true}
+}, {
+  keyPrefix: 'user::',
+  delimiter: '::'
+});</code></pre><p>Saving a document defined with this schema will save user document with key <code>'user::5c4bfd6d-9c80-452b-be3a-3e528e4f53f5'</code><br>and will save a lookup document with key <code>''user::$_ref_by_email::joe@gmail.com'</code>. Setting <code>refIndexKeyPrefix</code> can add<br>additional customization.</p>
+<pre class="prettyprint source lang-js"><code>{
+  keyPrefix: 'user::',
+  delimiter: '::',
+  refIndexKeyPrefix: 'lookup_by_'
+}</code></pre><p>This will result in lookup document key <code>user::lookup_by_email::joe@gmail.com</code>.</p>
+<p>Indexes can also be arrays:</p>
+<pre class="prettyprint source lang-js"><code>var userSchema = lounge.schema({
+  name: String
+  usernames: [{type: String, index: true}]
+});</code></pre><p>A lookup document will be generated for each value in the array. Index lookup properties have to be of type <code>String</code> or<br><code>Number</code>.</p>
+<p>Index lookup documents are automatically managed by lounge when documents are saved and removed using <code>save()</code> and<br><code>remove()</code> functions. You can also manually kick of this process by calling <code>index()</code> function on any model instance.</p>
+<h4>Index queries <a id="queries"></a></h4><p>Any indexed property the Model will automatically get a <code>findBy*</code> static function for easier lookup.<br>For example code above:</p>
+<pre class="prettyprint source lang-js"><code>var User = lounge.model('User', userSchema);
+
+User.findByEmail('joe@gmail.com', function(err, doc) {
+  if(err) console.log(err);
+  else console.log(doc);
+});</code></pre><p>We automatically singularize and camelize property key to derive the index name. So <code>usernames</code> becomes <code>findByUsername</code>.<br>We can specify the index &quot;name&quot; by passing along the <code>indexName</code> property. For example:</p>
+<pre class="prettyprint source lang-js"><code>var userSchema = lounge.schema({
+  name: String
+  usernames: [{type: String, index: true, indexName: 'UN'}]
+});
+
+var User = lounge.model('User', userSchema);
+
+User.findByUN('user1', function(err, doc) {
+  if(err) console.log(err);
+  else console.log(doc);
+});</code></pre><h2>Events <a id="events"></a></h2><p>All model instances inherit <a target="_blank" href="https://nodejs.org/api/events.html#events_class_events_eventemitter"><code>EventEmitter</code></a>, and<br>emit three events:</p>
+<ul>
+<li><code>index</code> - when indexing of lookup documents finished regardless if successful or not. Emits <code>error</code> if there was any.</li>
+<li><code>save</code> - when the document was successfully saved.</li>
+<li><code>remove</code> - when the document was successfully removed.</li>
+</ul>
+<pre class="prettyprint source lang-js"><code>var userSchema = lounge.schema({
+  name: String,
+  email: {type: String, index: true}
+});
+
+var User = lounge.model('User', userSchema);
+var user = new User({
+  name: 'Bob Smith',
+  email: 'bob@gmail.com'
+});
+
+user.on('index', function (err) {
+  if(err) console.log('Error indexing document' + err.message);
+});
+
+user.on('remove', function (doc) {
+  console.log('document removed');
+});
+
+user.on('save', function (doc) {
+  console.log('document saved');
+});</code></pre><h2>Errors <a id="errors"></a></h2><p>When setting a value fails, an error is generated silently. Errors can be retrieved with <code>getErrors()</code> and cleared with <code>clearErrors()</code>.</p>
+<pre class="prettyprint source lang-js"><code>var schema = new lounge.schema({
+  id: {type: String, minLength: 5}
+});
+
+var Profile = lounge.model('Profile', schema);
+
+var profile = new Profile();
+profile.id = '1234';
+
+console.log(profile.hasErrors()); // true
+
+console.log(profile.getErrors());
+
+// Prints:
+[ { errorMessage: 'String length too short to meet minLength requirement.',
+    setValue: '1234',
+    originalValue: undefined,
+    fieldSchema: { name: 'id', type: 'string', minLength: 5 } } ]
+
+// Clear all errors.
+profile.clearErrors();</code></pre><h2>Tests</h2><p>Module automated tests can be run using <code>npm test</code> command. The tests are executed using <a target="_blank" href="https://github.com/couchbase/couchnode#mock-testing">Couchbase mocking</a>.<br>To run tests against an actual local database create a bucket <code>lounge_test</code> and remove <code>LOUNGE_COUCHBASE_MOCK=true</code> from<br><code>test</code> script property in <code>package.json</code>.</p>
+<h2>Credits</h2><p>Lots of code and design inspired by <a target="_blank" href="http://mongoosejs.com/">Mongoose</a>.<br>Uses modified code from <a target="_blank" href="https://github.com/scotthovestadt/node-schema-object">node-schema-object</a> for modelling.</p>
+<h2>License</h2><p>Copyright 2015 Bojan D.</p>
+<p>Licensed under the MIT License.</p></article>
     </section>
 
-  
-  </body>
+
+
+
+
+
+        
+
+        <footer>
+            Documentation generated by <a target="_blank" href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Sun Feb 28 2016 13:47:57 GMT-0400 (AST)
+        </footer>
+    </div>
+</div>
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+<script src="scripts/main.js"></script>
+</body>
 </html>
