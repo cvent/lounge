@@ -1,6 +1,5 @@
 var expect = require('chai').expect;
-var testUtil = require('./helpers/utils');
-var lounge = require('../lib');
+var lounge = require('../');
 
 describe('Lounge basics', function () {
   it('Should export the proper functions', function () {

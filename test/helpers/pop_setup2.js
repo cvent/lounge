@@ -1,4 +1,3 @@
-var lounge = require('../../lib');
 var _ = require('lodash');
 
 var data = {

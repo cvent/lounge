@@ -4,8 +4,7 @@ var _ = require('lodash');
 var expect = require('chai').expect;
 var ts = require('./helpers/pop_setup');
 
-var lounge = require('../lib');
-var Schema = lounge.Schema;
+var lounge = require('../');
 
 var bucket;
 var User, Company, Post, Comment;
@@ -474,7 +473,7 @@ describe('Model populate tests', function () {
         expect(rdoc.id).to.equal(expectedData.id);
         expect(rdoc.title).to.equal(expectedData.title);
         expect(rdoc.body).to.equal(expectedData.body);
-        expect(rdoc.comments).to.deep.equal([]);
+        expect(rdoc.comments.toArray()).to.deep.equal([]);
 
         done();
       });
@@ -497,7 +496,7 @@ describe('Model populate tests', function () {
         expect(rdoc.id).to.equal(expectedData.id);
         expect(rdoc.title).to.equal(expectedData.title);
         expect(rdoc.body).to.equal(expectedData.body);
-        expect(rdoc.comments).to.deep.equal([]);
+        expect(rdoc.comments.toArray()).to.deep.equal([]);
 
         done();
       });
@@ -839,7 +838,7 @@ describe('Model populate tests', function () {
         expect(rdoc.id).to.equal(expectedData.id);
         expect(rdoc.title).to.equal(expectedData.title);
         expect(rdoc.body).to.equal(expectedData.body);
-        expect(rdoc.comments).to.deep.equal([]);
+        expect(rdoc.comments.toArray()).to.deep.equal([]);
 
         done();
       });
@@ -862,7 +861,7 @@ describe('Model populate tests', function () {
         expect(rdoc.id).to.equal(expectedData.id);
         expect(rdoc.title).to.equal(expectedData.title);
         expect(rdoc.body).to.equal(expectedData.body);
-        expect(rdoc.comments).to.deep.equal([]);
+        expect(rdoc.comments.toArray()).to.deep.equal([]);
 
         done();
       });
@@ -888,7 +887,6 @@ describe('Model populate tests', function () {
 
         var expectedComments = _.sortBy([ts.data.comments[3], ts.data.comments[4], ts.data.comments[5]], 'id');
         var expectedUsers = [ts.data.users[2], ts.data.users[0], ts.data.users[2]];
-        var expectedCompanies = [ts.data.companies[2], ts.data.companies[0], ts.data.companies[2]];
 
         expect(rdoc.comments).to.be.an.instanceof(Array);
 
@@ -1667,7 +1665,7 @@ describe('Model populate tests', function () {
         expect(rdoc.id).to.equal(expectedData.id);
         expect(rdoc.title).to.equal(expectedData.title);
         expect(rdoc.body).to.equal(expectedData.body);
-        expect(rdoc.comments).to.deep.equal([]);
+        expect(rdoc.comments.toArray()).to.deep.equal([]);
 
         done();
       });
@@ -1690,7 +1688,7 @@ describe('Model populate tests', function () {
         expect(rdoc.id).to.equal(expectedData.id);
         expect(rdoc.title).to.equal(expectedData.title);
         expect(rdoc.body).to.equal(expectedData.body);
-        expect(rdoc.comments).to.deep.equal([]);
+        expect(rdoc.comments.toArray()).to.deep.equal([]);
 
         done();
       });

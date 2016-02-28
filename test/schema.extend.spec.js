@@ -3,7 +3,7 @@ var testUtil = require('./helpers/utils');
 var _ = require('lodash');
 var expect = require('chai').expect;
 
-var lounge2 = require('../lib');
+var lounge2 = require('../');
 var lounge;
 var Schema = lounge2.Schema;
 
@@ -48,18 +48,14 @@ describe('Schema extend tests', function () {
 
     userSchema.extend(baseSchema);
 
-    expect(userSchema.tree).to.be.ok;
-    expect(userSchema.tree).to.be.an('object');
-    expect(userSchema.tree.metadata).to.be.ok;
-    expect(userSchema.tree.metadata.createdAt).to.be.ok;
-    expect(userSchema.tree.metadata.updatedAt).to.be.ok;
-
-
     expect(userSchema.descriptor).to.be.ok;
     expect(userSchema.descriptor).to.be.an('object');
     expect(userSchema.descriptor.metadata).to.be.ok;
-    expect(userSchema.descriptor.metadata.createdAt).to.be.ok;
-    expect(userSchema.descriptor.metadata.updatedAt).to.be.ok;
+    expect(userSchema.descriptor.metadata.objectType).to.be.ok;
+    expect(userSchema.descriptor.metadata.objectType.schema).to.be.ok;
+    expect(userSchema.descriptor.metadata.objectType.schema.descriptor).to.be.ok;
+    expect(userSchema.descriptor.metadata.objectType.schema.descriptor.createdAt).to.be.ok;
+    expect(userSchema.descriptor.metadata.objectType.schema.descriptor.updatedAt).to.be.ok;
   });
 
   it('should be able to create an object with extended schema properties', function () {

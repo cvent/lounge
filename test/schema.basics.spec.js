@@ -1,7 +1,6 @@
 var validator = require('validator');
-var testUtil = require('./helpers/utils');
 var expect = require('chai').expect;
-var lounge = require('../lib');
+var lounge = require('../');
 var Schema = lounge.Schema;
 
 describe('Schema basics', function () {
@@ -15,46 +14,6 @@ describe('Schema basics', function () {
       expect(function () {
         new Schema(undefined);
       }).to.not.throw(TypeError);
-    });
-
-    it('Should not accept a \'null\'', function () {
-      expect(function () {
-        new Schema(null);
-      }).to.throw(TypeError);
-    });
-
-    it('Should not accept a \'number\'', function () {
-      expect(function () {
-        new Schema(1);
-      }).to.throw(TypeError);
-    });
-
-    it('Should not accept a \'boolean\'', function () {
-      expect(function () {
-        new Schema(true);
-      }).to.throw(TypeError);
-    });
-
-    it('Should not accept a \'function\'', function () {
-      expect(function () {
-        new Schema(function () {
-        });
-      }).to.throw(TypeError);
-    });
-
-    it('Should not accept a \'date\'', function () {
-      expect(function () {
-        new Schema(new Date);
-      }).to.throw(TypeError);
-    });
-
-    it('Should not accept a constructed object', function () {
-      var Thing = function Thing(arg) {
-      }, thing = new (Thing);
-
-      expect(function () {
-        new Schema(thing);
-      }).to.throw(TypeError);
     });
 
     it('Should accept a plain object', function () {
@@ -78,20 +37,6 @@ describe('Schema basics', function () {
             url: String
           });
         }).to.throw(TypeError);
-    });
-  });
-
-  describe('add', function () {
-    beforeEach(function () {
-      lounge = new lounge.Lounge(); // recreate it
-    });
-
-    it('Should accept a key and a descriptor object', function () {
-      schema = new Schema();
-      schema.add('name', String);
-      schema.add('age', {type: Number});
-      expect(schema.tree.name.Constructor).to.equal(String);
-      expect(schema.tree.age.Constructor).to.equal(Number);
     });
   });
 
@@ -476,7 +421,8 @@ describe('Schema basics', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
-        email: String
+        email: String,
+        $_data: {type: Object, invisible: true}
       });
 
       userSchema.method('init', function () {
@@ -484,8 +430,6 @@ describe('Schema basics', function () {
       });
 
       var User = lounge.model('User', userSchema);
-
-      expect(User.init).to.not.be.ok;
 
       var user = new User({
         firstName: 'Bob',
@@ -515,7 +459,7 @@ describe('Schema basics', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        email: {type: String, validator: validator.isEmail}
+        email: {type: String, validate: validator.isEmail}
       });
 
       var User = lounge.model('User', userSchema);

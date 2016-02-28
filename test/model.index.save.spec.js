@@ -3,8 +3,7 @@ var testUtil = require('./helpers/utils');
 var _ = require('lodash');
 var expect = require('chai').expect;
 
-var lounge = require('../lib');
-var Schema = lounge.Schema;
+var lounge = require('../');
 
 var bucket;
 

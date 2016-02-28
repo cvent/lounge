@@ -1,0 +1,34 @@
+{
+  "tags": {
+    "allowUnknownTags" : true
+  },
+  "plugins": ["plugins/markdown"],
+  "templates": {
+    "cleverLinks": true,
+    "monospaceLinks": true,
+    "default": {
+      "outputSourceFiles" : true
+    },
+    "applicationName": "Lounge",
+    "disqus": "",
+    "googleAnalytics": "",
+    "openGraph": {
+      "title": "",
+      "type": "website",
+      "image": "",
+      "site_name": "",
+      "url": ""
+    },
+    "meta": {
+      "title": "Lounge",
+      "description": "Simple Mongoose-inspired ODM for Couchbase",
+      "keyword": ""
+    },
+    "linenums": true
+  },
+  "markdown": {
+    "parser": "gfm",
+    "hardwrap": true,
+    "tags": ["examples"]
+  }
+}

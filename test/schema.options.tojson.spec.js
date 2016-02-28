@@ -1,4 +1,4 @@
-var lounge = require('../lib/');
+var lounge = require('../');
 var expect = require('chai').expect;
 
 describe('Schema options', function () {
@@ -196,8 +196,7 @@ describe('Schema options', function () {
     });
 
     it('Should perform transform correctly on nested objects', function () {
-      var userSchema = lounge.schema({name: String, email: String, password: String})
-        , postSchema = lounge.schema({owner: Object, content: String});
+      var userSchema = lounge.schema({name: String, email: String, password: String});
 
       var xform = function (doc, ret, options) {
         delete ret.password;
@@ -207,6 +206,8 @@ describe('Schema options', function () {
       userSchema.set('toJSON', {transform: xform});
 
       var User = lounge.model('User', userSchema);
+
+      var postSchema = lounge.schema({owner: User, content: String});
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({name: 'Joe', email: 'joe@gmail.com', password: 'password'})
@@ -237,7 +238,6 @@ describe('Schema options', function () {
 
     it.skip('Should perform transform correctly on nested objects when using inline tranform on one of them', function () {
       var userSchema = lounge.schema({name: String, email: String, password: String})
-        , postSchema = lounge.schema({owner: Object, content: String});
 
       var userxform = function (doc, ret, options) {
         delete ret.password;
@@ -252,6 +252,8 @@ describe('Schema options', function () {
       };
 
       var User = lounge.model('User', userSchema);
+
+      var postSchema = lounge.schema({owner: User, content: String});
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({name: 'Joe', email: 'joe@gmail.com', password: 'password'})
@@ -282,7 +284,6 @@ describe('Schema options', function () {
 
     it('Should perform transform correctly on nested objects when using schema tranform on both of them', function () {
       var userSchema = lounge.schema({name: String, email: String, password: String})
-        , postSchema = lounge.schema({owner: Object, content: String});
 
       var userxform = function (doc, ret, options) {
         delete ret.password;
@@ -296,9 +297,10 @@ describe('Schema options', function () {
         return ret;
       };
 
-      postSchema.set('toJSON', {transform: postxform});
-
       var User = lounge.model('User', userSchema);
+
+      var postSchema = lounge.schema({owner: User, content: String});
+      postSchema.set('toJSON', {transform: postxform});
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({name: 'Joe', email: 'joe@gmail.com', password: 'password'})
@@ -444,7 +446,6 @@ describe('Schema options', function () {
 
     it('Should perform correctly on nested objects when using virtuals on both models inline option', function () {
       var userSchema = lounge.schema({firstName: String, lastName: String, password: String})
-        , postSchema = lounge.schema({owner: Object, content: String});
 
       userSchema.virtual('fullName', {
         get: function () {
@@ -452,14 +453,15 @@ describe('Schema options', function () {
         }
       });
 
+      var User = lounge.model('User', userSchema);
+
+      var postSchema = lounge.schema({owner: User, content: String});
       postSchema.virtual('capContent', {
         get: function () {
           return this.content.toUpperCase();
         }
       });
 
-
-      var User = lounge.model('User', userSchema);
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({
@@ -497,8 +499,7 @@ describe('Schema options', function () {
     });
 
     it('Should perform correctly on nested objects when using virtuals on both models and setting schema option for one model', function () {
-      var userSchema = lounge.schema({firstName: String, lastName: String, password: String})
-        , postSchema = lounge.schema({owner: Object, content: String});
+      var userSchema = lounge.schema({firstName: String, lastName: String, password: String});
 
       userSchema.virtual('fullName', {
         get: function () {
@@ -508,13 +509,14 @@ describe('Schema options', function () {
 
       userSchema.set('toJSON', {virtuals: true});
 
+      var User = lounge.model('User', userSchema);
+
+      var postSchema = lounge.schema({owner: User, content: String});
       postSchema.virtual('capContent', {
         get: function () {
           return this.content.toUpperCase();
         }
       });
-
-      var User = lounge.model('User', userSchema);
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({
@@ -551,8 +553,7 @@ describe('Schema options', function () {
     });
 
     it('Should perform correctly on nested objects when using virtuals on both models and setting schema option for one and false for other', function () {
-      var userSchema = lounge.schema({firstName: String, lastName: String, password: String})
-        , postSchema = lounge.schema({owner: Object, content: String});
+      var userSchema = lounge.schema({firstName: String, lastName: String, password: String});
 
       userSchema.virtual('fullName', {
         get: function () {
@@ -562,6 +563,9 @@ describe('Schema options', function () {
 
       userSchema.set('toJSON', {virtuals: true});
 
+      var User = lounge.model('User', userSchema);
+
+      var postSchema = lounge.schema({owner: User, content: String});
       postSchema.virtual('capContent', {
         get: function () {
           return this.content.toUpperCase();
@@ -569,8 +573,6 @@ describe('Schema options', function () {
       });
 
       postSchema.set('toJSON', {virtuals: false});
-
-      var User = lounge.model('User', userSchema);
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({
@@ -607,8 +609,7 @@ describe('Schema options', function () {
     });
 
     it('Should perform correctly on nested objects when using virtuals on both models and setting schema option for one and false for other', function () {
-      var userSchema = lounge.schema({firstName: String, lastName: String, password: String})
-        , postSchema = lounge.schema({owner: Object, content: String});
+      var userSchema = lounge.schema({firstName: String, lastName: String, password: String});
 
       userSchema.virtual('fullName', {
         get: function () {
@@ -618,6 +619,9 @@ describe('Schema options', function () {
 
       userSchema.set('toJSON', {virtuals: false});
 
+      var User = lounge.model('User', userSchema);
+
+      var postSchema = lounge.schema({owner: User, content: String});
       postSchema.virtual('capContent', {
         get: function () {
           return this.content.toUpperCase();
@@ -625,8 +629,6 @@ describe('Schema options', function () {
       });
 
       postSchema.set('toJSON', {virtuals: true});
-
-      var User = lounge.model('User', userSchema);
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({
@@ -909,12 +911,13 @@ describe('Schema options', function () {
 
     it('Should print id correctly for nested documents and one has key specified.', function () {
       var userSchema = lounge.schema({
-          email: {type: String, key: true},
-          firstName: String, lastName: String
-        })
-        , postSchema = lounge.schema({owner: Object, content: String});
+        email: {type: String, key: true},
+        firstName: String, lastName: String
+      });
 
       var User = lounge.model('User', userSchema);
+
+      var postSchema = lounge.schema({owner: User, content: String});
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'});
@@ -944,12 +947,13 @@ describe('Schema options', function () {
 
     it('Should print id correctly for nested documents and one has key specified with prefix option.', function () {
       var userSchema = lounge.schema({
-          email: {type: String, key: true, prefix: 'user'},
-          firstName: String, lastName: String
-        })
-        , postSchema = lounge.schema({owner: Object, content: String});
+        email: {type: String, key: true, prefix: 'user'},
+        firstName: String, lastName: String
+      });
 
       var User = lounge.model('User', userSchema);
+
+      var postSchema = lounge.schema({owner: User, content: String});
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'});
@@ -979,14 +983,15 @@ describe('Schema options', function () {
 
     it('Should print id correctly for nested documents and one has key specified with prefix option and expand.', function () {
       var userSchema = lounge.schema({
-          email: {type: String, key: true, prefix: 'user:'},
-          firstName: String, lastName: String
-        })
-        , postSchema = lounge.schema({owner: Object, content: String});
+        email: {type: String, key: true, prefix: 'user:'},
+        firstName: String, lastName: String
+      });
 
       userSchema.set('toJSON', {expandDocumentKey: true});
 
       var User = lounge.model('User', userSchema);
+
+      var postSchema = lounge.schema({owner: User, content: String});
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'});
@@ -1016,17 +1021,18 @@ describe('Schema options', function () {
 
     it('Should print id correctly for nested documents and with different key and expand options', function () {
       var userSchema = lounge.schema({
-          email: {type: String, key: true, prefix: 'user:'},
-          firstName: String, lastName: String
-        })
-        , postSchema = lounge.schema({
-          id: {type: String, key: true},
-          owner: Object, content: String
-        });
+        email: {type: String, key: true, prefix: 'user:'},
+        firstName: String, lastName: String
+      });
 
       userSchema.set('toJSON', {expandDocumentKey: true});
 
       var User = lounge.model('User', userSchema);
+
+      var postSchema = lounge.schema({
+        id: {type: String, key: true},
+        owner: User, content: String
+      });
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'});
@@ -1057,17 +1063,17 @@ describe('Schema options', function () {
       var userSchema = lounge.schema({
           email: {type: String, key: true, prefix: 'user:'},
           firstName: String, lastName: String
-        })
-        , postSchema = lounge.schema({
-          id: {type: String, key: true, suffix: ':post'},
-          owner: Object, content: String
         });
 
       userSchema.set('toJSON', {expandDocumentKey: true});
 
-      postSchema.set('toJSON', {expandDocumentKey: false});
-
       var User = lounge.model('User', userSchema);
+
+      var postSchema = lounge.schema({
+        id: {type: String, key: true, suffix: ':post'},
+        owner: User, content: String
+      });
+      postSchema.set('toJSON', {expandDocumentKey: false});
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'});
@@ -1098,17 +1104,17 @@ describe('Schema options', function () {
       var userSchema = lounge.schema({
           email: {type: String, key: true, prefix: 'user:'},
           firstName: String, lastName: String
-        })
-        , postSchema = lounge.schema({
-          id: {type: String, key: true, suffix: ':post'},
-          owner: Object, content: String
         });
 
       userSchema.set('toJSON', {expandDocumentKey: false});
 
-      postSchema.set('toJSON', {expandDocumentKey: true});
-
       var User = lounge.model('User', userSchema);
+
+      var postSchema = lounge.schema({
+        id: {type: String, key: true, suffix: ':post'},
+        owner: User, content: String
+      });
+      postSchema.set('toJSON', {expandDocumentKey: true});
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'});
@@ -1139,17 +1145,17 @@ describe('Schema options', function () {
       var userSchema = lounge.schema({
           email: {type: String, key: true, prefix: 'user:'},
           firstName: String, lastName: String
-        })
-        , postSchema = lounge.schema({
-          id: {type: String, key: true, suffix: ':post'},
-          owner: Object, content: String
         });
 
       userSchema.set('toJSON', {expandDocumentKey: false});
 
-      postSchema.set('toJSON', {expandDocumentKey: false});
-
       var User = lounge.model('User', userSchema);
+
+      var postSchema = lounge.schema({
+        id: {type: String, key: true, suffix: ':post'},
+        owner: User, content: String
+      });
+      postSchema.set('toJSON', {expandDocumentKey: false});
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'});

@@ -1,8 +1,6 @@
 var _ = require('lodash');
-var testUtil = require('./helpers/utils');
 var expect = require('chai').expect;
-var lounge = require('../lib');
-var Schema = lounge.Schema;
+var lounge = require('../index');
 
 describe('Model basics', function () {
   beforeEach(function (done) {
@@ -15,384 +13,552 @@ describe('Model basics', function () {
     });
   });
 
-  describe('Should define a tree instance after instantiation', function () {
-    var schema;
-
-    it('Should set the constructor on a property => type definition', function () {
-      schema = new Schema({property: String});
-      expect(schema.tree.property.Constructor).to.equal(String);
-    });
-
-    it('Should set the constructor on a property who\'s type is set on an object descriptor', function () {
-      schema = new Schema({property: {type: String}});
-      expect(schema.tree.property.Constructor).to.equal(String);
-    });
-
-    it('Should define child tree schema', function () {
-      schema = new Schema({
-        name: String,
-        profile: {
-          age: Number,
-          gender: String,
-          parents: {
-            mother: {name: String},
-            father: {name: String}
-          }
-        },
-        parents: Function
+  describe('Model creation', function () {
+    it('Should properly create a model', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date
       });
 
+      var User = lounge.model('User', userSchema);
 
-      expect(schema.tree.profile).to.be.an('object', 'Failed to create child tree object .profile');
-      expect(schema.tree.profile.parents).to.be.an('object', 'Failed to create child tree object .profile.parents');
-      expect(schema.tree.profile.parents.mother).to.be.an('object', 'Failed to create child tree object .profile.parents.mother');
-      expect(schema.tree.profile.parents.father).to.be.an('object', 'Failed to create child tree object .profile.parents.father');
+      var dob = new Date('December 10, 1990 03:33:00');
 
-      expect(schema.tree.name.Constructor).to.equal(String, 'Failed setting .name on tree');
-      expect(schema.tree.profile.age.Constructor).to.equal(Number, 'Failed to create .tree.profile type');
-      expect(schema.tree.profile.gender.Constructor).to.equal(String, 'Failed to create .profile.gender type');
-      expect(schema.tree.profile.parents.mother.name.Constructor).to.equal(String, 'Failed to create .profile.parents.mother.name type');
-      expect(schema.tree.profile.parents.father.name.Constructor).to.equal(String, 'Failed to create .profile.parents.father.name type');
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        dateOfBirth: dob
+      });
 
-      var Person = lounge.model('Person', schema);
-      var joe = new Person({
-        parents: function () {
-          var parents = this.profile.parents
-            , names = [];
+      expect(user instanceof User).to.be.ok;
+      expect(user instanceof lounge.Document).to.be.ok;
+      expect(user instanceof lounge.Model).to.be.ok;
 
-          for (var parent in parents) {
-            names.push(parents[parent].name)
-          }
-          return names;
-        },
-        name: 'Joe',
-        profile: {
-          age: 22,
-          gender: 'male',
-          parents: {
-            mother: {name: 'Cherie'},
-            father: {name: 'Keith'}
-          }
+      expect(user.firstName).to.equal('Joe');
+      expect(user.lastName).to.equal('Smith');
+      expect(user.email).to.equal('joe@gmail.com');
+      expect(user.dateOfBirth).to.be.ok;
+      expect(user.dateOfBirth).to.be.an.instanceof(Date);
+      expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+
+      // should not be able to change modelName property
+      expect(user.modelName).to.equal('User');
+      user.modelName = 'Foo';
+      expect(user.modelName).to.equal('User');
+      User.modelName = 'Foo';
+      expect(User.modelName).to.equal('User');
+    });
+
+    it('Should properly create multiple models from same source data', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('December 10, 1990 03:33:00');
+
+      var data = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        dateOfBirth: dob
+      };
+
+      var user = new User(data);
+
+      expect(user instanceof User).to.be.ok;
+      expect(user instanceof lounge.Document).to.be.ok;
+      expect(user instanceof lounge.Model).to.be.ok;
+
+      expect(user.firstName).to.equal('Joe');
+      expect(user.lastName).to.equal('Smith');
+      expect(user.email).to.equal('joe@gmail.com');
+      expect(user.dateOfBirth).to.be.ok;
+      expect(user.dateOfBirth).to.be.an.instanceof(Date);
+      expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+
+      // should not be able to change modelName property
+      expect(user.modelName).to.equal('User');
+      user.modelName = 'Foo';
+      expect(user.modelName).to.equal('User');
+      User.modelName = 'Foo';
+      expect(User.modelName).to.equal('User');
+
+      var user2 = new User(data);
+
+      expect(user2 instanceof User).to.be.ok;
+      expect(user2 instanceof lounge.Document).to.be.ok;
+      expect(user2 instanceof lounge.Model).to.be.ok;
+
+      expect(user2.firstName).to.equal('Joe');
+      expect(user2.lastName).to.equal('Smith');
+      expect(user2.email).to.equal('joe@gmail.com');
+      expect(user2.dateOfBirth).to.be.ok;
+      expect(user2.dateOfBirth).to.be.an.instanceof(Date);
+      expect(user2.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+
+      // should not be able to change modelName property
+      expect(user2.modelName).to.equal('User');
+      user2.modelName = 'Foo';
+      expect(user2.modelName).to.equal('User');
+    });
+
+    it('Should properly create a model with sub documents and arrays', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date,
+        foo: Number,
+        favourites: [String],
+        boolProp: Boolean,
+        someProp: Object
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('December 10, 1990 03:33:00');
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        dateOfBirth: dob,
+        foo: 5,
+        boolProp: true,
+        favourites: [
+          'fav0', 'fav1', 'fav2'
+        ],
+        someProp: {
+          abc: 'xyz',
+          sbp: false,
+          snp: 11
         }
       });
 
-      expect(!!~joe.parents().indexOf(joe.profile.parents.mother.name)).to.be.ok;
-      expect(!!~joe.parents().indexOf(joe.profile.parents.father.name)).to.be.ok;
-    });
-  });
+      expect(user instanceof User).to.be.ok;
+      expect(user instanceof lounge.Document).to.be.ok;
+      expect(user instanceof lounge.Model).to.be.ok;
 
-  it('Should properly create a model', function () {
-    var userSchema = lounge.schema({
-      firstName: String,
-      lastName: String,
-      email: String,
-      dateOfBirth: Date
-    });
-
-    var User = lounge.model('User', userSchema);
-
-    var dob = new Date('December 10, 1990 03:33:00');
-
-    var user = new User({
-      firstName: 'Joe',
-      lastName: 'Smith',
-      email: 'joe@gmail.com',
-      dateOfBirth: dob
+      expect(user.firstName).to.equal('Joe');
+      expect(user.lastName).to.equal('Smith');
+      expect(user.email).to.equal('joe@gmail.com');
+      expect(user.dateOfBirth).to.be.ok;
+      expect(user.dateOfBirth).to.be.an.instanceof(Date);
+      expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+      expect(user.foo).to.equal(5);
+      expect(user.boolProp).to.equal(true);
+      expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
+      expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
     });
 
-    expect(user instanceof User).to.be.ok;
-    expect(user instanceof lounge.Document).to.be.ok;
-    expect(user instanceof lounge.Model).to.be.ok;
+    it('Should properly create multiple models from same source data with sub documents and arrays when using clone option', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date,
+        foo: Number,
+        favourites: [String],
+        boolProp: Boolean,
+        someProp: {
+          abc: String,
+          foo: Boolean,
+          bar: Number
+        }
+      });
 
-    expect(user.firstName).to.equal('Joe');
-    expect(user.lastName).to.equal('Smith');
-    expect(user.email).to.equal('joe@gmail.com');
-    expect(user.dateOfBirth).to.be.ok;
-    expect(user.dateOfBirth).to.be.an.instanceof(Date);
-    expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+      var User = lounge.model('User', userSchema);
 
-    // should not be able to change modelName property
-    expect(user.modelName).to.equal('User');
-    user.modelName = 'Foo';
-    expect(user.modelName).to.equal('User');
-  });
+      var dob = new Date('December 10, 1990 03:33:00');
 
-  it('Should properly create a model with sub documents and arrays', function () {
-    var userSchema = lounge.schema({
-      firstName: String,
-      lastName: String,
-      email: String,
-      dateOfBirth: Date,
-      foo: Number,
-      favourites: [String],
-      boolProp: Boolean,
-      someProp: Object
+      var data = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        dateOfBirth: dob,
+        foo: 5,
+        boolProp: true,
+        favourites: [
+          'fav0', 'fav1', 'fav2'
+        ],
+        someProp: {
+          abc: 'xyz',
+          foo: false,
+          bar: 11
+        }
+      };
+
+      var user = new User(data, {clone: true});
+
+      expect(user instanceof User).to.be.ok;
+      expect(user instanceof lounge.Document).to.be.ok;
+      expect(user instanceof lounge.Model).to.be.ok;
+
+      expect(user.firstName).to.equal('Joe');
+      expect(user.lastName).to.equal('Smith');
+      expect(user.email).to.equal('joe@gmail.com');
+      expect(user.dateOfBirth).to.be.ok;
+      expect(user.dateOfBirth).to.be.an.instanceof(Date);
+      expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+      expect(user.foo).to.equal(5);
+      expect(user.boolProp).to.equal(true);
+      expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
+      expect(user.someProp).to.deep.equal({abc: 'xyz', foo: false, bar: 11});
+      var user2 = new User(data, {clone: true});
+
+      expect(user2 instanceof User).to.be.ok;
+      expect(user2 instanceof lounge.Document).to.be.ok;
+      expect(user2 instanceof lounge.Model).to.be.ok;
+
+      expect(user2.firstName).to.equal('Joe');
+      expect(user2.lastName).to.equal('Smith');
+      expect(user2.email).to.equal('joe@gmail.com');
+      expect(user2.dateOfBirth).to.be.ok;
+      expect(user2.dateOfBirth).to.be.an.instanceof(Date);
+      expect(user2.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+      expect(user2.foo).to.equal(5);
+      expect(user2.boolProp).to.equal(true);
+      expect(user2.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
+      expect(user2.someProp).to.deep.equal({abc: 'xyz', foo: false, bar: 11});
+
+      user.email = 'email1@gmail.com';
+      user2.email = 'email2@gmail.com';
+
+      expect(user.email).to.equal('email1@gmail.com');
+      expect(user2.email).to.equal('email2@gmail.com');
     });
 
-    var User = lounge.model('User', userSchema);
+    it('Should properly create a model with embedded document', function () {
+      var userSchema = lounge.schema({
+        email: {type: String, key: true, prefix: 'user:'},
+        firstName: String, lastName: String
+      });
 
-    var dob = new Date('December 10, 1990 03:33:00');
+      var User = lounge.model('User', userSchema);
 
-    var user = new User({
-      firstName: 'Joe',
-      lastName: 'Smith',
-      email: 'joe@gmail.com',
-      dateOfBirth: dob,
-      foo: 5,
-      boolProp: true,
-      favourites: [
-        'fav0', 'fav1', 'fav2'
-      ],
-      someProp: {
-        abc: 'xyz',
-        sbp: false,
-        snp: 11
-      }
+      var postSchema = lounge.schema({
+        owner: User, content: String
+      });
+      var Post = lounge.model('Post', postSchema);
+
+      var user = new User({email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'});
+      var post = new Post({owner: user, content: 'Lorem ipsum'});
+
+      expect(user).to.be.ok;
+      expect(user).to.be.an.instanceof(User);
+      expect(user.firstName).to.equal('Joe');
+      expect(user.lastName).to.equal('Smith');
+      expect(user.email).to.equal('joe@gmail.com');
+
+      expect(post).to.be.ok;
+      expect(post.id).to.be.ok;
+      expect(post.id).to.be.a('string');
+      expect(post.content).to.equal('Lorem ipsum');
+      expect(post.owner).to.be.ok;
+      expect(post.owner).to.be.an.instanceof(User);
+      expect(post.owner.id).to.not.be.ok;
+      expect(post.owner.email).to.equal('joe@gmail.com');
+      expect(post.owner.firstName).to.equal('Joe');
+      expect(post.owner.lastName).to.equal('Smith');
     });
 
-    expect(user instanceof User).to.be.ok;
-    expect(user instanceof lounge.Document).to.be.ok;
-    expect(user instanceof lounge.Model).to.be.ok;
+    it('Should properly create multiple models with embedded document from same source', function () {
+      var userSchema = lounge.schema({
+        email: {type: String, key: true, prefix: 'user:'},
+        firstName: String, lastName: String
+      });
 
-    expect(user.firstName).to.equal('Joe');
-    expect(user.lastName).to.equal('Smith');
-    expect(user.email).to.equal('joe@gmail.com');
-    expect(user.dateOfBirth).to.be.ok;
-    expect(user.dateOfBirth).to.be.an.instanceof(Date);
-    expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
-    expect(user.foo).to.equal(5);
-    expect(user.boolProp).to.equal(true);
-    expect(user.favourites).to.deep.equal(['fav0', 'fav1', 'fav2']);
-    expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
-  });
+      var User = lounge.model('User', userSchema);
 
-  it('Should ignore unknown properties', function () {
-    var userSchema = lounge.schema({
-      firstName: String,
-      lastName: String,
-      email: String,
-      dateOfBirth: Date,
-      foo: Number,
-      favourites: [String],
-      boolProp: Boolean,
-      someProp: Object
+      var postSchema = lounge.schema({
+        owner: User, content: String
+      });
+      var Post = lounge.model('Post', postSchema);
+
+      var userData = {email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'};
+
+      var user = new User(userData);
+      var postData = {owner: user, content: 'Lorem ipsum'};
+
+      var post = new Post(postData);
+
+      expect(user).to.be.ok;
+      expect(user).to.be.an.instanceof(User);
+      expect(user.firstName).to.equal('Joe');
+      expect(user.lastName).to.equal('Smith');
+      expect(user.email).to.equal('joe@gmail.com');
+
+      expect(post).to.be.ok;
+      expect(post.id).to.be.ok;
+      expect(post.id).to.be.a('string');
+      expect(post.content).to.equal('Lorem ipsum');
+      expect(post.owner).to.be.ok;
+      expect(post.owner).to.be.an.instanceof(User);
+      expect(post.owner.id).to.not.be.ok;
+      expect(post.owner.email).to.equal('joe@gmail.com');
+      expect(post.owner.firstName).to.equal('Joe');
+      expect(post.owner.lastName).to.equal('Smith');
+
+      var user2 = new User(userData);
+      var post2 = new Post(postData);
+
+      expect(user2).to.be.ok;
+      expect(user2).to.be.an.instanceof(User);
+      expect(user2.firstName).to.equal('Joe');
+      expect(user2.lastName).to.equal('Smith');
+      expect(user2.email).to.equal('joe@gmail.com');
+
+      expect(post2).to.be.ok;
+      expect(post2.id).to.be.ok;
+      expect(post2.id).to.be.a('string');
+      expect(post2.content).to.equal('Lorem ipsum');
+      expect(post2.owner).to.be.ok;
+      expect(post2.owner).to.be.an.instanceof(User);
+      expect(post2.owner.id).to.not.be.ok;
+      expect(post2.owner.email).to.equal('joe@gmail.com');
+      expect(post2.owner.firstName).to.equal('Joe');
+      expect(post2.owner.lastName).to.equal('Smith');
     });
 
-    var User = lounge.model('User', userSchema);
+    it('Should ignore unknown properties', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date,
+        foo: Number,
+        favourites: [String],
+        boolProp: Boolean,
+        someProp: Object
+      });
 
-    var dob = new Date('December 10, 1990 03:33:00');
+      var User = lounge.model('User', userSchema);
 
-    var user = new User({
-      firstName: 'Joe',
-      lastName: 'Smith',
-      email: 'joe@gmail.com',
-      dateOfBirth: dob,
-      foo: 5,
-      unpa: 'something',
-      boolProp: true,
-      favourites: [
-        'fav0', 'fav1', 'fav2'
-      ],
-      someProp: {
-        abc: 'xyz',
-        sbp: false,
-        snp: 11
-      }
+      var dob = new Date('December 10, 1990 03:33:00');
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        dateOfBirth: dob,
+        foo: 5,
+        unpa: 'something',
+        boolProp: true,
+        favourites: [
+          'fav0', 'fav1', 'fav2'
+        ],
+        someProp: {
+          abc: 'xyz',
+          sbp: false,
+          snp: 11
+        }
+      });
+
+      expect(user instanceof User).to.be.ok;
+      expect(user instanceof lounge.Document).to.be.ok;
+      expect(user instanceof lounge.Model).to.be.ok;
+
+      expect(user.firstName).to.equal('Joe');
+      expect(user.lastName).to.equal('Smith');
+      expect(user.email).to.equal('joe@gmail.com');
+      expect(user.dateOfBirth).to.be.ok;
+      expect(user.dateOfBirth).to.be.an.instanceof(Date);
+      expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+      expect(user.foo).to.equal(5);
+      expect(user.boolProp).to.equal(true);
+      expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
+      expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
+      expect(user.unpa).to.not.be.ok;
     });
 
-    expect(user instanceof User).to.be.ok;
-    expect(user instanceof lounge.Document).to.be.ok;
-    expect(user instanceof lounge.Model).to.be.ok;
+    it('Should properly coerse string to Date when needed', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date
+      });
 
-    expect(user.firstName).to.equal('Joe');
-    expect(user.lastName).to.equal('Smith');
-    expect(user.email).to.equal('joe@gmail.com');
-    expect(user.dateOfBirth).to.be.ok;
-    expect(user.dateOfBirth).to.be.an.instanceof(Date);
-    expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
-    expect(user.foo).to.equal(5);
-    expect(user.boolProp).to.equal(true);
-    expect(user.favourites).to.deep.equal(['fav0', 'fav1', 'fav2']);
-    expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
-    expect(user.unpa).to.not.be.ok;
-  });
+      var User = lounge.model('User', userSchema);
 
-  it('Should properly coerse string to Date when needed', function () {
-    var userSchema = lounge.schema({
-      firstName: String,
-      lastName: String,
-      email: String,
-      dateOfBirth: Date
+      var dob = new Date('December 10, 1990 03:33:00');
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        dateOfBirth: dob.toISOString()
+      });
+
+      expect(user instanceof User).to.be.ok;
+      expect(user instanceof lounge.Document).to.be.ok;
+      expect(user instanceof lounge.Model).to.be.ok;
+
+      expect(user.firstName).to.equal('Joe');
+      expect(user.lastName).to.equal('Smith');
+      expect(user.email).to.equal('joe@gmail.com');
+      expect(user.dateOfBirth).to.be.ok;
+      expect(user.dateOfBirth).to.be.an.instanceof(Date);
+      expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
     });
 
-    var User = lounge.model('User', userSchema);
+    it('Should properly change array property', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: {type: String, key: true, generate: false},
+        usernames: [{type: String}]
+      });
 
-    var dob = new Date('December 10, 1990 03:33:00');
+      var User = lounge.model('User', userSchema);
 
-    var user = new User({
-      firstName: 'Joe',
-      lastName: 'Smith',
-      email: 'joe@gmail.com',
-      dateOfBirth: dob.toISOString()
+      var usernames1 = ['js1', 'js2', 'js3'].sort();
+      var usernames2 = ['jsnew1', 'js2', 'jsnew3'].sort();
+      var usernames3 = ['jsnew4', 'js5', 'jsnew6'].sort();
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        usernames: usernames1
+      });
+
+      expect(user.usernames.sort().toArray()).to.deep.equal(usernames1);
+
+      user.set('usernames', usernames2);
+      expect(user.usernames.sort().toArray()).to.deep.equal(usernames2);
+
+      user.usernames = usernames3;
+      expect(user.usernames.toArray().sort()).to.deep.equal(usernames3);
+
+      user.set({
+        firstName: 'Bob',
+        lastName: 'Jones',
+        email: 'bjones@gmail.com',
+        usernames: usernames1
+      });
+
+      var expectedData = {
+        firstName: 'Bob',
+        lastName: 'Jones',
+        email: 'bjones@gmail.com',
+        usernames: usernames1
+      };
+
+      expect(user.toObject()).to.deep.equal(expectedData);
     });
 
-    expect(user instanceof User).to.be.ok;
-    expect(user instanceof lounge.Document).to.be.ok;
-    expect(user instanceof lounge.Model).to.be.ok;
+    it('Should properly change array ref property', function () {
+      var fooSchema = lounge.schema({
+        a: String,
+        b: String
+      });
 
-    expect(user.firstName).to.equal('Joe');
-    expect(user.lastName).to.equal('Smith');
-    expect(user.email).to.equal('joe@gmail.com');
-    expect(user.dateOfBirth).to.be.ok;
-    expect(user.dateOfBirth).to.be.an.instanceof(Date);
-    expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
-  });
+      var Foo = lounge.model('Foo', fooSchema);
 
-  it('Should properly change array property', function () {
-    var userSchema = lounge.schema({
-      firstName: String,
-      lastName: String,
-      email: {type: String, key: true, generate: false},
-      usernames: [{type: String}]
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        foos: [Foo]
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var foos1 = _.sortBy([
+        new Foo({
+          a: 'a1',
+          b: 'b1'
+        }),
+        new Foo({
+          a: 'a2',
+          b: 'b2'
+        })
+      ], 'a');
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        foos: foos1
+      });
+
+      expect(user.foos.toArray()).to.deep.equal(foos1);
+
+      user.foos.push(new Foo({
+        a: 'a3',
+        b: 'b3'
+      }));
+
+      foos1.push(new Foo({
+        a: 'a3',
+        b: 'b3'
+      }));
+
+      user.foos.forEach(function (f, i) {
+        expect(f.a).to.equal(foos1[i].a);
+        expect(f.b).to.equal(foos1[i].b);
+      });
+
+      var foos2 = [
+        'newFooId1',
+        new Foo({
+          a: 'newa1',
+          b: 'newb1'
+        }),
+        new Foo({
+          a: 'newa2',
+          b: 'newb2'
+        })];
+
+      user.foos = foos2;
+
+      user.foos.forEach(function (f, i) {
+        expect(f.a).to.equal(foos2[i].a);
+        expect(f.b).to.equal(foos2[i].b);
+      });
     });
 
-    var User = lounge.model('User', userSchema);
+    it('should properly create a model with manual ref of a model that is later defined', function () {
+      var siteSchema = lounge.schema({
+        owner: {type: lounge.Model, modelName: 'User'},
+        url: String
+      });
 
-    var usernames1 = ['js1', 'js2', 'js3'].sort();
-    var usernames2 = ['jsnew1', 'js2', 'jsnew3'].sort();
+      var Site = lounge.model('Site', siteSchema);
 
-    var user = new User({
-      firstName: 'Joe',
-      lastName: 'Smith',
-      email: 'joe@gmail.com',
-      usernames: usernames1
+      var userSchema = lounge.schema({
+        email: String,
+        name: String
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var user = new User({
+        name: 'Joe Smith',
+        email: 'jsmith@gmail.com'
+      });
+
+      var site = new Site({
+        url: 'http://wwww.mysite.org',
+        owner: user
+      });
+
+      expect(site).to.be.instanceof(Site);
+      expect(site.owner).to.be.ok;
+      expect(site.owner).to.be.instanceof(User);
+      expect(site.url).to.equal('http://wwww.mysite.org');
+      expect(site.owner.name).to.equal('Joe Smith');
+      expect(site.owner.email).to.equal('jsmith@gmail.com');
     });
-
-    expect(user.usernames.sort()).to.deep.equal(usernames1);
-
-    user.set('usernames', usernames2);
-
-    expect(user.usernames.sort()).to.deep.equal(usernames2);
-
-    user.set({
-      firstName: 'Bob',
-      lastName: 'Jones',
-      email: 'bjones@gmail.com',
-      usernames: usernames1
-    });
-
-    var expectedData = {
-      firstName: 'Bob',
-      lastName: 'Jones',
-      email: 'bjones@gmail.com',
-      usernames: usernames1
-    };
-
-    expect(user.toObject()).to.deep.equal(expectedData);
-  });
-
-  it('Should properly change array ref property', function () {
-    var fooSchema = lounge.schema({
-      a: String,
-      b: String
-    });
-
-    var Foo = lounge.model('Foo', fooSchema);
-
-    var userSchema = lounge.schema({
-      firstName: String,
-      lastName: String,
-      email: String,
-      foos: [Foo]
-    });
-
-    var User = lounge.model('User', userSchema);
-
-    var foos1 = _.sortBy([
-      new Foo({
-        a: 'a1',
-        b: 'b1'
-      }),
-      new Foo({
-        a: 'a2',
-        b: 'b2'
-      })
-    ], 'a');
-
-    var user = new User({
-      firstName: 'Joe',
-      lastName: 'Smith',
-      email: 'joe@gmail.com',
-      foos: foos1
-    });
-
-    expect(user.foos).to.deep.equal(foos1);
-
-    user.foos.push(new Foo({
-      a: 'a3',
-      b: 'b3'
-    }));
-
-    foos1.push(new Foo({
-      a: 'a3',
-      b: 'b3'
-    }));
-
-    user.foos.forEach(function (f, i) {
-      expect(f.a).to.equal(foos1[i].a);
-      expect(f.b).to.equal(foos1[i].b);
-    });
-
-    var foos2 = [
-      'newFooId1',
-      new Foo({
-        a: 'newa1',
-        b: 'newb1'
-      }),
-      new Foo({
-        a: 'newa2',
-        b: 'newb2'
-      })];
-
-    user.foos = foos2;
-
-    user.foos.forEach(function (f, i) {
-      expect(f.a).to.equal(foos2[i].a);
-      expect(f.b).to.equal(foos2[i].b);
-    });
-  });
-
-  it('should properly create a model with manual ref of a model that is later defined', function() {
-    var siteSchema = lounge.schema({
-      owner: {type: lounge.Model, modelName: 'User'},
-      url: String
-    });
-
-    var Site = lounge.model('Site', siteSchema);
-
-    var userSchema = lounge.schema({
-      email: String,
-      name: String
-    });
-
-    var User = lounge.model('User', userSchema);
-
-    var user = new User({
-      name: 'Joe Smith',
-      email: 'jsmith@gmail.com'
-    });
-
-    var site = new Site({
-      url: 'http://wwww.mysite.org',
-      owner: user
-    });
-
-    expect(site).to.be.instanceof(Site);
-    expect(site.owner).to.be.ok;
-    expect(site.owner).to.be.instanceof(User);
-    expect(site.url).to.equal('http://wwww.mysite.org');
-    expect(site.owner.name).to.equal('Joe Smith');
-    expect(site.owner.email).to.equal('jsmith@gmail.com');
   });
 
   describe('Nested properties tests', function () {
@@ -407,11 +573,15 @@ describe('Model basics', function () {
 
       var User = lounge.model('User', userSchema);
       var user = new User({
-        name: 'Bob Smith'
+        name: 'Bob Smith',
+        profile: {
+          email: 'p1@p1.com',
+          age: 10
+        }
       });
 
       expect(user.name).to.equal(user.name);
-      expect(user.profile).to.deep.equal({email: undefined, age: undefined});
+      expect(user.profile).to.deep.equal({email: 'p1@p1.com', age: 10});
 
       // this should work
       user.set('profile', {
@@ -428,7 +598,6 @@ describe('Model basics', function () {
       expect(user.profile.email).to.equal('bsmith@gmail.com');
       expect(user.profile.age).to.equal(20);
 
-      // this doesn't work
       user.profile = {
         email: 'bsmith2@gmail.com',
         age: 22,
@@ -436,15 +605,15 @@ describe('Model basics', function () {
       };
 
       expect(user.profile).to.deep.equal({
-        email: 'bsmith@gmail.com',
-        age: 20
+        email: 'bsmith2@gmail.com',
+        age: 22
       });
 
       user.profile.email = 123;
 
       expect(user.profile).to.deep.equal({
-        email: 'bsmith@gmail.com',
-        age: 20
+        email: '123',
+        age: 22
       });
 
       // this should work
@@ -504,7 +673,7 @@ describe('Model basics', function () {
       user.profile.email = 123;
 
       expect(user.profile).to.deep.equal({
-        email: 'bsmith@gmail.com',
+        email: '123',
         age: 20
       });
     });
@@ -524,14 +693,14 @@ describe('Model basics', function () {
       });
 
       expect(user.name).to.equal(user.name);
-      expect(user.profiles).to.deep.equal([]);
+      expect(user.profiles.toArray()).to.deep.equal([]);
 
       user.profiles.push({
         email: 'bsmith@gmail.com',
         age: 20
       });
 
-      expect(user.profiles).to.deep.equal([{email: 'bsmith@gmail.com', age: 20}]);
+      expect(user.profiles.toArray()).to.deep.equal([{email: 'bsmith@gmail.com', age: 20}]);
 
       user.profiles = [
         {
@@ -544,7 +713,7 @@ describe('Model basics', function () {
         }
       ];
 
-      expect(user.profiles).to.deep.equal([
+      expect(user.profiles.toArray()).to.deep.equal([
         {
           email: 'bsmith2@gmail.com',
           age: 21
@@ -568,7 +737,7 @@ describe('Model basics', function () {
       });
 
       expect(user.name).to.equal(user.name);
-      expect(user.usernames).to.deep.equal([]);
+      expect(user.usernames.toArray()).to.deep.equal([]);
 
       // should not work
       user.usernames.push({
@@ -576,11 +745,11 @@ describe('Model basics', function () {
         age: 20
       });
 
-      expect(user.usernames).to.deep.equal([]);
+      expect(user.usernames.toArray()).to.deep.equal([]);
 
       user.usernames.push('user1');
 
-      expect(user.usernames).to.deep.equal(['user1']);
+      expect(user.usernames.toArray()).to.deep.equal(['user1']);
 
       // should not work
       user.usernames = [
@@ -594,7 +763,7 @@ describe('Model basics', function () {
         }
       ];
 
-      expect(user.usernames).to.deep.equal(['user1']);
+      expect(user.usernames.toArray()).to.deep.equal(['user1']);
 
       // should not work
       user.usernames.set([
@@ -608,20 +777,259 @@ describe('Model basics', function () {
         }
       ]);
 
-      expect(user.usernames).to.deep.equal(['user1']);
+      expect(user.usernames.toArray()).to.deep.equal(['user1']);
 
       user.usernames.set(['user2', 'user3']);
 
-      expect(user.usernames).to.deep.equal(['user2', 'user3']);
+      expect(user.usernames.toArray()).to.deep.equal(['user2', 'user3']);
 
       user.usernames = ['user4', 'user5', 'user6'];
 
-      expect(user.usernames).to.deep.equal(['user4', 'user5', 'user6']);
+      expect(user.usernames.toArray()).to.deep.equal(['user4', 'user5', 'user6']);
 
-      // should not work
+      // should work because we cast boolean to string
       user.usernames = ['user7', 'user8', true, 'user8'];
 
-      expect(user.usernames).to.deep.equal(['user4', 'user5', 'user6']);
+      expect(user.usernames.toArray()).to.deep.equal(['user7', 'user8', 'true', 'user8']);
     })
+  });
+
+  describe('clear()', function () {
+
+    it('should return array elements to their original state, which is an empty array', function () {
+      var schema = lounge.schema({
+        strings: [String]
+      });
+
+      var CModel = lounge.model('cmodel', schema);
+
+      var o = new CModel();
+      o.strings.push('hello');
+      expect(o.strings).to.have.lengthOf(1);
+      o.clear();
+      expect(o.strings).to.be.ok;
+      expect(o.strings).to.have.lengthOf(0);
+    });
+
+    it('should clear a simple document', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('December 10, 1990 03:33:00');
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        dateOfBirth: dob
+      });
+
+      expect(user instanceof User).to.be.ok;
+      expect(user instanceof lounge.Model).to.be.ok;
+
+      expect(user.firstName).to.equal('Joe');
+      expect(user.lastName).to.equal('Smith');
+      expect(user.email).to.equal('joe@gmail.com');
+      expect(user.dateOfBirth).to.be.ok;
+      expect(user.dateOfBirth).to.be.an.instanceof(Date);
+      expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+
+      user.clear();
+
+      expect(user.firstName).to.not.be.ok;
+      expect(user.lastName).to.not.be.ok;
+      expect(user.email).to.not.be.ok;
+      expect(user.dateOfBirth).to.not.be.ok;
+    });
+
+    it('should be able to set after clear a simple document', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('December 10, 1990 03:33:00');
+
+      var d = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        dateOfBirth: dob
+      };
+
+      var user = new User(d);
+
+      expect(user instanceof User).to.be.ok;
+      expect(user instanceof lounge.Model).to.be.ok;
+
+      expect(user.firstName).to.equal('Joe');
+      expect(user.lastName).to.equal('Smith');
+      expect(user.email).to.equal('joe@gmail.com');
+      expect(user.dateOfBirth).to.be.ok;
+      expect(user.dateOfBirth).to.be.an.instanceof(Date);
+      expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+
+      user.clear();
+
+      expect(user.firstName).to.not.be.ok;
+      expect(user.lastName).to.not.be.ok;
+      expect(user.email).to.not.be.ok;
+      expect(user.dateOfBirth).to.not.be.ok;
+
+      user.set(d);
+
+      expect(user instanceof User).to.be.ok;
+      expect(user instanceof lounge.Model).to.be.ok;
+
+      expect(user.firstName).to.equal('Joe');
+      expect(user.lastName).to.equal('Smith');
+      expect(user.email).to.equal('joe@gmail.com');
+      expect(user.dateOfBirth).to.be.ok;
+      expect(user.dateOfBirth).to.be.an.instanceof(Date);
+      expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+    });
+
+    it('Should properly clear a model with sub documents and arrays', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date,
+        foo: Number,
+        favourites: [String],
+        boolProp: Boolean,
+        someProp: Object
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('December 10, 1990 03:33:00');
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        dateOfBirth: dob,
+        foo: 5,
+        boolProp: true,
+        favourites: [
+          'fav0', 'fav1', 'fav2'
+        ],
+        someProp: {
+          abc: 'xyz',
+          sbp: false,
+          snp: 11
+        }
+      });
+
+      expect(user instanceof User).to.be.ok;
+      expect(user instanceof lounge.Model).to.be.ok;
+
+      expect(user.firstName).to.equal('Joe');
+      expect(user.lastName).to.equal('Smith');
+      expect(user.email).to.equal('joe@gmail.com');
+      expect(user.dateOfBirth).to.be.ok;
+      expect(user.dateOfBirth).to.be.an.instanceof(Date);
+      expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+      expect(user.foo).to.equal(5);
+      expect(user.boolProp).to.equal(true);
+      expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
+      expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
+
+      user.clear();
+
+      expect(user.firstName).to.not.be.ok;
+      expect(user.lastName).to.not.be.ok;
+      expect(user.email).to.not.be.ok;
+      expect(user.dateOfBirth).to.not.be.ok;
+      expect(user.foo).to.not.be.ok;
+      expect(user.boolProp).to.not.be.ok;
+      expect(user.favourites).to.be.empty;
+      expect(user.someProp).to.not.be.ok;
+    });
+
+    it('Should be able to set after clear a model with sub documents and arrays', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date,
+        foo: Number,
+        favourites: [String],
+        boolProp: Boolean,
+        someProp: Object
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('December 10, 1990 03:33:00');
+
+      var d = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        dateOfBirth: dob,
+        foo: 5,
+        boolProp: true,
+        favourites: [
+          'fav0', 'fav1', 'fav2'
+        ],
+        someProp: {
+          abc: 'xyz',
+          sbp: false,
+          snp: 11
+        }
+      };
+
+      var user = new User(d);
+
+      expect(user instanceof User).to.be.ok;
+      expect(user instanceof lounge.Model).to.be.ok;
+
+      expect(user.firstName).to.equal('Joe');
+      expect(user.lastName).to.equal('Smith');
+      expect(user.email).to.equal('joe@gmail.com');
+      expect(user.dateOfBirth).to.be.ok;
+      expect(user.dateOfBirth).to.be.an.instanceof(Date);
+      expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+      expect(user.foo).to.equal(5);
+      expect(user.boolProp).to.equal(true);
+      expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
+      expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
+
+      user.clear();
+
+      expect(user.firstName).to.not.be.ok;
+      expect(user.lastName).to.not.be.ok;
+      expect(user.email).to.not.be.ok;
+      expect(user.dateOfBirth).to.not.be.ok;
+      expect(user.foo).to.not.be.ok;
+      expect(user.boolProp).to.not.be.ok;
+      expect(user.favourites).to.be.empty;
+      expect(user.someProp).to.not.be.ok;
+
+      user.set(d);
+
+      expect(user.firstName).to.equal('Joe');
+      expect(user.lastName).to.equal('Smith');
+      expect(user.email).to.equal('joe@gmail.com');
+      expect(user.dateOfBirth).to.be.ok;
+      expect(user.dateOfBirth).to.be.an.instanceof(Date);
+      expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
+      expect(user.foo).to.equal(5);
+      expect(user.boolProp).to.equal(true);
+      expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
+      expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
+    });
   });
 });

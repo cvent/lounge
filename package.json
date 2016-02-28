@@ -1,7 +1,7 @@
 {
   "name": "lounge",
   "description": "Simple Mongoose-inspired ODM for Couchbase",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "homepage": "https://github.com/bojand/lounge",
   "license": "MIT",
   "repository": {
@@ -12,38 +12,48 @@
     "url": "http://github.com/bojand/lounge/issues"
   },
   "engines": {
-    "node": ">=0.10.0"
+    "node": ">=0.12.0"
   },
-  "main": "./lib/index.js",
+  "main": "index.js",
   "author": {
     "name": "Bojan Djurkovic <dbojan@gmail.com>"
   },
   "scripts": {
-    "test": "LOUNGE_COUCHBASE_MOCK=true mocha",
-    "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha",
-    "docs": "mr-doc -s lib/ --readme api.md -o apidocs/ -n \"Lounge\" -t \"cayman\""
+    "test": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha --harmony --harmony_proxies",
+    "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha --harmony --harmony_proxies",
+    "docs": "jsdoc lib -r -d docs -t ./node_modules/jaguarjs-jsdoc-patched-2 -c ./jsdoc.conf.json -R guide.md",
+    "dist": "node ./node_modules/babel-cli/bin/babel.js lib --out-dir dist",
+    "prepublish": "npm run dist"
   },
   "dependencies": {
     "async": "^1.5.0",
+    "babel-polyfill": "~6.5.0",
     "couchbase": "^2.1.3",
     "clone": "^1.0.2",
     "debug": "^2.2.0",
+    "harmony-reflect": "~1.4.0",
     "hooks-fixed": "^1.1.0",
     "inflection": "^1.8.0",
     "lodash": "^4.0.0",
     "memoizee":"~0.3.9",
     "mpath": "^0.2.1",
-    "sliced": "^1.0.1",
     "traverse": "^0.6.6",
     "uuid": "^2.0.1"
   },
   "devDependencies": {
+    "babel-cli": "~6.5.0",
+    "babel-plugin-transform-builtin-extend": "~1.1.0",
+    "babel-plugin-transform-class-properties": "~6.5.0",
+    "babel-preset-es2015": "6.5.0",
     "chai": "^3.4.1",
     "mocha": "^2.3.3",
-    "mr-doc": "^3.1.2",
-    "mr-doc-theme-cayman": "^1.0.3",
+    "jaguarjs-jsdoc-patched-2": "~0.0.1",
+    "jsdoc": "~3.4.0",
     "nyc": "^5.0.0",
     "validator": "^4.4.0"
+  },
+  "directories": {
+    "test": "test"
   },
   "keywords": [
     "couchbase",
