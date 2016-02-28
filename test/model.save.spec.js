@@ -3,8 +3,7 @@ var testUtil = require('./helpers/utils');
 var _ = require('lodash');
 var expect = require('chai').expect;
 
-var lounge = require('../lib');
-var Schema = lounge.Schema;
+var lounge = require('../');
 
 var bucket;
 
@@ -63,6 +62,8 @@ describe('Model save tests', function () {
       expect(savedDoc.dateOfBirth).to.be.ok;
       expect(savedDoc.dateOfBirth).to.be.an.instanceof(Date);
       expect(savedDoc.dateOfBirth.toString()).to.equal((new Date(1990, 2, 3, 3, 30, 0)).toString());
+
+      expect(savedDoc.cas).to.be.ok;
 
       bucket.get(savedDoc.getDocumentKeyValue(true), function (err, dbDoc) {
         expect(err).to.not.be.ok;
@@ -251,7 +252,7 @@ describe('Model save tests', function () {
       expect(savedDoc.dateOfBirth.toString()).to.equal((new Date(1989, 2, 3, 3, 30, 0)).toString());
       expect(user.foo).to.equal(5);
       expect(user.boolProp).to.equal(true);
-      expect(user.favourites).to.deep.equal(['fav0', 'fav1', 'fav2']);
+      expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
       expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
 
       bucket.get(savedDoc.getDocumentKeyValue(true), function (err, dbDoc) {
@@ -334,7 +335,7 @@ describe('Model save tests', function () {
       expect(savedDoc.dateOfBirth.toString()).to.equal((new Date(1989, 2, 3, 3, 30, 0)).toString());
       expect(user.foo).to.equal(5);
       expect(user.boolProp).to.equal(true);
-      expect(user.favourites).to.deep.equal(['fav0', 'fav1', 'fav2']);
+      expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
       expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
       expect(user.unpa).to.not.be.ok;
 

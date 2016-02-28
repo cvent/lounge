@@ -1,4 +1,3 @@
-var lounge = require('../../lib');
 var async = require('async');
 var uuid = require('uuid');
 

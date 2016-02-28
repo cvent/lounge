@@ -3,8 +3,8 @@ var _ = require('lodash');
 var testUtil = require('./helpers/utils');
 var expect = require('chai').expect;
 
-var lounge = require('../lib');
-var Schema = lounge.Schema;
+var lounge = require('../');
+var couchUtil = require('../dist/couchdoc.utils');
 
 var bucket;
 
@@ -43,11 +43,11 @@ describe('Model index tests', function () {
       expect(User.findByEmail).to.be.ok;
       expect(User.findByEmail).to.be.an.instanceof(Function);
 
-      var user = new User({
+      var data = {
         firstName: 'Joe',
         lastName: 'Smith',
         email: 'joe@gmail.com'
-      });
+      };
 
       var expected = {
         email: {
@@ -57,7 +57,11 @@ describe('Model index tests', function () {
         }
       };
 
-      expect(user.$_o.refValues).to.deep.equal(expected);
+      // we have to generate this manually since we don't have access to object internals
+      // this has to match how we would use it in CouchDocument, specifically constructor to build the initial list
+      var actual = couchUtil.buildRefValues(userSchema.indexes, data);
+
+      expect(actual).to.deep.equal(expected);
     });
 
     it('should create index values for array and automatically singularize', function () {
@@ -72,11 +76,11 @@ describe('Model index tests', function () {
       expect(User.findByUsername).to.be.ok;
       expect(User.findByUsername).to.be.an.instanceof(Function);
 
-      var user = new User({
+      var data = {
         firstName: 'Joe',
         lastName: 'Smith',
         usernames: ['user1', 'user2']
-      });
+      };
 
       var expected = {
         'username': {
@@ -86,7 +90,8 @@ describe('Model index tests', function () {
         }
       };
 
-      expect(user.$_o.refValues).to.deep.equal(expected);
+      var actualRefs = couchUtil.buildRefValues(userSchema.indexes, data);
+      expect(actualRefs).to.deep.equal(expected);
     });
 
     it('should create index values for array and  respect indexName', function () {
@@ -101,11 +106,11 @@ describe('Model index tests', function () {
       expect(User.findByUN).to.be.ok;
       expect(User.findByUN).to.be.an.instanceof(Function);
 
-      var user = new User({
+      var data = {
         firstName: 'Joe',
         lastName: 'Smith',
         usernames: ['user1', 'user2']
-      });
+      };
 
       var expected = {
         'UN': {
@@ -115,7 +120,8 @@ describe('Model index tests', function () {
         }
       };
 
-      expect(user.$_o.refValues).to.deep.equal(expected);
+      var actualRefs = couchUtil.buildRefValues(userSchema.indexes, data);
+      expect(actualRefs).to.deep.equal(expected);
     });
 
     it('should not create index value for a ref field', function () {
@@ -145,12 +151,12 @@ describe('Model index tests', function () {
         b: 'b1'
       });
 
-      var user = new User({
+      var data = {
         firstName: 'Joe',
         lastName: 'Smith',
         email: 'joe@gmail.com',
         foo: foo
-      });
+      };
 
       var expected = {
         'email': {
@@ -160,7 +166,8 @@ describe('Model index tests', function () {
         }
       };
 
-      expect(user.$_o.refValues).to.deep.equal(expected);
+      var actualRefs = couchUtil.buildRefValues(userSchema.indexes, data);
+      expect(actualRefs).to.deep.equal(expected);
     });
 
     it('should create index value for untruthy values', function () {
@@ -175,10 +182,10 @@ describe('Model index tests', function () {
       expect(User.findByEmail).to.be.ok;
       expect(User.findByEmail).to.be.an.instanceof(Function);
 
-      var user = new User({
+      var data = {
         firstName: 'Joe',
         lastName: 'Smith'
-      });
+      };
 
       var expected = {
         'email': {
@@ -188,7 +195,8 @@ describe('Model index tests', function () {
         }
       };
 
-      expect(user.$_o.refValues).to.deep.equal(expected);
+      var actualRefs = couchUtil.buildRefValues(userSchema.indexes, data);
+      expect(actualRefs).to.deep.equal(expected);
     });
   });
 });

@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
 var testUtil = require('./helpers/utils');
-var lounge = require('../lib');
+var lounge = require('../');
 
 describe('Schema options', function () {
 
@@ -78,6 +78,49 @@ describe('Schema options', function () {
       expect(user.fullName).to.equal('Bob Row');
       expect(user.firstName).to.equal('Bob');
       expect(user.lastName).to.equal('Row');
+    });
+  });
+
+  describe('methods', function () {
+    it('Should create an instance method', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String
+      });
+
+      userSchema.method('getFullName', function () {
+        return this.firstName + ' ' + this.lastName
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var user = new User({firstName: 'Joe', lastName: 'Smith'});
+
+      expect(user.firstName).to.equal('Joe');
+      expect(user.lastName).to.equal('Smith');
+
+      var fullName = user.getFullName();
+      expect(fullName).to.equal('Joe Smith');
+    });
+  });
+
+  describe('statics', function () {
+    it('Should create a static model function', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String
+      });
+
+      userSchema.static('foo', function () {
+        return 'foo';
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      expect(User.foo).to.be.a('function');
+
+      var r = User.foo();
+      expect(r).to.equal('foo');
     });
   });
 

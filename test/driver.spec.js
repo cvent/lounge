@@ -3,7 +3,7 @@ var testUtil = require('./helpers/utils');
 var _ = require('lodash');
 var async = require('async');
 var expect = require('chai').expect;
-var wrapper = require('../lib/driver');
+var Driver = require('../dist/driver').Driver;
 
 var bucket;
 var driver;
@@ -42,7 +42,7 @@ describe('Driver helper bucket tests', function () {
       bucket.manager().flush(function (err) {
         if (err) return done(err);
 
-        driver = wrapper.wrap(bucket);
+        driver = Driver.wrap(bucket);
 
         async.each(mockData, function (data, eacb) {
           bucket.upsert(data.key, data.value, eacb)

@@ -6,6 +6,8 @@ Simple Mongoose-inspired ODM for [Couchbase](http://www.couchbase.com).
 
 `npm install lounge`
 
+**Node.js >= 0.12 supported. For all features, run node with the harmony ````--harmony```` and harmony proxies ````--harmony_proxies```` flags.**
+
 ## Stability
 
 This module is under development and there could be bugs. API may not be 100% locked down. 
@@ -33,7 +35,7 @@ kitty.save(function (err) {
 });
 ```
 
-##### Features:
+### Features:
 
 * Schema definition
 * Strict modelling based on schema
@@ -45,7 +47,7 @@ kitty.save(function (err) {
 * Middleware including pre and post hooks
 * Indexing using [reference lookup documents](http://docs.couchbase.com/developer/dev-guide-3.0/lookups.html)
 
-##### Outside of the scope of this module:
+### Outside of the scope of this module:
 
 * Document and view management. There are too many patterns and ways of performing document and view management and 
  view lookup that it is impractical to accommodate anything sane within a simple ODM. This can easily be expanded
@@ -57,10 +59,9 @@ handle document removal in this scenario. This should be handled by the user of 
 
 ## Documentation
 
-* [Guide](http://bojand.github.io/lounge/guide)
-* [API Documentation](http://bojand.github.io/lounge/api)
+* [Guide && API Documentation](http://bojand.github.io/lounge)
 
-## TESTS
+## Tests
 
 Module automated tests can be run using `npm test` command. The tests are executed using [Couchbase mocking](https://github.com/couchbase/couchnode#mock-testing).
 To run tests against an actual local database create a bucket `lounge_test` and remove `LOUNGE_COUCHBASE_MOCK=true` from
@@ -69,10 +70,10 @@ To run tests against an actual local database create a bucket `lounge_test` and 
 ## Credits
 
 Lots of code and design inspired by [Mongoose](http://mongoosejs.com/).
-Uses modified version of [Draft](https://github.com/jwerle/draft) for schema and modelling.
+Uses modified code from [node-schema-object](https://github.com/scotthovestadt/node-schema-object) for modelling.
 
 ## License
 
-Copyright 2015 Bojan Djurkovic
+Copyright 2015 Bojan D.
 
 Licensed under the MIT License.

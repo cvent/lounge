@@ -4,7 +4,7 @@ var testUtil = require('./helpers/utils');
 var expect = require('chai').expect;
 var ts = require('./helpers/findbyid_setup');
 
-var lounge = require('../lib');
+var lounge = require('../');
 var Schema = lounge.Schema;
 
 var bucket;
