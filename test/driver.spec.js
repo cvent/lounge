@@ -3,7 +3,7 @@ var testUtil = require('./helpers/utils');
 var _ = require('lodash');
 var async = require('async');
 var expect = require('chai').expect;
-var Driver = require('../dist/driver').Driver;
+var Driver = require('../dist/driver').default;
 
 var bucket;
 var driver;

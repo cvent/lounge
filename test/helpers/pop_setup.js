@@ -164,7 +164,6 @@ exports.setup = function (bucket, fn) {
         docId = 'company::'.concat(docId);
       }
 
-      // console.log('upsert %s', docId);
       bucket.upsert(docId, obj, eaCb);
     }, easCb);
   }, fn);

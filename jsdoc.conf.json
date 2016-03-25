@@ -10,15 +10,6 @@
       "outputSourceFiles" : true
     },
     "applicationName": "Lounge",
-    "disqus": "",
-    "googleAnalytics": "",
-    "openGraph": {
-      "title": "",
-      "type": "website",
-      "image": "",
-      "site_name": "",
-      "url": ""
-    },
     "meta": {
       "title": "Lounge",
       "description": "Simple Mongoose-inspired ODM for Couchbase",

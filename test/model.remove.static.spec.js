@@ -675,7 +675,7 @@ describe('Model static remove tests', function () {
           expect(err).to.be.ok;
           expect(err).to.equal(2);
 
-          expect(preCalled).to.be.equal(0);
+          expect(preCalled).to.equal(0);
 
           done();
         });

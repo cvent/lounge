@@ -618,7 +618,7 @@ describe('Model save tests', function () {
       expect(savedDoc.date.toString()).to.equal(postDate.toString());
       expect(savedDoc.comments).to.be.ok;
       expect(savedDoc.comments).to.be.an.instanceof(Array);
-      expect(savedDoc.comments.length).to.be.equal(3);
+      expect(savedDoc.comments.length).to.equal(3);
 
       var commentKeys = [];
       savedDoc.comments.forEach(function (elem, i) {
@@ -646,7 +646,7 @@ describe('Model save tests', function () {
         expect(postDoc).to.be.ok;
         expect(postDoc).to.be.an('object');
         expect(postDoc.comments).to.be.an.instanceof(Array);
-        expect(postDoc.comments.length).to.be.equal(3);
+        expect(postDoc.comments.length).to.equal(3);
 
         postDoc.comments = postDoc.comments.sort();
 
