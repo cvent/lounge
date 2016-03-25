@@ -222,7 +222,7 @@ describe('Schema basics', function () {
     });
   });
 
-  describe('index', function () {
+  describe('single index', function () {
     beforeEach(function () {
       lounge = new lounge.Lounge(); // recreate it
     });
@@ -238,7 +238,8 @@ describe('Schema basics', function () {
       var expected = {
         'email': {
           path: 'email',
-          name: 'email'
+          name: 'email',
+          indexType: 'single'
         }
       };
 
@@ -283,7 +284,8 @@ describe('Schema basics', function () {
       var expected = {
         posts: {
           path: 'posts',
-          name: 'post'
+          name: 'post',
+          indexType: 'single'
         }
       };
 
@@ -304,7 +306,8 @@ describe('Schema basics', function () {
       var expected = {
         'blog.posts': {
           path: 'blog.posts',
-          name: 'blogPost'
+          name: 'blogPost',
+          indexType: 'single'
         }
       };
 
@@ -322,17 +325,159 @@ describe('Schema basics', function () {
       var expected = {
         'email': {
           path: 'email',
-          name: 'email'
+          name: 'email',
+          indexType: 'single'
         },
         'username': {
           path: 'username',
-          name: 'userName'
+          name: 'userName',
+          indexType: 'single'
+        }
+      };
+
+      expect(userSchema.indexes).to.deep.equal(expected);
+    });
+  });
+
+  describe('array index', function () {
+    beforeEach(function () {
+      lounge = new lounge.Lounge(); // recreate it
+    });
+
+    it('should get the indexes correctly', function () {
+
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: {type: String, index: true, indexType: 'array'}
+      });
+
+      var expected = {
+        'email': {
+          path: 'email',
+          name: 'email',
+          indexType: 'array'
         }
       };
 
       expect(userSchema.indexes).to.deep.equal(expected);
     });
 
+    it('should get the indexes correctly only when index = true', function () {
+
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: {type: String, index: false, indexType: 'array'}
+      });
+
+      var expected = {};
+
+      expect(userSchema.indexes).to.deep.equal(expected);
+    });
+
+    it('should get the indexes correctly only when index = true 2', function () {
+
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: {type: String, index: 'true', indexType: 'array'}
+      });
+
+      var expected = {};
+
+      expect(userSchema.indexes).to.deep.equal(expected);
+    });
+
+    it('should get the index correctly if in array', function () {
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        posts: [
+          {type: String, index: true, indexType: 'array'}
+        ]
+      });
+
+      var expected = {
+        posts: {
+          path: 'posts',
+          name: 'post',
+          indexType: 'array'
+        }
+      };
+
+      expect(userSchema.indexes).to.deep.equal(expected);
+    });
+
+    it('should get the indexes correctly in nested schema', function () {
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        blog: {
+          posts: [
+            {Type: String, index: true, indexName: 'blogPost', indexType: 'array'}
+          ]
+        }
+      });
+
+      var expected = {
+        'blog.posts': {
+          path: 'blog.posts',
+          name: 'blogPost',
+          indexType: 'array'
+        }
+      };
+
+      expect(userSchema.indexes).to.deep.equal(expected);
+    });
+
+    it('should get the indexes correctly with multiple indexes', function () {
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: {type: String, index: true, indexType: 'array'},
+        username: {type: String, index: true, indexName: 'userName', indexType: 'array'}
+      });
+
+      var expected = {
+        'email': {
+          path: 'email',
+          name: 'email',
+          indexType: 'array'
+        },
+        'username': {
+          path: 'username',
+          name: 'userName',
+          indexType: 'array'
+        }
+      };
+
+      expect(userSchema.indexes).to.deep.equal(expected);
+    });
+
+    it('should get the indexes correctly with multiple indexes of mixed types', function () {
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: {type: String, index: true, indexType: 'array'},
+        username: {type: String, index: true, indexName: 'userName'}
+      });
+
+      var expected = {
+        'email': {
+          path: 'email',
+          name: 'email',
+          indexType: 'array'
+        },
+        'username': {
+          path: 'username',
+          name: 'userName',
+          indexType: 'single'
+        }
+      };
+
+      expect(userSchema.indexes).to.deep.equal(expected);
+    });
   });
 
   describe('getDocumentKeyValue', function () {
@@ -426,7 +571,10 @@ describe('Schema basics', function () {
       });
 
       userSchema.method('init', function () {
-        this.$_data.initialEmal = this.email;
+        if (!this.$_data) {
+          this.$_data = {};
+        }
+        this.$_data.initialEmail = this.email;
       });
 
       var User = lounge.model('User', userSchema);
@@ -441,12 +589,12 @@ describe('Schema basics', function () {
       expect(user.init).to.be.instanceof(Function);
       expect(user.$_data).to.be.ok;
       expect(user.$_data).to.be.an('object');
-      expect(user.$_data.initialEmal).to.equal('bsmith@gmail.com');
+      expect(user.$_data.initialEmail).to.equal('bsmith@gmail.com');
 
       user.email = 'bobsmith@gmail.com';
 
       expect(user.email).to.equal('bobsmith@gmail.com');
-      expect(user.$_data.initialEmal).to.equal('bsmith@gmail.com');
+      expect(user.$_data.initialEmail).to.equal('bsmith@gmail.com');
     });
   });
 

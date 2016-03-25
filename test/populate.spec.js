@@ -369,12 +369,12 @@ describe('Model populate tests', function () {
             expect(ac.user.company).to.be.ok;
             expect(ac.user.company).to.be.an('object');
             expect(ac.user.company).to.be.an.instanceof(Company);
-            expect(ac.user.company.name).to.be.equal(expectedCompany.name);
-            expect(ac.user.company.streetAddress).to.be.equal(expectedCompany.streetAddress);
-            expect(ac.user.company.city).to.be.equal(expectedCompany.city);
-            expect(ac.user.company.country).to.be.equal(expectedCompany.country);
-            expect(ac.user.company.postalCode).to.be.equal(expectedCompany.postalCode);
-            expect(ac.user.company.state).to.be.equal(expectedCompany.state);
+            expect(ac.user.company.name).to.equal(expectedCompany.name);
+            expect(ac.user.company.streetAddress).to.equal(expectedCompany.streetAddress);
+            expect(ac.user.company.city).to.equal(expectedCompany.city);
+            expect(ac.user.company.country).to.equal(expectedCompany.country);
+            expect(ac.user.company.postalCode).to.equal(expectedCompany.postalCode);
+            expect(ac.user.company.state).to.equal(expectedCompany.state);
             expect(ac.user.company.founded).to.be.ok;
             expect(ac.user.company.founded).to.be.an.instanceof(Date);
           }
@@ -434,12 +434,12 @@ describe('Model populate tests', function () {
               expect(ac.user.company).to.be.ok;
               expect(ac.user.company).to.be.an('object');
               expect(ac.user.company).to.be.an.instanceof(Company);
-              expect(ac.user.company.name).to.be.equal(expectedCompany.name);
-              expect(ac.user.company.streetAddress).to.be.equal(expectedCompany.streetAddress);
-              expect(ac.user.company.city).to.be.equal(expectedCompany.city);
-              expect(ac.user.company.country).to.be.equal(expectedCompany.country);
-              expect(ac.user.company.postalCode).to.be.equal(expectedCompany.postalCode);
-              expect(ac.user.company.state).to.be.equal(expectedCompany.state);
+              expect(ac.user.company.name).to.equal(expectedCompany.name);
+              expect(ac.user.company.streetAddress).to.equal(expectedCompany.streetAddress);
+              expect(ac.user.company.city).to.equal(expectedCompany.city);
+              expect(ac.user.company.country).to.equal(expectedCompany.country);
+              expect(ac.user.company.postalCode).to.equal(expectedCompany.postalCode);
+              expect(ac.user.company.state).to.equal(expectedCompany.state);
               expect(ac.user.company.founded).to.be.ok;
               expect(ac.user.company.founded).to.be.an.instanceof(Date);
             }
@@ -971,12 +971,12 @@ describe('Model populate tests', function () {
               expect(ac.user.company).to.be.ok;
               expect(ac.user.company).to.be.an('object');
               expect(ac.user.company).to.be.an.instanceof(Company);
-              expect(ac.user.company.name).to.be.equal(expectedCompany.name);
-              expect(ac.user.company.streetAddress).to.be.equal(expectedCompany.streetAddress);
-              expect(ac.user.company.city).to.be.equal(expectedCompany.city);
-              expect(ac.user.company.country).to.be.equal(expectedCompany.country);
-              expect(ac.user.company.postalCode).to.be.equal(expectedCompany.postalCode);
-              expect(ac.user.company.state).to.be.equal(expectedCompany.state);
+              expect(ac.user.company.name).to.equal(expectedCompany.name);
+              expect(ac.user.company.streetAddress).to.equal(expectedCompany.streetAddress);
+              expect(ac.user.company.city).to.equal(expectedCompany.city);
+              expect(ac.user.company.country).to.equal(expectedCompany.country);
+              expect(ac.user.company.postalCode).to.equal(expectedCompany.postalCode);
+              expect(ac.user.company.state).to.equal(expectedCompany.state);
               expect(ac.user.company.founded).to.be.ok;
               expect(ac.user.company.founded).to.be.an.instanceof(Date);
             }
@@ -1139,12 +1139,12 @@ describe('Model populate tests', function () {
               expect(ac.user.company).to.be.ok;
               expect(ac.user.company).to.be.an('object');
               expect(ac.user.company).to.be.an.instanceof(Company);
-              expect(ac.user.company.name).to.be.equal(expectedCompany.name);
-              expect(ac.user.company.streetAddress).to.be.equal(expectedCompany.streetAddress);
-              expect(ac.user.company.city).to.be.equal(expectedCompany.city);
-              expect(ac.user.company.country).to.be.equal(expectedCompany.country);
-              expect(ac.user.company.postalCode).to.be.equal(expectedCompany.postalCode);
-              expect(ac.user.company.state).to.be.equal(expectedCompany.state);
+              expect(ac.user.company.name).to.equal(expectedCompany.name);
+              expect(ac.user.company.streetAddress).to.equal(expectedCompany.streetAddress);
+              expect(ac.user.company.city).to.equal(expectedCompany.city);
+              expect(ac.user.company.country).to.equal(expectedCompany.country);
+              expect(ac.user.company.postalCode).to.equal(expectedCompany.postalCode);
+              expect(ac.user.company.state).to.equal(expectedCompany.state);
               expect(ac.user.company.founded).to.be.ok;
               expect(ac.user.company.founded).to.be.an.instanceof(Date);
             }
@@ -1799,12 +1799,12 @@ describe('Model populate tests', function () {
               expect(ac.user.company).to.be.ok;
               expect(ac.user.company).to.be.an('object');
               expect(ac.user.company).to.be.an.instanceof(Company);
-              expect(ac.user.company.name).to.be.equal(expectedCompany.name);
-              expect(ac.user.company.streetAddress).to.be.equal(expectedCompany.streetAddress);
-              expect(ac.user.company.city).to.be.equal(expectedCompany.city);
-              expect(ac.user.company.country).to.be.equal(expectedCompany.country);
-              expect(ac.user.company.postalCode).to.be.equal(expectedCompany.postalCode);
-              expect(ac.user.company.state).to.be.equal(expectedCompany.state);
+              expect(ac.user.company.name).to.equal(expectedCompany.name);
+              expect(ac.user.company.streetAddress).to.equal(expectedCompany.streetAddress);
+              expect(ac.user.company.city).to.equal(expectedCompany.city);
+              expect(ac.user.company.country).to.equal(expectedCompany.country);
+              expect(ac.user.company.postalCode).to.equal(expectedCompany.postalCode);
+              expect(ac.user.company.state).to.equal(expectedCompany.state);
               expect(ac.user.company.founded).to.be.ok;
               expect(ac.user.company.founded).to.be.an.instanceof(Date);
             }
@@ -2174,12 +2174,12 @@ describe('Model populate tests', function () {
               expect(ac.user.company).to.be.ok;
               expect(ac.user.company).to.be.an('object');
               expect(ac.user.company).to.be.an.instanceof(Company);
-              expect(ac.user.company.name).to.be.equal(expectedCompany.name);
-              expect(ac.user.company.streetAddress).to.be.equal(expectedCompany.streetAddress);
-              expect(ac.user.company.city).to.be.equal(expectedCompany.city);
-              expect(ac.user.company.country).to.be.equal(expectedCompany.country);
-              expect(ac.user.company.postalCode).to.be.equal(expectedCompany.postalCode);
-              expect(ac.user.company.state).to.be.equal(expectedCompany.state);
+              expect(ac.user.company.name).to.equal(expectedCompany.name);
+              expect(ac.user.company.streetAddress).to.equal(expectedCompany.streetAddress);
+              expect(ac.user.company.city).to.equal(expectedCompany.city);
+              expect(ac.user.company.country).to.equal(expectedCompany.country);
+              expect(ac.user.company.postalCode).to.equal(expectedCompany.postalCode);
+              expect(ac.user.company.state).to.equal(expectedCompany.state);
               expect(ac.user.company.founded).to.be.ok;
               expect(ac.user.company.founded).to.be.an.instanceof(Date);
             }
