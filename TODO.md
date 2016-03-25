@@ -1,8 +1,5 @@
 ### TODO
 
-* Improve `EventEmitter` utilization.
-* Add `EventEmitter` interface to Model constructor to catch events on all instances.
-* Add `'error'` events.
 * Fix `Schema` constructor so that it picks up config values for the lounge object.
 * Add config option to specify `Date` format for saving.
 * More tests and improve coverage.
