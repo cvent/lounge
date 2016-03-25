@@ -26,10 +26,10 @@ userSchema.post('remove', function () {
 });
 ```
 
-Important note here is that post 'save' and 'remove' hooks do not receive any form of control flow. There are no
+Important note here is that `post` 'save' and 'remove' hooks do not receive any form of control flow. There are no
 callbacks passed.
 
-The callback passed into pre hooks have be used to control flow of logic and execution:
+The callback passed into `pre` hooks can be used to control flow of logic and execution:
 
 ```js
 schema.pre('save', function (next) {
