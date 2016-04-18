@@ -103,7 +103,7 @@ User.findByUN('user1', function(err, doc) {
 
 ### Array index type
 
-I we can have multiple documents to be indexed by the same value then want the the reference lookup document to
+If we can have multiple documents to be indexed by the same value then want the the reference lookup document to
 store an array of document keys. This can be accomplished using `'array'` `indexType`.
 
 ```js

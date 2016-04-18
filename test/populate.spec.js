@@ -7,7 +7,7 @@ var ts = require('./helpers/pop_setup');
 var lounge = require('../');
 
 var bucket;
-var User, Company, Post, Comment;
+var User, Company, Post, Comment, Ticket, Profile, Event;
 
 describe('Model populate tests', function () {
 
@@ -79,6 +79,30 @@ describe('Model populate tests', function () {
           });
 
           Post = lounge.model('Post', postSchema);
+
+          var profileSchema = lounge.schema({
+            firstName: String,
+            lastName: String,
+            email: String
+          });
+
+          Profile = lounge.model('Profile', profileSchema);
+
+          var ticketSchema = lounge.schema({
+            confirmationCode: String,
+            profileId: Profile,
+            profile: Object
+          });
+
+          Ticket = lounge.model('Ticket', ticketSchema);
+
+          var eventSchema = lounge.schema({
+            name: String,
+            ticketIds: [Ticket],
+            tickets: [Object]
+          });
+
+          Event = lounge.model('Event', eventSchema);
 
           ts.setup(bucket, done);
         });
@@ -1276,6 +1300,214 @@ describe('Model populate tests', function () {
           expect(ac).to.equal(expectedComment);
         });
 
+        done();
+      });
+    });
+  });
+
+  describe('with object populate option', function () {
+    it('should get a document and populate refs with populate option as an object', function (done) {
+      var userId = ts.data.users[0].email;
+      var userData = ts.data.users[0];
+
+      User.findById(userId, {populate: { path: 'company' } }, function (err, rdoc, missed) {
+        expect(err).to.not.be.ok;
+
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(User);
+        expect(rdoc.id).to.not.be.ok;
+
+        expect(rdoc.firstName).to.equal(userData.firstName);
+        expect(rdoc.lastName).to.equal(userData.lastName);
+        expect(rdoc.email).to.equal(userData.email);
+        expect(rdoc.dateOfBirth).to.be.ok;
+        expect(rdoc.dateOfBirth).to.be.an.instanceof(Date);
+
+        var cas = rdoc.cas;
+        expect(cas).to.be.a('string');
+
+        expect(rdoc.company).to.be.ok;
+        expect(rdoc.company).to.be.an('object');
+        expect(rdoc.company).to.be.an.instanceof(Company);
+
+        var companyData = ts.data.companies[0];
+
+        expect(rdoc.company.id).to.equal(companyData.id);
+        expect(rdoc.company.name).to.equal(companyData.name);
+        expect(rdoc.company.streetAddress).to.equal(companyData.streetAddress);
+        expect(rdoc.company.city).to.equal(companyData.city);
+        expect(rdoc.company.country).to.equal(companyData.country);
+        expect(rdoc.company.state).to.equal(companyData.state);
+        expect(rdoc.company.postalCode).to.equal(companyData.postalCode);
+        expect(rdoc.company.founded).to.be.ok;
+        expect(rdoc.company.founded).to.be.an.instanceof(Date);
+
+        var cas2 = rdoc.company.cas;
+        expect(cas2).to.be.a('string');
+
+        expect(cas).to.not.equal(cas2);
+
+        expect(missed).to.be.an.instanceof(Array);
+        expect(missed.length).to.equal(0);
+
+        done();
+      });
+    });
+
+    it('should get a document and populate refs with populate option as an object and target option', function (done) {
+      var ticketId = ts.data.tickets[0].id;
+      var ticketData = ts.data.tickets[0];
+      var profileData = ts.data.profiles[0];
+
+      Ticket.findById(ticketId, {populate: { path: 'profileId', target: 'profile' } }, function (err, rdoc, missed) {
+        expect(err).to.not.be.ok;
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(Ticket);
+        expect(rdoc.id).to.to.equal(ticketData.id);
+        expect(rdoc.confirmationCode).to.equal(ticketData.confirmationCode);
+        expect(rdoc.profileId).to.be.ok;
+        expect(rdoc.profileId).to.be.equal(ticketData.profileId)
+
+        var cas = rdoc.cas;
+        expect(cas).to.be.a('string');
+
+        expect(rdoc.profile).to.be.ok;
+        expect(rdoc.profile).to.be.an('object');
+        expect(rdoc.profile).to.be.an.instanceof(Profile);
+        expect(rdoc.profile.id).to.equal(profileData.id);
+        expect(rdoc.profile.firstName).to.equal(profileData.firstName);
+        expect(rdoc.profile.lastName).to.equal(profileData.lastName);
+        expect(rdoc.profile.email).to.equal(profileData.email);
+
+        var cas2 = rdoc.profile.cas;
+        expect(cas2).to.be.a('string');
+
+        expect(cas).to.not.equal(cas2);
+
+        expect(missed).to.be.an.instanceof(Array);
+        expect(missed.length).to.equal(0);
+
+        done();
+      });
+    });
+
+    it('should work with arrays in findById and object in populate option', function (done) {
+      var ticketIds = [ts.data.tickets[0].id, ts.data.tickets[1].id, ts.data.tickets[2].id, ts.data.tickets[3].id];
+
+      Ticket.findById(ticketIds, {populate: { path: 'profileId', target: 'profile' } }, function (err, rdocs, missed) {
+        expect(err).to.not.be.ok;
+
+        expect(rdocs).to.be.ok;
+        expect(rdocs).to.be.an.instanceof(Array);
+        expect(rdocs.length).to.equal(4);
+
+        expect(missed).to.be.an.instanceof(Array);
+        expect(missed.length).to.equal(0);
+
+        rdocs = _.sortBy(rdocs, 'id');
+
+        var expectedProfiles = _.cloneDeep([ts.data.profiles[0], undefined, ts.data.profiles[1], ts.data.profiles[2]]);
+
+        rdocs.forEach(function (rdoc, index) {
+          var ticketData = ts.data.tickets[index];
+
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.an('object');
+          expect(rdoc).to.be.an.instanceof(Ticket);
+          expect(rdoc.id).to.to.equal(ticketData.id);
+          expect(rdoc.confirmationCode).to.equal(ticketData.confirmationCode);
+          expect(rdoc.profileId).to.be.equal(ticketData.profileId)
+
+          var cas = rdoc.cas;
+          expect(cas).to.be.a('string');
+
+          var profileData = expectedProfiles[index];
+
+          if (profileData) {
+            expect(rdoc.profile).to.be.ok;
+            expect(rdoc.profile).to.be.an('object');
+            expect(rdoc.profile).to.be.an.instanceof(Profile);
+            expect(rdoc.profile.id).to.equal(profileData.id);
+            expect(rdoc.profile.firstName).to.equal(profileData.firstName);
+            expect(rdoc.profile.lastName).to.equal(profileData.lastName);
+            expect(rdoc.profile.email).to.equal(profileData.email);
+
+            var cas2 = rdoc.profile.cas;
+            expect(cas2).to.be.a('string');
+
+            expect(cas).to.not.equal(cas2);
+          }
+          else {
+            expect(rdoc.profile).to.not.be.ok;
+          }
+        });
+
+        done();
+      });
+    });
+
+    it('should work with array in field and target populate object options', function(done) {
+      var eventId = ts.data.events[0].id;
+      var ticketIds = [ts.data.tickets[0].id, ts.data.tickets[1].id, ts.data.tickets[2].id];
+
+      Event.findById(eventId, { populate: { path: 'ticketIds.1', target: 'tickets.1' } }, function(err, rdoc, missed) {
+        expect(err).to.not.be.ok;
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(Event);
+        expect(rdoc.id).to.to.equal(ts.data.events[0].id);
+        expect(rdoc.name).to.to.equal(ts.data.events[0].name);
+        expect(rdoc.ticketIds).to.be.an.instanceof(Array);
+        expect(rdoc.ticketIds.length).to.equal(3);
+
+        var tickets = rdoc.ticketIds.toArray().sort();
+        expect(tickets).to.deep.equal(ticketIds);
+
+        expect(missed).to.be.an.instanceof(Array);
+        expect(missed.length).to.equal(0);
+
+        expect(rdoc.tickets).to.be.ok;
+        expect(rdoc.tickets).to.be.an.instanceof(Array);
+
+        var expectedTickets = [ts.data.tickets[0].id, ts.data.tickets[1], ts.data.tickets[2].id];
+        rdoc.tickets.forEach(function (ticketrdoc, index) {
+          expect(ticketrdoc).to.deep.equal(expectedTickets[index]);
+        });
+        done();
+      });
+    });
+
+    it('should work with array in field and target populate object options with ensted populate', function(done) {
+      var eventId = ts.data.events[0].id;
+      var ticketIds = [ts.data.tickets[0].id, ts.data.tickets[1].id, ts.data.tickets[2].id];
+
+      Event.findById(eventId, { populate: { path: 'ticketIds.2.profileId', target: 'tickets.2.profile'} }, function(err, rdoc, missed) {
+        expect(err).to.not.be.ok;
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(Event);
+        expect(rdoc.id).to.to.equal(ts.data.events[0].id);
+        expect(rdoc.name).to.to.equal(ts.data.events[0].name);
+        expect(rdoc.ticketIds).to.be.an.instanceof(Array);
+        expect(rdoc.ticketIds.length).to.equal(3);
+
+        var tickets = rdoc.ticketIds.toArray().sort();
+        expect(tickets).to.deep.equal(ticketIds);
+
+        expect(missed).to.be.an.instanceof(Array);
+        expect(missed.length).to.equal(0);
+
+        expect(rdoc.tickets).to.be.ok;
+        expect(rdoc.tickets).to.be.an.instanceof(Array);
+
+        var ticket2 = _.cloneDeep(ts.data.tickets[2]);
+        ticket2.profile = ts.data.profiles[1];
+        var expectedTicetkets = [ts.data.tickets[0].id, ts.data.tickets[1].id, ticket2];
+        rdoc.tickets.forEach(function (ticketrdoc, index) {
+          expect(ticketrdoc).to.deep.equal(expectedTicetkets[index]);
+        });
         done();
       });
     });
