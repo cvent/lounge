@@ -662,7 +662,8 @@ subdocuments are retrieved from the database.</p>
   console.log(user.address instanceof Address); // false
   console.log(user.posts[0] instanceof BlogPost); // true
 });</code></pre>
-<p>We can explicitly specify array indexes to populate</p>
+<p>Similarly this can also be accomplished by passing <code>{ populate: { path: &#39;address&#39; } }</code> as options.
+We can explicitly specify array indexes to populate</p>
 <pre><code class="lang-js">User.findById(userId, {populate: &#39;posts.1&#39;}, function(err, doc) {
   console.log(user instanceof User); // true
   console.log(user.address instanceof Address); // false
@@ -670,7 +671,7 @@ subdocuments are retrieved from the database.</p>
   console.log(user.posts[0] instanceof String); // true
   console.log(user.posts[1] instanceof BlogPost); // true - fully populated
 });</code></pre>
-<p>Finally, <code>populate</code> can accept an array if fields to populate:</p>
+<p>Additionally, <code>populate</code> can accept an array if fields to populate:</p>
 <pre><code class="lang-js">User.findById(userId, {populate: [&#39;address&#39;, &#39;posts.1&#39;]}, function(err, doc) {
   console.log(user instanceof User); // true
   console.log(user.address instanceof Address); // true - fully populated
@@ -678,6 +679,35 @@ subdocuments are retrieved from the database.</p>
   console.log(user.posts[0] instanceof String); // true
   console.log(user.posts[1] instanceof BlogPost); // true - fully populated
 });</code></pre>
+<p>A special use case might be that we want to populate path <code>foo</code> into a target field <code>bar</code>. This can be accomplished by
+specifying a <code>target</code> populate option. For example if we have the following models:</p>
+<pre><code>var profileSchema = lounge.schema({
+  firstName: String,
+  lastName: String,
+  email: String
+});
+
+Profile = lounge.model(&#39;Profile&#39;, profileSchema);
+
+var ticketSchema = lounge.schema({
+  confirmationCode: String,
+  profileId: Profile,
+  profile: Object
+});
+
+Ticket = lounge.model(&#39;Ticket&#39;, ticketSchema);</code></pre>
+<p>We can do:</p>
+<pre><code>Ticket.findById(ticketId, {populate: { path: &#39;profileId&#39;, target:&#39;profile&#39; } }, function(err, res) {
+  console.log(ticket);
+});</code></pre>
+<p>Sample output:</p>
+<pre><code>{ confirmationCode: &#39;ClqwgiWea&#39;,
+  profileId: &#39;366f4088-8dc6-4223-a418-495ad51d0436&#39;,
+  profile:
+   { firstName: &#39;Thomas&#39;,
+     lastName: &#39;Kennedy&#39;,
+     email: &#39;tkennedy1@walmart.com&#39;,
+     id: &#39;366f4088-8dc6-4223-a418-495ad51d0436&#39; } }</code></pre>
 </div></section><section><div class="content"><h2 id="indexes-a-id-indexes-a-">Indexes <a id="indexes"></a></h2>
 <p>Lounge provides Indexing mechanism using <a href="http://docs.couchbase.com/developer/dev-guide-3.0/lookups.html">reference lookup documents</a>.
 This allows us to set up simple lookups for easier document retrieval where we do not need to do create view
@@ -746,7 +776,7 @@ User.findByUN(&#39;user1&#39;, function(err, doc) {
   else console.log(doc);
 });</code></pre>
 <h3 id="array-index-type">Array index type</h3>
-<p>I we can have multiple documents to be indexed by the same value then want the the reference lookup document to
+<p>If we can have multiple documents to be indexed by the same value then want the the reference lookup document to
 store an array of document keys. This can be accomplished using <code>&#39;array&#39;</code> <code>indexType</code>.</p>
 <pre><code class="lang-js">var userSchema = lounge.schema({
   email: { type: String, key: true, generate: false },

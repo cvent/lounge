@@ -65,6 +65,8 @@
             
             <span class="subtitle">Methods</span>
             
+                <li data-name="#_broadcast"><a href="global.html#_broadcast">_broadcast</a></li>
+            
                 <li data-name="#clear"><a href="global.html#clear">clear</a></li>
             
                 <li data-name="#clearErrors"><a href="global.html#clearErrors">clearErrors</a></li>
@@ -176,6 +178,8 @@
                 <li data-name="CouchbaseDocument.findById"><a href="CouchbaseDocument.html#.findById">findById</a></li>
             
                 <li data-name="CouchbaseDocument.remove"><a href="CouchbaseDocument.html#.remove">remove</a></li>
+            
+                <li data-name="CouchbaseDocument#_broadcast"><a href="CouchbaseDocument.html#_broadcast">_broadcast</a></li>
             
                 <li data-name="CouchbaseDocument#clear"><a href="CouchbaseDocument.html#clear">clear</a></li>
             
@@ -647,6 +651,7 @@ export default class CouchbaseDocument extends Document {
         this._saveRef(path, changedRefs, options, eachCB);
       }, err => {
         if (err) {
+          this._broadcast('error', err, this);
           return fn(err);
         }
         this._indexAndSave(changedRefs, options, fn);
@@ -710,6 +715,7 @@ export default class CouchbaseDocument extends Document {
       (_.isUndefined(options.waitForIndex) &amp;&amp; this.config.waitForIndex === true)) {
       this.index(options, err => {
         if (err) {
+          this._broadcast('error', err, this);
           return fn(err);
         }
 
@@ -758,7 +764,9 @@ export default class CouchbaseDocument extends Document {
       this[_privateKey]._o.refValues = {};
       _.merge(this[_privateKey]._o.refValues, cdocUtils.buildRefValues(this.schema.indexes, this));
 
-      this.emit('save', this);
+      if (!err) {
+        this._broadcast('save', this, options);
+      }
 
       return fn(err, this);
     });
@@ -795,7 +803,9 @@ export default class CouchbaseDocument extends Document {
     async.eachLimit(fieldsToRef, 10, (refObj, eaCb) => {
       this._indexField(refObj, options, eaCb);
     }, err => {
-      this.emit('index', err);
+      if (!err) {
+        this._broadcast('index', this, options);
+      }
       return fn(err);
     });
   }
@@ -825,6 +835,7 @@ export default class CouchbaseDocument extends Document {
       debug(`array index. operation: ${obj.action} key: ${docKey} refKeyValue: ${refKeyValue}`);
       this.db.get(docKey, (err, indexDoc) => {
         if (err) {
+          this._broadcast('error', err, this);
           return fn(err);
         }
 
@@ -932,6 +943,7 @@ export default class CouchbaseDocument extends Document {
     const saveRefDoc = function (couchDoc) {
       couchDoc.save(options, (err, savedDoc) => {
         if (err) {
+          this._broadcast('error', err, couchDoc);
           fn(err);
         }
         else {
@@ -1021,6 +1033,7 @@ export default class CouchbaseDocument extends Document {
           }
         }, err => {
           if (err) {
+            this._broadcast('error', err, this);
             return fn(err);
           }
 
@@ -1056,6 +1069,7 @@ export default class CouchbaseDocument extends Document {
       if (_.isString(thing)) {
         RefModel._findById(thing, {}, null, (err, doc) => {
           if (err) {
+            this._broadcast('error', err, this);
             return fn(err);
           }
           else if (doc) {
@@ -1093,10 +1107,11 @@ export default class CouchbaseDocument extends Document {
 
     this.db.remove(key, opts, (err, removeRes) => {
       if (err) {
+        this._broadcast('error', err, this);
         console.error('%s.$remove err: %j', this.modelName, err);
       }
       else {
-        this.emit('remove', this);
+        this._broadcast('remove', this, options);
         this.removeIndexes(options);
       }
 
@@ -1197,6 +1212,7 @@ export default class CouchbaseDocument extends Document {
 
       RefModel._findById(id, options, memo, (err, results, missed) => {
         if (err) {
+          this._broadcast('error', err, this);
           return eachCB(err);
         }
 
@@ -1223,7 +1239,7 @@ export default class CouchbaseDocument extends Document {
    * @returns {*}
    */
   _populatePath(options, memo, missing, fn) {
-    const parts = options.populate.split('.');
+    const parts = options.populate.path.split('.');
     const part = parts[0];
 
     // first part must be a ref path and cannot be a digit
@@ -1236,7 +1252,6 @@ export default class CouchbaseDocument extends Document {
     let path = part;
     const nextPart = parts[1];
     let restIndex = 1;
-
     // if next part is an array index append it to path and adjust
     if (nextPart &amp;&amp; /^\d+$/.test(nextPart)) {
       path = part.concat('.', nextPart);
@@ -1268,15 +1283,48 @@ export default class CouchbaseDocument extends Document {
 
     // adjust the populate option for the rest
     const opts = clone(options);
-    opts.populate = rest;
+    opts.populate.path = rest;
+
+    let targetParts;
+    if (_.isString(options.populate.target) &amp;&amp; options.populate.target) {
+      targetParts = options.populate.target.split('.');
+      opts.populate.target = targetParts.slice(restIndex).join('.');
+    }
 
     // get the ref doc and populate the rest recursively
     Model._findById(id, opts, memo, (err, results, missed) => {
       if (err) {
+        this._broadcast('error', err, this);
         return fn(err);
       }
       if (results) {
-        mpath.set(path, results, this);
+        let dest = path;
+        if (_.isString(options.populate.target) &amp;&amp; options.populate.target) {
+          // set up dest based on target similarly to how we did path
+          const targetParts = options.populate.target.split('.');
+          let targetPath = targetParts[0];
+          const nextTargetPart = targetParts[1];
+          // if next part is an array index append it to path and adjust
+          if (nextTargetPart &amp;&amp; /^\d+$/.test(nextTargetPart)) {
+            targetPath = targetPath.concat('.', nextTargetPart);
+          }
+
+          dest = targetPath;
+
+          // if populating array element, or within array, lets fill in stuff that's not there first
+          const basePath = parts[0];
+
+          let targetProp = mpath.get(targetParts[0], this);
+          const temp = clone(mpath.get(basePath, this));
+          if (targetProp) {
+            targetProp = _.defaultsDeep(targetProp, temp);
+          }
+          else {
+            targetProp = temp;
+          }
+        }
+
+        mpath.set(dest, results, this);
       }
 
       if (missed &amp;&amp; missed.length > 0) {
@@ -1332,7 +1380,11 @@ export default class CouchbaseDocument extends Document {
       // recursively populate everything
       this._populateAll(refs, options, memo, missing, fn);
     }
-    else if (typeof options.populate === 'string') {
+    else if (_.isString(options.populate)) {
+      options.populate = { path: options.populate };
+      this._populatePath(options, memo, missing, fn);
+    }
+    else if (_.isPlainObject(options.populate)) {
       this._populatePath(options, memo, missing, fn);
     }
     else if (Array.isArray(options.populate)) {
@@ -1347,14 +1399,28 @@ export default class CouchbaseDocument extends Document {
   }
 
   /**
+   * emits the event using all of our emitters
+   */
+  _broadcast() {
+    this.emit(...arguments);
+    this.constructor.emit(...arguments);
+    this[_privateKey].lounge.emit(...arguments);
+  }
+
+  /**
    * All models created come with a static function &lt;code>findById&lt;/code> that can be used to look up a single
    * or multiple keys and retrieve documents from the database. If key does not exist and document is not found we
    * **do not** return an error but also no model is generated. This is different than present couchbase module behaviour.
    * @param {String|Array} id the document id / key or an array of keys
    * @param {Object} options
-   * @param {Boolean|String|Array} options.populate - populate options, can be a &lt;code>Boolean&lt;/code>,
-   *                               &lt;code>String&lt;/code> representing a path, or an &lt;code>Array&lt;/code> of
-   *                               &lt;code>String&lt;/code> paths
+   * @param {Boolean|String|Array} options.populate - populate options, can be a &lt;code>Boolean&lt;/code>;
+   *                               &lt;code>String&lt;/code> representing a path;
+   *                               &lt;code>Object&lt;/code> with form &lt;code>{ path: String, target: String}&lt;/code> where
+   *                               &lt;code>path&lt;/code> is the path to be populated and &lt;code>target&lt;/code> is the target
+   *                               field into which to populate. If this format is used, &lt;code>target&lt;/code> should be
+   *                               part of schema;
+   *                               or an &lt;code>Array&lt;/code> of
+   *                               &lt;code>Strings&lt;/code> or &lt;code>Object&lt;/code>.
    * @param {Function} fn callback
    * @example User.findById('user123', function(err, doc) {
    *   if(err) console.log(err); // there was an error looking up the key
@@ -1553,7 +1619,7 @@ export default class CouchbaseDocument extends Document {
         
 
         <footer>
-            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Mar 21 2016 22:38:11 GMT-0300 (ADT)
+            Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Mon Apr 18 2016 10:00:02 GMT-0300 (ADT)
         </footer>
     </div>
 </div>

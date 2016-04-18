@@ -4,4 +4,11 @@
 node_modules
 dump.rdb
 npm-debug.log
+<<<<<<< HEAD
 .nyc_output
+=======
+.nyc_output
+apidocs
+dist/
+api-docs
+>>>>>>> b8bf59e6b61a7392d90598f15b0231763a86e472
