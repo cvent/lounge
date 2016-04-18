@@ -34,7 +34,7 @@ User.findById(userId, {populate: 'posts'}, function(err, doc) {
   console.log(user.posts[0] instanceof BlogPost); // true
 });
 ```
-
+Similarly this can also be accomplished by passing `{ populate: { path: 'address' } }` as options.
 We can explicitly specify array indexes to populate
 
 ```js
@@ -47,7 +47,7 @@ User.findById(userId, {populate: 'posts.1'}, function(err, doc) {
 });
 ```
 
-Finally, `populate` can accept an array if fields to populate:
+Additionally, `populate` can accept an array if fields to populate:
 
 ```js
 User.findById(userId, {populate: ['address', 'posts.1']}, function(err, doc) {
@@ -57,4 +57,45 @@ User.findById(userId, {populate: ['address', 'posts.1']}, function(err, doc) {
   console.log(user.posts[0] instanceof String); // true
   console.log(user.posts[1] instanceof BlogPost); // true - fully populated
 });
+```
+
+A special use case might be that we want to populate path `foo` into a target field `bar`. This can be accomplished by
+specifying a `target` populate option. For example if we have the following models:
+
+```
+var profileSchema = lounge.schema({
+  firstName: String,
+  lastName: String,
+  email: String
+});
+
+Profile = lounge.model('Profile', profileSchema);
+
+var ticketSchema = lounge.schema({
+  confirmationCode: String,
+  profileId: Profile,
+  profile: Object
+});
+
+Ticket = lounge.model('Ticket', ticketSchema);
+```
+
+We can do:
+
+```
+Ticket.findById(ticketId, {populate: { path: 'profileId', target:'profile' } }, function(err, res) {
+  console.log(ticket);
+});
+```
+
+Sample output:
+
+```
+{ confirmationCode: 'ClqwgiWea',
+  profileId: '366f4088-8dc6-4223-a418-495ad51d0436',
+  profile:
+   { firstName: 'Thomas',
+     lastName: 'Kennedy',
+     email: 'tkennedy1@walmart.com',
+     id: '366f4088-8dc6-4223-a418-495ad51d0436' } }
 ```

@@ -74,7 +74,10 @@
       ],
       "no-else-return": 1,
       "no-unused-vars": 1
-    }
+    },
+    "ignores": [
+      "test/**"
+    ]
   },
   "directories": {
     "test": "test"
