@@ -83,7 +83,7 @@ Ticket = lounge.model('Ticket', ticketSchema);
 We can do:
 
 ```
-Ticket.findById(ticketId, {populate: { path: 'profileId', target:'profile' } }, function(err, res) {
+Ticket.findById(ticketId, {populate: { path: 'profileId', target:'profile' } }, function(err, ticket) {
   console.log(ticket);
 });
 ```
