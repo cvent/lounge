@@ -1,6 +1,5 @@
 
 * {
-  font-size: 16px;
   -webkit-box-sizing: border-box;
 }
 
@@ -15,11 +14,8 @@ body {
   overflow-x: hidden;
 }
 
-a {
-  color: #33a0c0;
-}
-
 section {
+  font-size: 16px;
   min-height: 50%;
 }
 
@@ -95,6 +91,7 @@ section:nth-child(2n) {
 }
 
 #menu {
+  font-size: 16px;
   position: fixed;
   top: 35px;
   right: 30px;
