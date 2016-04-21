@@ -15,7 +15,8 @@ body {
 }
 
 section {
-  font-size: 16px;
+  /* override font */
+  font-size: 15.5px;
   min-height: 50%;
 }
 
@@ -34,6 +35,11 @@ section:not(#top) {
 
 pre {
   overflow-x: auto;
+}
+
+/* override inline font */
+p code {
+  font-size: 14px;
 }
 
 .content img {
