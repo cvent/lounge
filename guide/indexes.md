@@ -43,7 +43,7 @@ var userSchema = lounge.schema({
 ```
 
 Saving a document defined with this schema will save user document with key `'user::5c4bfd6d-9c80-452b-be3a-3e528e4f53f5'`
-and will save a lookup document with key `''user::$_ref_by_email::joe@gmail.com'`. Setting `refIndexKeyPrefix` can add
+and will save a lookup document with key `'user::$_ref_by_email::joe@gmail.com'`. Setting `refIndexKeyPrefix` can add
 additional customization.
 
 ```js
