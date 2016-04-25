@@ -8,11 +8,6 @@ Simple Mongoose-inspired ODM for [Couchbase](http://www.couchbase.com).
 
 **Node.js >= 0.10 supported. For all features, run node with the harmony ````--harmony```` and harmony proxies ````--harmony_proxies```` flags.**
 
-## Stability
-
-This module is under development and there could be bugs. API may not be 100% locked down.
-Documentation is still work in progress.
-
 ## Overview
 
 Lounge is a simple, somewhat opinionated, Mongoose-inspired ODM for [Couchbase](http://www.couchbase.com). Main goal is
