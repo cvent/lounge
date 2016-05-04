@@ -7,6 +7,7 @@ body, html {
   margin: 0;
   padding: 0;
   height: 100%;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 body {
@@ -16,8 +17,34 @@ body {
 
 section {
   /* override font */
-  font-size: 15.5px;
   min-height: 50%;
+}
+
+.content {
+  font: 15.5px/1.5 "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color:#333;
+  font-weight:400;
+}
+
+a {
+  color:#39c;
+  text-decoration:none;
+}
+
+a:hover {
+  color:#069;
+  text-decoration:underline;
+}
+
+a small {
+  font-size:11px;
+  color:#777;
+  margin-top:-0.3em;
+  display:block;
+}
+
+a:hover small {
+  color:#777;
 }
 
 section:not(:last-child) {
@@ -38,12 +65,45 @@ pre {
 }
 
 /* override inline font */
-p code {
-  font-size: 14px;
+blockquote {
+  border-left:1px solid #e5e5e5;
+  margin:0;
+  padding:0 0 0 20px;
+  font-style:italic;
+}
+
+code, pre {
+  font-family:Menlo,Monaco,Consolas,"Courier New",monospace;
+  color:#333;
+  font-size:13.5px;
+}
+
+pre {
+  padding:8px 15px;
+  background: #f8f8f8;
+  border-radius:5px;
+  border:1px solid #e5e5e5;
+  overflow-x: auto;
 }
 
 .content img {
   width: 100%;
+}
+
+h1, h2, h3 {
+  line-height:1.1;
+}
+
+h1 {
+  font-size:32px;
+}
+
+h2 {
+  color:#393939;
+}
+
+h3, h4, h5, h6 {
+  color:#494949;
 }
 
 h1 {
@@ -131,7 +191,7 @@ section:nth-child(2n) {
 #menu ul {
   display: none;
   position: absolute;
-  top: 30px;
+  top: 28px;
   right: 0;
   margin: 0;
   border: 1px solid #efefef;
