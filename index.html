@@ -578,6 +578,30 @@ user.posts.push(new BlogPost({
 <p>You can manipulate and work with subdocument just like any model instances. When the top level document is saved
 all child subdocuments are saved as well. Subdocuments <strong>must</strong> be an instance of the Model defined in the schema or a
 <code>String</code> in which case it represents the key / id of the subdocument.</p>
+<p>If needed we can also specify embedded document type of a model that is not defined yet. For example:</p>
+<pre><code class="lang-js">var siteSchema = lounge.schema({
+  owner: {type: lounge.Model, modelName: &#39;User&#39;},
+  url: String
+});
+
+var Site = lounge.model(&#39;Site&#39;, siteSchema);
+
+var userSchema = lounge.schema({
+  email: String,
+  name: String
+});
+
+var User = lounge.model(&#39;User&#39;, userSchema);
+
+var user = new User({
+  name: &#39;Joe Smith&#39;,
+  email: &#39;jsmith@gmail.com&#39;
+});
+
+var site = new Site({
+  url: &#39;http://wwww.mysite.org&#39;,
+  owner: user
+});</code></pre>
 </div></section><section><div class="content"><h2 id="document-operations-a-id-docops-a-">Document Operations <a id="docops"></a></h2>
 <h3 id="saving-documents-a-id-saving-a-">Saving Documents <a id="saving"></a></h3>
 <p>Saving documents is done using <code>save</code> function that every model instance has. This will execute all pre
@@ -620,8 +644,10 @@ in form <code>(err, documents, misses)</code>.</p>
   console.dir(misses);      // array if keys not found.
 });</code></pre>
 <p>When <code>findById</code> is invoked using a single string argument the result returned is a single model instance. When an array
-is passed in we return the results as described above. To force &quot;array&quot; type of returns in ALL cases, set the Lounge
+is passed in we return the results as described above. To force <code>array</code> type of returns in <strong>all</strong> cases, set the Lounge
 config option <code>alwaysReturnArrays</code> to <code>true</code>. Default is <code>false</code>.</p>
+<p>By default order of the generated objects in an array result is not guaranteed to be the same order as the ids queried.
+To keep the order of the returned model instances the same as the ids set <code>keepSortOrder</code> option to <code>true</code>.</p>
 <h3 id="removing-documents-a-id-removing-a-">Removing Documents <a id="removing"></a></h3>
 <p>Removing documents is done using <code>remove</code> function that every model instance has. This will execute all pre
 &#39;remove&#39; middleware and then perform Couchbase <code>remove</code> operation. It will also perform lookup document updates
@@ -833,6 +859,52 @@ var user2 = new User({ email: &#39;joe@outlook.com&#39;, company: company });</c
   &quot;joe@outlook.com&quot;
 ]</code></pre>
 <p>We can use <code>User.findByCompany(company.id, ...)</code> to get both <code>User</code> instances.</p>
+<h3 id="lean-queries">Lean Queries</h3>
+<p>Sometimes we may only be interested in the index key value(s), and we do not actually wish to get the target document(s)
+and create the model instances. This can be accomplished using <code>lean</code> option:</p>
+<pre><code class="lang-js">var userSchema = lounge.schema({
+  name: String,
+  email: { type: String, index: true }
+});
+
+// ...
+
+User.findByEmail(&#39;joe@gmail.com&#39;, { lean: true }, function(err, rdoc) {
+  console.log(rdoc); // &#39;8bfda30c-604f-495c-a945-4c2e5ad123ad&#39;
+});</code></pre>
+<p>This also works with array types:</p>
+<pre><code class="lang-js">var userSchema = lounge.schema({
+  name: String,
+  email: { type: String, index: true, indexType: &#39;array&#39; }
+});
+
+// ...
+
+User.findByEmail(&#39;joe@gmail.com&#39;, { lean: true }, function(err, rdoc) {
+  console.log(rdoc); // [ &#39;4c2e5ad1-604f-495c-a945-8bfda30c23ad&#39;, &#39;b81134d5-24ac-408b-b2d6-40a33a057f50&#39; ]
+});</code></pre>
+<p>And similarly with embedded documents:</p>
+<pre><code class="lang-js">var companySchema = lounge.schema({
+  name: String,
+  address: String
+});
+
+Company = lounge.model(&#39;Company&#39;, companySchema);
+
+var userSchema = lounge.schema({
+  firstName: String,
+  lastName: String,
+  email: {type: String, key: true, generate: false},
+  company: {type: Company, index: true}
+});
+
+User = lounge.model(&#39;User&#39;, userSchema);
+
+// ...
+
+User.findByCompany(companyId, { lean: true }, function(err, rdoc) {
+  console.log(rdoc); // joe@gmail.com
+});</code></pre>
 </div></section><section><div class="content"><h2 id="events-a-id-events-a-">Events <a id="events"></a></h2>
 <p>All model instances inherit <a href="https://nodejs.org/api/events.html#events_class_events_eventemitter"><code>EventEmitter</code></a>, and
 emit three events:</p>
