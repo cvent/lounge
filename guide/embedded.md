@@ -48,3 +48,31 @@ user.posts.push(new BlogPost({
 You can manipulate and work with subdocument just like any model instances. When the top level document is saved
 all child subdocuments are saved as well. Subdocuments **must** be an instance of the Model defined in the schema or a
 `String` in which case it represents the key / id of the subdocument.
+
+If needed we can also specify embedded document type of a model that is not defined yet. For example:
+
+```js
+var siteSchema = lounge.schema({
+  owner: {type: lounge.Model, modelName: 'User'},
+  url: String
+});
+
+var Site = lounge.model('Site', siteSchema);
+
+var userSchema = lounge.schema({
+  email: String,
+  name: String
+});
+
+var User = lounge.model('User', userSchema);
+
+var user = new User({
+  name: 'Joe Smith',
+  email: 'jsmith@gmail.com'
+});
+
+var site = new Site({
+  url: 'http://wwww.mysite.org',
+  owner: user
+});
+```

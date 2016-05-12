@@ -59,8 +59,11 @@ User.findById(['user123', 'user456'], function(err, docs, misses) {
 ```
 
 When `findById` is invoked using a single string argument the result returned is a single model instance. When an array
-is passed in we return the results as described above. To force "array" type of returns in ALL cases, set the Lounge
+is passed in we return the results as described above. To force `array` type of returns in **all** cases, set the Lounge
 config option `alwaysReturnArrays` to `true`. Default is `false`.
+
+By default order of the generated objects in an array result is not guaranteed to be the same order as the ids queried.
+To keep the order of the returned model instances the same as the ids set `keepSortOrder` option to `true`.
 
 ### Removing Documents <a id="removing"></a>
 

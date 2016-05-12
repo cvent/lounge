@@ -185,7 +185,7 @@ describe('Model findById tests', function () {
   describe('with generated id with prefix', function () {
     before(function () {
       var companySchema = lounge.schema({
-        id: {type: String, key: true, generate: true, prefix: 'company::'},
+        id: { type: String, key: true, generate: true, prefix: 'company::' },
         name: String,
         streetAddress: String,
         city: String,
@@ -349,7 +349,7 @@ describe('Model findById tests', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
-        email: {type: String, key: true, generate: false},
+        email: { type: String, key: true, generate: false },
         password: String
       });
 
@@ -455,7 +455,7 @@ describe('Model findById tests', function () {
         firstName: String,
         lastName: String,
         email: String,
-        username: {type: String, key: true, generate: false, prefix: 'user::'},
+        username: { type: String, key: true, generate: false, prefix: 'user::' },
         password: String
       });
 
@@ -525,8 +525,6 @@ describe('Model findById tests', function () {
     });
 
     it('should find an array of documents and also return missing keys', function (done) {
-
-
       var userIds = _.map(ts.data.users3, 'username');
 
       userIds = _.map(userIds, function (cid) {
@@ -562,6 +560,32 @@ describe('Model findById tests', function () {
           expect(missing).to.deep.equal(['user::' + missingId]);
         });
 
+        done();
+      });
+    });
+
+    it('should find an array of documents and keep the order', function (done) {
+      var userIds = _.map(ts.data.users3, 'username');
+
+      userIds = _.map(userIds, function (cid) {
+        return cid.replace(/user::/i, '');
+      });
+
+      userIds = _.reverse(userIds.sort());
+
+      var expectedUsers = _.sortBy(ts.data.users3, 'email');
+
+      User3.findById(userIds, { keepSortOrder: true }, function (err, docs, missing) {
+        expect(err).to.not.be.ok;
+        expect(docs).to.be.an.instanceof(Array);
+        expect(docs.length).to.equal(ts.data.users3.length);
+
+        var actualUserIds = [];
+        docs.forEach(function(d) {
+          actualUserIds.push(d.username.replace(/user::/i, ''));
+        });
+
+        expect(actualUserIds).to.deep.equal(userIds);
         done();
       });
     });

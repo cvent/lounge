@@ -73,6 +73,40 @@ describe('Model index query tests', function () {
       });
     });
 
+    it('should query using simple reference document using lean option', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: {type: String, index: true}
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var userData = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com'
+      };
+
+      var user = new User(userData);
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+
+
+        User.findByEmail(user.email, {lean: true}, function (err, rdoc) {
+          expect(err).to.not.be.ok;
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.a('string');
+
+          expect(rdoc).to.equal(user.id);
+
+          done();
+        });
+      });
+    });
+
     it('should query using simple reference document respecting key options', function (done) {
       var userSchema = lounge.schema({
         firstName: String,
@@ -246,6 +280,21 @@ describe('Model index query tests', function () {
         expect(rdoc.firstName).to.equal(userData.firstName);
         expect(rdoc.lastName).to.equal(userData.lastName);
         expect(rdoc.email).to.equal(userData.email);
+
+        done();
+      });
+    });
+
+    it('should query using simple reference document and lean option', function (done) {
+      var setupData = ts.getData();
+      var userData = setupData.users[6];
+
+      User.findByCompany(userData.company, { lean: true }, function (err, rdoc) {
+        expect(err).to.not.be.ok;
+
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.a('string');
+        expect(rdoc).to.equal(userData.email);
 
         done();
       });
@@ -860,6 +909,19 @@ describe('Model index query tests', function () {
           }
         });
 
+        done();
+      });
+    });
+
+    it('should get multiple users with same email with lean option', function (done) {
+      User.findByEmail(userData[2].email, { lean: true }, function (err, rdoc) {
+        expect(err).to.not.be.ok;
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an.instanceof(Array);
+        expect(rdoc.length).to.equal(2);
+
+        var expected = [userData[2].id, userData[3].id].sort();
+        expect(rdoc.sort()).to.deep.equal(expected);
         done();
       });
     });
