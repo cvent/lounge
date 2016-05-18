@@ -421,7 +421,7 @@ string: {type: String, getter: function(value) { return value.toUpperCase(); }}
 ```
 
 **readOnly**
-If true, the value can be read but cannot be written to. This can be useful for creating fields that reflect other values.
+If `true`, the value can be read but cannot be written to. This can be useful for creating fields that reflect other values.
 
 ```js
 fullName: {type: String, readOnly: true, default: function(value) {
@@ -430,9 +430,15 @@ fullName: {type: String, readOnly: true, default: function(value) {
 ```
 
 **invisible**
-If true, the value can be written to but isn't outputted as an index when `toObject()` is called.
+If `true`, the value can be written to but isn't outputted as an index when `toObject()` is called.
 This can be useful for hiding internal variables.
 
+**serializable**
+By default all values defined in the schema except those that are set to invisible using the property above are written
+to the database when the document is saved. If this property is set to `false`, the value can be written to and can be
+read and will be visible using `toObject` and `toJSON` methods but is not written when model is saved to the database.
+This can be useful when you need some "working" properties that you never want to serialized but otherwise passed around
+and visible.
 
 #### String
 
@@ -475,7 +481,7 @@ stateAbbrev: {type: String, maxLength: 2}
 ```
 
 **clip**
-If true, clips string to maximum string length instead of rejecting string.
+If `true`, clips string to maximum string length instead of rejecting string.
 
 ```js
 bio: {type: String, maxLength: 255, clip: true}

@@ -205,6 +205,118 @@ describe('Model save tests', function () {
     });
   });
 
+  it('should save a simple document with invisible left out', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String,
+      password: { type: String, invisible: true }
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var dob = new Date('March 3, 1990 03:30:00');
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe@gmail.com',
+      password: 'asdfPass'
+    });
+
+    user.save(function (err, savedDoc) {
+      expect(err).to.not.be.ok;
+
+      expect(savedDoc).to.be.ok;
+      expect(savedDoc).to.be.an('object');
+      expect(savedDoc.id).to.be.ok;
+      expect(savedDoc.id).to.be.a('string');
+
+      expect(savedDoc.firstName).to.equal('Joe');
+      expect(savedDoc.lastName).to.equal('Smith');
+      expect(savedDoc.email).to.equal('joe@gmail.com');
+      expect(savedDoc.password).to.be.ok;
+      expect(savedDoc.password.toString()).to.equal('asdfPass');
+
+      expect(savedDoc.cas).to.be.ok;
+
+      bucket.get(savedDoc.getDocumentKeyValue(true), function (err, dbDoc) {
+        expect(err).to.not.be.ok;
+
+        expect(dbDoc).to.be.ok;
+        expect(dbDoc.value).to.be.ok;
+        expect(dbDoc.value).to.be.an('object');
+
+        var expected = {
+          firstName: 'Joe',
+          lastName: 'Smith',
+          email: 'joe@gmail.com'
+        };
+
+        expected.id = savedDoc.getDocumentKeyValue(true);
+
+        expect(dbDoc.value).to.deep.equal(expected);
+        done();
+      });
+    });
+  });
+
+  it('should save a simple document with non serializable left out', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String,
+      password: { type: String, serializable: false }
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var dob = new Date('March 3, 1990 03:30:00');
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe@gmail.com',
+      password: 'asdfPass2'
+    });
+
+    user.save(function (err, savedDoc) {
+      expect(err).to.not.be.ok;
+
+      expect(savedDoc).to.be.ok;
+      expect(savedDoc).to.be.an('object');
+      expect(savedDoc.id).to.be.ok;
+      expect(savedDoc.id).to.be.a('string');
+
+      expect(savedDoc.firstName).to.equal('Joe');
+      expect(savedDoc.lastName).to.equal('Smith');
+      expect(savedDoc.email).to.equal('joe@gmail.com');
+      expect(savedDoc.password).to.be.ok;
+      expect(savedDoc.password.toString()).to.equal('asdfPass2');
+
+      expect(savedDoc.cas).to.be.ok;
+
+      bucket.get(savedDoc.getDocumentKeyValue(true), function (err, dbDoc) {
+        expect(err).to.not.be.ok;
+
+        expect(dbDoc).to.be.ok;
+        expect(dbDoc.value).to.be.ok;
+        expect(dbDoc.value).to.be.an('object');
+
+        var expected = {
+          firstName: 'Joe',
+          lastName: 'Smith',
+          email: 'joe@gmail.com'
+        };
+
+        expected.id = savedDoc.getDocumentKeyValue(true);
+
+        expect(dbDoc.value).to.deep.equal(expected);
+        done();
+      });
+    });
+  });
+
   it('should save a simple document with sub documents and arrays', function (done) {
     var userSchema = lounge.schema({
       firstName: String,
@@ -253,7 +365,7 @@ describe('Model save tests', function () {
       expect(user.foo).to.equal(5);
       expect(user.boolProp).to.equal(true);
       expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
-      expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
+      expect(user.someProp).to.deep.equal({ abc: 'xyz', sbp: false, snp: 11 });
 
       bucket.get(savedDoc.getDocumentKeyValue(true), function (err, dbDoc) {
         expect(err).to.not.be.ok;
@@ -336,7 +448,7 @@ describe('Model save tests', function () {
       expect(user.foo).to.equal(5);
       expect(user.boolProp).to.equal(true);
       expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
-      expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
+      expect(user.someProp).to.deep.equal({ abc: 'xyz', sbp: false, snp: 11 });
       expect(user.unpa).to.not.be.ok;
 
       bucket.get(savedDoc.getDocumentKeyValue(true), function (err, dbDoc) {
@@ -470,7 +582,7 @@ describe('Model save tests', function () {
     var userSchema = lounge.schema({
       firstName: String,
       lastName: String,
-      email: {type: String, key: true}
+      email: { type: String, key: true }
     });
 
     var User = lounge.model('User', userSchema);
@@ -479,7 +591,7 @@ describe('Model save tests', function () {
       title: String,
       content: String,
       date: Date,
-      owner: {type: User}
+      owner: { type: User }
     });
 
     var Post = lounge.model('Post', postSchema);
@@ -672,23 +784,19 @@ describe('Model save tests', function () {
           return _.omit(c, 'id');
         }).sortBy('content').value();
 
-        var expectedCommentDocs = _.sortBy([
-          {
-            content: 'Comment 1',
-            date: new Date('November 10, 2015 03:00:00').toISOString(),
-            owner: 'Bob'
-          },
-          {
-            content: 'Comment 2',
-            date: new Date('November 11, 2015 04:00:00').toISOString(),
-            owner: 'Sara'
-          },
-          {
-            content: 'Comment 3',
-            date: new Date('November 12, 2015 05:00:00').toISOString(),
-            owner: 'Jake'
-          }
-        ], 'content');
+        var expectedCommentDocs = _.sortBy([{
+          content: 'Comment 1',
+          date: new Date('November 10, 2015 03:00:00').toISOString(),
+          owner: 'Bob'
+        }, {
+          content: 'Comment 2',
+          date: new Date('November 11, 2015 04:00:00').toISOString(),
+          owner: 'Sara'
+        }, {
+          content: 'Comment 3',
+          date: new Date('November 12, 2015 05:00:00').toISOString(),
+          owner: 'Jake'
+        }], 'content');
 
         expect(commentDocs).to.deep.equal(expectedCommentDocs);
 

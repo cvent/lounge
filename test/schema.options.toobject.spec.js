@@ -10,12 +10,9 @@ describe('Schema options', function () {
   describe('toObject', function () {
 
     it('Should just work without any options', function () {
-      var userSchema = lounge.schema({name: String, email: String});
-
+      var userSchema = lounge.schema({ name: String, email: String });
       var User = lounge.model('User', userSchema);
-
-      var user = new User({name: 'Joe', email: 'joe@gmail.com'});
-
+      var user = new User({ name: 'Joe', email: 'joe@gmail.com' });
       var obj = user.toObject();
 
       var expected = {
@@ -25,9 +22,53 @@ describe('Schema options', function () {
 
       expect(obj.id).to.be.ok;
       expect(obj.id).to.be.a('string');
-
       delete obj.id;
+      expect(obj).to.deep.equal(expected);
+    });
 
+    it('should not return invisible properties', function () {
+      var userSchema = lounge.schema({
+        name: String,
+        email: String,
+        password: { type: String, invisible: true }
+      });
+
+      var User = lounge.model('User', userSchema);
+      var user = new User({ name: 'Joe', email: 'joe@gmail.com', password: 'asdf' });
+      var obj = user.toObject();
+
+      var expected = {
+        name: 'Joe',
+        email: 'joe@gmail.com'
+      };
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+      delete obj.id;
+      expect(obj).to.deep.equal(expected);
+    });
+
+    it('should not return invisible properties but return non serializable', function () {
+      var userSchema = lounge.schema({
+        name: String,
+        email: String,
+        password: { type: String, invisible: true },
+        tempProp: { type: Number, serializable: false }
+      });
+
+      var User = lounge.model('User', userSchema);
+      var user = new User({ name: 'Joe', email: 'joe@gmail.com', password: 'asdf', tempProp: 11 });
+      var obj = user.toObject();
+
+      var expected = {
+        name: 'Joe',
+        email: 'joe@gmail.com',
+        tempProp: 11
+      };
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+      delete obj.id;
       expect(obj).to.deep.equal(expected);
     });
 
@@ -51,7 +92,7 @@ describe('Schema options', function () {
         return ret;
       };
 
-      var obj = user.toObject({transform: xform});
+      var obj = user.toObject({ transform: xform });
 
       var expected = {
         name: 'Joe',
@@ -92,7 +133,7 @@ describe('Schema options', function () {
         return ret;
       };
 
-      var obj1 = user.toObject({transform: xform});
+      var obj1 = user.toObject({ transform: xform });
       var obj2 = user2.toObject();
 
       var expected1 = {
@@ -132,7 +173,7 @@ describe('Schema options', function () {
         return ret;
       };
 
-      userSchema.set('toObject', {transform: xform});
+      userSchema.set('toObject', { transform: xform });
 
       var User = lounge.model('User', userSchema);
 
@@ -169,7 +210,7 @@ describe('Schema options', function () {
         return ret;
       };
 
-      userSchema.set('toObject', {transform: xform});
+      userSchema.set('toObject', { transform: xform });
 
       var User = lounge.model('User', userSchema);
 
@@ -196,7 +237,7 @@ describe('Schema options', function () {
     });
 
     it('Should perform transform correctly on nested objects', function () {
-      var userSchema = lounge.schema({name: String, email: String, password: String});
+      var userSchema = lounge.schema({ name: String, email: String, password: String });
 
 
       var xform = function (doc, ret, options) {
@@ -204,15 +245,15 @@ describe('Schema options', function () {
         return ret;
       };
 
-      userSchema.set('toObject', {transform: xform});
+      userSchema.set('toObject', { transform: xform });
 
       var User = lounge.model('User', userSchema);
 
-      var postSchema = lounge.schema({owner: User, content: String});
+      var postSchema = lounge.schema({ owner: User, content: String });
       var Post = lounge.model('Post', postSchema);
 
-      var user = new User({name: 'Joe', email: 'joe@gmail.com', password: 'password'})
-        , post = new Post({owner: user, content: 'I like lounge :)'});
+      var user = new User({ name: 'Joe', email: 'joe@gmail.com', password: 'password' }),
+        post = new Post({ owner: user, content: 'I like lounge :)' });
 
       var obj = post.toObject();
 
@@ -238,14 +279,14 @@ describe('Schema options', function () {
     });
 
     it.skip('Should perform transform correctly on nested objects when using inline tranform on one of them', function () {
-      var userSchema = lounge.schema({name: String, email: String, password: String});
+      var userSchema = lounge.schema({ name: String, email: String, password: String });
 
       var userxform = function (doc, ret, options) {
         delete ret.password;
         return ret;
       };
 
-      userSchema.set('toObject', {transform: userxform});
+      userSchema.set('toObject', { transform: userxform });
 
       var postxform = function (doc, ret, options) {
         ret.content = doc.content.toUpperCase();
@@ -254,13 +295,13 @@ describe('Schema options', function () {
 
       var User = lounge.model('User', userSchema);
 
-      var postSchema = lounge.schema({owner: User, content: String});
+      var postSchema = lounge.schema({ owner: User, content: String });
       var Post = lounge.model('Post', postSchema);
 
-      var user = new User({name: 'Joe', email: 'joe@gmail.com', password: 'password'})
-        , post = new Post({owner: user, content: 'I like lounge :)'});
+      var user = new User({ name: 'Joe', email: 'joe@gmail.com', password: 'password' }),
+        post = new Post({ owner: user, content: 'I like lounge :)' });
 
-      var obj = post.toObject({transform: postxform});
+      var obj = post.toObject({ transform: postxform });
 
       var expected = {
         content: 'I LIKE LOUNGE :)',
@@ -284,14 +325,14 @@ describe('Schema options', function () {
     });
 
     it('Should perform transform correctly on nested objects when using schema tranform on both of them', function () {
-      var userSchema = lounge.schema({name: String, email: String, password: String});
+      var userSchema = lounge.schema({ name: String, email: String, password: String });
 
       var userxform = function (doc, ret, options) {
         delete ret.password;
         return ret;
       };
 
-      userSchema.set('toObject', {transform: userxform});
+      userSchema.set('toObject', { transform: userxform });
 
       var postxform = function (doc, ret, options) {
         ret.content = doc.content.toUpperCase();
@@ -300,12 +341,12 @@ describe('Schema options', function () {
 
       var User = lounge.model('User', userSchema);
 
-      var postSchema = lounge.schema({owner: User, content: String});
-      postSchema.set('toObject', {transform: postxform});
+      var postSchema = lounge.schema({ owner: User, content: String });
+      postSchema.set('toObject', { transform: postxform });
       var Post = lounge.model('Post', postSchema);
 
-      var user = new User({name: 'Joe', email: 'joe@gmail.com', password: 'password'})
-        , post = new Post({owner: user, content: 'I like lounge :)'});
+      var user = new User({ name: 'Joe', email: 'joe@gmail.com', password: 'password' }),
+        post = new Post({ owner: user, content: 'I like lounge :)' });
 
       var obj = post.toObject();
 
@@ -380,7 +421,7 @@ describe('Schema options', function () {
         }
       });
 
-      userSchema.set('toObject', {virtuals: true});
+      userSchema.set('toObject', { virtuals: true });
 
       var User = lounge.model('User', userSchema);
 
@@ -428,7 +469,7 @@ describe('Schema options', function () {
         password: 'password'
       });
 
-      var obj = user.toObject({virtuals: true});
+      var obj = user.toObject({ virtuals: true });
 
       var expected = {
         firstName: 'Joe',
@@ -446,7 +487,7 @@ describe('Schema options', function () {
     });
 
     it('Should perform correctly on nested objects when using virtuals on both models inline option', function () {
-      var userSchema = lounge.schema({firstName: String, lastName: String, password: String});
+      var userSchema = lounge.schema({ firstName: String, lastName: String, password: String });
 
       userSchema.virtual('fullName', {
         get: function () {
@@ -456,7 +497,7 @@ describe('Schema options', function () {
 
       var User = lounge.model('User', userSchema);
 
-      var postSchema = lounge.schema({owner: User, content: String});
+      var postSchema = lounge.schema({ owner: User, content: String });
       postSchema.virtual('capContent', {
         get: function () {
           return this.content.toUpperCase();
@@ -470,9 +511,9 @@ describe('Schema options', function () {
         password: 'password'
       });
 
-      var post = new Post({owner: user, content: 'I like lounge :)'});
+      var post = new Post({ owner: user, content: 'I like lounge :)' });
 
-      var obj = post.toObject({virtuals: true});
+      var obj = post.toObject({ virtuals: true });
 
       var expected = {
         owner: {
@@ -499,7 +540,7 @@ describe('Schema options', function () {
     });
 
     it('Should perform correctly on nested objects when using virtuals on both models and setting schema option for one model', function () {
-      var userSchema = lounge.schema({firstName: String, lastName: String, password: String});
+      var userSchema = lounge.schema({ firstName: String, lastName: String, password: String });
 
       userSchema.virtual('fullName', {
         get: function () {
@@ -507,11 +548,11 @@ describe('Schema options', function () {
         }
       });
 
-      userSchema.set('toObject', {virtuals: true});
+      userSchema.set('toObject', { virtuals: true });
 
       var User = lounge.model('User', userSchema);
 
-      var postSchema = lounge.schema({owner: User, content: String});
+      var postSchema = lounge.schema({ owner: User, content: String });
       postSchema.virtual('capContent', {
         get: function () {
           return this.content.toUpperCase();
@@ -525,7 +566,7 @@ describe('Schema options', function () {
         password: 'password'
       });
 
-      var post = new Post({owner: user, content: 'I like lounge :)'});
+      var post = new Post({ owner: user, content: 'I like lounge :)' });
 
       var obj = post.toObject();
 
@@ -553,7 +594,7 @@ describe('Schema options', function () {
     });
 
     it('Should perform correctly on nested objects when using virtuals on both models and setting schema option for one and false for other', function () {
-      var userSchema = lounge.schema({firstName: String, lastName: String, password: String})
+      var userSchema = lounge.schema({ firstName: String, lastName: String, password: String })
 
       userSchema.virtual('fullName', {
         get: function () {
@@ -561,17 +602,17 @@ describe('Schema options', function () {
         }
       });
 
-      userSchema.set('toObject', {virtuals: true});
+      userSchema.set('toObject', { virtuals: true });
 
       var User = lounge.model('User', userSchema);
 
-      var postSchema = lounge.schema({owner: User, content: String});
+      var postSchema = lounge.schema({ owner: User, content: String });
       postSchema.virtual('capContent', {
         get: function () {
           return this.content.toUpperCase();
         }
       });
-      postSchema.set('toObject', {virtuals: false});
+      postSchema.set('toObject', { virtuals: false });
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({
@@ -580,7 +621,7 @@ describe('Schema options', function () {
         password: 'password'
       });
 
-      var post = new Post({owner: user, content: 'I like lounge :)'});
+      var post = new Post({ owner: user, content: 'I like lounge :)' });
 
       var obj = post.toObject();
 
@@ -608,7 +649,7 @@ describe('Schema options', function () {
     });
 
     it('Should perform correctly on nested objects when using virtuals on both models and setting schema option for one and false for other', function () {
-      var userSchema = lounge.schema({firstName: String, lastName: String, password: String});
+      var userSchema = lounge.schema({ firstName: String, lastName: String, password: String });
 
       userSchema.virtual('fullName', {
         get: function () {
@@ -616,17 +657,17 @@ describe('Schema options', function () {
         }
       });
 
-      userSchema.set('toObject', {virtuals: false});
+      userSchema.set('toObject', { virtuals: false });
 
       var User = lounge.model('User', userSchema);
 
-      var postSchema = lounge.schema({owner: User, content: String});
+      var postSchema = lounge.schema({ owner: User, content: String });
       postSchema.virtual('capContent', {
         get: function () {
           return this.content.toUpperCase();
         }
       });
-      postSchema.set('toObject', {virtuals: true});
+      postSchema.set('toObject', { virtuals: true });
       var Post = lounge.model('Post', postSchema);
 
       var user = new User({
@@ -635,7 +676,7 @@ describe('Schema options', function () {
         password: 'password'
       });
 
-      var post = new Post({owner: user, content: 'I like lounge :)'});
+      var post = new Post({ owner: user, content: 'I like lounge :)' });
 
       var obj = post.toObject();
 
@@ -670,7 +711,7 @@ describe('Schema options', function () {
 
       var Site = lounge.model('Site', siteSchema);
 
-      var site = new Site({name: 'google', url: 'http://www.google.com'});
+      var site = new Site({ name: 'google', url: 'http://www.google.com' });
 
       var obj = site.toObject();
 
@@ -680,14 +721,14 @@ describe('Schema options', function () {
 
     it('Should print id correctly when using id and generate options specified', function () {
       var siteSchema = new lounge.Schema({
-        id: {type: String, key: true, generate: true},
+        id: { type: String, key: true, generate: true },
         name: String,
         url: String
       });
 
       var Site = lounge.model('Site', siteSchema);
 
-      var site = new Site({name: 'google', url: 'http://www.google.com'});
+      var site = new Site({ name: 'google', url: 'http://www.google.com' });
 
       var obj = site.toObject();
 
@@ -697,14 +738,14 @@ describe('Schema options', function () {
 
     it('Should print id correctly when key option specified', function () {
       var siteSchema = new lounge.Schema({
-        ip: {type: String, key: true},
+        ip: { type: String, key: true },
         name: String,
         url: String
       });
 
       var Site = lounge.model('Site', siteSchema);
 
-      var site = new Site({ip: '123.123.123', name: 'google', url: 'http://www.google.com'});
+      var site = new Site({ ip: '123.123.123', name: 'google', url: 'http://www.google.com' });
 
       var obj = site.toObject();
 
@@ -714,14 +755,14 @@ describe('Schema options', function () {
 
     it('Should print id correctly when key option specified and prefix. should not print prefix by default.', function () {
       var siteSchema = new lounge.Schema({
-        ip: {type: String, key: true, prefix: 'site:'},
+        ip: { type: String, key: true, prefix: 'site:' },
         name: String,
         url: String
       });
 
       var Site = lounge.model('Site', siteSchema);
 
-      var site = new Site({ip: '123.123.123', name: 'google', url: 'http://www.google.com'});
+      var site = new Site({ ip: '123.123.123', name: 'google', url: 'http://www.google.com' });
 
       var obj = site.toObject();
 
@@ -731,14 +772,14 @@ describe('Schema options', function () {
 
     it('Should print id correctly when key option specified and suffix. should not print suffix by default.', function () {
       var siteSchema = new lounge.Schema({
-        ip: {type: String, key: true, suffix: ':site'},
+        ip: { type: String, key: true, suffix: ':site' },
         name: String,
         url: String
       });
 
       var Site = lounge.model('Site', siteSchema);
 
-      var site = new Site({ip: '123.123.123', name: 'google', url: 'http://www.google.com'});
+      var site = new Site({ ip: '123.123.123', name: 'google', url: 'http://www.google.com' });
 
       var obj = site.toObject();
 
@@ -748,14 +789,14 @@ describe('Schema options', function () {
 
     it('Should print id correctly when key option specified with prefix and suffix. should not print prefix and suffix by default.', function () {
       var siteSchema = new lounge.Schema({
-        ip: {type: String, key: true, prefix: 'site:', suffix: ':site'},
+        ip: { type: String, key: true, prefix: 'site:', suffix: ':site' },
         name: String,
         url: String
       });
 
       var Site = lounge.model('Site', siteSchema);
 
-      var site = new Site({ip: '123.123.123', name: 'google', url: 'http://www.google.com'});
+      var site = new Site({ ip: '123.123.123', name: 'google', url: 'http://www.google.com' });
 
       var obj = site.toObject();
 
@@ -765,16 +806,16 @@ describe('Schema options', function () {
 
     it('Should print id fully key option specified with prefix and expand options.', function () {
       var siteSchema = new lounge.Schema({
-        ip: {type: String, key: true, prefix: 'site:'},
+        ip: { type: String, key: true, prefix: 'site:' },
         name: String,
         url: String
       });
 
-      siteSchema.set('toObject', {expandDocumentKey: true});
+      siteSchema.set('toObject', { expandDocumentKey: true });
 
       var Site = lounge.model('Site', siteSchema);
 
-      var site = new Site({ip: '123.123.123', name: 'google', url: 'http://www.google.com'});
+      var site = new Site({ ip: '123.123.123', name: 'google', url: 'http://www.google.com' });
 
       var obj = site.toObject();
 
@@ -784,16 +825,16 @@ describe('Schema options', function () {
 
     it('Should print id fully key option specified with prefix and expand option inline.', function () {
       var siteSchema = new lounge.Schema({
-        ip: {type: String, key: true, prefix: 'site:'},
+        ip: { type: String, key: true, prefix: 'site:' },
         name: String,
         url: String
       });
 
       var Site = lounge.model('Site', siteSchema);
 
-      var site = new Site({ip: '123.123.123', name: 'google', url: 'http://www.google.com'});
+      var site = new Site({ ip: '123.123.123', name: 'google', url: 'http://www.google.com' });
 
-      var obj = site.toObject({expandDocumentKey: true});
+      var obj = site.toObject({ expandDocumentKey: true });
 
       expect(obj.id).to.not.be.ok;
       expect(obj.ip).to.equal('site:123.123.123');
@@ -801,18 +842,18 @@ describe('Schema options', function () {
 
     it('Should print id fully when expand inline specified and false in schema', function () {
       var siteSchema = new lounge.Schema({
-        ip: {type: String, key: true, prefix: 'site:'},
+        ip: { type: String, key: true, prefix: 'site:' },
         name: String,
         url: String
       });
 
-      siteSchema.set('toObject', {expandDocumentKey: false});
+      siteSchema.set('toObject', { expandDocumentKey: false });
 
       var Site = lounge.model('Site', siteSchema);
 
-      var site = new Site({ip: '123.123.123', name: 'google', url: 'http://www.google.com'});
+      var site = new Site({ ip: '123.123.123', name: 'google', url: 'http://www.google.com' });
 
-      var obj = site.toObject({expandDocumentKey: true});
+      var obj = site.toObject({ expandDocumentKey: true });
 
       expect(obj.id).to.not.be.ok;
       expect(obj.ip).to.equal('site:123.123.123');
@@ -820,14 +861,14 @@ describe('Schema options', function () {
 
     it('Should print id correctly when suffix specified and no options', function () {
       var siteSchema = new lounge.Schema({
-        ip: {type: String, key: true, suffix: ':site'},
+        ip: { type: String, key: true, suffix: ':site' },
         name: String,
         url: String
       });
 
       var Site = lounge.model('Site', siteSchema);
 
-      var site = new Site({ip: '123.123.123', name: 'google', url: 'http://www.google.com'});
+      var site = new Site({ ip: '123.123.123', name: 'google', url: 'http://www.google.com' });
 
       var obj = site.toObject();
 
@@ -837,16 +878,16 @@ describe('Schema options', function () {
 
     it('Should print id correctly when suffix specified and expand option in schema', function () {
       var siteSchema = new lounge.Schema({
-        ip: {type: String, key: true, suffix: ':site'},
+        ip: { type: String, key: true, suffix: ':site' },
         name: String,
         url: String
       });
 
-      siteSchema.set('toObject', {expandDocumentKey: true});
+      siteSchema.set('toObject', { expandDocumentKey: true });
 
       var Site = lounge.model('Site', siteSchema);
 
-      var site = new Site({ip: '123.123.123', name: 'google', url: 'http://www.google.com'});
+      var site = new Site({ ip: '123.123.123', name: 'google', url: 'http://www.google.com' });
 
       var obj = site.toObject();
 
@@ -856,16 +897,16 @@ describe('Schema options', function () {
 
     it('Should print id correctly when suffix specified and expand option inline', function () {
       var siteSchema = new lounge.Schema({
-        ip: {type: String, key: true, suffix: ':site'},
+        ip: { type: String, key: true, suffix: ':site' },
         name: String,
         url: String
       });
 
       var Site = lounge.model('Site', siteSchema);
 
-      var site = new Site({ip: '123.123.123', name: 'google', url: 'http://www.google.com'});
+      var site = new Site({ ip: '123.123.123', name: 'google', url: 'http://www.google.com' });
 
-      var obj = site.toObject({expandDocumentKey: true});
+      var obj = site.toObject({ expandDocumentKey: true });
 
       expect(obj.id).to.not.be.ok;
       expect(obj.ip).to.equal('123.123.123:site');
@@ -873,16 +914,16 @@ describe('Schema options', function () {
 
     it('Should print id correctly when prefix and suffix specified and expand option in schema', function () {
       var siteSchema = new lounge.Schema({
-        ip: {type: String, key: true, prefix: 'site:', suffix: ':site'},
+        ip: { type: String, key: true, prefix: 'site:', suffix: ':site' },
         name: String,
         url: String
       });
 
-      siteSchema.set('toObject', {expandDocumentKey: true});
+      siteSchema.set('toObject', { expandDocumentKey: true });
 
       var Site = lounge.model('Site', siteSchema);
 
-      var site = new Site({ip: '123.123.123', name: 'google', url: 'http://www.google.com'});
+      var site = new Site({ ip: '123.123.123', name: 'google', url: 'http://www.google.com' });
 
       var obj = site.toObject();
 
@@ -892,16 +933,16 @@ describe('Schema options', function () {
 
     it('Should print id correctly when prefix and suffix specified and expand option inline', function () {
       var siteSchema = lounge.schema({
-        ip: {type: String, key: true, prefix: 'site:', suffix: ':site'},
+        ip: { type: String, key: true, prefix: 'site:', suffix: ':site' },
         name: String,
         url: String
       });
 
       var Site = lounge.model('Site', siteSchema);
 
-      var site = new Site({ip: '123.123.123', name: 'google', url: 'http://www.google.com'});
+      var site = new Site({ ip: '123.123.123', name: 'google', url: 'http://www.google.com' });
 
-      var obj = site.toObject({expandDocumentKey: true});
+      var obj = site.toObject({ expandDocumentKey: true });
 
       expect(obj.id).to.not.be.ok;
       expect(obj.ip).to.equal('site:123.123.123:site');
@@ -909,17 +950,18 @@ describe('Schema options', function () {
 
     it('Should print id correctly for nested documents and one has key specified.', function () {
       var userSchema = lounge.schema({
-        email: {type: String, key: true},
-        firstName: String, lastName: String
+        email: { type: String, key: true },
+        firstName: String,
+        lastName: String
       });
 
       var User = lounge.model('User', userSchema);
 
-      var postSchema = lounge.schema({owner: User, content: String});
+      var postSchema = lounge.schema({ owner: User, content: String });
       var Post = lounge.model('Post', postSchema);
 
-      var user = new User({email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'});
-      var post = new Post({owner: user, content: 'Lorem ipsum'});
+      var user = new User({ email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith' });
+      var post = new Post({ owner: user, content: 'Lorem ipsum' });
 
       var obj = post.toObject();
 
@@ -945,16 +987,17 @@ describe('Schema options', function () {
 
     it('Should print id correctly for nested documents and one has key specified with prefix option.', function () {
       var userSchema = lounge.schema({
-        email: {type: String, key: true, prefix: 'user'},
-        firstName: String, lastName: String
+        email: { type: String, key: true, prefix: 'user' },
+        firstName: String,
+        lastName: String
       });
 
       var User = lounge.model('User', userSchema);
-      var postSchema = lounge.schema({owner: User, content: String});
+      var postSchema = lounge.schema({ owner: User, content: String });
       var Post = lounge.model('Post', postSchema);
 
-      var user = new User({email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'});
-      var post = new Post({owner: user, content: 'Lorem ipsum'});
+      var user = new User({ email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith' });
+      var post = new Post({ owner: user, content: 'Lorem ipsum' });
 
       var obj = post.toObject();
 
@@ -980,19 +1023,20 @@ describe('Schema options', function () {
 
     it('Should print id correctly for nested documents and one has key specified with prefix option and expand.', function () {
       var userSchema = lounge.schema({
-        email: {type: String, key: true, prefix: 'user:'},
-        firstName: String, lastName: String
+        email: { type: String, key: true, prefix: 'user:' },
+        firstName: String,
+        lastName: String
       });
 
-      userSchema.set('toObject', {expandDocumentKey: true});
+      userSchema.set('toObject', { expandDocumentKey: true });
 
       var User = lounge.model('User', userSchema);
 
-      var postSchema = lounge.schema({owner: User, content: String});
+      var postSchema = lounge.schema({ owner: User, content: String });
       var Post = lounge.model('Post', postSchema);
 
-      var user = new User({email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'});
-      var post = new Post({owner: user, content: 'Lorem ipsum'});
+      var user = new User({ email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith' });
+      var post = new Post({ owner: user, content: 'Lorem ipsum' });
 
       var obj = post.toObject();
 
@@ -1018,22 +1062,24 @@ describe('Schema options', function () {
 
     it('Should print id correctly for nested documents and with different key and expand options', function () {
       var userSchema = lounge.schema({
-        email: {type: String, key: true, prefix: 'user:'},
-        firstName: String, lastName: String
+        email: { type: String, key: true, prefix: 'user:' },
+        firstName: String,
+        lastName: String
       });
 
-      userSchema.set('toObject', {expandDocumentKey: true});
+      userSchema.set('toObject', { expandDocumentKey: true });
 
       var User = lounge.model('User', userSchema);
 
       var postSchema = lounge.schema({
-        id: {type: String, key: true},
-        owner: User, content: String
+        id: { type: String, key: true },
+        owner: User,
+        content: String
       });
       var Post = lounge.model('Post', postSchema);
 
-      var user = new User({email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'});
-      var post = new Post({id: '1234', owner: user, content: 'Lorem ipsum'});
+      var user = new User({ email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith' });
+      var post = new Post({ id: '1234', owner: user, content: 'Lorem ipsum' });
 
       var obj = post.toObject();
 
@@ -1058,23 +1104,25 @@ describe('Schema options', function () {
 
     it('Should print id correctly for nested documents and with different key and expand options', function () {
       var userSchema = lounge.schema({
-        email: {type: String, key: true, prefix: 'user:'},
-        firstName: String, lastName: String
+        email: { type: String, key: true, prefix: 'user:' },
+        firstName: String,
+        lastName: String
       });
 
-      userSchema.set('toObject', {expandDocumentKey: true});
+      userSchema.set('toObject', { expandDocumentKey: true });
 
       var User = lounge.model('User', userSchema);
 
       var postSchema = lounge.schema({
-        id: {type: String, key: true, suffix: ':post'},
-        owner: User, content: String
+        id: { type: String, key: true, suffix: ':post' },
+        owner: User,
+        content: String
       });
-      postSchema.set('toObject', {expandDocumentKey: false});
+      postSchema.set('toObject', { expandDocumentKey: false });
       var Post = lounge.model('Post', postSchema);
 
-      var user = new User({email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'});
-      var post = new Post({id: '1234', owner: user, content: 'Lorem ipsum'});
+      var user = new User({ email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith' });
+      var post = new Post({ id: '1234', owner: user, content: 'Lorem ipsum' });
 
       var obj = post.toObject();
 
@@ -1099,23 +1147,25 @@ describe('Schema options', function () {
 
     it('Should print id correctly for nested documents and with different key and expand options', function () {
       var userSchema = lounge.schema({
-        email: {type: String, key: true, prefix: 'user:'},
-        firstName: String, lastName: String
+        email: { type: String, key: true, prefix: 'user:' },
+        firstName: String,
+        lastName: String
       });
 
-      userSchema.set('toObject', {expandDocumentKey: false});
+      userSchema.set('toObject', { expandDocumentKey: false });
 
       var User = lounge.model('User', userSchema);
 
       var postSchema = lounge.schema({
-        id: {type: String, key: true, suffix: ':post'},
-        owner: User, content: String
+        id: { type: String, key: true, suffix: ':post' },
+        owner: User,
+        content: String
       });
-      postSchema.set('toObject', {expandDocumentKey: true});
+      postSchema.set('toObject', { expandDocumentKey: true });
       var Post = lounge.model('Post', postSchema);
 
-      var user = new User({email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'});
-      var post = new Post({id: '1234', owner: user, content: 'Lorem ipsum'});
+      var user = new User({ email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith' });
+      var post = new Post({ id: '1234', owner: user, content: 'Lorem ipsum' });
 
       var obj = post.toObject();
 
@@ -1140,25 +1190,27 @@ describe('Schema options', function () {
 
     it('Should print id correctly for nested documents and with schema and inline expand options. inline wins.', function () {
       var userSchema = lounge.schema({
-        email: {type: String, key: true, prefix: 'user:'},
-        firstName: String, lastName: String
+        email: { type: String, key: true, prefix: 'user:' },
+        firstName: String,
+        lastName: String
       });
 
-      userSchema.set('toObject', {expandDocumentKey: false});
+      userSchema.set('toObject', { expandDocumentKey: false });
 
       var User = lounge.model('User', userSchema);
 
       var postSchema = lounge.schema({
-        id: {type: String, key: true, suffix: ':post'},
-        owner: User, content: String
+        id: { type: String, key: true, suffix: ':post' },
+        owner: User,
+        content: String
       });
-      postSchema.set('toObject', {expandDocumentKey: false});
+      postSchema.set('toObject', { expandDocumentKey: false });
       var Post = lounge.model('Post', postSchema);
 
-      var user = new User({email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'});
-      var post = new Post({id: '1234', owner: user, content: 'Lorem ipsum'});
+      var user = new User({ email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith' });
+      var post = new Post({ id: '1234', owner: user, content: 'Lorem ipsum' });
 
-      var obj = post.toObject({expandDocumentKey: true});
+      var obj = post.toObject({ expandDocumentKey: true });
 
       expect(obj.id).to.be.ok;
       expect(obj.id).to.be.a('string');
