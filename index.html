@@ -348,13 +348,19 @@ Provide default value. You may pass value directly or pass a function which will
 Provide function to transform value when retrieved. Executed in the context of the object and can use &quot;this&quot; to access properties.</p>
 <pre><code class="lang-js">string: {type: String, getter: function(value) { return value.toUpperCase(); }}</code></pre>
 <p><strong>readOnly</strong>
-If true, the value can be read but cannot be written to. This can be useful for creating fields that reflect other values.</p>
+If <code>true</code>, the value can be read but cannot be written to. This can be useful for creating fields that reflect other values.</p>
 <pre><code class="lang-js">fullName: {type: String, readOnly: true, default: function(value) {
   return (this.firstName + &#39; &#39; + this.lastName).trim();
 }}</code></pre>
 <p><strong>invisible</strong>
-If true, the value can be written to but isn&#39;t outputted as an index when <code>toObject()</code> is called.
+If <code>true</code>, the value can be written to but isn&#39;t outputted as an index when <code>toObject()</code> is called.
 This can be useful for hiding internal variables.</p>
+<p><strong>serializable</strong>
+By default all values defined in the schema except those that are set to invisible using the property above are written
+to the database when the document is saved. If this property is set to <code>false</code>, the value can be written to and can be
+read and will be visible using <code>toObject</code> and <code>toJSON</code> methods but is not written when model is saved to the database.
+This can be useful when you need some &quot;working&quot; properties that you never want to serialized but otherwise passed around
+and visible.</p>
 <h4 id="string">String</h4>
 <p><strong>stringTransform</strong>
 Called after value is typecast to string <strong>if</strong> value was successfully typecast but called before all validation.</p>
@@ -375,7 +381,7 @@ Enforces minimum string length.</p>
 Enforces maximum string length.</p>
 <pre><code class="lang-js">stateAbbrev: {type: String, maxLength: 2}</code></pre>
 <p><strong>clip</strong>
-If true, clips string to maximum string length instead of rejecting string.</p>
+If <code>true</code>, clips string to maximum string length instead of rejecting string.</p>
 <pre><code class="lang-js">bio: {type: String, maxLength: 255, clip: true}</code></pre>
 <h4 id="number">Number</h4>
 <p><strong>min</strong>
