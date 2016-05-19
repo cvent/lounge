@@ -240,6 +240,8 @@ You can do additional setup here. This method is not passed in any arguments.</p
 model instance.</li>
 <li><code>minimize</code> - to &quot;minimize&quot; the document by removing any empty properties. Default: <code>true</code></li>
 <li><code>virtuals</code> - to apply virtual getters</li>
+<li><code>serializable</code> - whether to include <code>serializable</code> properties. Default: <code>true</code></li>
+<li><code>dateToISO</code> - convert dates to string in ISO format using <code>Date.toISOString()</code>. Default: <code>true</code></li>
 </ul>
 <p>These settings can be applied on any invocation of <code>toObject</code> as well they can be set at schema level.</p>
 <pre><code class="lang-js">var userSchema = lounge.schema({
@@ -654,6 +656,22 @@ is passed in we return the results as described above. To force <code>array</cod
 config option <code>alwaysReturnArrays</code> to <code>true</code>. Default is <code>false</code>.</p>
 <p>By default order of the generated objects in an array result is not guaranteed to be the same order as the ids queried.
 To keep the order of the returned model instances the same as the ids set <code>keepSortOrder</code> option to <code>true</code>.</p>
+<p>By default the <code>findById</code> and index query functions return 3 parameters to the callback in form <code>(err, docs, missing)</code>.
+If we want to force returning of 2 params at all times <code>(err, docs)</code>, and not return the <code>missing</code> parameter, we can
+use the <code>missing</code> options either in <code>Lounge</code> settings to set globally, or individually in function invocations. If
+<code>missing</code> option is set to <code>false</code> we won&#39;t return missing keys as the final param in the callback.</p>
+<pre><code class="lang-js">lounge.setOption(&#39;missing&#39;, false);
+User.findById([&#39;user123&#39;, &#39;user456&#39;], function(err, docs, misses) {
+  if(err) console.log(err); // there was an error looking up the key
+  console.dir(docs);        // array of Users found
+  console.dir(misses);      // undefined
+});</code></pre>
+<pre><code class="lang-js">lounge.setOption(&#39;missing&#39;, false);
+User.findById([&#39;user123&#39;, &#39;user456&#39;], { missing: true },function(err, docs, misses) {
+  if(err) console.log(err); // there was an error looking up the key
+  console.dir(docs);        // array of Users found
+  console.dir(misses);      // array of missing keys, as the option in function params takes presidence
+});</code></pre>
 <h3 id="removing-documents-a-id-removing-a-">Removing Documents <a id="removing"></a></h3>
 <p>Removing documents is done using <code>remove</code> function that every model instance has. This will execute all pre
 &#39;remove&#39; middleware and then perform Couchbase <code>remove</code> operation. It will also perform lookup document updates
