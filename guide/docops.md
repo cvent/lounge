@@ -65,6 +65,30 @@ config option `alwaysReturnArrays` to `true`. Default is `false`.
 By default order of the generated objects in an array result is not guaranteed to be the same order as the ids queried.
 To keep the order of the returned model instances the same as the ids set `keepSortOrder` option to `true`.
 
+By default the `findById` and index query functions return 3 parameters to the callback in form `(err, docs, missing)`.
+If we want to force returning of 2 params at all times `(err, docs)`, and not return the `missing` parameter, we can
+use the `missing` options either in `Lounge` settings to set globally, or individually in function invocations. If
+`missing` option is set to `false` we won't return missing keys as the final param in the callback.
+
+```js
+lounge.setOption('missing', false);
+User.findById(['user123', 'user456'], function(err, docs, misses) {
+  if(err) console.log(err); // there was an error looking up the key
+  console.dir(docs);        // array of Users found
+  console.dir(misses);      // undefined
+});
+```
+
+
+```js
+lounge.setOption('missing', false);
+User.findById(['user123', 'user456'], { missing: true },function(err, docs, misses) {
+  if(err) console.log(err); // there was an error looking up the key
+  console.dir(docs);        // array of Users found
+  console.dir(misses);      // array of missing keys, as the option in function params takes presidence
+});
+```
+
 ### Removing Documents <a id="removing"></a>
 
 Removing documents is done using `remove` function that every model instance has. This will execute all pre

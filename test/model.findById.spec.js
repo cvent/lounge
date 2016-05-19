@@ -41,7 +41,6 @@ describe('Model findById tests', function () {
   });
 
   describe('with normal self generated ids', function () {
-
     before(function () {
       var userSchema = lounge.schema({
         firstName: String,
@@ -54,7 +53,6 @@ describe('Model findById tests', function () {
     });
 
     it('should find a simple document', function (done) {
-
       var userId = ts.data.users[0].id;
       var userData = ts.data.users[0];
 
@@ -133,9 +131,7 @@ describe('Model findById tests', function () {
     });
 
     it('should find an array of documents and also return missing keys', function (done) {
-
       var userIds = _.map(ts.data.users, 'id');
-
       var missingId = 'd2bed65a-1910-4730-b032-0c4ea0f831dd';
       userIds.splice(2, 0, missingId);
 
@@ -379,7 +375,6 @@ describe('Model findById tests', function () {
     });
 
     it('should find an array of documents', function (done) {
-
       var userIds = _.map(ts.data.users2, 'email');
       var expectedUsers = _.sortBy(ts.data.users2, 'email');
 
@@ -412,7 +407,6 @@ describe('Model findById tests', function () {
     });
 
     it('should find an array of documents and also return missing keys', function (done) {
-
       var userIds = _.map(ts.data.users2, 'email');
 
       var missingId = 'test@gmail.com';
@@ -581,11 +575,388 @@ describe('Model findById tests', function () {
         expect(docs.length).to.equal(ts.data.users3.length);
 
         var actualUserIds = [];
-        docs.forEach(function(d) {
+        docs.forEach(function (d) {
           actualUserIds.push(d.username.replace(/user::/i, ''));
         });
 
         expect(actualUserIds).to.deep.equal(userIds);
+        done();
+      });
+    });
+  });
+
+  describe('with missing config option', function () {
+    before(function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date
+      });
+
+      User1 = lounge.model('User', userSchema);
+    });
+
+    it('should find a simple document and not return any missing', function (done) {
+      lounge.setOption('missing', false);
+
+      var userId = ts.data.users[0].id;
+      var userData = ts.data.users[0];
+
+      User1.findById(userId, function (err, rdoc, missing) {
+        expect(err).to.not.be.ok;
+        expect(missing).to.not.be.ok;
+
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(User1);
+        expect(rdoc.id).to.be.ok;
+        expect(rdoc.id).to.be.a('string');
+
+        expect(rdoc.id).to.equal(userData.id);
+        expect(rdoc.firstName).to.equal(userData.firstName);
+        expect(rdoc.lastName).to.equal(userData.lastName);
+        expect(rdoc.email).to.equal(userData.email);
+        expect(rdoc.dateOfBirth).to.be.ok;
+        expect(rdoc.dateOfBirth).to.be.an.instanceof(Date);
+
+        // check CAS this is first time where we would get it
+        var cas1 = rdoc.getCAS();
+        expect(cas1).to.be.a('string');
+
+        var cas2 = rdoc.getCAS(true);
+        expect(cas2).to.be.instanceof(Object);
+
+        var cas3 = rdoc.cas;
+        expect(cas3).to.be.a('string');
+
+        done();
+      });
+    });
+
+    it('should find an array of documents and not return any missing', function (done) {
+      lounge.setOption('missing', false);
+      var userIds = _.map(ts.data.users, 'id');
+      var expectedUsers = _.sortBy(ts.data.users, 'id');
+
+      User1.findById(userIds, function (err, docs, missing) {
+        expect(err).to.not.be.ok;
+
+        expect(docs).to.be.an.instanceof(Array);
+        expect(docs.length).to.equal(ts.data.users.length);
+
+        var actualUsers = _.sortBy(docs, 'id');
+
+        actualUsers.forEach(function (au, index) {
+          var userData = expectedUsers[index];
+
+          expect(au).to.be.ok;
+          expect(au).to.be.an('object');
+          expect(au).to.be.an.instanceof(User1);
+          expect(au.id).to.be.ok;
+          expect(au.id).to.be.a('string');
+
+          expect(au.id).to.equal(userData.id);
+          expect(au.firstName).to.equal(userData.firstName);
+          expect(au.lastName).to.equal(userData.lastName);
+          expect(au.email).to.equal(userData.email);
+          expect(au.dateOfBirth).to.be.ok;
+          expect(au.dateOfBirth).to.be.an.instanceof(Date);
+
+          expect(missing).to.not.be.ok;
+
+          var cas1 = au.getCAS();
+          expect(cas1).to.be.a('string');
+
+          var cas2 = au.getCAS(true);
+          expect(cas2).to.be.instanceof(Object);
+
+          var cas3 = au.cas;
+          expect(cas3).to.be.a('string');
+        });
+
+        done();
+      });
+    });
+
+    it('should find an array of documents and also NOT return missing keys', function (done) {
+      lounge.setOption('missing', false);
+      var userIds = _.map(ts.data.users, 'id');
+      var missingId = 'd2bed65a-1910-4730-b032-0c4ea0f831dd';
+      userIds.splice(2, 0, missingId);
+
+      var expectedUsers = _.sortBy(ts.data.users, 'id');
+
+      User1.findById(userIds, function (err, docs, missing) {
+        expect(err).to.not.be.ok;
+
+        expect(docs).to.be.an.instanceof(Array);
+        expect(docs.length).to.equal(ts.data.users.length);
+
+        var actualUsers = _.sortBy(docs, 'id');
+
+        actualUsers.forEach(function (au, index) {
+          var userData = expectedUsers[index];
+
+          expect(au).to.be.ok;
+          expect(au).to.be.an('object');
+          expect(au).to.be.an.instanceof(User1);
+          expect(au.id).to.be.ok;
+          expect(au.id).to.be.a('string');
+
+          expect(au.id).to.equal(userData.id);
+          expect(au.firstName).to.equal(userData.firstName);
+          expect(au.lastName).to.equal(userData.lastName);
+          expect(au.email).to.equal(userData.email);
+          expect(au.dateOfBirth).to.be.ok;
+          expect(au.dateOfBirth).to.be.an.instanceof(Date);
+
+          expect(missing).to.not.be.ok;
+
+          var cas1 = au.getCAS();
+          expect(cas1).to.be.a('string');
+
+          var cas2 = au.getCAS(true);
+          expect(cas2).to.be.instanceof(Object);
+
+          var cas3 = au.cas;
+          expect(cas3).to.be.a('string');
+        });
+
+        done();
+      });
+    });
+  });
+
+  describe('with missing option', function () {
+    before(function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date
+      });
+
+      User1 = lounge.model('User', userSchema);
+    });
+
+    it('should find a simple document and return undefined missing', function (done) {
+      var userId = ts.data.users[0].id;
+      var userData = ts.data.users[0];
+
+      User1.findById(userId, { missing: false }, function (err, rdoc, missing) {
+        expect(err).to.not.be.ok;
+        expect(missing).to.not.be.ok;
+
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(User1);
+        expect(rdoc.id).to.be.ok;
+        expect(rdoc.id).to.be.a('string');
+
+        expect(rdoc.id).to.equal(userData.id);
+        expect(rdoc.firstName).to.equal(userData.firstName);
+        expect(rdoc.lastName).to.equal(userData.lastName);
+        expect(rdoc.email).to.equal(userData.email);
+        expect(rdoc.dateOfBirth).to.be.ok;
+        expect(rdoc.dateOfBirth).to.be.an.instanceof(Date);
+
+        // check CAS this is first time where we would get it
+        var cas1 = rdoc.getCAS();
+        expect(cas1).to.be.a('string');
+
+        var cas2 = rdoc.getCAS(true);
+        expect(cas2).to.be.instanceof(Object);
+
+        var cas3 = rdoc.cas;
+        expect(cas3).to.be.a('string');
+
+        done();
+      });
+    });
+
+    it('should find an array of documents and return undefined missing', function (done) {
+      var userIds = _.map(ts.data.users, 'id');
+      var expectedUsers = _.sortBy(ts.data.users, 'id');
+
+      User1.findById(userIds, { missing: false }, function (err, docs, missing) {
+        expect(err).to.not.be.ok;
+
+        expect(docs).to.be.an.instanceof(Array);
+        expect(docs.length).to.equal(ts.data.users.length);
+
+        var actualUsers = _.sortBy(docs, 'id');
+
+        actualUsers.forEach(function (au, index) {
+          var userData = expectedUsers[index];
+
+          expect(au).to.be.ok;
+          expect(au).to.be.an('object');
+          expect(au).to.be.an.instanceof(User1);
+          expect(au.id).to.be.ok;
+          expect(au.id).to.be.a('string');
+
+          expect(au.id).to.equal(userData.id);
+          expect(au.firstName).to.equal(userData.firstName);
+          expect(au.lastName).to.equal(userData.lastName);
+          expect(au.email).to.equal(userData.email);
+          expect(au.dateOfBirth).to.be.ok;
+          expect(au.dateOfBirth).to.be.an.instanceof(Date);
+
+          expect(missing).to.not.be.ok;
+
+          var cas1 = au.getCAS();
+          expect(cas1).to.be.a('string');
+
+          var cas2 = au.getCAS(true);
+          expect(cas2).to.be.instanceof(Object);
+
+          var cas3 = au.cas;
+          expect(cas3).to.be.a('string');
+        });
+
+        done();
+      });
+    });
+
+    it('should find an array of documents and return undefined missing', function (done) {
+      var userIds = _.map(ts.data.users, 'id');
+      var missingId = 'd2bed65a-1910-4730-b032-0c4ea0f831dd';
+      userIds.splice(2, 0, missingId);
+
+      var expectedUsers = _.sortBy(ts.data.users, 'id');
+
+      User1.findById(userIds, { missing: false }, function (err, docs, missing) {
+        expect(err).to.not.be.ok;
+
+        expect(docs).to.be.an.instanceof(Array);
+        expect(docs.length).to.equal(ts.data.users.length);
+
+        var actualUsers = _.sortBy(docs, 'id');
+
+        actualUsers.forEach(function (au, index) {
+          var userData = expectedUsers[index];
+
+          expect(au).to.be.ok;
+          expect(au).to.be.an('object');
+          expect(au).to.be.an.instanceof(User1);
+          expect(au.id).to.be.ok;
+          expect(au.id).to.be.a('string');
+
+          expect(au.id).to.equal(userData.id);
+          expect(au.firstName).to.equal(userData.firstName);
+          expect(au.lastName).to.equal(userData.lastName);
+          expect(au.email).to.equal(userData.email);
+          expect(au.dateOfBirth).to.be.ok;
+          expect(au.dateOfBirth).to.be.an.instanceof(Date);
+
+          expect(missing).to.not.be.ok;
+
+          var cas1 = au.getCAS();
+          expect(cas1).to.be.a('string');
+
+          var cas2 = au.getCAS(true);
+          expect(cas2).to.be.instanceof(Object);
+
+          var cas3 = au.cas;
+          expect(cas3).to.be.a('string');
+        });
+
+        done();
+      });
+    });
+
+    it('should find an array of documents and also return missing keys because of missing option', function (done) {
+      lounge.setOption('missing', false);
+      var userIds = _.map(ts.data.users, 'id');
+      var missingId = 'd2bed65a-1910-4730-b032-0c4ea0f831dd';
+      userIds.splice(2, 0, missingId);
+
+      var expectedUsers = _.sortBy(ts.data.users, 'id');
+
+      User1.findById(userIds, { missing: true }, function (err, docs, missing) {
+        expect(err).to.not.be.ok;
+
+        expect(docs).to.be.an.instanceof(Array);
+        expect(docs.length).to.equal(ts.data.users.length);
+
+        var actualUsers = _.sortBy(docs, 'id');
+
+        actualUsers.forEach(function (au, index) {
+          var userData = expectedUsers[index];
+
+          expect(au).to.be.ok;
+          expect(au).to.be.an('object');
+          expect(au).to.be.an.instanceof(User1);
+          expect(au.id).to.be.ok;
+          expect(au.id).to.be.a('string');
+
+          expect(au.id).to.equal(userData.id);
+          expect(au.firstName).to.equal(userData.firstName);
+          expect(au.lastName).to.equal(userData.lastName);
+          expect(au.email).to.equal(userData.email);
+          expect(au.dateOfBirth).to.be.ok;
+          expect(au.dateOfBirth).to.be.an.instanceof(Date);
+
+          expect(missing).to.deep.equal([missingId]);
+
+          var cas1 = au.getCAS();
+          expect(cas1).to.be.a('string');
+
+          var cas2 = au.getCAS(true);
+          expect(cas2).to.be.instanceof(Object);
+
+          var cas3 = au.cas;
+          expect(cas3).to.be.a('string');
+        });
+
+        done();
+      });
+    });
+
+    it('should find an array of documents and also return undefined missing because of missing option', function (done) {
+      lounge.setOption('missing', true);
+      var userIds = _.map(ts.data.users, 'id');
+      var missingId = 'd2bed65a-1910-4730-b032-0c4ea0f831dd';
+      userIds.splice(2, 0, missingId);
+
+      var expectedUsers = _.sortBy(ts.data.users, 'id');
+
+      User1.findById(userIds, { missing: false }, function (err, docs, missing) {
+        expect(err).to.not.be.ok;
+        expect(missing).to.not.be.ok;
+
+        expect(docs).to.be.an.instanceof(Array);
+        expect(docs.length).to.equal(ts.data.users.length);
+
+        var actualUsers = _.sortBy(docs, 'id');
+
+        actualUsers.forEach(function (au, index) {
+          var userData = expectedUsers[index];
+
+          expect(au).to.be.ok;
+          expect(au).to.be.an('object');
+          expect(au).to.be.an.instanceof(User1);
+          expect(au.id).to.be.ok;
+          expect(au.id).to.be.a('string');
+
+          expect(au.id).to.equal(userData.id);
+          expect(au.firstName).to.equal(userData.firstName);
+          expect(au.lastName).to.equal(userData.lastName);
+          expect(au.email).to.equal(userData.email);
+          expect(au.dateOfBirth).to.be.ok;
+          expect(au.dateOfBirth).to.be.an.instanceof(Date);
+
+          var cas1 = au.getCAS();
+          expect(cas1).to.be.a('string');
+
+          var cas2 = au.getCAS(true);
+          expect(cas2).to.be.instanceof(Object);
+
+          var cas3 = au.cas;
+          expect(cas3).to.be.a('string');
+        });
+
         done();
       });
     });

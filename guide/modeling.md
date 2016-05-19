@@ -269,6 +269,8 @@ Options:
 model instance.
 * `minimize` - to "minimize" the document by removing any empty properties. Default: `true`
 * `virtuals` - to apply virtual getters
+* `serializable` - whether to include `serializable` properties. Default: `true`
+* `dateToISO` - convert dates to string in ISO format using `Date.toISOString()`. Default: `true`
 
 These settings can be applied on any invocation of `toObject` as well they can be set at schema level.
 

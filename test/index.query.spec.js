@@ -36,7 +36,7 @@ describe('Model index query tests', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true}
+        email: { type: String, index: true }
       });
 
       var User = lounge.model('User', userSchema);
@@ -77,7 +77,7 @@ describe('Model index query tests', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true}
+        email: { type: String, index: true }
       });
 
       var User = lounge.model('User', userSchema);
@@ -95,7 +95,7 @@ describe('Model index query tests', function () {
         expect(savedDoc).to.be.ok;
 
 
-        User.findByEmail(user.email, {lean: true}, function (err, rdoc) {
+        User.findByEmail(user.email, { lean: true }, function (err, rdoc) {
           expect(err).to.not.be.ok;
           expect(rdoc).to.be.ok;
           expect(rdoc).to.be.a('string');
@@ -111,8 +111,8 @@ describe('Model index query tests', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true},
-        username: {type: String, key: true, generate: false}
+        email: { type: String, index: true },
+        username: { type: String, key: true, generate: false }
       });
 
       var User = lounge.model('User', userSchema);
@@ -151,7 +151,7 @@ describe('Model index query tests', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        usernames: [{type: String, index: true, indexName: 'username'}]
+        usernames: [{ type: String, index: true, indexName: 'username' }]
       });
 
       var User = lounge.model('User', userSchema);
@@ -166,8 +166,9 @@ describe('Model index query tests', function () {
         expect(err).to.not.be.ok;
         expect(savedDoc).to.be.ok;
 
-        User.findByUsername(user.usernames[0], function (err, rdoc) {
+        User.findByUsername(user.usernames[0], function (err, rdoc, missing) {
           expect(err).to.not.be.ok;
+          expect(missing).to.deep.equal([]);
 
           expect(rdoc).to.be.ok;
           expect(rdoc).to.be.an('object');
@@ -190,6 +191,162 @@ describe('Model index query tests', function () {
             expect(rdoc.lastName).to.equal(user.lastName);
             expect(rdoc.email).to.equal(user.email);
 
+            done();
+          });
+        });
+      });
+    });
+
+    it('should query index values for array and return undefined missing when config is set', function (done) {
+      lounge.setOption('missing', false)
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        usernames: [{ type: String, index: true, indexName: 'username' }]
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        usernames: ['user1', 'user2']
+      });
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+
+        User.findByUsername(user.usernames[0], function (err, rdoc, missing) {
+          expect(err).to.not.be.ok;
+          expect(missing).to.not.be.ok;
+
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.an('object');
+          expect(rdoc).to.be.an.instanceof(User);
+
+          expect(rdoc.usernames.sort()).to.deep.equal(user.usernames.sort());
+          expect(rdoc.firstName).to.equal(user.firstName);
+          expect(rdoc.lastName).to.equal(user.lastName);
+          expect(rdoc.email).to.equal(user.email);
+
+          User.findByUsername(user.usernames[1], function (err, rdoc) {
+            expect(err).to.not.be.ok;
+
+            expect(rdoc).to.be.ok;
+            expect(rdoc).to.be.an('object');
+            expect(rdoc).to.be.an.instanceof(User);
+
+            expect(rdoc.usernames.sort()).to.deep.equal(user.usernames.sort());
+            expect(rdoc.firstName).to.equal(user.firstName);
+            expect(rdoc.lastName).to.equal(user.lastName);
+            expect(rdoc.email).to.equal(user.email);
+
+            // reset
+            lounge.setOption('missing', true)
+            done();
+          });
+        });
+      });
+    });
+
+    it('should query index values for array and return undefined missing when option is set to false', function (done) {
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        usernames: [{ type: String, index: true, indexName: 'username' }]
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        usernames: ['user1', 'user2']
+      });
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+
+        User.findByUsername(user.usernames[0], { missing: false }, function (err, rdoc, missing) {
+          expect(err).to.not.be.ok;
+          expect(missing).to.not.be.ok;
+
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.an('object');
+          expect(rdoc).to.be.an.instanceof(User);
+
+          expect(rdoc.usernames.sort()).to.deep.equal(user.usernames.sort());
+          expect(rdoc.firstName).to.equal(user.firstName);
+          expect(rdoc.lastName).to.equal(user.lastName);
+          expect(rdoc.email).to.equal(user.email);
+
+          User.findByUsername(user.usernames[1], function (err, rdoc) {
+            expect(err).to.not.be.ok;
+
+            expect(rdoc).to.be.ok;
+            expect(rdoc).to.be.an('object');
+            expect(rdoc).to.be.an.instanceof(User);
+
+            expect(rdoc.usernames.sort()).to.deep.equal(user.usernames.sort());
+            expect(rdoc.firstName).to.equal(user.firstName);
+            expect(rdoc.lastName).to.equal(user.lastName);
+            expect(rdoc.email).to.equal(user.email);
+
+            done();
+          });
+        });
+      });
+    });
+
+    it('should query index values for array and return missing when option is set to true and global to false', function (done) {
+      lounge.setOption('missing', false);
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        usernames: [{ type: String, index: true, indexName: 'username' }]
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        usernames: ['user1', 'user2']
+      });
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+
+        User.findByUsername(user.usernames[0], { missing: true }, function (err, rdoc, missing) {
+          expect(err).to.not.be.ok;
+          expect(missing).to.deep.equal([]);
+
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.an('object');
+          expect(rdoc).to.be.an.instanceof(User);
+
+          expect(rdoc.usernames.sort()).to.deep.equal(user.usernames.sort());
+          expect(rdoc.firstName).to.equal(user.firstName);
+          expect(rdoc.lastName).to.equal(user.lastName);
+          expect(rdoc.email).to.equal(user.email);
+
+          User.findByUsername(user.usernames[1], function (err, rdoc) {
+            expect(err).to.not.be.ok;
+
+            expect(rdoc).to.be.ok;
+            expect(rdoc).to.be.an('object');
+            expect(rdoc).to.be.an.instanceof(User);
+
+            expect(rdoc.usernames.sort()).to.deep.equal(user.usernames.sort());
+            expect(rdoc.firstName).to.equal(user.firstName);
+            expect(rdoc.lastName).to.equal(user.lastName);
+            expect(rdoc.email).to.equal(user.email);
+
+            // reset
+            lounge.setOption('missing', true)
             done();
           });
         });
@@ -223,7 +380,7 @@ describe('Model index query tests', function () {
             }
 
             var companySchema = lounge.schema({
-              id: {type: String, key: true, generate: true, prefix: 'company::'},
+              id: { type: String, key: true, generate: true, prefix: 'company::' },
               name: String,
               streetAddress: String,
               city: String,
@@ -237,8 +394,8 @@ describe('Model index query tests', function () {
             var userSchema = lounge.schema({
               firstName: String,
               lastName: String,
-              email: {type: String, key: true, generate: false},
-              company: {type: Company, index: true}
+              email: { type: String, key: true, generate: false },
+              company: { type: Company, index: true }
             });
 
             User = lounge.model('User', userSchema);
@@ -347,22 +504,20 @@ describe('Model index query tests', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true, indexType: 'array'}
+        email: { type: String, index: true, indexType: 'array' }
       });
 
       var User = lounge.model('User', userSchema);
 
-      var userData = [
-        {
-          firstName: 'Bob',
-          lastName: 'Smith',
-          email: 'joe@gmail.com'
-        },
-        {
-          firstName: 'Joe',
-          lastName: 'Smith 2',
-          email: 'joe@gmail.com' // same email
-        }];
+      var userData = [{
+        firstName: 'Bob',
+        lastName: 'Smith',
+        email: 'joe@gmail.com'
+      }, {
+        firstName: 'Joe',
+        lastName: 'Smith 2',
+        email: 'joe@gmail.com' // same email
+      }];
 
       var user = new User(userData[0]);
       var user2 = new User(userData[1]);
@@ -412,25 +567,23 @@ describe('Model index query tests', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true, indexType: 'array'},
-        username: {type: String, key: true, generate: false}
+        email: { type: String, index: true, indexType: 'array' },
+        username: { type: String, key: true, generate: false }
       });
 
       var User = lounge.model('User', userSchema);
 
-      var userData = [
-        {
-          firstName: 'Joe',
-          lastName: 'Jones',
-          email: 'joe@gmail.com',
-          username: 'jjones'
-        },
-        {
-          firstName: 'Joe',
-          lastName: 'Smith',
-          email: 'joe@gmail.com',
-          username: 'jsmith'
-        }];
+      var userData = [{
+        firstName: 'Joe',
+        lastName: 'Jones',
+        email: 'joe@gmail.com',
+        username: 'jjones'
+      }, {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        username: 'jsmith'
+      }];
 
       var user = new User(userData[0]);
       var user2 = new User(userData[1]);
@@ -475,7 +628,7 @@ describe('Model index query tests', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        usernames: [{type: String, index: true, indexName: 'username', indexType: 'array'}]
+        usernames: [{ type: String, index: true, indexName: 'username', indexType: 'array' }]
       });
 
       var User = lounge.model('User', userSchema);
@@ -573,7 +726,7 @@ describe('Model index query tests', function () {
             }
 
             var companySchema = lounge.schema({
-              id: {type: String, key: true, generate: true, prefix: 'company::'},
+              id: { type: String, key: true, generate: true, prefix: 'company::' },
               name: String,
               streetAddress: String,
               city: String,
@@ -587,7 +740,7 @@ describe('Model index query tests', function () {
             var userSchema = lounge.schema({
               firstName: String,
               lastName: String,
-              email: {type: String, index: true},
+              email: { type: String, index: true },
               company: Company
             });
 
@@ -636,7 +789,7 @@ describe('Model index query tests', function () {
 
     it('should query using simple reference document and populate as boolean', function (done) {
       var email = tsData.users[0].email;
-      User.findByEmail(email, {populate: true}, function (err, rdoc) {
+      User.findByEmail(email, { populate: true }, function (err, rdoc) {
         expect(err).to.not.be.ok;
 
         expect(rdoc).to.be.ok;
@@ -666,7 +819,7 @@ describe('Model index query tests', function () {
 
     it('should query using simple reference document and populate as string', function (done) {
       var email = tsData.users[1].email;
-      User.findByEmail(email, {populate: 'company'}, function (err, rdoc) {
+      User.findByEmail(email, { populate: 'company' }, function (err, rdoc) {
         expect(err).to.not.be.ok;
 
         expect(rdoc).to.be.ok;
@@ -721,7 +874,7 @@ describe('Model index query tests', function () {
             }
 
             var companySchema = lounge.schema({
-              id: {type: String, key: true, generate: true, prefix: 'company::'},
+              id: { type: String, key: true, generate: true, prefix: 'company::' },
               name: String,
               streetAddress: String,
               city: String,
@@ -735,8 +888,8 @@ describe('Model index query tests', function () {
             var userSchema = lounge.schema({
               firstName: String,
               lastName: String,
-              email: {type: String, index: true, indexType: 'array'},
-              company: {type: Company}
+              email: { type: String, index: true, indexType: 'array' },
+              company: { type: Company }
             });
 
             User = lounge.model('User', userSchema);
@@ -797,7 +950,7 @@ describe('Model index query tests', function () {
     });
 
     it('should get a single user and populate company if specified specifically', function (done) {
-      User.findByEmail(userData[0].email, {populate: 'company'}, function (err, rdoc) {
+      User.findByEmail(userData[0].email, { populate: 'company' }, function (err, rdoc) {
         expect(err).to.not.be.ok;
 
         expect(rdoc).to.be.ok;
@@ -827,7 +980,7 @@ describe('Model index query tests', function () {
     });
 
     it('should get multiple user with same company populated when specified as boolean', function (done) {
-      User.findByEmail(userData[2].email, {populate: true}, function (err, rdoc) {
+      User.findByEmail(userData[2].email, { populate: true }, function (err, rdoc) {
         expect(err).to.not.be.ok;
 
         expect(rdoc).to.be.ok;
@@ -882,7 +1035,7 @@ describe('Model index query tests', function () {
       var expectedUsers = _.sortBy([userData[5], userData[6], userData[7], userData[8]], 'firstName');
       var expectedCompanies = [companyData[4], companyData[3], companyData[1], undefined]; // sorted by associated user
 
-      User.findByEmail(userData[5].email, {populate: ['company']}, function (err, rdoc) {
+      User.findByEmail(userData[5].email, { populate: ['company'] }, function (err, rdoc) {
         expect(err).to.not.be.ok;
 
         expect(rdoc).to.be.ok;
@@ -903,8 +1056,7 @@ describe('Model index query tests', function () {
 
           if (company) {
             expect(doc.company).to.deep.equal(company);
-          }
-          else {
+          } else {
             expect(doc.company).to.not.be.ok;
           }
         });
@@ -953,7 +1105,7 @@ describe('Model index query tests', function () {
             }
 
             var companySchema = lounge.schema({
-              id: {type: String, key: true, generate: true, prefix: 'company::'},
+              id: { type: String, key: true, generate: true, prefix: 'company::' },
               name: String,
               streetAddress: String,
               city: String,
@@ -967,8 +1119,8 @@ describe('Model index query tests', function () {
             var userSchema = lounge.schema({
               firstName: String,
               lastName: String,
-              email: {type: String, key: true, generate: false},
-              company: {type: Company, index: true, indexType: 'array'}
+              email: { type: String, key: true, generate: false },
+              company: { type: Company, index: true, indexType: 'array' }
             });
 
             User = lounge.model('User', userSchema);
@@ -1022,7 +1174,7 @@ describe('Model index query tests', function () {
         u.company = expectedCompanies[i];
       });
 
-      User.findByCompany(company, {populate: true}, function (err, rdoc) {
+      User.findByCompany(company, { populate: true }, function (err, rdoc) {
         expect(err).to.not.be.ok;
 
         expect(rdoc).to.be.ok;
@@ -1046,7 +1198,7 @@ describe('Model index query tests', function () {
         u.company = expectedCompanies[i];
       });
 
-      User.findByCompany(company, {populate: 'company'}, function (err, rdoc) {
+      User.findByCompany(company, { populate: 'company' }, function (err, rdoc) {
         expect(err).to.not.be.ok;
 
         expect(rdoc).to.be.ok;
@@ -1070,7 +1222,7 @@ describe('Model index query tests', function () {
         u.company = expectedCompanies[i];
       });
 
-      User.findByCompany(company, {populate: 'company'}, function (err, rdoc) {
+      User.findByCompany(company, { populate: 'company' }, function (err, rdoc) {
         expect(err).to.not.be.ok;
 
         expect(rdoc).to.be.ok;
