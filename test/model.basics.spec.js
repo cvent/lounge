@@ -159,7 +159,7 @@ describe('Model basics', function () {
       expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
     });
 
-    it.only('Should properly create multiple models from same source data with sub documents and arrays when using clone option', function () {
+    it('Should properly create multiple models from same source data with sub documents and arrays when using clone option', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
@@ -211,7 +211,7 @@ describe('Model basics', function () {
       expect(user.foo).to.equal(5);
       expect(user.boolProp).to.equal(true);
       expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
-      expect(user.someProp).to.deep.equal({abc: 'xyz', foo: false, bar: 11});
+      expect(user.someProp.toObject()).to.deep.equal({abc: 'xyz', foo: false, bar: 11});
       var user2 = new User(data, {clone: true});
 
       expect(user2 instanceof User).to.be.ok;
@@ -227,7 +227,7 @@ describe('Model basics', function () {
       expect(user2.foo).to.equal(5);
       expect(user2.boolProp).to.equal(true);
       expect(user2.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
-      expect(user2.someProp).to.deep.equal({abc: 'xyz', foo: false, bar: 11});
+      expect(user2.someProp.toObject()).to.deep.equal({abc: 'xyz', foo: false, bar: 11});
 
       user.email = 'email1@gmail.com';
       user2.email = 'email2@gmail.com';
