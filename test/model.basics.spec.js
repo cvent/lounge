@@ -159,7 +159,7 @@ describe('Model basics', function () {
       expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
     });
 
-    it('Should properly create multiple models from same source data with sub documents and arrays when using clone option', function () {
+    it.only('Should properly create multiple models from same source data with sub documents and arrays when using clone option', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
