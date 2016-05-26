@@ -632,8 +632,7 @@ describe('Model index on remove tests', function () {
 
     var user = new User({
       name: 'Joe Smith',
-      email: 'joe@gmail.com',
-      usernames: [company1]
+      email: 'joe@gmail.com'
     });
 
     user.companies.push(company2);
@@ -710,8 +709,7 @@ describe('Model index on remove tests', function () {
 
     var user = new User({
       name: 'Joe Smith',
-      email: 'joe@gmail.com',
-      usernames: [company1]
+      email: 'joe@gmail.com'
     });
 
     user.companies.push(company2);

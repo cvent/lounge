@@ -2,7 +2,7 @@ var _ = require('lodash');
 var expect = require('chai').expect;
 var lounge = require('../index');
 
-describe('Events tests', function () {
+describe.skip('Events tests', function () {
   beforeEach(function (done) {
     lounge = new lounge.Lounge(); // recreate it
     var bucket = lounge.connect({
@@ -16,7 +16,7 @@ describe('Events tests', function () {
   describe('Instance events', function () {
     var savedDoc;
 
-    it.only('Should properly emit \'save\' event when saved`', function (done) {
+    it('Should properly emit \'save\' event when saved`', function (done) {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,

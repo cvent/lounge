@@ -187,6 +187,7 @@ describe('Model findById tests', function () {
         city: String,
         country: String,
         state: String,
+        postalCode: String,
         founded: Date
       });
 
