@@ -16,7 +16,7 @@ describe('Events tests', function () {
   describe('Instance events', function () {
     var savedDoc;
 
-    it('Should properly emit \'save\' event when saved`', function (done) {
+    it.only('Should properly emit \'save\' event when saved`', function (done) {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
@@ -32,9 +32,11 @@ describe('Events tests', function () {
       });
 
       var semitted = false;
+      try {
       user.on('save', function (doc) {
         semitted = true;
       });
+    } catch(e) { console.log(e); }
 
       user.save(function (err, doc) {
         savedDoc = doc;
