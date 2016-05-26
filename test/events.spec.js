@@ -2,7 +2,7 @@ var _ = require('lodash');
 var expect = require('chai').expect;
 var lounge = require('../index');
 
-describe.skip('Events tests', function () {
+describe('Events tests', function () {
   beforeEach(function (done) {
     lounge = new lounge.Lounge(); // recreate it
     var bucket = lounge.connect({

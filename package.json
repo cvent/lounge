@@ -19,7 +19,8 @@
     "name": "Bojan Djurkovic <dbojan@gmail.com>"
   },
   "scripts": {
-    "test": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha",
+    "test": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha --harmony && --harmony_proxies",
+    "test6": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha",
     "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha",
     "docs": "jsdoc lib -r -d api-docs -t ./node_modules/jaguarjs-jsdoc-fixed -c ./jsdoc.conf.json -R guide/intro.md",
     "dist": "node ./node_modules/babel-cli/bin/babel.js lib --out-dir dist",
@@ -34,7 +35,7 @@
     "harmony-reflect": "~1.4.0",
     "hooks-fixed": "^1.1.0",
     "inflection": "^1.8.0",
-    "lodash": "~4.13.0",
+    "lodash": "4.10.0",
     "memoizee": "~0.3.9",
     "mpath": "^0.2.1",
     "traverse": "^0.6.6",
@@ -67,8 +68,7 @@
       "babel/object-shorthand": 1,
       "brace-style": [
         0,
-        "1tbs",
-        {
+        "1tbs", {
           "allowSingleLine": false
         }
       ],
