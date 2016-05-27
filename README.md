@@ -6,7 +6,7 @@ Simple Mongoose-inspired ODM for [Couchbase](http://www.couchbase.com).
 
 `npm install lounge`
 
-**Node.js >= 0.10 supported. For Node versions < 6.0 run `node` with the harmony `--harmony` and harmony proxies `--harmony-proxies` flags. For Node version >= 6.0 no special flags are needed.**
+**Node.js >= 0.10 supported. For Node.js versions < 6.0 run `node` with the harmony `--harmony` and harmony proxies `--harmony_proxies` flags. For Node.js version >= 6.0 no special flags are needed.**
 
 ## Overview
 
