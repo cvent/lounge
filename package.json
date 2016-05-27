@@ -19,7 +19,7 @@
     "name": "Bojan Djurkovic <dbojan@gmail.com>"
   },
   "scripts": {
-    "test": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha --harmony && --harmony_proxies",
+    "test": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha --harmony --harmony-proxies",
     "test6": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha",
     "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha",
     "docs": "jsdoc lib -r -d api-docs -t ./node_modules/jaguarjs-jsdoc-fixed -c ./jsdoc.conf.json -R guide/intro.md",
