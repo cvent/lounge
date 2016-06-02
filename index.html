@@ -2,7 +2,7 @@
 <p>Simple Mongoose-inspired ODM for <a href="http://www.couchbase.com">Couchbase</a>.</p>
 <h2 id="installation">Installation</h2>
 <p><code>npm install lounge</code></p>
-<p><strong>Node.js &gt;= 0.10 supported. For all features, run node with the harmony <code>--harmony</code> and harmony proxies <code>--harmony_proxies</code> flags.</strong></p>
+<p><strong>Node.js &gt;= 0.10 supported. For Node.js versions &lt; 6.0 run <code>node</code> with the harmony <code>--harmony</code> and harmony proxies <code>--harmony_proxies</code> flags. For Node.js version &gt;= 6.0 no special flags are needed.</strong></p>
 <h2 id="overview">Overview</h2>
 <p>Lounge is a simple, somewhat opinionated, Mongoose-inspired ODM for <a href="http://www.couchbase.com">Couchbase</a>. Main goal is
 to provide modeling tool framework for working with Couchbase databases in an asynchronous environment of Node.js.</p>
@@ -685,76 +685,22 @@ this set <code>removeRefs</code> options to <code>true</code>.</p>
   if(err) console.log(err);
 });</code></pre>
 <p>This will execute removal, hooks and indexing operations for all documents and subdocuments.</p>
-</div></section><section><div class="content"><h2 id="population-a-id-population-a-">Population <a id="population"></a></h2>
-<p><code>findById</code> comes with an options parameter that can have one property <code>populate</code> that can be used to dictate
-if and how we want to get any embedded subdocuments from the database. If <code>populate</code> option is <code>true</code> all embedded
-subdocuments are retrieved from the database.</p>
-<p>From our &quot;Embedded Documents&quot; example, if we were to retrieve the user document created:</p>
-<pre><code class="lang-js">User.findById(userId, {populate: true}, function(err, doc) {
-  console.log(user instanceof User); // true
-  console.log(user.address instanceof Address); // true
-  console.log(user.posts[0] instanceof BlogPost); // true
-
-  console.log(user); // full user document with retrieved address and posts subdocuments
-});</code></pre>
-<p>We can specify a single field to populate:</p>
-<pre><code class="lang-js">User.findById(userId, {populate: &#39;address&#39;}, function(err, doc) {
-  console.log(user instanceof User); // true
-  console.log(user.address instanceof Address); // true
-  console.log(user.posts[0] instanceof BlogPost); // false
-  console.log(user.posts[0] instanceof String); // true - posts is an array of string keys
-});</code></pre>
-<pre><code class="lang-js">User.findById(userId, {populate: &#39;posts&#39;}, function(err, doc) {
-  console.log(user instanceof User); // true
-  console.log(user.address instanceof Address); // false
-  console.log(user.posts[0] instanceof BlogPost); // true
-});</code></pre>
-<p>Similarly this can also be accomplished by passing <code>{ populate: { path: &#39;address&#39; } }</code> as options.
-We can explicitly specify array indexes to populate</p>
-<pre><code class="lang-js">User.findById(userId, {populate: &#39;posts.1&#39;}, function(err, doc) {
-  console.log(user instanceof User); // true
-  console.log(user.address instanceof Address); // false
-  console.log(user.posts[0] instanceof BlogPost); // false
-  console.log(user.posts[0] instanceof String); // true
-  console.log(user.posts[1] instanceof BlogPost); // true - fully populated
-});</code></pre>
-<p>Additionally, <code>populate</code> can accept an array if fields to populate:</p>
-<pre><code class="lang-js">User.findById(userId, {populate: [&#39;address&#39;, &#39;posts.1&#39;]}, function(err, doc) {
-  console.log(user instanceof User); // true
-  console.log(user.address instanceof Address); // true - fully populated
-  console.log(user.posts[0] instanceof BlogPost); // false
-  console.log(user.posts[0] instanceof String); // true
-  console.log(user.posts[1] instanceof BlogPost); // true - fully populated
-});</code></pre>
-<p>A special use case might be that we want to populate path <code>foo</code> into a target field <code>bar</code>. This can be accomplished by
-specifying a <code>target</code> populate option. For example if we have the following models:</p>
-<pre><code>var profileSchema = lounge.schema({
-  firstName: String,
-  lastName: String,
-  email: String
-});
-
-Profile = lounge.model(&#39;Profile&#39;, profileSchema);
-
-var ticketSchema = lounge.schema({
-  confirmationCode: String,
-  profileId: Profile,
-  profile: Object
-});
-
-Ticket = lounge.model(&#39;Ticket&#39;, ticketSchema);</code></pre>
-<p>We can do:</p>
-<pre><code>Ticket.findById(ticketId, { populate: { path: &#39;profileId&#39;, target:&#39;profile&#39; } }, function(err, ticket) {
-  console.log(ticket);
-});</code></pre>
-<p>Sample output:</p>
-<pre><code>{ confirmationCode: &#39;ClqwgiWea&#39;,
-  profileId: &#39;366f4088-8dc6-4223-a418-495ad51d0436&#39;,
-  profile:
-   { firstName: &#39;Thomas&#39;,
-     lastName: &#39;Kennedy&#39;,
-     email: &#39;tkennedy1@walmart.com&#39;,
-     id: &#39;366f4088-8dc6-4223-a418-495ad51d0436&#39; } }</code></pre>
+</div></section><section><div class="content"><p>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
+ &quot;<a href="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;">http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot;&gt;</a></p>
+<html>
+  <head>
+    <title>503 Connection timed out</title>
+  </head>
+  <body>
+    <h1>Error 503 Connection timed out</h1>
+    <p>Connection timed out</p>
+    <h3>Guru Mediation:</h3>
+    <p>Details: cache-jfk1023-JFK 1464901486 3917855692</p>
+    <hr>
+    <p>Varnish cache server</p>
+  </body>
+</html>
 </div></section><section><div class="content"><h2 id="indexes-a-id-indexes-a-">Indexes <a id="indexes"></a></h2>
 <p>Lounge provides Indexing mechanism using <a href="http://docs.couchbase.com/developer/dev-guide-3.0/lookups.html">reference lookup documents</a>.
 This allows us to set up simple lookups for easier document retrieval where we do not need to do create view
