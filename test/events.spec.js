@@ -32,9 +32,11 @@ describe('Events tests', function () {
       });
 
       var semitted = false;
+      try {
       user.on('save', function (doc) {
         semitted = true;
       });
+    } catch(e) { console.log(e); }
 
       user.save(function (err, doc) {
         savedDoc = doc;
