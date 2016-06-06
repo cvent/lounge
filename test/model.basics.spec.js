@@ -156,7 +156,7 @@ describe('Model basics', function () {
       expect(user.foo).to.equal(5);
       expect(user.boolProp).to.equal(true);
       expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
-      expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
+      expect(user.someProp).to.deep.equal({ abc: 'xyz', sbp: false, snp: 11 });
     });
 
     it('Should properly create multiple models from same source data with sub documents and arrays when using clone option', function () {
@@ -196,7 +196,7 @@ describe('Model basics', function () {
         }
       };
 
-      var user = new User(data, {clone: true});
+      var user = new User(data, { clone: true });
 
       expect(user instanceof User).to.be.ok;
       expect(user instanceof lounge.Document).to.be.ok;
@@ -211,8 +211,8 @@ describe('Model basics', function () {
       expect(user.foo).to.equal(5);
       expect(user.boolProp).to.equal(true);
       expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
-      expect(user.someProp.toObject()).to.deep.equal({abc: 'xyz', foo: false, bar: 11});
-      var user2 = new User(data, {clone: true});
+      expect(user.someProp.toObject()).to.deep.equal({ abc: 'xyz', foo: false, bar: 11 });
+      var user2 = new User(data, { clone: true });
 
       expect(user2 instanceof User).to.be.ok;
       expect(user2 instanceof lounge.Document).to.be.ok;
@@ -227,7 +227,7 @@ describe('Model basics', function () {
       expect(user2.foo).to.equal(5);
       expect(user2.boolProp).to.equal(true);
       expect(user2.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
-      expect(user2.someProp.toObject()).to.deep.equal({abc: 'xyz', foo: false, bar: 11});
+      expect(user2.someProp.toObject()).to.deep.equal({ abc: 'xyz', foo: false, bar: 11 });
 
       user.email = 'email1@gmail.com';
       user2.email = 'email2@gmail.com';
@@ -238,19 +238,21 @@ describe('Model basics', function () {
 
     it('Should properly create a model with embedded document', function () {
       var userSchema = lounge.schema({
-        email: {type: String, key: true, prefix: 'user:'},
-        firstName: String, lastName: String
+        email: { type: String, key: true, prefix: 'user:' },
+        firstName: String,
+        lastName: String
       });
 
       var User = lounge.model('User', userSchema);
 
       var postSchema = lounge.schema({
-        owner: User, content: String
+        owner: User,
+        content: String
       });
       var Post = lounge.model('Post', postSchema);
 
-      var user = new User({email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'});
-      var post = new Post({owner: user, content: 'Lorem ipsum'});
+      var user = new User({ email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith' });
+      var post = new Post({ owner: user, content: 'Lorem ipsum' });
 
       expect(user).to.be.ok;
       expect(user).to.be.an.instanceof(User);
@@ -272,21 +274,23 @@ describe('Model basics', function () {
 
     it('Should properly create multiple models with embedded document from same source', function () {
       var userSchema = lounge.schema({
-        email: {type: String, key: true, prefix: 'user:'},
-        firstName: String, lastName: String
+        email: { type: String, key: true, prefix: 'user:' },
+        firstName: String,
+        lastName: String
       });
 
       var User = lounge.model('User', userSchema);
 
       var postSchema = lounge.schema({
-        owner: User, content: String
+        owner: User,
+        content: String
       });
       var Post = lounge.model('Post', postSchema);
 
-      var userData = {email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith'};
+      var userData = { email: 'joe@gmail.com', firstName: 'Joe', lastName: 'Smith' };
 
       var user = new User(userData);
-      var postData = {owner: user, content: 'Lorem ipsum'};
+      var postData = { owner: user, content: 'Lorem ipsum' };
 
       var post = new Post(postData);
 
@@ -375,7 +379,7 @@ describe('Model basics', function () {
       expect(user.foo).to.equal(5);
       expect(user.boolProp).to.equal(true);
       expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
-      expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
+      expect(user.someProp).to.deep.equal({ abc: 'xyz', sbp: false, snp: 11 });
       expect(user.unpa).to.not.be.ok;
     });
 
@@ -414,8 +418,8 @@ describe('Model basics', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
-        email: {type: String, key: true, generate: false},
-        usernames: [{type: String}]
+        email: { type: String, key: true, generate: false },
+        usernames: [{ type: String }]
       });
 
       var User = lounge.model('User', userSchema);
@@ -517,7 +521,8 @@ describe('Model basics', function () {
         new Foo({
           a: 'newa2',
           b: 'newb2'
-        })];
+        })
+      ];
 
       user.foos = foos2;
 
@@ -529,7 +534,7 @@ describe('Model basics', function () {
 
     it('should properly create a model with manual ref of a model that is later defined', function () {
       var siteSchema = lounge.schema({
-        owner: {type: lounge.Model, modelName: 'User'},
+        owner: { type: lounge.Model, modelName: 'User' },
         url: String
       });
 
@@ -559,6 +564,27 @@ describe('Model basics', function () {
       expect(site.owner.name).to.equal('Joe Smith');
       expect(site.owner.email).to.equal('jsmith@gmail.com');
     });
+
+    it('should get value at path using get()', function () {
+      var userSchema = lounge.schema({
+        email: String,
+        name: String
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var user = new User({
+        name: 'Joe Smith',
+        email: 'jsmith@gmail.com'
+      });
+
+      var name = user.get('name');
+      var email = user.get('email');
+      var unknown = user.get('foo');
+      expect(name).to.equal('Joe Smith');
+      expect(email).to.equal('jsmith@gmail.com');
+      expect(unknown).to.not.be.ok;
+    });
   });
 
   describe('Nested properties tests', function () {
@@ -581,7 +607,7 @@ describe('Model basics', function () {
       });
 
       expect(user.name).to.equal(user.name);
-      expect(user.profile).to.deep.equal({email: 'p1@p1.com', age: 10});
+      expect(user.profile).to.deep.equal({ email: 'p1@p1.com', age: 10 });
 
       // this should work
       user.set('profile', {
@@ -657,7 +683,7 @@ describe('Model basics', function () {
       });
 
       expect(user.name).to.equal(user.name);
-      expect(user.profile).to.deep.equal({email: 'bsmith2@gmail.com', age: 22});
+      expect(user.profile).to.deep.equal({ email: 'bsmith2@gmail.com', age: 22 });
 
       user.profile.set({
         email: 'bsmith@gmail.com',
@@ -700,29 +726,23 @@ describe('Model basics', function () {
         age: 20
       });
 
-      expect(user.profiles.toArray()).to.deep.equal([{email: 'bsmith@gmail.com', age: 20}]);
+      expect(user.profiles.toArray()).to.deep.equal([{ email: 'bsmith@gmail.com', age: 20 }]);
 
-      user.profiles = [
-        {
-          email: 'bsmith2@gmail.com',
-          age: 21
-        },
-        {
-          email: 'bsmith3@gmail.com',
-          age: 22
-        }
-      ];
+      user.profiles = [{
+        email: 'bsmith2@gmail.com',
+        age: 21
+      }, {
+        email: 'bsmith3@gmail.com',
+        age: 22
+      }];
 
-      expect(user.profiles.toArray()).to.deep.equal([
-        {
-          email: 'bsmith2@gmail.com',
-          age: 21
-        },
-        {
-          email: 'bsmith3@gmail.com',
-          age: 22
-        }
-      ]);
+      expect(user.profiles.toArray()).to.deep.equal([{
+        email: 'bsmith2@gmail.com',
+        age: 21
+      }, {
+        email: 'bsmith3@gmail.com',
+        age: 22
+      }]);
     });
 
     it('Should properly work with basic types in an array', function () {
@@ -752,30 +772,24 @@ describe('Model basics', function () {
       expect(user.usernames.toArray()).to.deep.equal(['user1']);
 
       // should not work
-      user.usernames = [
-        {
-          email: 'bsmith2@gmail.com',
-          age: 21
-        },
-        {
-          email: 'bsmith3@gmail.com',
-          age: 22
-        }
-      ];
+      user.usernames = [{
+        email: 'bsmith2@gmail.com',
+        age: 21
+      }, {
+        email: 'bsmith3@gmail.com',
+        age: 22
+      }];
 
       expect(user.usernames.toArray()).to.deep.equal(['user1']);
 
       // should not work
-      user.usernames.set([
-        {
-          email: 'bsmith2@gmail.com',
-          age: 21
-        },
-        {
-          email: 'bsmith3@gmail.com',
-          age: 22
-        }
-      ]);
+      user.usernames.set([{
+        email: 'bsmith2@gmail.com',
+        age: 21
+      }, {
+        email: 'bsmith3@gmail.com',
+        age: 22
+      }]);
 
       expect(user.usernames.toArray()).to.deep.equal(['user1']);
 
@@ -944,7 +958,7 @@ describe('Model basics', function () {
       expect(user.foo).to.equal(5);
       expect(user.boolProp).to.equal(true);
       expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
-      expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
+      expect(user.someProp).to.deep.equal({ abc: 'xyz', sbp: false, snp: 11 });
 
       user.clear();
 
@@ -1005,7 +1019,7 @@ describe('Model basics', function () {
       expect(user.foo).to.equal(5);
       expect(user.boolProp).to.equal(true);
       expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
-      expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
+      expect(user.someProp).to.deep.equal({ abc: 'xyz', sbp: false, snp: 11 });
 
       user.clear();
 
@@ -1029,7 +1043,7 @@ describe('Model basics', function () {
       expect(user.foo).to.equal(5);
       expect(user.boolProp).to.equal(true);
       expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
-      expect(user.someProp).to.deep.equal({abc: 'xyz', sbp: false, snp: 11});
+      expect(user.someProp).to.deep.equal({ abc: 'xyz', sbp: false, snp: 11 });
     });
   });
 });
