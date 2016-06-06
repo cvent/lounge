@@ -445,7 +445,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="-_.html">Class: </h1>
+        <h1 class="page-title" data-filename="AbstractBaseModel.html">Class: AbstractBaseModel</h1>
         
 
 
@@ -454,10 +454,10 @@
     
 <header>
     <h2>
-    
+    AbstractBaseModel
     </h2>
     
-        <div class="class-description"><p>Model class is a base class for all</p></div>
+        <div class="class-description"><p>Abstract Base Model representation for all created Document instances.<br>Represents just the document data and generic properties and functions.<br>Also used for &quot;object&quot; abstraction / representation of sub documents that are not actual Models / Documents.<br>Clients should never have to call this directly.</p></div>
     
 </header>  
 
@@ -469,15 +469,15 @@
         
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="">
+        <h4 class="name" id="AbstractBaseModel">
             
             
-            new <span class="signature">()</span>
+            new AbstractBaseModel<span class="signature">(values, options, schema)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{<a href="AbstractBaseModel.html">AbstractBaseModel</a>}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="model.js.html">model.js</a>, <a href="model.js.html#line15">line 15</a>
+            <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line37">line 37</a>
         </div>
         
     </div>
@@ -487,11 +487,151 @@
 <dd>
     
     
+    <div class="description">
+        <p>Clients do not need to create <code>AbstractBaseModel</code> instances manually.</p>
+    </div>
+    
 
     
     
     
     
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>the object data</p></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>creation options</p>
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>clone</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>Whether to deep clone the incoming data. Default: <code>false</code>.<br>                                 Make sure you wish to do this as it has performance implications. This is<br>                                 useful if you are creating multiple instances from same base data and then<br>                                 wish to modify each instance.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+            </td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>schema</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Schema.html">Schema</a></span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>schema instance</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -529,6 +669,35 @@
     
     
     
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        <a href="AbstractBaseModel.html">AbstractBaseModel</a>
+                        
+                    
+            </td>
+            <td class="description last"></td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
     
     
 </dd>
@@ -536,12 +705,6 @@
     
     </div>
     
-    
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li><a href="CouchbaseDocument.html">CouchbaseDocument</a></li>
-        </ul>
     
     
     
@@ -559,16 +722,14 @@
             
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="cas">
-            
-                <span class="inherited"><a href="CouchbaseDocument.html#cas">inherited</a></span>
+        <h4 class="name" id="schema">
             
             
-            cas
+            schema
         </h4>
          
             <div class="tag-source">
-                <a href="cbdocument.js.html">cbdocument.js</a>, <a href="cbdocument.js.html#line53">line 53</a>
+                <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line178">line 178</a>
             </div>
         
     </div>
@@ -578,7 +739,7 @@
 <dd>
     
     <div class="description">
-        <p>Returns the string representation of <code>CAS</code> value.</p>
+        <p>Get the model schema instance</p>
     </div>
     
     
@@ -608,187 +769,6 @@
 </dl>
 
     
-    
-        <h5>Example</h5>
-        
-
-    
-    <pre class="prettyprint"><code><p>console.log(doc.cas); // String: 00000000a71626e4</p></code></pre>
-    
-
-    
-</dd>
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="config">
-            
-                <span class="inherited"><a href="CouchbaseDocument.html#config">inherited</a></span>
-            
-            
-            config
-        </h4>
-         
-            <div class="tag-source">
-                <a href="cbdocument.js.html">cbdocument.js</a>, <a href="cbdocument.js.html#line69">line 69</a>
-            </div>
-        
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Gets the config object</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="db">
-            
-                <span class="inherited"><a href="CouchbaseDocument.html#db">inherited</a></span>
-            
-            
-            db
-        </h4>
-         
-            <div class="tag-source">
-                <a href="cbdocument.js.html">cbdocument.js</a>, <a href="cbdocument.js.html#line61">line 61</a>
-            </div>
-        
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Gets the database driver of the model</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id="modelName">
-            
-                <span class="inherited"><a href="Document.html#modelName">inherited</a></span>
-            
-            
-            modelName<span class="type-signature type string">String</span> 
-        </h4>
-         
-            <div class="tag-source">
-                <a href="document.js.html">document.js</a>, <a href="document.js.html#line56">line 56</a>
-            </div>
-        
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>The name the name of the model. This is both a static and instance property.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-        <h5>Example</h5>
-        
-
-    
-    <pre class="prettyprint"><code><p>var schema = lounge.schema({ name: String });<br>var Cat = lounge.model('Cat', schema);<br>var kitty = new Cat({ name: 'Zildjian' });<br>console.log(Cat.modelName); // 'Cat'<br>console.log(kitty.modelName); // 'Cat'</p></code></pre>
-    
-
     
 </dd>
         </dl>
@@ -800,18 +780,16 @@
         <dl>
             
 <dt>
-    <div class="nameContainer inherited">
-        <h4 class="name" id="getCAS">
-            
-                <span class="inherited"><a href="CouchbaseDocument.html#getCAS">inherited</a></span>
+    <div class="nameContainer">
+        <h4 class="name" id="clear">
             
             
-            getCAS<span class="signature">(raw)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{String|Object}</span>
+            clear<span class="signature">()</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="cbdocument.js.html">cbdocument.js</a>, <a href="cbdocument.js.html#line82">line 82</a>
+            <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line416">line 416</a>
         </div>
         
     </div>
@@ -822,166 +800,7 @@
     
     
     <div class="description">
-        <p>Returns the document <code>CAS</code> value.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>raw</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>If <code>true</code> returns the raw CAS document. If <code>false</code> returns string<br>                       representation of CAS. Defaults to <code>false</code>.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        String
-                         | 
-                    
-                        Object
-                        
-                    
-            </td>
-            <td class="description last">the CAS value</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-        <h5>Example</h5>
-        
-
-    
-    <pre class="prettyprint"><code><p>console.log(doc.getCAS()); // String: 00000000a71626e4<br>console.log(doc.getCAS(true)); // Object: CouchbaseCas<11338961768815788032></p></code></pre>
-    
-
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer inherited">
-        <h4 class="name" id="getDocumentKeyKey">
-            
-                <span class="inherited"><a href="Document.html#getDocumentKeyKey">inherited</a></span>
-            
-            
-            getDocumentKeyKey<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{String}</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="document.js.html">document.js</a>, <a href="document.js.html#line104">line 104</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Gets the Document key property name.</p>
+        <p>Clear the document data.</p>
     </div>
     
 
@@ -1026,62 +845,23 @@
     
     
     
-    <h5>Returns:</h5>
     
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        String
-                        
-                    
-            </td>
-            <td class="description last">Document key property name</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-        <h5>Example</h5>
-        
-
-    
-    <pre class="prettyprint"><code><p>var schema = lounge.schema({ email: { type: String, key: true, generate: false }});<br>var User = lounge.model('User', schema);<br>var user = new User({ email: 'bsmith@acme.com' });<br>console.log(user.getDocumentKeyKey()); // email</p></code></pre>
-    
-
     
 </dd>
 
         
             
 <dt>
-    <div class="nameContainer inherited">
-        <h4 class="name" id="getDocumentKeyValue">
-            
-                <span class="inherited"><a href="Document.html#getDocumentKeyValue">inherited</a></span>
+    <div class="nameContainer">
+        <h4 class="name" id="clearErrors">
             
             
-            getDocumentKeyValue<span class="signature">(full)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{String}</span>
+            clearErrors<span class="signature">()</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="document.js.html">document.js</a>, <a href="document.js.html#line89">line 89</a>
+            <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line432">line 432</a>
         </div>
         
     </div>
@@ -1092,7 +872,7 @@
     
     
     <div class="description">
-        <p>Helper function to get the document key.</p>
+        <p>Clears all the errors.</p>
     </div>
     
 
@@ -1100,275 +880,6 @@
     
     
     
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>full</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>If <code>true</code> the full expanded value of the key will be returned.<br>                 If there were any suffix and / or prefix defined in schema they are applied.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    <h5>Returns:</h5>
-    
-
-
-<table class="params">
-    <thead>
-    <tr>
-        
-        <th>Type</th>
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-    <tbody>
-    
-        <tr>
-            
-            <td class="type">
-            
-                        String
-                        
-                    
-            </td>
-            <td class="description last">document key</td>
-        </tr>
-    
-    </tbody>
-</table>
-
-    
-    
-    
-        <h5>Example</h5>
-        
-
-    
-    <pre class="prettyprint"><code><p>var schema = lounge.schema({ email: String }, { keyPrefix: 'user::'});<br>var User = lounge.model('User', schema);<br>var user = new User({ email: 'bsmith@acme.com' });<br>console.log(user.getDocumentKeyValue()); // 114477a8-1901-4146-8c90-0fc9eec57a58<br>console.log(user.getDocumentKeyValue(true)); // user::114477a8-1901-4146-8c90-0fc9eec57a58</p></code></pre>
-    
-
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer inherited">
-        <h4 class="name" id="index">
-            
-                <span class="inherited"><a href="CouchbaseDocument.html#index">inherited</a></span>
-            
-            
-            index<span class="signature">(options, fn)</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="cbdocument.js.html">cbdocument.js</a>, <a href="cbdocument.js.html#line285">line 285</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Update all lookup documents for this document instance. Creates new lookup documents for properties that have changed<br>and deletes the old ones not needed any more.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>storeFullReferenceId</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>whether we store full document id in reference documents</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>fn</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>callback</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -1413,18 +924,16 @@
         
             
 <dt>
-    <div class="nameContainer inherited">
-        <h4 class="name" id="remove">
-            
-                <span class="inherited"><a href="CouchbaseDocument.html#remove">inherited</a></span>
+    <div class="nameContainer">
+        <h4 class="name" id="get">
             
             
-            remove<span class="signature">(options, fn)</span>
+            get<span class="signature">(path)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{*}</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="cbdocument.js.html">cbdocument.js</a>, <a href="cbdocument.js.html#line487">line 487</a>
+            <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line219">line 219</a>
         </div>
         
     </div>
@@ -1435,7 +944,7 @@
     
     
     <div class="description">
-        <p>Removes the instance from the database.<br>Calls the bucket <code>remove()</code> function. Options can be passed to the driver.</p>
+        <p>Gets value at a specified path.</p>
     </div>
     
 
@@ -1466,429 +975,7 @@
 	
         <tr>
             
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Options to be passed to the Couchbase <code>Bucket.remove()</code> function.</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>fn</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>callback</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-        <h5>Example</h5>
-        
-
-    
-    <pre class="prettyprint"><code><p>user.remove(function(err, doc) {<br>  if(err) console.log(err);<br>});</p></code></pre>
-    
-
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer inherited">
-        <h4 class="name" id="removeIndexes">
-            
-                <span class="inherited"><a href="CouchbaseDocument.html#removeIndexes">inherited</a></span>
-            
-            
-            removeIndexes<span class="signature">(options, fn)</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="cbdocument.js.html">cbdocument.js</a>, <a href="cbdocument.js.html#line614">line 614</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Removes all lookup / index documents for this document.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>storeFullReferenceId</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>whether we store full document id in reference documents</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>fn</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>callback</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-</dd>
-
-        
-            
-<dt>
-    <div class="nameContainer inherited">
-        <h4 class="name" id="save">
-            
-                <span class="inherited"><a href="CouchbaseDocument.html#save">inherited</a></span>
-            
-            
-            save<span class="signature">(options, replicate_to, fn)</span>
-        </h4>
-    
-        
-        <div class="tag-source">
-            <a href="cbdocument.js.html">cbdocument.js</a>, <a href="cbdocument.js.html#line130">line 130</a>
-        </div>
-        
-    </div>
-
-    
-</dt>
-<dd>
-    
-    
-    <div class="description">
-        <p>Save the current model instance. Calls db set function for the model id and saves the properties.</p>
-    </div>
-    
-
-    
-    
-    
-    
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>The save options. All options not present here are first looked up from schema options,<br>and then from config options.</p>
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>storeFullReferenceId</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>whether to save embedded document property values as full document keys or just the base value</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>storeFullKey</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>whether to save the internal document key property as fully expanded value or as the simple value</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>refIndexKeyPrefix</code></td>
+                <td class="name"><code>path</code></td>
             
             
             <td class="type">
@@ -1904,20 +991,468 @@
             
             <td class="description last">
                 
-                <p>lookup index document key prefix.</p></td>
+                <p>The path / property to retrieve.</p></td>
         </tr>
 	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        *
+                        
+                    
+            </td>
+            <td class="description last">The value at the path.</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="getErrors">
+            
+            
+            getErrors<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line425">line 425</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Gets the errors object.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="hasErrors">
+            
+            
+            hasErrors<span class="signature">()</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Boolean}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line440">line 440</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Checks whether we have any errors.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        Boolean
+                        
+                    
+            </td>
+            <td class="description last"><code>true</code> if we have errors, <code>false</code> otherwise.</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="inspect">
+            
+            
+            inspect<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line401">line 401</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Helper for <code>console.log</code>. Just invokes default <code>toObject</code>.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="set">
+            
+            
+            set<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line197">line 197</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Sets data on the document based on the schema.<br>Accepts a key of property and value for the property, or object representing the data for document.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
+    
+        <h5>Example</h5>
+        
+
+    
+    <pre class="prettyprint"><code><p>user.set('fistName', 'Joe');<br>user.set({ lastName: 'Smith' });</p></code></pre>
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="toJSON">
+            
+            
+            toJSON<span class="signature">(options)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Object}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line393">line 393</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Similar as <code>toObject</code> but applied when <code>JSON.stringify</code> is called</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
 	
 	
         <tr>
             
-                <td class="name"><code>waitForIndex</code></td>
+                <td class="name"><code>options</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">Boolean</span>
+<span class="param-type">Object</span>
 
 
             
@@ -1927,7 +1462,192 @@
             
             <td class="description last">
                 
-                <p>whether we want to wait for indexing to finish before returning. Default: <code>false</code>.</p></td>
+                <p>Same options as <code>toObject</code>.</p></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        Object
+                        
+                    
+            </td>
+            <td class="description last">Plain javascript object representation of document.</td>
+        </tr>
+    
+    </tbody>
+</table>
+
+    
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="toObject">
+            
+            
+            toObject<span class="signature">(options)</span><span class="glyphicon glyphicon-circle-arrow-right"></span><span class="type-signature returnType">{Object}</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line382">line 382</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Converts this document into a plain javascript object.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                
+                
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>transform</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            <td class="description last">
+                
+                <p>a transform function to apply to the resulting document before returning.</p></td>
         </tr>
 	
 	
@@ -1950,7 +1670,7 @@
             
             <td class="description last">
                 
-                <p>whether we want to save virtuals. Default: <code>false</code>.</p></td>
+                <p>apply virtual getters. Default: <code>false</code></p></td>
         </tr>
 	
 	
@@ -1973,20 +1693,20 @@
             
             <td class="description last">
                 
-                <p>to &quot;minimize&quot; the document by removing any empty properties. Default: <code>true</code></p></td>
+                <p>remove empty objects. Default: <code>true</code></p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>expiry</code></td>
+                <td class="name"><code>serializable</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">Number</span>
+<span class="param-type">Boolean</span>
 
 
             
@@ -1996,20 +1716,20 @@
             
             <td class="description last">
                 
-                <p>couchbase upsert option</p></td>
+                <p>whether to include <code>serializable</code> properties. Default: <code>true</code></p></td>
         </tr>
 	
 	
 	
         <tr>
             
-                <td class="name"><code>persist_to</code></td>
+                <td class="name"><code>dateToISO</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">Number</span>
+<span class="param-type">Boolean</span>
 
 
             
@@ -2019,59 +1739,13 @@
             
             <td class="description last">
                 
-                <p>couchbase persist_to option</p></td>
+                <p>convert dates to string in ISO format using <code>Date.toISOString()</code>. Default: <code>true</code></p></td>
         </tr>
 	
 	
 	</tbody>
 </table>
             </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>replicate_to</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Number</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>couchbase option</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>fn</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">function</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>callback</p></td>
         </tr>
 	
 	
@@ -2114,15 +1788,123 @@
     
     
     
+    <h5>Returns:</h5>
+    
+
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Type</th>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    
+        <tr>
+            
+            <td class="type">
+            
+                        Object
+                        
+                    
+            </td>
+            <td class="description last">Plain javascript object representation of document.</td>
+        </tr>
+    
+    </tbody>
+</table>
+
     
     
-        <h5>Example</h5>
+    
+        <h5>Examples</h5>
         
 
     
-    <pre class="prettyprint"><code><p>var user = new User({ name: 'Bob Smith', email: 'bsmith@acme.com' });<br>user.save(function(err, savedDoc) {<br>  if(err) console.log(err);<br>});</p></code></pre>
+    <pre class="prettyprint"><code><p>var userSchema = lounge.schema({ name: String });<br>var User = lounge.model('User', userSchema);<br>var user = new User({name: 'Joe Smith'});<br>console.log(user); // automatically invokes toObject()</p></code></pre>
     
 
+        <p class="code-caption">Example with transform option.</p>
+    
+
+    
+    <pre class="prettyprint"><code><br>var xform = function (doc, ret, options) {<br>  ret.name = ret.name.toUpperCase();<br>  return ret;<br>};<br>console.dir(user.toObject({transform: xform}); // { name: 'JOE SMITH' }</p></code></pre>
+    
+
+    
+</dd>
+
+        
+            
+<dt>
+    <div class="nameContainer">
+        <h4 class="name" id="toString">
+            
+            
+            toString<span class="signature">()</span>
+        </h4>
+    
+        
+        <div class="tag-source">
+            <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line409">line 409</a>
+        </div>
+        
+    </div>
+
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        <p>Helper for <code>console.log</code>. Alias for <code>inspect</code>.</p>
+    </div>
+    
+
+    
+    
+    
+    
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    
     
 </dd>
 

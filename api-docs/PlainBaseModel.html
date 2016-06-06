@@ -445,7 +445,7 @@
     </ul>
 </div>
     <div class="main">
-        <h1 class="page-title" data-filename="ModelInstance.html">Class: ModelInstance</h1>
+        <h1 class="page-title" data-filename="PlainBaseModel.html">Class: PlainBaseModel</h1>
         
 
 
@@ -454,10 +454,10 @@
     
 <header>
     <h2>
-    ModelInstance
+    PlainBaseModel
     </h2>
     
-        <div class="class-description"><p>ModelInstance class is the compiled class from a schema definition. It extends <code>Model</code>.<br>All models generated are an instance of ModelInstance. It also inherits <code>hooks-fixed</code><br>See <a target="_blank" href="https://www.npmjs.com/package/hooks-fixed">hooks-fixed</a> for pre and post hooks.</p></div>
+        <div class="class-description"><p>PlainBaseModel implements <code>AbstractBaseModel</code> and is a representation for embedded subdocument<br>objects within user defined models. Clients should never have to call this directly.</p></div>
     
 </header>  
 
@@ -469,15 +469,15 @@
         
 <dt>
     <div class="nameContainer">
-        <h4 class="name" id="ModelInstance">
+        <h4 class="name" id="PlainBaseModel">
             
             
-            new ModelInstance<span class="signature">(data, options, cas)</span>
+            new PlainBaseModel<span class="signature">()</span>
         </h4>
     
         
         <div class="tag-source">
-            <a href="model.js.html">model.js</a>, <a href="model.js.html#line84">line 84</a>
+            <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line474">line 474</a>
         </div>
         
     </div>
@@ -488,7 +488,7 @@
     
     
     <div class="description">
-        <p>This would be the constructor for the generated models.</p>
+        <p>Clients do not need to create <code>PlainBaseModel</code> instances manually.</p>
     </div>
     
 
@@ -496,142 +496,6 @@
     
     
     
-    
-        
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>data</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>the model instance data</p></td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>options</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>optional creation options</p>
-                
-
-<table class="params">
-    <thead>
-	<tr>
-		
-		<th>Name</th>
-		
-		
-		<th>Type</th>
-		
-		
-		
-		<th class="last">Description</th>
-	</tr>
-	</thead>
-	
-	<tbody>
-	
-	
-        <tr>
-            
-                <td class="name"><code>clone</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>Whether to deep clone the incoming data. Default: <code>false</code>.<br>                                 Make sure you wish to do this as it has performance implications. This is<br>                                 useful if you are creating multiple instances from same base data and then<br>                                 wish to modify each instance.</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
-            </td>
-        </tr>
-	
-	
-	
-        <tr>
-            
-                <td class="name"><code>cas</code></td>
-            
-            
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-            
-            </td>
-            
-            
-            
-            <td class="description last">
-                
-                <p>the Couchbase <code>CAS</code> value</p></td>
-        </tr>
-	
-	
-	</tbody>
-</table>
     
     
     
@@ -677,11 +541,6 @@
     </div>
     
     
-        <h3 class="subsection-title">Extends</h3>
-        
-        <ul>
-            <li>Model</li>
-        </ul>
     
     
     
@@ -691,223 +550,6 @@
     
     
     
-    
-    
-        <h3 class="subsection-title">Members</h3>
-        
-        <dl>
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".config">
-            
-            
-            <span class="type-signature static">static</span> ModelInstance.config
-        </h4>
-         
-            <div class="tag-source">
-                <a href="model.js.html">model.js</a>, <a href="model.js.html#line146">line 146</a>
-            </div>
-        
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>The config.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".db">
-            
-            
-            <span class="type-signature static">static</span> ModelInstance.db
-        </h4>
-         
-            <div class="tag-source">
-                <a href="model.js.html">model.js</a>, <a href="model.js.html#line138">line 138</a>
-            </div>
-        
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>The driver.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".modelName">
-            
-            
-            <span class="type-signature static">static</span> ModelInstance.modelName
-        </h4>
-         
-            <div class="tag-source">
-                <a href="model.js.html">model.js</a>, <a href="model.js.html#line130">line 130</a>
-            </div>
-        
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>The name of the model.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-        
-            
-<dt>
-    <div class="nameContainer">
-        <h4 class="name" id=".schema">
-            
-            
-            <span class="type-signature static">static</span> ModelInstance.schema
-        </h4>
-         
-            <div class="tag-source">
-                <a href="model.js.html">model.js</a>, <a href="model.js.html#line122">line 122</a>
-            </div>
-        
-    </div>
-    
-    
-</dt>
-<dd>
-    
-    <div class="description">
-        <p>Schema the schema of this model.</p>
-    </div>
-    
-    
-    
-<dl class="details">
-    
-        
-    
-    
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-</dl>
-
-    
-    
-</dd>
-        </dl>
     
     
     
