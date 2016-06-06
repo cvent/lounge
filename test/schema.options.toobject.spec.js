@@ -26,6 +26,36 @@ describe('Schema options', function () {
       expect(obj).to.deep.equal(expected);
     });
 
+    it('Should just work without any options when we set a property to null', function () {
+      var userSchema = lounge.schema({ name: String, email: String });
+      var User = lounge.model('User', userSchema);
+      var user = new User({ name: 'Joe', email: 'joe@gmail.com' });
+      var obj = user.toObject();
+
+      var expected = {
+        name: 'Joe',
+        email: 'joe@gmail.com'
+      };
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+
+      delete obj.id;
+
+      expect(obj).to.deep.equal(expected);
+
+      user.email = null;
+
+      obj = user.toObject();
+
+      expect(obj.id).to.be.ok;
+      expect(obj.id).to.be.a('string');
+
+      delete obj.id;
+
+      expect(obj).to.deep.equal({ name: 'Joe' });
+    });
+
     it('should not return invisible properties', function () {
       var userSchema = lounge.schema({
         name: String,
