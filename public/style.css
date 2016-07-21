@@ -76,6 +76,9 @@ code, pre {
   font-family:Menlo,Monaco,Consolas,"Courier New",monospace;
   color:#333;
   font-size:13.5px;
+  background: #eee;
+  padding-left: 1.5px;
+  padding-right: 1.5px;
 }
 
 pre {
