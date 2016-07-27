@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>AbstractBaseModel - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AbstractBaseModel.html">AbstractBaseModel</a><ul class='methods'><li data-type='method'><a href="AbstractBaseModel.html#clear">clear</a></li><li data-type='method'><a href="AbstractBaseModel.html#clearErrors">clearErrors</a></li><li data-type='method'><a href="AbstractBaseModel.html#get">get</a></li><li data-type='method'><a href="AbstractBaseModel.html#getErrors">getErrors</a></li><li data-type='method'><a href="AbstractBaseModel.html#hasErrors">hasErrors</a></li><li data-type='method'><a href="AbstractBaseModel.html#inspect">inspect</a></li><li data-type='method'><a href="AbstractBaseModel.html#set">set</a></li><li data-type='method'><a href="AbstractBaseModel.html#toJSON">toJSON</a></li><li data-type='method'><a href="AbstractBaseModel.html#toObject">toObject</a></li><li data-type='method'><a href="AbstractBaseModel.html#toString">toString</a></li></ul></li><li><a href="BaseModel.html">BaseModel</a></li><li><a href="CouchbaseDocument.html">CouchbaseDocument</a><ul class='methods'><li data-type='method'><a href="CouchbaseDocument.html#.findById">findById</a></li><li data-type='method'><a href="CouchbaseDocument.html#.remove">remove</a></li><li data-type='method'><a href="CouchbaseDocument.html#getCAS">getCAS</a></li><li data-type='method'><a href="CouchbaseDocument.html#getDocumentKeyKey">getDocumentKeyKey</a></li><li data-type='method'><a href="CouchbaseDocument.html#getDocumentKeyValue">getDocumentKeyValue</a></li><li data-type='method'><a href="CouchbaseDocument.html#index">index</a></li><li data-type='method'><a href="CouchbaseDocument.html#remove">remove</a></li><li data-type='method'><a href="CouchbaseDocument.html#removeIndexes">removeIndexes</a></li><li data-type='method'><a href="CouchbaseDocument.html#save">save</a></li></ul></li><li><a href="Document.html">Document</a><ul class='methods'><li data-type='method'><a href="Document.html#.getDocumentKeyValue">getDocumentKeyValue</a></li><li data-type='method'><a href="Document.html#getDocumentKeyKey">getDocumentKeyKey</a></li><li data-type='method'><a href="Document.html#getDocumentKeyValue">getDocumentKeyValue</a></li></ul></li><li><a href="Lounge.html">Lounge</a><ul class='methods'><li data-type='method'><a href="Lounge.html#connect">connect</a></li><li data-type='method'><a href="Lounge.html#disconnect">disconnect</a></li><li data-type='method'><a href="Lounge.html#getModel">getModel</a></li><li data-type='method'><a href="Lounge.html#getOption">getOption</a></li><li data-type='method'><a href="Lounge.html#model">model</a></li><li data-type='method'><a href="Lounge.html#modelNames">modelNames</a></li><li data-type='method'><a href="Lounge.html#schema">schema</a></li><li data-type='method'><a href="Lounge.html#setOption">setOption</a></li></ul></li><li><a href="MemoDriver.html">MemoDriver</a></li><li><a href="Model.html">Model</a><ul class='methods'><li data-type='method'><a href="Model.html#getCAS">getCAS</a></li><li data-type='method'><a href="Model.html#getDocumentKeyKey">getDocumentKeyKey</a></li><li data-type='method'><a href="Model.html#getDocumentKeyValue">getDocumentKeyValue</a></li><li data-type='method'><a href="Model.html#index">index</a></li><li data-type='method'><a href="Model.html#remove">remove</a></li><li data-type='method'><a href="Model.html#removeIndexes">removeIndexes</a></li><li data-type='method'><a href="Model.html#save">save</a></li></ul></li><li><a href="ModelInstance.html">ModelInstance</a><ul class='methods'><li data-type='method'><a href="ModelInstance.html#getCAS">getCAS</a></li><li data-type='method'><a href="ModelInstance.html#getDocumentKeyKey">getDocumentKeyKey</a></li><li data-type='method'><a href="ModelInstance.html#getDocumentKeyValue">getDocumentKeyValue</a></li><li data-type='method'><a href="ModelInstance.html#index">index</a></li><li data-type='method'><a href="ModelInstance.html#remove">remove</a></li><li data-type='method'><a href="ModelInstance.html#removeIndexes">removeIndexes</a></li><li data-type='method'><a href="ModelInstance.html#save">save</a></li></ul></li><li><a href="ObjectArray.html">ObjectArray</a></li><li><a href="PlainBaseModel.html">PlainBaseModel</a></li><li><a href="Schema.html">Schema</a><ul class='methods'><li data-type='method'><a href="Schema.html#add">add</a></li><li data-type='method'><a href="Schema.html#extend">extend</a></li><li data-type='method'><a href="Schema.html#get">get</a></li><li data-type='method'><a href="Schema.html#getDocumentKeyValue">getDocumentKeyValue</a></li><li data-type='method'><a href="Schema.html#getRefKey">getRefKey</a></li><li data-type='method'><a href="Schema.html#hasRefPath">hasRefPath</a></li><li data-type='method'><a href="Schema.html#method">method</a></li><li data-type='method'><a href="Schema.html#post">post</a></li><li data-type='method'><a href="Schema.html#pre">pre</a></li><li data-type='method'><a href="Schema.html#set">set</a></li><li data-type='method'><a href="Schema.html#static">static</a></li><li data-type='method'><a href="Schema.html#virtual">virtual</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">AbstractBaseModel</h1>
+    
+
+    
+
+
+
+
+<section>
+
+<header>
+    
+        <h2>
+        AbstractBaseModel
+        </h2>
+        
+            <div class="class-description"><p>Abstract Base Model representation for all created Document instances.<br>Represents just the document data and generic properties and functions.<br>Also used for &quot;object&quot; abstraction / representation of sub documents that are not actual Models / Documents.<br>Clients should never have to call this directly.</p></div>
+        
+    
+</header>
+
+<article>
+    <div class="container-overview">
+    
+        
+
+    
+    <h2>Constructor</h2>
+    
+
+    <h4 class="name" id="AbstractBaseModel"><span class="type-signature"></span>new AbstractBaseModel<span class="signature">(values, options, schema)</span><span class="type-signature"> &rarr; {<a href="AbstractBaseModel.html">AbstractBaseModel</a>}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line37">line 37</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Clients do not need to create <code>AbstractBaseModel</code> instances manually.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>the object data</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>creation options</p>
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>clone</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Whether to deep clone the incoming data. Default: <code>false</code>.<br>                                 Make sure you wish to do this as it has performance implications. This is<br>                                 useful if you are creating multiple instances from same base data and then<br>                                 wish to modify each instance.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>schema</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="Schema.html">Schema</a></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>schema instance</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="AbstractBaseModel.html">AbstractBaseModel</a></span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+     
+
+    
+
+    
+        <h3 class="subsection-title">Members</h3>
+
+        
+            
+<h4 class="name" id="schema"><span class="type-signature"></span>schema<span class="type-signature"></span></h4>
+
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line178">line 178</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Get the model schema instance</p>
+</div>
+
+
+
+
+
+
+
+
+        
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        
+            
+
+    
+
+    <h4 class="name" id="clear"><span class="type-signature"></span>clear<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line416">line 416</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Clear the document data.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="clearErrors"><span class="type-signature"></span>clearErrors<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line432">line 432</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Clears all the errors.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="get"><span class="type-signature"></span>get<span class="signature">(path)</span><span class="type-signature"> &rarr; {*}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line219">line 219</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Gets value at a specified path.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>path</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>The path / property to retrieve.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>The value at the path.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">*</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="getErrors"><span class="type-signature"></span>getErrors<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line425">line 425</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Gets the errors object.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="hasErrors"><span class="type-signature"></span>hasErrors<span class="signature">()</span><span class="type-signature"> &rarr; {Boolean}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line440">line 440</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Checks whether we have any errors.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p><code>true</code> if we have errors, <code>false</code> otherwise.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Boolean</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="inspect"><span class="type-signature"></span>inspect<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line401">line 401</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Helper for <code>console.log</code>. Just invokes default <code>toObject</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="set"><span class="type-signature"></span>set<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line197">line 197</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Sets data on the document based on the schema.<br>Accepts a key of property and value for the property, or object representing the data for document.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Example</h5>
+    
+    <pre class="prettyprint"><code>user.set('fistName', 'Joe');
+user.set({ lastName: 'Smith' });</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="toJSON"><span class="type-signature"></span>toJSON<span class="signature">(options)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line393">line 393</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Similar as <code>toObject</code> but applied when <code>JSON.stringify</code> is called</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Same options as <code>toObject</code>.</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Plain javascript object representation of document.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="toObject"><span class="type-signature"></span>toObject<span class="signature">(options)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line382">line 382</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Converts this document into a plain javascript object.</p>
+</div>
+
+
+
+
+
+
+
+
+
+    <h5>Examples</h5>
+    
+    <pre class="prettyprint"><code>var userSchema = lounge.schema({ name: String });
+var User = lounge.model('User', userSchema);
+var user = new User({name: 'Joe Smith'});
+console.log(user); // automatically invokes toObject()</code></pre>
+
+        <p class="code-caption">Example with transform option.</p>
+    
+    <pre class="prettyprint"><code>var xform = function (doc, ret, options) {
+  ret.name = ret.name.toUpperCase();
+  return ret;
+};
+console.dir(user.toObject({transform: xform}); // { name: 'JOE SMITH' }</code></pre>
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>options</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Object</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">
+                <h6>Properties</h6>
+                
+
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>transform</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>a transform function to apply to the resulting document before returning.</p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>virtuals</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>apply virtual getters. Default: <code>false</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>minimize</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>remove empty objects. Default: <code>true</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>serializable</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>whether to include <code>serializable</code> properties. Default: <code>true</code></p></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>dateToISO</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>convert dates to string in ISO format using <code>Date.toISOString()</code>. Default: <code>true</code></p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+            </td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    <p>Plain javascript object representation of document.</p>
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Object</span>
+
+
+    </dd>
+</dl>
+
+    
+
+
+        
+            
+
+    
+
+    <h4 class="name" id="toString"><span class="type-signature"></span>toString<span class="signature">()</span><span class="type-signature"></span></h4>
+
+    
+
+
+
+
+<dl class="details">
+
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="basemodel.js.html">basemodel.js</a>, <a href="basemodel.js.html#line409">line 409</a>
+    </li></ul></dd>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dl>
+
+
+
+
+
+<div class="description">
+    <p>Helper for <code>console.log</code>. Alias for <code>inspect</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Jul 27 2016 16:20:57 GMT-0300 (ADT) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

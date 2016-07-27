@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>objectarray.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="AbstractBaseModel.html">AbstractBaseModel</a><ul class='methods'><li data-type='method'><a href="AbstractBaseModel.html#clear">clear</a></li><li data-type='method'><a href="AbstractBaseModel.html#clearErrors">clearErrors</a></li><li data-type='method'><a href="AbstractBaseModel.html#get">get</a></li><li data-type='method'><a href="AbstractBaseModel.html#getErrors">getErrors</a></li><li data-type='method'><a href="AbstractBaseModel.html#hasErrors">hasErrors</a></li><li data-type='method'><a href="AbstractBaseModel.html#inspect">inspect</a></li><li data-type='method'><a href="AbstractBaseModel.html#set">set</a></li><li data-type='method'><a href="AbstractBaseModel.html#toJSON">toJSON</a></li><li data-type='method'><a href="AbstractBaseModel.html#toObject">toObject</a></li><li data-type='method'><a href="AbstractBaseModel.html#toString">toString</a></li></ul></li><li><a href="BaseModel.html">BaseModel</a></li><li><a href="CouchbaseDocument.html">CouchbaseDocument</a><ul class='methods'><li data-type='method'><a href="CouchbaseDocument.html#.findById">findById</a></li><li data-type='method'><a href="CouchbaseDocument.html#.remove">remove</a></li><li data-type='method'><a href="CouchbaseDocument.html#getCAS">getCAS</a></li><li data-type='method'><a href="CouchbaseDocument.html#getDocumentKeyKey">getDocumentKeyKey</a></li><li data-type='method'><a href="CouchbaseDocument.html#getDocumentKeyValue">getDocumentKeyValue</a></li><li data-type='method'><a href="CouchbaseDocument.html#index">index</a></li><li data-type='method'><a href="CouchbaseDocument.html#remove">remove</a></li><li data-type='method'><a href="CouchbaseDocument.html#removeIndexes">removeIndexes</a></li><li data-type='method'><a href="CouchbaseDocument.html#save">save</a></li></ul></li><li><a href="Document.html">Document</a><ul class='methods'><li data-type='method'><a href="Document.html#.getDocumentKeyValue">getDocumentKeyValue</a></li><li data-type='method'><a href="Document.html#getDocumentKeyKey">getDocumentKeyKey</a></li><li data-type='method'><a href="Document.html#getDocumentKeyValue">getDocumentKeyValue</a></li></ul></li><li><a href="Lounge.html">Lounge</a><ul class='methods'><li data-type='method'><a href="Lounge.html#connect">connect</a></li><li data-type='method'><a href="Lounge.html#disconnect">disconnect</a></li><li data-type='method'><a href="Lounge.html#getModel">getModel</a></li><li data-type='method'><a href="Lounge.html#getOption">getOption</a></li><li data-type='method'><a href="Lounge.html#model">model</a></li><li data-type='method'><a href="Lounge.html#modelNames">modelNames</a></li><li data-type='method'><a href="Lounge.html#schema">schema</a></li><li data-type='method'><a href="Lounge.html#setOption">setOption</a></li></ul></li><li><a href="MemoDriver.html">MemoDriver</a></li><li><a href="Model.html">Model</a><ul class='methods'><li data-type='method'><a href="Model.html#getCAS">getCAS</a></li><li data-type='method'><a href="Model.html#getDocumentKeyKey">getDocumentKeyKey</a></li><li data-type='method'><a href="Model.html#getDocumentKeyValue">getDocumentKeyValue</a></li><li data-type='method'><a href="Model.html#index">index</a></li><li data-type='method'><a href="Model.html#remove">remove</a></li><li data-type='method'><a href="Model.html#removeIndexes">removeIndexes</a></li><li data-type='method'><a href="Model.html#save">save</a></li></ul></li><li><a href="ModelInstance.html">ModelInstance</a><ul class='methods'><li data-type='method'><a href="ModelInstance.html#getCAS">getCAS</a></li><li data-type='method'><a href="ModelInstance.html#getDocumentKeyKey">getDocumentKeyKey</a></li><li data-type='method'><a href="ModelInstance.html#getDocumentKeyValue">getDocumentKeyValue</a></li><li data-type='method'><a href="ModelInstance.html#index">index</a></li><li data-type='method'><a href="ModelInstance.html#remove">remove</a></li><li data-type='method'><a href="ModelInstance.html#removeIndexes">removeIndexes</a></li><li data-type='method'><a href="ModelInstance.html#save">save</a></li></ul></li><li><a href="ObjectArray.html">ObjectArray</a></li><li><a href="PlainBaseModel.html">PlainBaseModel</a></li><li><a href="Schema.html">Schema</a><ul class='methods'><li data-type='method'><a href="Schema.html#add">add</a></li><li data-type='method'><a href="Schema.html#extend">extend</a></li><li data-type='method'><a href="Schema.html#get">get</a></li><li data-type='method'><a href="Schema.html#getDocumentKeyValue">getDocumentKeyValue</a></li><li data-type='method'><a href="Schema.html#getRefKey">getRefKey</a></li><li data-type='method'><a href="Schema.html#hasRefPath">hasRefPath</a></li><li data-type='method'><a href="Schema.html#method">method</a></li><li data-type='method'><a href="Schema.html#post">post</a></li><li data-type='method'><a href="Schema.html#pre">pre</a></li><li data-type='method'><a href="Schema.html#set">set</a></li><li data-type='method'><a href="Schema.html#static">static</a></li><li data-type='method'><a href="Schema.html#virtual">virtual</a></li></ul></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">objectarray.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import _ from 'lodash';
+
+import _privateKey from './privatekey';
+import { typecast } from './utils';
+import { normalizeProperties } from './normalize';
+
+export default class ObjectArray extends Array {
+  /**
+   * @classdesc Represents a basic array with typecasted values. Inherits &lt;code>Array&lt;/code>
+   * Clients to not need to manually create instances of this class.
+   *
+   * @description Clients to not need to manually create instances of this class.
+   * @class
+   * @param self
+   * @param properties
+   */
+  constructor(self, properties) {
+    super();
+
+    // Store all internals.
+    const _private = this[_privateKey] = {};
+
+    // Store reference to self.
+    _private._self = self;
+
+    // Store properties (arrayType, unique, etc).
+    _private._properties = properties;
+
+    // Normalize our own properties.
+    if (properties.arrayType) {
+      properties.arrayType = normalizeProperties.call(self, properties.arrayType);
+    }
+  }
+
+  push(...args) {
+    // Values are passed through the typecast before being allowed onto the array if arrayType is set.
+    // In the case of rejection, the typecast returns undefined, which is not appended to the array.
+    let values;
+    if (this[_privateKey]._properties.arrayType) {
+      values = [].map.call(args, (value) => {
+        try {
+          return typecast.call(this[_privateKey]._self, value, undefined, this[_privateKey]._properties.arrayType);
+        }
+        catch (err) {
+          // set it the root parent object
+          if (this[_privateKey]._self &amp;&amp; this[_privateKey]._self[_privateKey] &amp;&amp; this[_privateKey]._self[_privateKey]._errors) {
+            this[_privateKey]._self[_privateKey]._errors.push(err);
+          }
+          return undefined;
+        }
+      }, this);
+
+      // remove undefined and nulls
+      values = _.compact(values);
+    }
+    else {
+      values = args;
+    }
+
+    if (this[_privateKey]._properties.unique) {
+      values = _.difference(values, _.toArray(this));
+    }
+
+    return Array.prototype.push.apply(this, values);
+  }
+
+  concat(...args) {
+    // Return new instance of SchemaArray.
+    const schemaArray = new ObjectArray(this[_privateKey]._self, this[_privateKey]._properties);
+
+    // Create primitive array with all elements.
+    let array = this.toArray();
+
+    for (const i in args) {
+      if (args[i].toArray) {
+        args[i] = args[i].toArray();
+      }
+      array = array.concat(args[i]);
+    }
+
+    // Push each value in individually to typecast.
+    for (const i in array) {
+      schemaArray.push(array[i]);
+    }
+
+    return schemaArray;
+  }
+
+  toArray() {
+    // Create new Array to hold elements.
+    const array = [];
+
+    // Loop through each element, clone if necessary.
+    _.each(this, (element) => {
+      // Call toObject() method if defined (this allows us to return primitive objects instead of Document instances).
+      if (_.isObject(element) &amp;&amp; _.isFunction(element.toObject)) {
+        element = element.toObject();
+
+        // If is non-SchemaType object, shallow clone so that properties modification don't have an affect on the original object.
+      }
+      else if (_.isObject(element)) {
+        element = _.clone(element);
+      }
+
+      array.push(element);
+    });
+
+    return array;
+  }
+
+  set(array) {
+    let ok = true;
+    _.each(array, (arrayValue) => {
+      try {
+        typecast.call(this[_privateKey]._self, arrayValue, undefined, this[_privateKey]._properties.arrayType);
+      }
+      catch (err) {
+        ok = false;
+        // set it the root parent object
+        if (this[_privateKey]._self &amp;&amp; this[_privateKey]._self[_privateKey] &amp;&amp; this[_privateKey]._self[_privateKey]._errors) {
+          this[_privateKey]._self[_privateKey]._errors.push(err);
+        }
+      }
+    });
+
+    if (ok) {
+      this.length = 0;
+      this.push(...array);
+    }
+  }
+
+  toJSON() {
+    return this.toArray();
+  }
+
+  /**
+   *  Used to detect instance of SchemaArray internally.
+   * @returns {boolean}
+   * @private
+   */
+  _isObjectArray() {
+    return true;
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.0</a> on Wed Jul 27 2016 16:20:57 GMT-0300 (ADT) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
