@@ -22,7 +22,7 @@
     "test": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha --harmony --harmony_proxies",
     "test6": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha",
     "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha",
-    "docs": "jsdoc -c jsdoc.json -R guide/intro.md",
+    "docs": "jsdoc --package package.json -c jsdoc.json -R guide/intro.md",
     "dist": "node ./node_modules/babel-cli/bin/babel.js lib --out-dir dist",
     "prepublish": "npm run dist"
   },
