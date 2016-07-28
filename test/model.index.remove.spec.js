@@ -1064,12 +1064,14 @@ describe('Model index on remove tests', function () {
                       expect(cres).to.be.ok;
                       expect(cres.value).to.be.ok;
 
-                      bucket.get(k, function (err, indexRes) {
-                        expect(indexRes).to.not.be.ok;
-                        expect(err).to.be.ok;
-                        expect(err.code).to.equal(couchbase.errors.keyNotFound);
-                        done();
-                      });
+                      setTimeout(function () {
+                        bucket.get(k, function (err, indexRes) {
+                          expect(indexRes).to.not.be.ok;
+                          expect(err).to.be.ok;
+                          expect(err.code).to.equal(couchbase.errors.keyNotFound);
+                          done();
+                        });
+                      }, 20);
                     });
                   });
                 });
@@ -1174,12 +1176,14 @@ describe('Model index on remove tests', function () {
                       expect(cres).to.be.ok;
                       expect(cres.value).to.be.ok;
 
-                      bucket.get(k, function (err, indexRes) {
-                        expect(indexRes).to.not.be.ok;
-                        expect(err).to.be.ok;
-                        expect(err.code).to.equal(couchbase.errors.keyNotFound);
-                        done();
-                      });
+                      setTimeout(function() {
+                        bucket.get(k, function (err, indexRes) {
+                          expect(indexRes).to.not.be.ok;
+                          expect(err).to.be.ok;
+                          expect(err.code).to.equal(couchbase.errors.keyNotFound);
+                          done();
+                        });
+                      }, 20);
                     });
                   });
                 });

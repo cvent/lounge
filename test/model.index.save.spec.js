@@ -770,29 +770,31 @@ describe('Model index on save tests', function () {
 
             // old one
             var k = userSchema.getRefKey('email', 'joe@gmail.com');
-            bucket.get(k, function (err, indexRes) {
-              expect(err).to.be.ok;
-              expect(err.code).to.equal(couchbase.errors.keyNotFound);
+            setTimeout(function() {
+              bucket.get(k, function (err, indexRes) {
+                expect(err).to.be.ok;
+                expect(err.code).to.equal(couchbase.errors.keyNotFound);
 
-              var keys = _.map(['joe2@gmail.com', 'joe3@gmail.com', 'joe4@gmail.com'], function (em) {
-                return userSchema.getRefKey('email', em);
-              });
-
-              bucket.getMulti(keys, function (err, indexRes) {
-                expect(err).to.not.be.ok;
-
-                var ex = [
-                  [user.id, user2.id],
-                  [user2.id],
-                  [user.id]
-                ];
-                _.values(indexRes).forEach(function (ir, i) {
-                  checkRes(ir, ex[i].sort());
+                var keys = _.map(['joe2@gmail.com', 'joe3@gmail.com', 'joe4@gmail.com'], function (em) {
+                  return userSchema.getRefKey('email', em);
                 });
 
-                done();
+                bucket.getMulti(keys, function (err, indexRes) {
+                  expect(err).to.not.be.ok;
+
+                  var ex = [
+                    [user.id, user2.id],
+                    [user2.id],
+                    [user.id]
+                  ];
+                  _.values(indexRes).forEach(function (ir, i) {
+                    checkRes(ir, ex[i].sort());
+                  });
+
+                  done();
+                });
               });
-            });
+            }, 20);            
           });
         });
       });
