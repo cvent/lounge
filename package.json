@@ -1,7 +1,7 @@
 {
   "name": "lounge",
   "description": "Simple Mongoose-inspired ODM for Couchbase",
-  "version": "0.4.10-pre.2",
+  "version": "0.4.10",
   "homepage": "https://github.com/bojand/lounge",
   "license": "MIT",
   "repository": {
@@ -31,7 +31,7 @@
     "babel-polyfill": "~6.9.0",
     "clone": "^1.0.2",
     "couchbase": "^2.1.3",
-    "couchbase-driver": "~0.1.10-2",
+    "couchbase-driver": "~0.1.10",
     "debug": "^2.2.0",
     "harmony-reflect": "~1.4.0",
     "hooks-fixed": "^1.1.0",
