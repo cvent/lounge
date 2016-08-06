@@ -73,6 +73,46 @@ describe('Model index query tests', function () {
       });
     });
 
+    it('should query using simple reference document using promises', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: { type: String, index: true }
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var userData = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com'
+      };
+
+      var user = new User(userData);
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+
+
+        User.findByEmail(user.email).then(function (rdoc) {
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.an('object');
+          expect(rdoc).to.be.an.instanceof(User);
+          expect(rdoc.id).to.be.ok;
+          expect(rdoc.id).to.be.a('string');
+
+          expect(rdoc.id).to.equal(user.id);
+          expect(rdoc.firstName).to.equal(userData.firstName);
+          expect(rdoc.lastName).to.equal(userData.lastName);
+          expect(rdoc.email).to.equal(userData.email);
+
+          done();
+        });
+      });
+    });
+
+
     it('should query using simple reference document using lean option', function (done) {
       var userSchema = lounge.schema({
         firstName: String,

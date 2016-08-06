@@ -1166,7 +1166,6 @@ describe('Model save tests', function () {
 
       userSchema.post('save', function () {
         postCalled = true;
-        next();
       });
 
       var User = lounge.model('User', userSchema);
@@ -1185,6 +1184,55 @@ describe('Model save tests', function () {
       user.save(function (err, savedDoc) {
         expect(err).to.be.ok;
         expect(savedDoc).to.not.be.ok;
+
+        setTimeout(function () {
+          expect(postCalled).to.not.be.ok;
+          delete process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL;
+          done();
+        }, 100);
+      });
+    });
+
+    it.only('should not call sync post save middleware on save error - promised', function (done) {
+      process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL = 'true';
+
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date
+      });
+
+      var postCalled = false;
+
+      userSchema.post('save', function () {
+        console.log('post save');
+        postCalled = true;
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('March 3, 1990 03:30:00');
+
+      var email = 'joe@gmail.com';
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: email,
+        dateOfBirth: dob
+      });
+
+      var p = user.save();
+      console.log('promise');
+      console.dir(p);
+      p.then(function (savedDoc) {
+        console.log('save then')
+        console.dir(savedDoc)
+        expect(savedDoc).to.not.be.ok;
+      }).catch(function (err) {
+        console.log('catch')
+        expect(err).to.be.ok;
 
         setTimeout(function () {
           expect(postCalled).to.not.be.ok;

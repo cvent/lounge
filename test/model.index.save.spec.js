@@ -794,7 +794,7 @@ describe('Model index on save tests', function () {
                   done();
                 });
               });
-            }, 20);            
+            }, 20);
           });
         });
       });
