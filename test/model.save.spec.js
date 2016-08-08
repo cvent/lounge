@@ -1193,7 +1193,7 @@ describe('Model save tests', function () {
       });
     });
 
-    it.only('should not call sync post save middleware on save error - promised', function (done) {
+    it('should not call sync post save middleware on save error - promised', function (done) {
       process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL = 'true';
 
       var userSchema = lounge.schema({
@@ -1224,14 +1224,9 @@ describe('Model save tests', function () {
       });
 
       var p = user.save();
-      console.log('promise');
-      console.dir(p);
       p.then(function (savedDoc) {
-        console.log('save then')
-        console.dir(savedDoc)
         expect(savedDoc).to.not.be.ok;
       }).catch(function (err) {
-        console.log('catch')
         expect(err).to.be.ok;
 
         setTimeout(function () {

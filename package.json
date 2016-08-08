@@ -35,7 +35,7 @@
     "couchbase-driver": "~0.1.10",
     "debug": "^2.2.0",
     "harmony-reflect": "~1.4.0",
-    "hooks-fixed": "^1.1.0",
+    "hooks-fixed-promised": "^1.0.0",
     "inflection": "^1.8.0",
     "lodash": "4.10.0",
     "memoizee": "~0.4.0",
