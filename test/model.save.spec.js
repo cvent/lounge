@@ -1236,5 +1236,32 @@ describe('Model save tests', function () {
         }, 100);
       });
     });
+
+    it('should fail ok on a simple document without callback', function (done) {
+      process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL = 'true';
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('March 3, 1990 03:30:00');
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        dateOfBirth: dob
+      });
+
+      user.save();
+      setTimeout(function () {
+        delete process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL;
+        done();
+      }, 100);
+    });
   });
 });
