@@ -41,6 +41,7 @@ kitty.save(function (err) {
 * Automatic and manual population of embedded (referenced) document
 * Middleware including pre and post hooks
 * Indexing using [reference lookup documents](http://docs.couchbase.com/developer/dev-guide-3.0/lookups.html)
+* Promise support
 
 **Outside of the scope of this module**
 
