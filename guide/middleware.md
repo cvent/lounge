@@ -58,7 +58,7 @@ cancelled. Throwing an error will add the error to the error stack.
 ```js
 var User = lounge.schema({ name: String }, {
   onBeforeValueSet: function(key, value) {
-    if(key === 'name' && value.indexOf('Joe') >= 0) {
+    if(key === 'name' && value.indexOf('Joe') === -1) {
       return false;
     });
   }
