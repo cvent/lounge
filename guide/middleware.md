@@ -52,7 +52,7 @@ doc.save(function(err, savedDoc) {
 
 `onBeforeValueSet` / `onValueSet` allow you to bind an event handler to all write operations on an object.
 Currently, it will only notify of write operations on the object itself and will not notify you when child objects are
-written to. If you return false or throw an error within the `onBeforeValueSet` handler, the write operation will be
+written to. If you return `false` or throw an error within the `onBeforeValueSet` handler, the write operation will be
 cancelled. Throwing an error will add the error to the error stack.
 
 ```js
