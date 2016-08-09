@@ -140,7 +140,7 @@ test('full async test', async t => {
 
   await lounge.connect(connOpts);
   const schema = createUserSchema();
-  const User = await lounge.model('User', schema);
+  const User = lounge.model('User', schema);
   const user = createUser(User);
   const doc = await user.save();
 
