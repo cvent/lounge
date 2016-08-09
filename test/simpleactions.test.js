@@ -53,7 +53,7 @@ test('should save a simple document', async t => {
   t.true(savedDoc instanceof User);
   t.true(typeof savedDoc === 'object');
   t.true(typeof savedDoc.id === 'string');
-  t.truthy(typeof savedDoc.cas);
+  t.truthy(savedDoc.cas);
   t.is(savedDoc.firstName, 'Joe');
   t.is(savedDoc.lastName, 'Smith');
   t.is(savedDoc.email, 'joe@gmail.com');
@@ -87,7 +87,7 @@ test('should remove document', async t => {
   t.true(doc instanceof User);
   t.true(typeof doc === 'object');
   t.true(typeof doc.id === 'string');
-  t.truthy(typeof doc.cas);
+  t.truthy(doc.cas);
   t.is(doc.firstName, 'Joe');
   t.is(doc.lastName, 'Smith');
   t.is(doc.email, 'joe@gmail.com');
@@ -110,4 +110,74 @@ test.cb('actual document and index document should not exit', t => {
       t.end();
     });
   });
+});
+
+test('full async test', async t => {
+  t.plan(3);
+  lounge = new lounge.Lounge();
+
+  const createUserSchema = () => {
+    return lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String
+    });
+  };
+
+  const createUser = User => {
+    return new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe@gmail.com'
+    });
+  };
+
+  const connOpts = {
+    connectionString: 'couchbase://127.0.0.1',
+    bucket: 'lounge_test',
+    mock: true
+  };
+
+  await lounge.connect(connOpts);
+  const schema = createUserSchema();
+  const User = await lounge.model('User', schema);
+  const user = createUser(User);
+  const doc = await user.save();
+
+  t.truthy(doc);
+  t.true(typeof doc.id === 'string');
+  t.truthy(doc.cas);
+});
+
+test('async save fail test', async t => {
+  t.plan(1);
+  process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL = true;
+
+  const user = new User({
+    firstName: 'Bob',
+    lastName: 'Smith',
+    email: 'bob@gmail.com'
+  });
+
+  t.throws(user.save());
+  process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL = null;
+});
+
+test('async save fail test try catch', async t => {
+  t.plan(2);
+  process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL = true;
+
+  const user = new User({
+    firstName: 'Bob',
+    lastName: 'Smith',
+    email: 'bob@gmail.com'
+  });
+
+  try {
+    const doc = await user.save();
+  } catch (err) {
+    t.truthy(err);
+    t.truthy(err instanceof Error);
+    process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL = null;
+  }
 });
