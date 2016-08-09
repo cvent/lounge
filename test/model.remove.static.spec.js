@@ -102,6 +102,19 @@ describe('Model static remove tests', function () {
       });
     });
 
+    it('should remove a simple document - promised', function (done) {
+      var email = ts.data.users[0].email;
+
+      User.remove(email).then(function () {
+        bucket.get(email, function (err, doc) {
+          expect(doc).to.not.be.ok;
+          expect(err).to.be.ok;
+          expect(err.code).to.equal(couchbase.errors.keyNotFound);
+          done();
+        });
+      });
+    });
+
     it('should remove a simple document with lean option', function (done) {
       var email = ts.data.users[0].email;
 
