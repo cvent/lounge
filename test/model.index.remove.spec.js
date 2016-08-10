@@ -33,7 +33,7 @@ describe('Model index on remove tests', function () {
     var userSchema = lounge.schema({
       firstName: String,
       lastName: String,
-      email: {type: String, index: true}
+      email: { type: String, index: true }
     });
 
     var User = lounge.model('User', userSchema);
@@ -79,11 +79,71 @@ describe('Model index on remove tests', function () {
     });
   });
 
+  it('should remove index using simple reference document - promised', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: { type: String, index: true }
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe@gmail.com'
+    });
+
+    var rdocId;
+    user.save().then(function (savedDoc) {
+      expect(savedDoc).to.be.ok;
+
+      var k = userSchema.getRefKey('email', user.email);
+      return lounge.get(k);
+    }).then(function (indexRes) {
+      expect(indexRes).to.be.ok;
+      expect(indexRes.value).to.be.ok;
+      expect(indexRes.value.key).to.be.ok;
+      expect(indexRes.value.key).to.equal(user.id);
+
+      return user.remove();
+    }).then(function (rdoc) {
+      expect(rdoc).to.be.ok;
+      expect(rdoc.id).to.be.ok;
+      rdocId = rdoc.id;
+      return lounge.get(rdoc.id);
+    }).then(function (doc) {
+      expect(doc).to.not.be.ok;
+      var k = userSchema.getRefKey('email', user.email);
+      return lounge.get(k);
+    }).then(function (indexRes) {
+      expect(indexRes).to.not.be.ok;
+    }).catch(function (err) {
+      throw (new Error('should not have an error'))
+    }).finally(function () {
+      // for sanity check with native bucket
+      var k = userSchema.getRefKey('email', user.email);
+      bucket.get(rdocId, function (err, doc) {
+        expect(doc).to.not.be.ok;
+        expect(err).to.be.ok;
+        expect(err.code).to.equal(couchbase.errors.keyNotFound);
+
+        bucket.get(k, function (err, indexRes) {
+          expect(indexRes).to.not.be.ok;
+          expect(err).to.be.ok;
+          expect(err.code).to.equal(couchbase.errors.keyNotFound);
+
+          done();
+        });
+      });
+    });
+  })
+
   it('should remove index using simple reference document - change', function (done) {
     var userSchema = lounge.schema({
       firstName: String,
       lastName: String,
-      email: {type: String, index: true}
+      email: { type: String, index: true }
     });
 
     var User = lounge.model('User', userSchema);
@@ -143,8 +203,8 @@ describe('Model index on remove tests', function () {
     var userSchema = lounge.schema({
       firstName: String,
       lastName: String,
-      email: {type: String, index: true},
-      username: {type: String, key: true, generate: false}
+      email: { type: String, index: true },
+      username: { type: String, key: true, generate: false }
     });
 
     var User = lounge.model('User', userSchema);
@@ -203,8 +263,8 @@ describe('Model index on remove tests', function () {
     var userSchema = lounge.schema({
       firstName: String,
       lastName: String,
-      email: {type: String, index: true},
-      username: {type: String, key: true, generate: false}
+      email: { type: String, index: true },
+      username: { type: String, key: true, generate: false }
     });
 
     var User = lounge.model('User', userSchema);
@@ -265,8 +325,8 @@ describe('Model index on remove tests', function () {
     var userSchema = lounge.schema({
       firstName: String,
       lastName: String,
-      email: {type: String, index: true},
-      username: {type: String, index: true, indexName: 'userName'}
+      email: { type: String, index: true },
+      username: { type: String, index: true, indexName: 'userName' }
     });
 
     var User = lounge.model('User', userSchema);
@@ -326,8 +386,8 @@ describe('Model index on remove tests', function () {
     var userSchema = lounge.schema({
       firstName: String,
       lastName: String,
-      email: {type: String, key: true, generate: false},
-      usernames: [{type: String, index: true, indexName: 'username'}]
+      email: { type: String, key: true, generate: false },
+      usernames: [{ type: String, index: true, indexName: 'username' }]
     }, {
       refIndexKeyPrefix: 'app::dev::ref::',
       delimiter: '::'
@@ -387,8 +447,8 @@ describe('Model index on remove tests', function () {
     var userSchema = lounge.schema({
       firstName: String,
       lastName: String,
-      email: {type: String, key: true, generate: false},
-      usernames: [{type: String, index: true, indexName: 'username'}]
+      email: { type: String, key: true, generate: false },
+      usernames: [{ type: String, index: true, indexName: 'username' }]
     }, {
       refIndexKeyPrefix: 'app::dev::ref::',
       delimiter: '::'
@@ -472,7 +532,7 @@ describe('Model index on remove tests', function () {
     var userSchema = lounge.schema({
       name: String,
       email: String,
-      company: {type: Company, index: true}
+      company: { type: Company, index: true }
     });
 
     var User = lounge.model('User', userSchema);
@@ -540,7 +600,7 @@ describe('Model index on remove tests', function () {
     var userSchema = lounge.schema({
       name: String,
       email: String,
-      company: {type: Company, index: true}
+      company: { type: Company, index: true }
     });
 
     var User = lounge.model('User', userSchema);
@@ -612,7 +672,7 @@ describe('Model index on remove tests', function () {
     var userSchema = lounge.schema({
       name: String,
       email: String,
-      companies: [{type: Company, index: true, indexName: 'company'}]
+      companies: [{ type: Company, index: true, indexName: 'company' }]
     }, {
       refIndexKeyPrefix: 'app::dev::ref::',
       delimiter: '::'
@@ -689,7 +749,7 @@ describe('Model index on remove tests', function () {
     var userSchema = lounge.schema({
       name: String,
       email: String,
-      companies: [{type: Company, index: true, indexName: 'company'}]
+      companies: [{ type: Company, index: true, indexName: 'company' }]
     }, {
       refIndexKeyPrefix: 'app::dev::ref::',
       delimiter: '::'
@@ -785,7 +845,7 @@ describe('Model index on remove tests', function () {
   it('should remove array index using array reference document', function (done) {
     var userSchema = lounge.schema({
       name: String,
-      email: {type: String, index: true, indexType: 'array'}
+      email: { type: String, index: true, indexType: 'array' }
     });
 
     var User = lounge.model('User', userSchema);
@@ -870,7 +930,7 @@ describe('Model index on remove tests', function () {
   it('should remove array index using array reference document in array definition', function (done) {
     var userSchema = lounge.schema({
       name: String,
-      email: [{type: String, index: true, indexType: 'array'}]
+      email: [{ type: String, index: true, indexType: 'array' }]
     });
 
     var User = lounge.model('User', userSchema);
@@ -903,8 +963,7 @@ describe('Model index on remove tests', function () {
             return ir.keys.length;
           }).value();
 
-          var expected = [
-            {
+          var expected = [{
               keys: [user.id]
             },
             {
@@ -924,8 +983,7 @@ describe('Model index on remove tests', function () {
               return ir.keys.length;
             }).value();
 
-            expected = [
-              {
+            expected = [{
                 keys: [user2.id]
               },
               {
@@ -948,11 +1006,9 @@ describe('Model index on remove tests', function () {
                     if (ir && ir.keys) return ir.keys.length;
                   }).compact().value();
 
-                  var expected = [
-                    {
-                      keys: [user2.id]
-                    }
-                  ];
+                  var expected = [{
+                    keys: [user2.id]
+                  }];
 
                   expect(indexResults).to.deep.equal(expected);
 
@@ -988,8 +1044,8 @@ describe('Model index on remove tests', function () {
 
     var userSchema = lounge.schema({
       name: String,
-      email: {type: String, key: true, generate: 'false'},
-      company: {type: Company, index: true, indexType: 'array'}
+      email: { type: String, key: true, generate: 'false' },
+      company: { type: Company, index: true, indexType: 'array' }
     });
 
     var User = lounge.model('User', userSchema);
@@ -1093,8 +1149,8 @@ describe('Model index on remove tests', function () {
 
     var userSchema = lounge.schema({
       name: String,
-      email: {type: String, key: true, generate: 'false'},
-      company: {type: Company, index: true, indexType: 'array'}
+      email: { type: String, key: true, generate: 'false' },
+      company: { type: Company, index: true, indexType: 'array' }
     });
 
     var User = lounge.model('User', userSchema);
@@ -1176,7 +1232,7 @@ describe('Model index on remove tests', function () {
                       expect(cres).to.be.ok;
                       expect(cres.value).to.be.ok;
 
-                      setTimeout(function() {
+                      setTimeout(function () {
                         bucket.get(k, function (err, indexRes) {
                           expect(indexRes).to.not.be.ok;
                           expect(err).to.be.ok;
@@ -1205,7 +1261,7 @@ describe('Model index on remove tests', function () {
 
     var userSchema = lounge.schema({
       name: String,
-      companies: [{type: Company, index: true, indexName: 'company', indexType: 'array'}]
+      companies: [{ type: Company, index: true, indexName: 'company', indexType: 'array' }]
     });
 
     var User = lounge.model('User', userSchema);
@@ -1260,8 +1316,7 @@ describe('Model index on remove tests', function () {
             return ir.keys.length;
           }).value();
 
-          var expected = [
-            {
+          var expected = [{
               keys: [user.id]
             },
             {
@@ -1281,8 +1336,7 @@ describe('Model index on remove tests', function () {
               return ir.keys.length;
             }).value();
 
-            expected = [
-              {
+            expected = [{
                 keys: [user2.id]
               },
               {
@@ -1305,11 +1359,9 @@ describe('Model index on remove tests', function () {
                     if (ir && ir.keys) return ir.keys.length;
                   }).compact().value();
 
-                  var expected = [
-                    {
-                      keys: [user2.id]
-                    }
-                  ];
+                  var expected = [{
+                    keys: [user2.id]
+                  }];
 
                   expect(indexResults).to.deep.equal(expected);
 

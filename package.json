@@ -19,22 +19,24 @@
     "name": "Bojan Djurkovic <dbojan@gmail.com>"
   },
   "scripts": {
-    "test": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha --harmony --harmony_proxies",
-    "test6": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha",
+    "test": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha --harmony --harmony_proxies test/*.spec.js",
+    "test6": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha test/*.spec.js && npm run test-ava",
+    "test-ava": "npm run dist && LOUNGE_COUCHBASE_MOCK=true ava -v -s",
     "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha",
     "docs": "jsdoc --package package.json -c jsdoc.json -R guide/intro.md",
     "dist": "node ./node_modules/babel-cli/bin/babel.js lib --out-dir dist",
     "prepublish": "npm run dist"
   },
   "dependencies": {
-    "async": "^2.0.0",
-    "babel-polyfill": "~6.9.0",
+    "async": "^2.0.1",
+    "babel-polyfill": "~6.13.0",
+    "bluebird": "^3.4.1",
     "clone": "^1.0.2",
     "couchbase": "^2.1.3",
-    "couchbase-driver": "~0.1.10",
+    "couchbase-driver": "~0.1.11",
     "debug": "^2.2.0",
     "harmony-reflect": "~1.4.0",
-    "hooks-fixed": "^1.1.0",
+    "hooks-fixed-promised": "^1.0.0",
     "inflection": "^1.8.0",
     "lodash": "4.10.0",
     "memoizee": "~0.4.0",
@@ -43,17 +45,23 @@
     "uuid": "^2.0.1"
   },
   "devDependencies": {
+    "ava": "^0.16.0",
     "babel-cli": "~6.11.0",
     "babel-plugin-transform-builtin-extend": "~1.1.0",
-    "babel-plugin-transform-class-properties": "~6.10.0",
-    "babel-preset-es2015": "6.9.0",
+    "babel-plugin-transform-class-properties": "~6.11.5",
+    "babel-preset-es2015": "~6.13.2",
     "chai": "^3.4.1",
     "docdash": "^0.4.0",
     "jsdoc": "~3.4.0",
-    "mocha": "^2.3.3",
+    "mocha": "^3.0.2",
     "nyc": "^7.0.0",
     "validator": "^5.2.0",
     "xo": "^0.16.0"
+  },
+  "ava": {
+    "files": [
+      "test/*.test.js"
+    ]
   },
   "xo": {
     "envs": [

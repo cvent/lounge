@@ -5,10 +5,10 @@ var lounge = require('../index');
 describe('Model basics', function () {
   beforeEach(function (done) {
     lounge = new lounge.Lounge(); // recreate it
-    var bucket = lounge.connect({
+    lounge.connect({
       connectionString: 'couchbase://127.0.0.1',
       bucket: 'lounge_test'
-    }, function () {
+    }, function (err, bucket) {
       bucket.manager().flush(done);
     });
   });

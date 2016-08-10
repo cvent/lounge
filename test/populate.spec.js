@@ -186,6 +186,50 @@ describe('Model populate tests', function () {
       });
     });
 
+    it('should get a document and populate refs with populate option = true - promised', function (done) {
+      var userId = ts.data.users[0].email;
+      var userData = ts.data.users[0];
+
+      User.findById(userId, {populate: true}).then(function (rdoc) {
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(User);
+        expect(rdoc.id).to.not.be.ok;
+
+        expect(rdoc.firstName).to.equal(userData.firstName);
+        expect(rdoc.lastName).to.equal(userData.lastName);
+        expect(rdoc.email).to.equal(userData.email);
+        expect(rdoc.dateOfBirth).to.be.ok;
+        expect(rdoc.dateOfBirth).to.be.an.instanceof(Date);
+
+        var cas = rdoc.cas;
+        expect(cas).to.be.a('string');
+
+        expect(rdoc.company).to.be.ok;
+        expect(rdoc.company).to.be.an('object');
+        expect(rdoc.company).to.be.an.instanceof(Company);
+
+        var companyData = ts.data.companies[0];
+
+        expect(rdoc.company.id).to.equal(companyData.id);
+        expect(rdoc.company.name).to.equal(companyData.name);
+        expect(rdoc.company.streetAddress).to.equal(companyData.streetAddress);
+        expect(rdoc.company.city).to.equal(companyData.city);
+        expect(rdoc.company.country).to.equal(companyData.country);
+        expect(rdoc.company.state).to.equal(companyData.state);
+        expect(rdoc.company.postalCode).to.equal(companyData.postalCode);
+        expect(rdoc.company.founded).to.be.ok;
+        expect(rdoc.company.founded).to.be.an.instanceof(Date);
+
+        var cas2 = rdoc.company.cas;
+        expect(cas2).to.be.a('string');
+
+        expect(cas).to.not.equal(cas2);
+
+        done();
+      });
+    });
+
     it('should get a document and populate refs with full reference id and populate option = true', function (done) {
       var userId = ts.data.users[1].email;
       var userData = ts.data.users[1];
@@ -247,6 +291,78 @@ describe('Model populate tests', function () {
 
         expect(missed).to.be.an.instanceof(Array);
         expect(missed.length).to.equal(0);
+
+        rdocs = _.sortBy(rdocs, 'email');
+
+        var expectedUsers = _.cloneDeep(_.sortBy(ts.data.users, 'email'));
+
+        rdocs.forEach(function (rdoc, index) {
+
+          var userData = expectedUsers[index];
+
+          var companyData;
+
+          if (userData.email === 'bjordan0@apple.com') {
+            companyData = ts.data.companies[0];
+          }
+          else if (userData.email === 'rporter1@ning.com') {
+            companyData = ts.data.companies[1];
+          }
+          else if (userData.email === 'joliver2@imgur.com') {
+            companyData = ts.data.companies[2];
+          }
+
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.an('object');
+          expect(rdoc).to.be.an.instanceof(User);
+          expect(rdoc.id).to.not.be.ok;
+
+          expect(rdoc.firstName).to.equal(userData.firstName);
+          expect(rdoc.lastName).to.equal(userData.lastName);
+          expect(rdoc.email).to.equal(userData.email);
+          expect(rdoc.dateOfBirth).to.be.ok;
+          expect(rdoc.dateOfBirth).to.be.an.instanceof(Date);
+
+          var cas = rdoc.cas;
+          expect(cas).to.be.a('string');
+
+          if (companyData) {
+            expect(rdoc.company).to.be.ok;
+            expect(rdoc.company).to.be.an('object');
+            expect(rdoc.company).to.be.an.instanceof(Company);
+
+            expect(rdoc.company.id).to.equal(companyData.id);
+            expect(rdoc.company.name).to.equal(companyData.name);
+            expect(rdoc.company.streetAddress).to.equal(companyData.streetAddress);
+            expect(rdoc.company.city).to.equal(companyData.city);
+            expect(rdoc.company.country).to.equal(companyData.country);
+            expect(rdoc.company.state).to.equal(companyData.state);
+            expect(rdoc.company.postalCode).to.equal(companyData.postalCode);
+            expect(rdoc.company.founded).to.be.ok;
+            expect(rdoc.company.founded).to.be.an.instanceof(Date);
+
+            var cas2 = rdoc.company.cas;
+            expect(cas2).to.be.ok;
+            expect(cas2).to.be.a('string');
+
+            expect(cas).to.not.equal(cas2);
+          }
+          else {
+            expect(rdoc.company).to.not.be.ok;
+          }
+        });
+
+        done();
+      });
+    });
+
+    it('should work with arrays in findById - promised', function (done) {
+      var userIds = _.map(ts.data.users, 'email');
+
+      User.findById(userIds, {populate: true}).then(function (rdocs) {
+        expect(rdocs).to.be.ok;
+        expect(rdocs).to.be.an.instanceof(Array);
+        expect(rdocs.length).to.equal(ts.data.users.length);
 
         rdocs = _.sortBy(rdocs, 'email');
 

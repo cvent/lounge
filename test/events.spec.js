@@ -5,10 +5,10 @@ var lounge = require('../index');
 describe('Events tests', function () {
   beforeEach(function (done) {
     lounge = new lounge.Lounge(); // recreate it
-    var bucket = lounge.connect({
+    lounge.connect({
       connectionString: 'couchbase://127.0.0.1',
       bucket: 'lounge_test'
-    }, function () {
+    }, function (err, bucket) {
       bucket.manager().flush(done);
     });
   });
@@ -33,10 +33,10 @@ describe('Events tests', function () {
 
       var semitted = false;
       try {
-      user.on('save', function (doc) {
-        semitted = true;
-      });
-    } catch(e) { console.log(e); }
+        user.on('save', function (doc) {
+          semitted = true;
+        });
+      } catch (e) { console.log(e); }
 
       user.save(function (err, doc) {
         savedDoc = doc;
@@ -84,7 +84,7 @@ describe('Events tests', function () {
     });
   });
 
-  describe('Model scope events' , function() {
+  describe('Model scope events', function () {
     var savedDoc, User, Company;
 
     it('Should properly emit \'save\' event when saved`', function (done) {

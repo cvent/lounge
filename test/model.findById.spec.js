@@ -86,6 +86,38 @@ describe('Model findById tests', function () {
       });
     });
 
+    it('should find a simple document - promised', function (done) {
+      var userId = ts.data.users[0].id;
+      var userData = ts.data.users[0];
+
+      User1.findById(userId).then(function (rdoc) {
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(User1);
+        expect(rdoc.id).to.be.ok;
+        expect(rdoc.id).to.be.a('string');
+
+        expect(rdoc.id).to.equal(userData.id);
+        expect(rdoc.firstName).to.equal(userData.firstName);
+        expect(rdoc.lastName).to.equal(userData.lastName);
+        expect(rdoc.email).to.equal(userData.email);
+        expect(rdoc.dateOfBirth).to.be.ok;
+        expect(rdoc.dateOfBirth).to.be.an.instanceof(Date);
+
+        // check CAS this is first time where we would get it
+        var cas1 = rdoc.getCAS();
+        expect(cas1).to.be.a('string');
+
+        var cas2 = rdoc.getCAS(true);
+        expect(cas2).to.be.instanceof(Object);
+
+        var cas3 = rdoc.cas;
+        expect(cas3).to.be.a('string');
+
+        done();
+      });
+    });
+
     it('should find an array of documents', function (done) {
       var userIds = _.map(ts.data.users, 'id');
       var expectedUsers = _.sortBy(ts.data.users, 'id');
@@ -115,6 +147,46 @@ describe('Model findById tests', function () {
           expect(au.dateOfBirth).to.be.an.instanceof(Date);
 
           expect(missing).to.deep.equal([]);
+
+          var cas1 = au.getCAS();
+          expect(cas1).to.be.a('string');
+
+          var cas2 = au.getCAS(true);
+          expect(cas2).to.be.instanceof(Object);
+
+          var cas3 = au.cas;
+          expect(cas3).to.be.a('string');
+        });
+
+        done();
+      });
+    });
+
+    it('should find an array of documents - promised', function (done) {
+      var userIds = _.map(ts.data.users, 'id');
+      var expectedUsers = _.sortBy(ts.data.users, 'id');
+
+      User1.findById(userIds).then(function (docs) {
+        expect(docs).to.be.an.instanceof(Array);
+        expect(docs.length).to.equal(ts.data.users.length);
+
+        var actualUsers = _.sortBy(docs, 'id');
+
+        actualUsers.forEach(function (au, index) {
+          var userData = expectedUsers[index];
+
+          expect(au).to.be.ok;
+          expect(au).to.be.an('object');
+          expect(au).to.be.an.instanceof(User1);
+          expect(au.id).to.be.ok;
+          expect(au.id).to.be.a('string');
+
+          expect(au.id).to.equal(userData.id);
+          expect(au.firstName).to.equal(userData.firstName);
+          expect(au.lastName).to.equal(userData.lastName);
+          expect(au.email).to.equal(userData.email);
+          expect(au.dateOfBirth).to.be.ok;
+          expect(au.dateOfBirth).to.be.an.instanceof(Date);
 
           var cas1 = au.getCAS();
           expect(cas1).to.be.a('string');
@@ -162,6 +234,49 @@ describe('Model findById tests', function () {
           expect(au.dateOfBirth).to.be.an.instanceof(Date);
 
           expect(missing).to.deep.equal([missingId]);
+
+          var cas1 = au.getCAS();
+          expect(cas1).to.be.a('string');
+
+          var cas2 = au.getCAS(true);
+          expect(cas2).to.be.instanceof(Object);
+
+          var cas3 = au.cas;
+          expect(cas3).to.be.a('string');
+        });
+
+        done();
+      });
+    });
+
+    it('should find an array of documents and also return missing keys - promised', function (done) {
+      var userIds = _.map(ts.data.users, 'id');
+      var missingId = 'd2bed65a-1910-4730-b032-0c4ea0f831dd';
+      userIds.splice(2, 0, missingId);
+
+      var expectedUsers = _.sortBy(ts.data.users, 'id');
+
+      User1.findById(userIds).then(function (docs) {
+        expect(docs).to.be.an.instanceof(Array);
+        expect(docs.length).to.equal(ts.data.users.length);
+
+        var actualUsers = _.sortBy(docs, 'id');
+
+        actualUsers.forEach(function (au, index) {
+          var userData = expectedUsers[index];
+
+          expect(au).to.be.ok;
+          expect(au).to.be.an('object');
+          expect(au).to.be.an.instanceof(User1);
+          expect(au.id).to.be.ok;
+          expect(au.id).to.be.a('string');
+
+          expect(au.id).to.equal(userData.id);
+          expect(au.firstName).to.equal(userData.firstName);
+          expect(au.lastName).to.equal(userData.lastName);
+          expect(au.email).to.equal(userData.email);
+          expect(au.dateOfBirth).to.be.ok;
+          expect(au.dateOfBirth).to.be.an.instanceof(Date);
 
           var cas1 = au.getCAS();
           expect(cas1).to.be.a('string');
