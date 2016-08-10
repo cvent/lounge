@@ -40,8 +40,7 @@ lounge.connect(connOpts)
   });
 ```
 
-With [Babel](https://babeljs.io/) we can use JavaScript features not available in Node yet, like `import` for
-modules and `async / await` for async control.
+With [Babel](https://babeljs.io/) we can use JavaScript features not available in Node yet, like `async / await` for async control.
 
 ```js
 await lounge.connect({
