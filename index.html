@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><title>Lounge - Simple Mongoose-inspired ODM for Couchbase</title><link rel="stylesheet" href="public/fontello/css/fontello.css"><link rel="stylesheet" href="public/github.css"><link rel="stylesheet" href="public/style.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Passion+One&amp;subset=latin"><script src="public/highlight.pack.js"></script><meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"><script>hljs.initHighlightingOnLoad();</script></head><body><a href="https://github.com/bojand/lounge" class="github-corner"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#610b0b; color:#fff; position: absolute; top: 0; border: 0; left: 0; transform: scale(-1, 1);"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style><section id="top"><div id="menu"><a id="toggle" href="#"><i class="icon-menu"></i></a><ul><li><a href="#lounge">Introduction</a></li><li><a href="#model">Modeling</a></li><li><a href="#middleware">Middleware</a></li><li><a href="#extend">Schema Extending</a></li><li><a href="#embedded">Embedded Documents</a></li><li><a href="#docops">Document Operations</a></li><li><a href="#population">Population</a></li><li><a href="#indexes">Indexes</a></li><li><a href="#events">Events</a></li><li><a href="#apiref">API Reference</a></li></ul></div><div id="heading"><div id="logo">Lounge</div><div id="tagline">Simple Mongoose-inspired ODM for Couchbase</div></div></section><section><div class="content"><h1 id="lounge">Lounge</h1>
+<!DOCTYPE html><html><head><title>Lounge - Simple Mongoose-inspired ODM for Couchbase</title><link rel="stylesheet" href="public/fontello/css/fontello.css"><link rel="stylesheet" href="public/github.css"><link rel="stylesheet" href="public/style.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Passion+One&amp;subset=latin"><script src="public/highlight.pack.js"></script><meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0"><script>hljs.initHighlightingOnLoad();</script></head><body><a href="https://github.com/bojand/lounge" class="github-corner"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#610b0b; color:#fff; position: absolute; top: 0; border: 0; left: 0; transform: scale(-1, 1);"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style><section id="top"><div id="menu"><a id="toggle" href="#"><i class="icon-menu"></i></a><ul><li><a href="#lounge">Introduction</a></li><li><a href="#model">Modeling</a></li><li><a href="#middleware">Middleware</a></li><li><a href="#extend">Schema Extending</a></li><li><a href="#embedded">Embedded Documents</a></li><li><a href="#docops">Document Operations</a></li><li><a href="#population">Population</a></li><li><a href="#indexes">Indexes</a></li><li><a href="#events">Events</a></li><li><a href="#promises">Promises</a></li><li><a href="#apiref">API Reference</a></li></ul></div><div id="heading"><div id="logo">Lounge</div><div id="tagline">Simple Mongoose-inspired ODM for Couchbase</div></div></section><section><div class="content"><h1 id="lounge">Lounge</h1>
 <p>Simple Mongoose-inspired ODM for <a href="http://www.couchbase.com">Couchbase</a>.</p>
 <h2 id="installation">Installation</h2>
 <p><code>npm install lounge</code></p>
@@ -31,6 +31,7 @@ kitty.save(function (err) {
 <li>Automatic and manual population of embedded (referenced) document</li>
 <li>Middleware including pre and post hooks</li>
 <li>Indexing using <a href="http://docs.couchbase.com/developer/dev-guide-3.0/lookups.html">reference lookup documents</a></li>
+<li>Promise support</li>
 </ul>
 <p><strong>Outside of the scope of this module</strong></p>
 <ul>
@@ -459,11 +460,11 @@ doc.save(function(err, savedDoc) {
 <p><strong>onBeforeValueSet(key, value) / onValueSet(key, value)</strong></p>
 <p><code>onBeforeValueSet</code> / <code>onValueSet</code> allow you to bind an event handler to all write operations on an object.
 Currently, it will only notify of write operations on the object itself and will not notify you when child objects are
-written to. If you return false or throw an error within the <code>onBeforeValueSet</code> handler, the write operation will be
+written to. If you return <code>false</code> or throw an error within the <code>onBeforeValueSet</code> handler, the write operation will be
 cancelled. Throwing an error will add the error to the error stack.</p>
 <pre><code class="lang-js">var User = lounge.schema({ name: String }, {
   onBeforeValueSet: function(key, value) {
-    if(key === &#39;name&#39; &amp;&amp; value.indexOf(&#39;Joe&#39;) &gt;= 0) {
+    if(key === &#39;name&#39; &amp;&amp; value.indexOf(&#39;Joe&#39;) === -1) {
       return false;
     });
   }
@@ -1015,5 +1016,65 @@ var user = new User({
 });
 
 user.save(); // prints &#39;saved User document: bob@gmail.com&#39;</code></pre>
+</div></section><section><div class="content"><h2 id="promises-a-id-promises-a-">Promises <a id="promises"></a></h2>
+<p>Lounge implements <a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise">Promise</a> support
+using the <a href="bluebirdjs.com">Bluebird</a> module for all async operations. We support callback-style and Promise-style API, but you should not mix and use both at the same time. If a callback is provided a promise is not returned and normal callback-style
+control flow happens. If no callback is provided a promise is returned, of course you do not have to do anything with it if you do not care about the result of an operation. Resolved promises only return the first success result parameter, so
+methods that would normally return more than 2 arguments via a callback (such as the <code>missing</code> argument in <code>find*</code>) lose that parameter when invoked promise-style. If you need that call the methods using callbacks. Promise support can be completely turned off using <code>promisify</code> configuration setting within the Lounge object. Simple example for ES6:</p>
+<pre><code class="lang-js">const lounge = require(&#39;lounge&#39;);
+
+const createUserSchema = () =&gt; {
+  return lounge.schema({
+    firstName: String,
+    lastName: String,
+    email: String
+  });
+};
+
+const createUser = User =&gt; {
+  return new User({
+    firstName: &#39;Joe&#39;,
+    lastName: &#39;Smith&#39;,
+    email: &#39;joe@gmail.com&#39;
+  });
+};
+
+const connOpts = {
+  connectionString: &#39;couchbase://127.0.0.1&#39;,
+  bucket: &#39;lounge_test&#39;
+};
+
+lounge.connect(connOpts)
+  .then(createUserSchema)
+  .then(schema =&gt; lounge.model(&#39;User&#39;, schema))
+  .then(createUser)
+  .then(user =&gt; user.save())
+  .then((savedDoc) =&gt; {
+    console.log(`User instance ${savedDoc.id} saved.`);
+  }).catch(e =&gt; {
+    console.error(e);
+  });</code></pre>
+<p>With <a href="https://babeljs.io/">Babel</a> we can use JavaScript features not available in Node yet, like <code>async / await</code> for async control.</p>
+<pre><code class="lang-js">await lounge.connect({
+  connectionString: &#39;couchbase://127.0.0.1&#39;,
+  bucket: &#39;lounge_test&#39;
+});
+
+const schema = lounge.schema({
+  firstName: String,
+  lastName: String,
+  email: String
+});
+
+const User = lounge.model(&#39;User&#39;, schema);
+
+const user = new User({
+  firstName: &#39;Joe&#39;,
+  lastName: &#39;Smith&#39;,
+  email: &#39;joe@gmail.com&#39;
+});
+
+const doc = await user.save();
+console.log(`User instance ${doc.id} saved.`);</code></pre>
 </div></section><section style="min-height: 10%"><div class="content"><h2 id="apiref">API Reference</h2><p>Full JSDoc generated <a href="api-docs/index.html">API reference</a>.
 </p></div></section><section><div class="content"><p><center><a style="text-decoration: none; font-size: 30px; color: #610b0b" href="https://github.com/bojand/lounge" class="icon-github-circled"></a></center></p></div></section></body></html>

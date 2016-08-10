@@ -1,6 +1,6 @@
 RAW="https://raw.githubusercontent.com"
 
-files=("intro" "modeling" "middleware" "extend" "embedded" "docops" "population" "indexes" "events" "errors")
+files=("intro" "modeling" "middleware" "extend" "embedded" "docops" "population" "indexes" "events" "errors" "promises")
 
 for i in "${files[@]}"
 do
