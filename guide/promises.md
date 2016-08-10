@@ -1,10 +1,8 @@
 ## Promises <a id="promises"></a>
 
 Lounge implements [Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise) support
-using the [Bluebird](bluebirdjs.com) module for all async operations. We support callback-style and Promise-style API, but you should not mix and use both at the same time. If a callback is provided a promise is not returned. If no callback is
-provided a promise is returned, of course you do not have to do anything with it if you do not care about the result
-of an operation. Promise support can be completely turned off using `promisify` configuration setting within the Lounge
-object. Simple example for ES6:
+using the [Bluebird](bluebirdjs.com) module for all async operations. We support callback-style and Promise-style API, but you should not mix and use both at the same time. If a callback is provided a promise is not returned and normal callback-style
+control flow happens. If no callback is provided a promise is returned, of course you do not have to do anything with it if you do not care about the result of an operation. Promise support can be completely turned off using `promisify` configuration setting within the Lounge object. Simple example for ES6:
 
 ```js
 const lounge = require('lounge');
@@ -46,10 +44,25 @@ With [Babel](https://babeljs.io/) we can use JavaScript features not available i
 modules and `async / await` for async control.
 
 ```js
-await lounge.connect(connOpts);
-const schema = createUserSchema();
+await lounge.connect({
+  connectionString: 'couchbase://127.0.0.1',
+  bucket: 'lounge_test'
+});
+
+const schema = lounge.schema({
+  firstName: String,
+  lastName: String,
+  email: String
+});
+
 const User = lounge.model('User', schema);
-const user = createUser(User);
+
+const user = new User({
+  firstName: 'Joe',
+  lastName: 'Smith',
+  email: 'joe@gmail.com'
+});
+
 const doc = await user.save();
-console.log(`User instance ${savedDoc.id} saved.`);
+console.log(`User instance ${doc.id} saved.`);
 ```
