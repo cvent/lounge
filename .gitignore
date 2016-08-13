@@ -8,3 +8,5 @@ npm-debug.log
 apidocs
 dist/
 api-docs
+docs/api-docs
+_book

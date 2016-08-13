@@ -23,7 +23,12 @@
     "test6": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha test/*.spec.js && npm run test-ava",
     "test-ava": "npm run dist && LOUNGE_COUCHBASE_MOCK=true ava -v -s",
     "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha",
-    "docs": "jsdoc --package package.json -c jsdoc.json -R guide/intro.md",
+    "docs:api": "jsdoc --package package.json -c jsdoc.json -R docs/readme.md",
+    "docs:clean": "rm -rf _book",
+    "docs:prepare": "gitbook install",
+    "docs:build": "npm run docs:api && npm run docs:prepare && npm run docs:clean && gitbook build",
+    "docs:watch": "npm run docs:api && npm run docs:prepare && gitbook serve",
+    "docs:publish": "npm run docs:build && cd _book && git init && git commit --allow-empty -m 'Update docs' && git checkout -b gh-pages && git add . && git commit -am 'Update docs' && git push https://github.com/bojand/lounge.git gh-pages --force",
     "dist": "node ./node_modules/babel-cli/bin/babel.js lib --out-dir dist",
     "prepublish": "npm run dist"
   },
