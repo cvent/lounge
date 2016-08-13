@@ -54,7 +54,7 @@ country: {type: String, default: 'USA'}
 Provide function to transform value when retrieved. Executed in the context of the object and can use "this" to access properties.
 
 ```js
-string: {type: String, getter: function(value) { return value.toUpperCase(); }}
+string: {type: String, get: function(value) { return value.toUpperCase(); }}
 ```
 
 **readOnly**
@@ -183,9 +183,9 @@ company: {
 
 #### Alias
 
-**index (required)**
+**target (required)**
 
-The index key of the property being aliased.
+The target key of the property being aliased.
 
 ```js
 zip: String,

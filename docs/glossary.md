@@ -11,7 +11,7 @@ properties, methods and middleware.
 
 Models are generated from schemas and represent implementation for interacting with the database.
 
-## Key
+## Document Key
 
 A document must have a primary key. It is used to look up the document within the database. If a key property
 isn't specified within a model schema, Lounge automatically creates one named `id`.
