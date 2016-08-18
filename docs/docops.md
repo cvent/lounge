@@ -111,3 +111,11 @@ user.remove(function(err, {removeRefs: true}, doc) {
 ```
 
 This will execute removal, hooks and indexing operations for all documents and subdocuments.
+
+Models have static `remove` function that can be used to perform document removal. 
+
+```js
+User.remove('user123', function(err, doc) {
+  if(err) console.log(err);
+});
+```
