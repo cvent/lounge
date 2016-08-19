@@ -48,16 +48,61 @@ describe('Lounge basics', function () {
     });
   });
 
+  describe('create model before connect()', function () {
+    it('should have db for models created before connect', function (done) {
+      lounge.disconnect();
+
+      var schema = lounge.schema({ name: String });
+      var Cat = lounge.model('Cat', schema);
+
+      var old = new Cat({ name: 'Bob' });
+
+      lounge.connect({
+        connectionString: 'couchbase://127.0.0.1',
+        bucket: 'lounge_test'
+      }, function (err) {
+        expect(err).to.not.be.ok;
+        expect(lounge.bucket).to.be.ok;
+
+        expect(Cat.db).to.be.ok;
+        expect(Cat.db).to.be.an('object');
+        expect(Cat.db.config).to.be.ok;
+        expect(Cat.db.bucket).to.be.ok;
+
+        expect(Cat._private).to.be.ok;
+        expect(Cat._private.db).to.be.ok;
+
+        // should not be writable
+        Cat._private = { foo: 'bar' };
+
+        expect(Cat.db).to.be.ok;
+        expect(Cat.db).to.be.an('object');
+        expect(Cat.db.config).to.be.ok;
+        expect(Cat.db.bucket).to.be.ok;
+
+        expect(Cat._private).to.be.ok;
+        expect(Cat._private.db).to.be.ok;
+
+        var newer = new Cat({ name: 'Joe' });
+
+        expect(old.db).to.not.be.ok;
+        expect(newer.db).to.be.ok;
+
+        done();
+      })
+    });
+  });
+
   describe('properties', function () {
     it('should set and get given properties', function () {
       [
         'configThrottle', 'connectionTimeout', 'durabilityInterval', 'durabilityTimeout', 'managementTimeout',
         'nodeConnectionTimeout', 'operationTimeout', 'viewTimeout'
       ].forEach(function (prop, index) {
-          var val = index * 5 * 1000;
-          lounge[prop] = val;
-          expect(lounge[prop]).to.equal(val);
-        });
+        var val = index * 5 * 1000;
+        lounge[prop] = val;
+        expect(lounge[prop]).to.equal(val);
+      });
     });
   });
 });

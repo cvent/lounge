@@ -96,6 +96,50 @@ test('should remove document', async t => {
   t.falsy(r);
 });
 
+test('should save another simple document', async t => {
+  t.plan(8);
+
+  const user = new User({
+    firstName: 'Bob',
+    lastName: 'Jones',
+    email: 'bob@gmail.com'
+  });
+
+  const savedDoc = await user.save();
+  t.truthy(savedDoc);
+  t.true(savedDoc instanceof User);
+  t.true(typeof savedDoc === 'object');
+  t.true(typeof savedDoc.id === 'string');
+  t.truthy(savedDoc.cas);
+  t.is(savedDoc.firstName, 'Bob');
+  t.is(savedDoc.lastName, 'Jones');
+  t.is(savedDoc.email, 'bob@gmail.com');
+});
+
+test('should remove document using static remove()', async t => {
+  t.plan(10);
+
+  const email = 'bob@gmail.com';
+  const user = await User.findByEmail(email);
+  t.truthy(user);
+
+  userId = user.getDocumentKeyValue(true);
+  userIdRefDocKey = userSchema.getRefKey('email', user.email);
+
+  const doc = await User.remove(user.id);
+  t.truthy(doc);
+  t.true(doc instanceof User);
+  t.true(typeof doc === 'object');
+  t.true(typeof doc.id === 'string');
+  t.truthy(doc.cas);
+  t.is(doc.firstName, 'Bob');
+  t.is(doc.lastName, 'Jones');
+  t.is(doc.email, email);
+
+  const r = await lounge.get(userId);
+  t.falsy(r);
+});
+
 test.cb('actual document and index document should not exit', t => {
   bucket.get(userId, (err, doc) => {
     t.falsy(doc);
