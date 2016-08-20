@@ -809,7 +809,6 @@ describe('Model basics', function () {
   });
 
   describe('clear()', function () {
-
     it('should return array elements to their original state, which is an empty array', function () {
       var schema = lounge.schema({
         strings: [String]
@@ -1045,5 +1044,39 @@ describe('Model basics', function () {
       expect(user.favourites.toArray()).to.deep.equal(['fav0', 'fav1', 'fav2']);
       expect(user.someProp).to.deep.equal({ abc: 'xyz', sbp: false, snp: 11 });
     });
+
+    it('should use custom clear() function defined in the schema', function () {
+      var userSchema = lounge.schema({
+        SSN: String,
+        name: String,
+        email: String
+      });
+
+      userSchema.set('clear', function () {
+        delete this.name;
+        delete this.email;
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var user = new User({
+        SSN: '1234567890',
+        name: 'Joe Smith',
+        email: 'joe@gmail.com'
+      });
+
+      expect(user instanceof User).to.be.ok;
+      expect(user instanceof lounge.Model).to.be.ok;
+
+      expect(user.name).to.equal('Joe Smith');
+      expect(user.SSN).to.equal('1234567890');
+      expect(user.email).to.equal('joe@gmail.com');
+
+      user.clear();
+
+      expect(user.SSN).to.equal('1234567890');
+      expect(user.name).to.not.be.ok;
+      expect(user.email).to.not.be.ok;
+    })
   });
 });
