@@ -22,6 +22,7 @@
     "test": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha --harmony --harmony_proxies test/*.spec.js && LOUNGE_COUCHBASE_MOCK=true node --harmony --harmony_proxies node_modules/.bin/ava -v -s",
     "test012": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha --harmony --harmony_proxies test/*.spec.js",
     "test6": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha test/*.spec.js && LOUNGE_COUCHBASE_MOCK=true ava -v -s",
+    "test-ava": "npm run dist && LOUNGE_COUCHBASE_MOCK=true ava -v -s",
     "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha",
     "docs:api": "jsdoc --package package.json -c jsdoc.json -R docs/readme.md && ./mvapidocs.sh",
     "docs:clean": "rm -rf _book",
