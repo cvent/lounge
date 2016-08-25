@@ -59,7 +59,7 @@ test('should save a simple document', async t => {
   t.is(savedDoc.email, 'joe@gmail.com');
 });
 
-test.skip('should save with pre save middleware', async t => {
+test('should save with pre save middleware', async t => {
   t.plan(6);
 
   const schema = lounge.schema({
@@ -103,7 +103,7 @@ test.skip('should save with pre save middleware', async t => {
   t.is(savedDoc.title, 'sample title');
 });
 
-test.skip('should save a nested document with pre save middleware', async t => {
+test('should save a nested document with pre save middleware', async t => {
   t.plan(15);
 
   const base = lounge.schema({
