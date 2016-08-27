@@ -2,6 +2,7 @@ var couchbase = require('couchbase');
 var testUtil = require('./helpers/utils');
 var _ = require('lodash');
 var expect = require('chai').expect;
+var async = require('async');
 
 var lounge = require('../');
 
@@ -770,7 +771,7 @@ describe('Model index on save tests', function () {
 
             // old one
             var k = userSchema.getRefKey('email', 'joe@gmail.com');
-            setTimeout(function() {
+            setTimeout(function () {
               bucket.get(k, function (err, indexRes) {
                 expect(err).to.be.ok;
                 expect(err.code).to.equal(couchbase.errors.keyNotFound);
@@ -958,5 +959,117 @@ describe('Model index on save tests', function () {
         });
       });
     });
+  });
+
+  it('should properly save the reference document for parallel requests referencing the same reference', function (done) {
+    var companySchema = {
+      name: String,
+      website: String
+    };
+
+    var Company = lounge.model('Company', companySchema);
+
+    var userSchema = lounge.schema({
+      name: String,
+      email: { type: String, key: true, generate: false },
+      company: { type: Company, index: true, indexType: 'array' }
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var company = new Company({
+      name: 'Acme',
+      website: 'www.acme.com'
+    });
+
+    var user = new User({
+      name: 'Bob Smith',
+      email: 'bob@gmail.com',
+      company: company.id
+    });
+
+    var user2 = new User({
+      name: 'Joe Jones',
+      email: 'joe@gmail.com',
+      company: company.id
+    });
+
+    async.parallel([
+      function (pcb) {
+        user.save(pcb);
+      },
+      function (pcb) {
+        user2.save(pcb);
+      }
+    ], function (err, res) {
+      expect(err).to.not.be.ok;
+      setTimeout(function () {
+        var refKey = userSchema.getRefKey('company', company.id);
+        bucket.get(refKey, function (err, indexRes) {
+          expect(err).to.not.be.ok;
+          expect(indexRes).to.be.ok;
+          expect(indexRes.value).to.be.ok;
+          expect(Array.isArray(indexRes.value.keys)).to.be.ok;
+          var expected = [user.email, user2.email];
+          expect(indexRes.value.keys.sort()).to.deep.equal(expected.sort());
+          done();
+        });
+      }, 50);
+    })
+  });
+
+  it('should properly save the reference document for parallel requests referencing the same reference with wait for index', function (done) {
+    var companySchema = {
+      name: String,
+      website: String
+    };
+
+    var Company = lounge.model('Company', companySchema);
+
+    var userSchema = lounge.schema({
+      name: String,
+      email: { type: String, key: true, generate: false },
+      company: { type: Company, index: true, indexType: 'array' }
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var company = new Company({
+      name: 'Acme',
+      website: 'www.acme.com'
+    });
+
+    var user = new User({
+      name: 'Bob Smith',
+      email: 'bob@gmail.com',
+      company: company.id
+    });
+
+    var user2 = new User({
+      name: 'Joe Jones',
+      email: 'joe@gmail.com',
+      company: company.id
+    });
+
+    async.parallel([
+      function (pcb) {
+        user.save({ waitForIndex: true }, pcb);
+      },
+      function (pcb) {
+        user2.save({ waitForIndex: true }, pcb);
+      }
+    ], function (err, res) {
+      expect(err).to.not.be.ok;
+      var refKey = userSchema.getRefKey('company', company.id);
+      bucket.get(refKey, function (err, indexRes) {
+        expect(err).to.not.be.ok;
+        expect(indexRes).to.be.ok;
+        expect(indexRes.value).to.be.ok;
+        expect(Array.isArray(indexRes.value.keys)).to.be.ok;
+        var expected = [user.email, user2.email];
+        expect(indexRes.value.keys.sort()).to.deep.equal(expected.sort());
+        done();
+      });
+    })
   });
 });
