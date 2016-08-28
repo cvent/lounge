@@ -1,7 +1,7 @@
 {
   "name": "lounge",
   "description": "Simple Mongoose-inspired ODM for Couchbase",
-  "version": "0.6.0-pre.1",
+  "version": "0.6.0-pre.2",
   "homepage": "https://github.com/bojand/lounge",
   "license": "MIT",
   "repository": {
@@ -39,7 +39,7 @@
     "bluebird": "^3.4.1",
     "clone": "^1.0.2",
     "couchbase": "^2.1.3",
-    "couchbase-driver": "~0.1.11",
+    "couchbase-driver": "~0.1.12",
     "debug": "^2.2.0",
     "harmony-reflect": "~1.4.0",
     "grappling-hook": "git://github.com/bojand/grappling-hook.git",
@@ -52,10 +52,10 @@
   },
   "devDependencies": {
     "ava": "^0.16.0",
-    "babel-cli": "~6.11.0",
+    "babel-cli": "~6.14.0",
     "babel-plugin-transform-builtin-extend": "~1.1.0",
     "babel-plugin-transform-class-properties": "~6.11.5",
-    "babel-preset-es2015": "~6.13.2",
+    "babel-preset-es2015": "~6.14.0",
     "chai": "^3.4.1",
     "docdash": "^0.4.0",
     "jsdoc": "~3.4.0",
