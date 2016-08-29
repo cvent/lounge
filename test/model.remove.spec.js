@@ -11,7 +11,7 @@ var bucket;
 var User, Company, Post, Comment;
 var userSchema, companySchema, commentSchema, postSchema;
 
-describe('Model remove tests', function () {
+describe.only('Model remove tests', function () {
 
   describe('Remove tests', function () {
 
@@ -384,7 +384,7 @@ describe('Model remove tests', function () {
 
       var preCalled = false;
 
-      userSchema.pre('remove', true, function (next, done) {
+      userSchema.pre('remove', function (next, done) {
         var self = this;
         setTimeout(function () {
           if (self.email) {
@@ -477,7 +477,6 @@ describe('Model remove tests', function () {
 
       commentSchema.pre('remove', function (next) {
         commentPreCalled = commentPreCalled + 1;
-
         next();
       });
 

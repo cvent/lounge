@@ -128,7 +128,6 @@ test('should save a nested document with pre save middleware', async t => {
     this.metadata.updatedAt = now;
     this.metadata.doctype = this.modelName.toLowerCase();
 
-    console.log('pre save %s about to call next()', this.modelName);
     next();
   });
 
@@ -168,7 +167,6 @@ test('should save a nested document with pre save middleware', async t => {
     this.metadata.updatedAt = now;
     this.metadata.doctype = this.modelName.toLowerCase();
 
-    console.log('pre save %s about to call next()', this.modelName);
     next();
   });
 
