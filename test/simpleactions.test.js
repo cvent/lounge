@@ -153,23 +153,6 @@ test('should save a nested document with pre save middleware', async t => {
     owner: { type: User2, index: true }
   });
 
-  schema.pre('save', function (next) {
-    if (!this.metadata) {
-      this.metadata = {};
-    }
-
-    const now = new Date();
-
-    if (!this.metadata.createdAt) {
-      this.metadata.createdAt = now;
-    }
-
-    this.metadata.updatedAt = now;
-    this.metadata.doctype = this.modelName.toLowerCase();
-
-    next();
-  });
-
   schema.extend(base);
 
   const Post = lounge.model('Post', schema);
@@ -200,7 +183,7 @@ test('should save a nested document with pre save middleware', async t => {
   t.true(typeof savedDoc.metadata === 'object');
   t.true(savedDoc.metadata.createdAt instanceof Date);
   t.true(savedDoc.metadata.updatedAt instanceof Date);
-  t.true(typeof savedDoc.metadata.doc_tyepe === 'string');
+  t.true(typeof savedDoc.metadata.doctype === 'string');
 });
 
 test('should get the document via index function', async t => {
