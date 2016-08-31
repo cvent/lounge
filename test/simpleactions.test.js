@@ -146,6 +146,13 @@ test('should save a nested document with pre save middleware', async t => {
 
   userSchema2.extend(base);
 
+  userSchema2.pre('save', function (next) {
+    if (this.email) {
+      this.email = this.email.toLowerCase();
+    }
+    next();
+  });
+
   const User2 = lounge.model('User2', userSchema2);
 
   const schema = lounge.schema({
@@ -160,7 +167,7 @@ test('should save a nested document with pre save middleware', async t => {
   const userData = {
     firstName: 'Joe',
     lastName: 'Smith',
-    email: 'joe@gmail.com'
+    email: 'JOE@gmail.com'
   };
 
   const post = new Post({
