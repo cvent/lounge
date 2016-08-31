@@ -1397,7 +1397,7 @@ describe('Model save tests', function () {
 
       var preCalled = false;
 
-      userSchema.pre('save', true, function (next, done) {
+      userSchema.pre('save', function (next, done) {
         var self = this;
         setTimeout(function () {
           if (self.email) {

@@ -11,7 +11,7 @@ var bucket;
 var User, Company, Post, Comment;
 var userSchema, companySchema, commentSchema, postSchema;
 
-describe.only('Model remove tests', function () {
+describe('Model remove tests', function () {
 
   describe('Remove tests', function () {
 

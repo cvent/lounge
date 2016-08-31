@@ -140,7 +140,7 @@ describe('Schema options', function () {
 
         var datacheck = {};
 
-        userSchema.pre('foo', function preFn(next, param1, param2) {
+        userSchema.pre('foo', function preFn(param1, param2, next) {
           datacheck.param1 = param1;
           datacheck.param2 = param2;
           this.firstName = this.firstName.toUpperCase();
@@ -175,7 +175,7 @@ describe('Schema options', function () {
         var datacheck = {};
         var msg = 'some error';
 
-        userSchema.pre('foo', function preFn(next, param1, param2) {
+        userSchema.pre('foo', function preFn(param1, param2, next) {
           datacheck.param1 = param1;
           datacheck.param2 = param2;
           this.firstName = this.firstName.toUpperCase();
@@ -213,7 +213,7 @@ describe('Schema options', function () {
 
         var postCalled = false;
 
-        userSchema.post('foo', true, function postFn(next, param) {
+        userSchema.post('foo', function postFn(param, next) {
           postCalled = true;
           next(null, param);
         });

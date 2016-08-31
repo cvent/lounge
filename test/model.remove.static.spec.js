@@ -561,7 +561,7 @@ describe('Model static remove tests', function () {
 
       var preCalled = false;
 
-      userSchema.pre('remove', true, function (next, done) {
+      userSchema.pre('remove', function (next, done) {
         var self = this;
         setTimeout(function () {
           if (self.email) {
@@ -596,7 +596,7 @@ describe('Model static remove tests', function () {
 
       var preCalled = 0;
 
-      userSchema.pre('remove', true, function (next, done) {
+      userSchema.pre('remove', function (next, done) {
         var self = this;
         setTimeout(function () {
           if (self.email) {
