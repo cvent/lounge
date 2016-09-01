@@ -59,7 +59,7 @@ test('should save a simple document', async t => {
   t.is(savedDoc.email, 'joe@gmail.com');
 });
 
-test.skip('should save with pre save middleware', async t => {
+test('should save with pre save middleware', async t => {
   t.plan(6);
 
   const schema = lounge.schema({
@@ -103,7 +103,7 @@ test.skip('should save with pre save middleware', async t => {
   t.is(savedDoc.title, 'sample title');
 });
 
-test.skip('should save a nested document with pre save middleware', async t => {
+test('should save a nested document with pre save middleware', async t => {
   t.plan(15);
 
   const base = lounge.schema({
@@ -128,7 +128,6 @@ test.skip('should save a nested document with pre save middleware', async t => {
     this.metadata.updatedAt = now;
     this.metadata.doctype = this.modelName.toLowerCase();
 
-    console.log('pre save %s about to call next()', this.modelName);
     next();
   });
 
@@ -147,29 +146,18 @@ test.skip('should save a nested document with pre save middleware', async t => {
 
   userSchema2.extend(base);
 
+  userSchema2.pre('save', function (next) {
+    if (this.email) {
+      this.email = this.email.toLowerCase();
+    }
+    next();
+  });
+
   const User2 = lounge.model('User2', userSchema2);
 
   const schema = lounge.schema({
     title: String,
     owner: { type: User2, index: true }
-  });
-
-  schema.pre('save', function (next) {
-    if (!this.metadata) {
-      this.metadata = {};
-    }
-
-    const now = new Date();
-
-    if (!this.metadata.createdAt) {
-      this.metadata.createdAt = now;
-    }
-
-    this.metadata.updatedAt = now;
-    this.metadata.doctype = this.modelName.toLowerCase();
-
-    console.log('pre save %s about to call next()', this.modelName);
-    next();
   });
 
   schema.extend(base);
@@ -179,7 +167,7 @@ test.skip('should save a nested document with pre save middleware', async t => {
   const userData = {
     firstName: 'Joe',
     lastName: 'Smith',
-    email: 'joe@gmail.com'
+    email: 'JOE@gmail.com'
   };
 
   const post = new Post({
@@ -202,7 +190,7 @@ test.skip('should save a nested document with pre save middleware', async t => {
   t.true(typeof savedDoc.metadata === 'object');
   t.true(savedDoc.metadata.createdAt instanceof Date);
   t.true(savedDoc.metadata.updatedAt instanceof Date);
-  t.true(typeof savedDoc.metadata.doc_tyepe === 'string');
+  t.true(typeof savedDoc.metadata.doctype === 'string');
 });
 
 test('should get the document via index function', async t => {

@@ -1397,7 +1397,7 @@ describe('Model save tests', function () {
 
       var preCalled = false;
 
-      userSchema.pre('save', true, function (next, done) {
+      userSchema.pre('save', function (next, done) {
         var self = this;
         setTimeout(function () {
           if (self.email) {
@@ -1612,6 +1612,8 @@ describe('Model save tests', function () {
 
     it('should fail ok on a simple document without callback', function (done) {
       process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL = 'true';
+      // set promisify to false so we don't throw rejected promise
+      lounge.setOption('promisify', false)
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
@@ -1633,6 +1635,7 @@ describe('Model save tests', function () {
       user.save();
       setTimeout(function () {
         delete process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL;
+        lounge.setOption('promisify', true)
         done();
       }, 100);
     });
