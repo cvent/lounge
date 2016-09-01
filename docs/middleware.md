@@ -1,6 +1,6 @@
 ## Middleware <a id="middleware"></a>
 
-Similar to Mongoose middleware, Lounge exposes `pre` and `post` [hooks](https://www.npmjs.com/package/hooks-fixed-promised).
+Similar to Mongoose middleware, Lounge exposes `pre` and `post` [hooks](https://www.github.com/bojand/grappling-hook).
 Normally this is used to do additional validation pre save, and cleanup post document removal. Although the hooks can be
 setup for any method including `toObject` and `toJSON` methods.
 
