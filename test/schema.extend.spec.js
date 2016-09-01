@@ -718,11 +718,13 @@ describe('Schema extend tests', function () {
     });
 
     base.set('clear', function () {
-      for (var k in this) {
+      var props = Object.getOwnPropertyNames(this);
+      var self = this;
+      props.forEach(function (k) {
         if (k !== 'doc_type' && k !== 'id') {
-          delete this[k]
+          delete self[k]
         }
-      }
+      });
     });
 
     base.method('init', function () {

@@ -495,7 +495,8 @@ describe('Model basics', function () {
         foos: foos1
       });
 
-      expect(user.foos.toArray()).to.deep.equal(foos1);
+      expect(user.foos.map(function(r) { return r.toObject(); }))
+        .to.deep.equal(foos1.map(function(r) { return r.toObject(); }));
 
       user.foos.push(new Foo({
         a: 'a3',
@@ -607,7 +608,7 @@ describe('Model basics', function () {
       });
 
       expect(user.name).to.equal(user.name);
-      expect(user.profile).to.deep.equal({ email: 'p1@p1.com', age: 10 });
+      expect(user.profile.toObject()).to.deep.equal({ email: 'p1@p1.com', age: 10 });
 
       // this should work
       user.set('profile', {
@@ -630,14 +631,14 @@ describe('Model basics', function () {
         foo: 'bar'
       };
 
-      expect(user.profile).to.deep.equal({
+      expect(user.profile.toObject()).to.deep.equal({
         email: 'bsmith2@gmail.com',
         age: 22
       });
 
       user.profile.email = 123;
 
-      expect(user.profile).to.deep.equal({
+      expect(user.profile.toObject()).to.deep.equal({
         email: '123',
         age: 22
       });
@@ -648,7 +649,7 @@ describe('Model basics', function () {
         age: 23
       });
 
-      expect(user.profile).to.deep.equal({
+      expect(user.profile.toObject()).to.deep.equal({
         email: 'bsmith3@gmail.com',
         age: 23
       });
@@ -658,7 +659,7 @@ describe('Model basics', function () {
         age: 23
       });
 
-      expect(user.profile).to.deep.equal({
+      expect(user.profile.toObject()).to.deep.equal({
         email: 'bsmith3@gmail.com',
         age: 23
       });
@@ -683,7 +684,7 @@ describe('Model basics', function () {
       });
 
       expect(user.name).to.equal(user.name);
-      expect(user.profile).to.deep.equal({ email: 'bsmith2@gmail.com', age: 22 });
+      expect(user.profile.toObject()).to.deep.equal({ email: 'bsmith2@gmail.com', age: 22 });
 
       user.profile.set({
         email: 'bsmith@gmail.com',
@@ -691,14 +692,14 @@ describe('Model basics', function () {
         foo: 'bar'
       });
 
-      expect(user.profile).to.deep.equal({
+      expect(user.profile.toObject()).to.deep.equal({
         email: 'bsmith@gmail.com',
         age: 20
       });
 
       user.profile.email = 123;
 
-      expect(user.profile).to.deep.equal({
+      expect(user.profile.toObject()).to.deep.equal({
         email: '123',
         age: 20
       });
