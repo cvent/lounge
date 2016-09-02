@@ -76,7 +76,7 @@ describe('Schema basics', function () {
       var expected = {
         'owner': {
           path: 'owner',
-          ref: 'User'
+          ref: 'user'
         }
       };
 
@@ -101,7 +101,7 @@ describe('Schema basics', function () {
       var expected = {
         'owner': {
           path: 'owner',
-          ref: 'User'
+          ref: 'user'
         }
       };
 
@@ -127,7 +127,7 @@ describe('Schema basics', function () {
       var expected = {
         posts: {
           path: 'posts',
-          ref: 'Post'
+          ref: 'post'
         }
       };
 
@@ -154,7 +154,7 @@ describe('Schema basics', function () {
       var expected = {
         'blog.posts': {
           path: 'blog.posts',
-          ref: 'Post'
+          ref: 'post'
         }
       };
 
@@ -193,11 +193,11 @@ describe('Schema basics', function () {
       var expected = {
         'blog.posts': {
           path: 'blog.posts',
-          ref: 'Post'
+          ref: 'post'
         },
         'address': {
           path: 'address',
-          ref: 'Address'
+          ref: 'address'
         }
       };
 
@@ -214,7 +214,7 @@ describe('Schema basics', function () {
       var expected = {
         'owner': {
           path: 'owner',
-          ref: 'User'
+          ref: 'user'
         }
       };
 
@@ -623,4 +623,3 @@ describe('Schema basics', function () {
     });
   });
 });
-

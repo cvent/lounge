@@ -45,11 +45,37 @@ describe('Model basics', function () {
       expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
 
       // should not be able to change modelName property
-      expect(user.modelName).to.equal('User');
+      expect(user.modelName).to.equal('user');
       user.modelName = 'Foo';
-      expect(user.modelName).to.equal('User');
+      expect(user.modelName).to.equal('user');
       User.modelName = 'Foo';
-      expect(User.modelName).to.equal('User');
+      expect(User.modelName).to.equal('user');
+    });
+
+    it('Model names should be case insensitive', function () {
+      var schema = lounge.schema({
+        name: String
+      });
+
+      var MyModel = lounge.model('MyModel', schema);
+
+      var o = new MyModel({
+        name: 'Joe'
+      });
+
+      expect(o instanceof MyModel).to.be.ok;
+      expect(o instanceof lounge.Document).to.be.ok;
+      expect(o instanceof lounge.Model).to.be.ok;
+      expect(o.name).to.equal('Joe');
+      expect(o.modelName).to.equal('mymodel');
+
+      var m1 = lounge.getModel('mymodel');
+      var m2 = lounge.getModel('MYMODEL')
+      expect(MyModel === m1).to.be.ok;
+      expect(MyModel === m2).to.be.ok;
+      expect(m1 === m2).to.be.ok;
+      var m3 = lounge.model('MyMoDeL', schema);
+      expect(MyModel === m3).to.be.ok;
     });
 
     it('Should properly create multiple models from same source data', function () {
@@ -85,11 +111,11 @@ describe('Model basics', function () {
       expect(user.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
 
       // should not be able to change modelName property
-      expect(user.modelName).to.equal('User');
+      expect(user.modelName).to.equal('user');
       user.modelName = 'Foo';
-      expect(user.modelName).to.equal('User');
+      expect(user.modelName).to.equal('user');
       User.modelName = 'Foo';
-      expect(User.modelName).to.equal('User');
+      expect(User.modelName).to.equal('user');
 
       var user2 = new User(data);
 
@@ -105,9 +131,9 @@ describe('Model basics', function () {
       expect(user2.dateOfBirth.toString()).to.equal((new Date('December 10, 1990 03:33:00').toString()));
 
       // should not be able to change modelName property
-      expect(user2.modelName).to.equal('User');
+      expect(user2.modelName).to.equal('user');
       user2.modelName = 'Foo';
-      expect(user2.modelName).to.equal('User');
+      expect(user2.modelName).to.equal('user');
     });
 
     it('Should properly create a model with sub documents and arrays', function () {
