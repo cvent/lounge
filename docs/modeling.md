@@ -46,6 +46,34 @@ var catSchema = lounge.schema({
 catSchema.set('minimize', false);
 ```
 
+One a schema is defined we need to generate the model class using the `model` method.
+
+```js
+var Cat = lounge.model('Cat', catSchema);
+
+var myCat = new Cat({
+  name: 'Felicette',
+  breed: 'Tabby'
+});
+
+console.log(myCat);
+```
+
+We can get an already generated model class using
+`getModel` method.
+
+```js
+var Cat = lounge.getModel('Cat');
+
+var cat2 = new Cat({
+  name: 'Babou',
+  breed: 'Ocelot'
+});
+
+console.log(cat2);
+console.log(cat2.modelName); // Cat
+```
+
 **Document keys**
 
 By default schemas come with an `id` property as the document key, and the automatically generated value will be
