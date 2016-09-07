@@ -104,7 +104,7 @@ var userSchema = lounge.schema({
 
 `generate` does not have to be set explicitly to `true` as that is the default.
 
-We can specify additional prefix and/or suffix for keys. This will be used when wrigin to the database as the actual
+We can specify additional prefix and/or suffix for keys. This will be used when writing to the database as the actual
 document key.
 
 ```js
@@ -115,7 +115,7 @@ var userSchema = lounge.schema({
 });
 ```
 
-Note that setting prefix and suffix options like this will take presidence over any `keyPrefix` and `keySuffix`
+Note that setting prefix and suffix options like this will take precedence over any `keyPrefix` and `keySuffix`
 options specified in the second options parameter to the `schema()` call or any settings in the lounge config.
 
 **Examples**
