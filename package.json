@@ -19,7 +19,7 @@
     "name": "Bojan Djurkovic <dbojan@gmail.com>"
   },
   "scripts": {
-    "test": "(node-version-check \">=6\" && npm run test6 || echo \"Node 6 tests failed.\") || (node-version-check \">=4\" && npm run test4 || echo \"Node 4 tests failed.\") || npm run test0",
+    "test": "(node-version-check \">=6\" && (npm run test6 || echo \"Node 6 tests failed.\")) || (node-version-check \">=4\" && (npm run test4 || echo \"Node 4 tests failed.\")) || npm run test0",
     "test0": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha --harmony --harmony_proxies test/*.spec.js",
     "test4": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha --harmony --harmony_proxies test/*.spec.js && LOUNGE_COUCHBASE_MOCK=true node --harmony --harmony_proxies node_modules/.bin/ava -v -s",
     "test6": "npm run dist && LOUNGE_COUCHBASE_MOCK=true mocha test/*.spec.js && LOUNGE_COUCHBASE_MOCK=true ava -v -s",
