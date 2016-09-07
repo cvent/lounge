@@ -90,6 +90,64 @@ describe('Model index function tests', function () {
     });
   });
 
+  it('should properly create index when defined separately', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String
+    });
+
+    userSchema.index('email');
+
+    var User = lounge.model('User', userSchema);
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe3@gmail.com'
+    });
+
+    var indexCalled = false;
+    user.on('index', function (err) {
+      indexCalled = true;
+    });
+
+    function checkIndexRes(err, indexRes) {
+      expect(err).to.not.be.ok;
+      expect(indexRes).to.be.ok;
+      expect(indexRes.value).to.be.ok;
+      expect(indexRes.value.key).to.be.ok;
+      expect(indexRes.value.key).to.equal(user.getDocumentKeyValue(true));
+    }
+
+    function checkGetRes(err, gd) {
+      expect(err).to.not.be.ok;
+      expect(gd).to.be.ok;
+      expect(gd.value).to.be.ok;
+      expect(gd.value.email).to.equal(user.email);
+      expect(gd.value.firstName).to.equal(user.firstName);
+      expect(gd.value.lastName).to.equal(user.lastName);
+    }
+
+    user.save(function (err, savedDoc) {
+      expect(err).to.not.be.ok;
+      expect(savedDoc).to.be.ok;
+
+      var k = userSchema.getRefKey('email', user.email);
+      bucket.get(k, function (err, indexRes) {
+        checkIndexRes(err, indexRes);
+
+        bucket.get(indexRes.value.key, function (err, gd) {
+          checkGetRes(err, gd);
+
+          done();
+        });
+      });
+    });
+  });
+
+
+
   it('should index() using simple reference document using key options', function (done) {
     var userSchema = lounge.schema({
       firstName: String,
@@ -175,6 +233,89 @@ describe('Model index function tests', function () {
       email: {type: String, index: true},
       username: {type: String, index: true, indexName: 'userName'}
     });
+
+    var User = lounge.model('User', userSchema);
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe@gmail.com',
+      username: 'jsmith'
+    });
+
+    function checkRes(err, rdoc) {
+      expect(err).to.not.be.ok;
+      expect(rdoc).to.be.ok;
+      expect(rdoc.value).to.be.ok;
+      expect(rdoc.value.key).to.be.ok;
+      expect(rdoc.value.key).to.equal(user.id);
+    }
+
+    user.save(function (err, savedDoc) {
+      expect(err).to.not.be.ok;
+      expect(savedDoc).to.be.ok;
+
+      var indexCalled = 0;
+      user.on('index', function (err) {
+        indexCalled = indexCalled + 1;
+      });
+
+      var k = userSchema.getRefKey('email', user.email);
+      bucket.get(k, function (err, indexRes) {
+        checkRes(err, indexRes);
+
+        k = userSchema.getRefKey('userName', user.username);
+        bucket.get(k, function (err, indexRes) {
+          checkRes(err, indexRes);
+
+          user.email = 'joe2@gmail.com';
+          user.username = 'jsmith2';
+
+          user.index(function (err, savedDoc) {
+            expect(err).to.not.be.ok;
+
+            // old ones
+            k = userSchema.getRefKey('email', 'joe@gmail.com');
+            bucket.get(k, function (err, gdoc) {
+              expect(err).to.be.ok;
+              expect(err.code).to.equal(couchbase.errors.keyNotFound);
+
+              k = userSchema.getRefKey('username', 'jsmith');
+              bucket.get(k, function (err, gdoc) {
+                expect(err).to.be.ok;
+                expect(err.code).to.equal(couchbase.errors.keyNotFound);
+
+                // new ones
+                var k = userSchema.getRefKey('email', user.email);
+                bucket.get(k, function (err, indexRes) {
+                  checkRes(err, indexRes);
+                  k = userSchema.getRefKey('userName', user.username);
+                  bucket.get(k, function (err, indexRes) {
+                    checkRes(err, indexRes);
+
+                    expect(indexCalled).to.equal(1);
+
+                    done();
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+
+  it('should index() using multiple simple reference documents defined separately', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String,
+      username: String
+    });
+
+    userSchema.index('email');
+    userSchema.index('username', {indexName: 'userName'});
 
     var User = lounge.model('User', userSchema);
 
@@ -341,6 +482,75 @@ describe('Model index function tests', function () {
       name: String,
       email: {type: String, index: true, indexType: 'array'}
     });
+
+    var User = lounge.model('User', userSchema);
+
+    var user = new User({
+      name: 'Joe Smith',
+      email: 'joe@gmail.com'
+    });
+
+    var user2 = new User({
+      name: 'Bob Jones',
+      email: 'joe@gmail.com'
+    });
+
+    var indexCalled = false;
+    user.on('index', function () {
+      indexCalled = true;
+    });
+
+    function checkRes(indexRes, expected) {
+
+      expect(indexRes).to.be.ok;
+      expect(indexRes.value).to.be.ok;
+      expect(indexRes.value.keys).to.be.ok;
+      expect(indexRes.value.keys).to.deep.equal(expected);
+    }
+
+    user.index(function (err, indexDoc) {
+      expect(err).to.not.be.ok;
+
+      user2.index(function (err, savedDoc) {
+
+        var k = userSchema.getRefKey('email', user.email);
+        bucket.get(k, function (err, indexRes) {
+          expect(err).to.not.be.ok;
+          checkRes(indexRes, [user.id, user2.id]);
+
+          user.email = 'joe2@gmail.com';
+
+          user.index(function (err, indexRes) {
+            expect(err).to.not.be.ok;
+
+            // old one
+            k = userSchema.getRefKey('email', 'joe@gmail.com');
+            bucket.get(k, function (err, indexRes) {
+              expect(err).to.not.be.ok;
+              checkRes(indexRes, [user2.id]);
+
+              k = userSchema.getRefKey('email', user.email);
+              bucket.get(k, function (err, indexRes) {
+                checkRes(indexRes, [user.id]);
+
+                expect(indexCalled).to.be.ok;
+
+                done();
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+
+  it('should index using simple reference document for array index type defined separately', function (done) {
+    var userSchema = lounge.schema({
+      name: String,
+      email: String
+    });
+
+    userSchema.index('email', {indexType: 'array'});
 
     var User = lounge.model('User', userSchema);
 
