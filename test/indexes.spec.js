@@ -35,7 +35,7 @@ describe('Model index tests', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true}
+        email: { type: String, index: true }
       });
 
       var User = lounge.model('User', userSchema);
@@ -69,7 +69,7 @@ describe('Model index tests', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        usernames: [{type: String, index: true}]
+        usernames: [{ type: String, index: true }]
       });
 
       var User = lounge.model('User', userSchema);
@@ -100,7 +100,7 @@ describe('Model index tests', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        usernames: [{type: String, index: true, indexName: 'UN'}]
+        usernames: [{ type: String, index: true, indexName: 'UN' }]
       });
 
       var User = lounge.model('User', userSchema);
@@ -138,8 +138,8 @@ describe('Model index tests', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true},
-        foo: {type: Foo}
+        email: { type: String, index: true },
+        foo: { type: Foo }
       });
 
       var User = lounge.model('User', userSchema);
@@ -185,8 +185,8 @@ describe('Model index tests', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true},
-        foo: {type: Foo, index: true}
+        email: { type: String, index: true },
+        foo: { type: Foo, index: true }
       });
 
       var User = lounge.model('User', userSchema);
@@ -214,8 +214,7 @@ describe('Model index tests', function () {
           value: 'joe@gmail.com',
           name: 'email',
           indexType: 'single'
-        }
-        ,
+        },
         'foo': {
           path: 'foo',
           value: foo.id,
@@ -232,7 +231,7 @@ describe('Model index tests', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true}
+        email: { type: String, index: true }
       });
 
       var User = lounge.model('User', userSchema);
@@ -264,7 +263,7 @@ describe('Model index tests', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true, indexType: 'array'}
+        email: { type: String, index: true, indexType: 'array' }
       });
 
       var User = lounge.model('User', userSchema);
@@ -298,7 +297,7 @@ describe('Model index tests', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        usernames: [{type: String, index: true, indexType: 'array'}]
+        usernames: [{ type: String, index: true, indexType: 'array' }]
       });
 
       var User = lounge.model('User', userSchema);
@@ -329,7 +328,7 @@ describe('Model index tests', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        usernames: [{type: String, index: true, indexName: 'UN', indexType: 'array'}]
+        usernames: [{ type: String, index: true, indexName: 'UN', indexType: 'array' }]
       });
 
       var User = lounge.model('User', userSchema);
@@ -367,8 +366,8 @@ describe('Model index tests', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true, indexType: 'array'},
-        foo: {type: Foo}
+        email: { type: String, index: true, indexType: 'array' },
+        foo: { type: Foo }
       });
 
       var User = lounge.model('User', userSchema);
@@ -414,8 +413,8 @@ describe('Model index tests', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true},
-        foo: {type: Foo, index: true, indexType: 'array'}
+        email: { type: String, index: true },
+        foo: { type: Foo, index: true, indexType: 'array' }
       });
 
       var User = lounge.model('User', userSchema);
@@ -443,8 +442,7 @@ describe('Model index tests', function () {
           value: 'joe@gmail.com',
           name: 'email',
           indexType: 'single'
-        }
-        ,
+        },
         'foo': {
           path: 'foo',
           value: foo.id,
@@ -461,7 +459,7 @@ describe('Model index tests', function () {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true, indexType: 'array'}
+        email: { type: String, index: true, indexType: 'array' }
       });
 
       var User = lounge.model('User', userSchema);
@@ -485,6 +483,46 @@ describe('Model index tests', function () {
 
       var actualRefs = couchUtil.buildRefValues(userSchema.indexes, data);
       expect(actualRefs).to.deep.equal(expected);
+    });
+
+    it('should create index values for subdocument values', function () {
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        profile: {
+          email: { type: String, index: true },
+          profileType: String
+        }
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      expect(User.findByEmail).to.be.ok;
+      expect(User.findByEmail).to.be.an.instanceof(Function);
+
+      var data = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        profile: {
+          email: 'joe@gmail.com',
+          profileType: 'admin'
+        }
+      };
+
+      var expected = {
+        email: {
+          path: 'profile.email',
+          value: 'joe@gmail.com',
+          name: 'email',
+          indexType: 'single'
+        }
+      };
+
+      // we have to generate this manually since we don't have access to object internals
+      // this has to match how we would use it in CouchDocument, specifically constructor to build the initial list
+      var actual = couchUtil.buildRefValues(userSchema.indexes, data);
+
+      expect(actual).to.deep.equal(expected);
     });
   });
 });
