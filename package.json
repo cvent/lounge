@@ -43,7 +43,7 @@
     "couchbase-driver": "~0.1.12",
     "debug": "^2.2.0",
     "harmony-reflect": "~1.5.0",
-    "grappling-hook": "git://github.com/bojand/grappling-hook.git#8aaebe4",
+    "grappling-hook": "git://github.com/bojand/grappling-hook.git#d5a2852",
     "inflection": "^1.8.0",
     "lodash": "4.10.0",
     "memoizee": "~0.4.0",

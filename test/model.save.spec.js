@@ -1639,5 +1639,129 @@ describe('Model save tests', function () {
         done();
       }, 100);
     });
+
+    it('should call pre save hook ok on a simple document without callback', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String
+      });
+
+      var preSaveCalled = false;
+      userSchema.pre('save', function (next) {
+        preSaveCalled = true;
+        next();
+      })
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('March 3, 1990 03:30:00');
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com'
+      });
+
+      user.save();
+      expect(preSaveCalled).to.be.ok;
+      setTimeout(function () {
+        done();
+      }, 100);
+    });
+
+    it('should call post save hook ok on a simple document without callback', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String
+      });
+
+      var hookCalled = false;
+      userSchema.post('save', function () {
+        hookCalled = true;
+      })
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('March 3, 1990 03:30:00');
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com'
+      });
+
+      user.save();
+      setTimeout(function () {
+        expect(hookCalled).to.be.ok;
+        done();
+      }, 100);
+    });
+
+    it('should call pre save hook ok on a simple document without callback - no promisify', function (done) {
+      // set promisify to false so we don't throw rejected promise
+      lounge.setOption('promisify', false)
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String
+      });
+
+      var preSaveCalled = false;
+      userSchema.pre('save', function (next) {
+        preSaveCalled = true;
+        next();
+      })
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('March 3, 1990 03:30:00');
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com'
+      });
+
+      user.save();
+      expect(preSaveCalled).to.be.ok;
+      setTimeout(function () {
+        lounge.setOption('promisify', true)
+        done();
+      }, 100);
+    });
+
+    it('should call post save hook ok on a simple document without callback - no promisify', function (done) {
+      // set promisify to false so we don't throw rejected promise
+      lounge.setOption('promisify', false)
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String
+      });
+
+      var hookCalled = false;
+      userSchema.post('save', function () {
+        hookCalled = true;
+      })
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('March 3, 1990 03:30:00');
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com'
+      });
+
+      user.save();
+      setTimeout(function () {
+        expect(hookCalled).to.be.ok;
+        lounge.setOption('promisify', true)
+        done();
+      }, 100);
+    });
   });
 });
