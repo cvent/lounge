@@ -73,6 +73,52 @@ describe('Model index query tests', function () {
       });
     });
 
+    it('should query using compound indexes', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        username: String
+      });
+
+      userSchema.index(['email', 'username']);
+
+      var User = lounge.model('User', userSchema);
+
+      var userData = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        username: 'jsmith'
+      };
+
+      var user = new User(userData);
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+
+
+        User.findByEmailAndUsername(user.email, user.username, function (err, rdoc) {
+          expect(err).to.not.be.ok;
+
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.an('object');
+          expect(rdoc).to.be.an.instanceof(User);
+          expect(rdoc.id).to.be.ok;
+          expect(rdoc.id).to.be.a('string');
+
+          expect(rdoc.id).to.equal(user.id);
+          expect(rdoc.firstName).to.equal(userData.firstName);
+          expect(rdoc.lastName).to.equal(userData.lastName);
+          expect(rdoc.email).to.equal(userData.email);
+          expect(rdoc.username).to.equal(userData.username);
+
+          done();
+        });
+      });
+    });
+
     it('should query using simple reference document using promises', function (done) {
       var userSchema = lounge.schema({
         firstName: String,
@@ -136,6 +182,44 @@ describe('Model index query tests', function () {
 
 
         User.findByEmail(user.email, { lean: true }, function (err, rdoc) {
+          expect(err).to.not.be.ok;
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.a('string');
+
+          expect(rdoc).to.equal(user.id);
+
+          done();
+        });
+      });
+    });
+
+    it('should query using compound index using lean option', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        username: String
+      });
+
+      userSchema.index(['email', 'username']);
+
+      var User = lounge.model('User', userSchema);
+
+      var userData = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        username: 'jsmith'
+      };
+
+      var user = new User(userData);
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+
+
+        User.findByEmailAndUsername(user.email, user.username, { lean: true }, function (err, rdoc) {
           expect(err).to.not.be.ok;
           expect(rdoc).to.be.ok;
           expect(rdoc).to.be.a('string');
@@ -220,6 +304,59 @@ describe('Model index query tests', function () {
           expect(rdoc.email).to.equal(user.email);
 
           User.findByUsername(user.usernames[1], function (err, rdoc) {
+            expect(err).to.not.be.ok;
+
+            expect(rdoc).to.be.ok;
+            expect(rdoc).to.be.an('object');
+            expect(rdoc).to.be.an.instanceof(User);
+
+            expect(rdoc.usernames.sort()).to.deep.equal(user.usernames.sort());
+            expect(rdoc.firstName).to.equal(user.firstName);
+            expect(rdoc.lastName).to.equal(user.lastName);
+            expect(rdoc.email).to.equal(user.email);
+
+            done();
+          });
+        });
+      });
+    });
+
+    it('should query index values for array in a compound index', function (done) {
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        usernames: [String]
+      });
+
+      userSchema.index(['email', 'usernames']);
+
+      var User = lounge.model('User', userSchema);
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        usernames: ['user1', 'user2']
+      });
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+
+        User.findByEmailAndUsername(user.email, user.usernames[0], function (err, rdoc, missing) {
+          expect(err).to.not.be.ok;
+          expect(missing).to.deep.equal([]);
+
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.an('object');
+          expect(rdoc).to.be.an.instanceof(User);
+
+          expect(rdoc.usernames.sort()).to.deep.equal(user.usernames.sort());
+          expect(rdoc.firstName).to.equal(user.firstName);
+          expect(rdoc.lastName).to.equal(user.lastName);
+          expect(rdoc.email).to.equal(user.email);
+
+          User.findByEmailAndUsername(user.email, user.usernames[1], function (err, rdoc) {
             expect(err).to.not.be.ok;
 
             expect(rdoc).to.be.ok;
