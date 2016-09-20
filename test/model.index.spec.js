@@ -172,6 +172,7 @@ describe('Model index function tests', function () {
     });
 
     function checkIndexRes(err, indexRes) {
+      console.dir(err);
       expect(err).to.not.be.ok;
       expect(indexRes).to.be.ok;
       expect(indexRes.value).to.be.ok;
@@ -194,6 +195,9 @@ describe('Model index function tests', function () {
 
       var k = userSchema.getRefKey('email_and_username', user.email + '_' + user.username);
       bucket.get(k, function (err, indexRes) {
+        console.log('Err');
+        console.dir(err);
+        console.log('****');
         checkIndexRes(err, indexRes);
 
         bucket.get(indexRes.value.key, function (err, gd) {
