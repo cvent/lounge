@@ -195,7 +195,6 @@ describe('Model index function tests', function () {
       var k = userSchema.getRefKey('email_and_username', user.email + '_' + user.username);
       bucket.get(k, function (err, indexRes) {
         checkIndexRes(err, indexRes);
-
         bucket.get(indexRes.value.key, function (err, gd) {
           checkGetRes(err, gd);
           done();
