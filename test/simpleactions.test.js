@@ -59,6 +59,140 @@ test('should save a simple document', async t => {
   t.is(savedDoc.email, 'joe@gmail.com');
 });
 
+test('should save with pre save middleware', async t => {
+  t.plan(6);
+
+  const schema = lounge.schema({
+    title: String,
+    metadata: {
+      doctype: String,
+      createdAt: Date,
+      updatedAt: Date
+    }
+  });
+
+  schema.pre('save', function (next) {
+    if (!this.metadata) {
+      this.metadata = {};
+    }
+
+    const now = new Date();
+
+    if (!this.metadata.createdAt) {
+      this.metadata.createdAt = now;
+    }
+
+    this.metadata.updatedAt = now;
+    this.metadata.doctype = this.modelName.toLowerCase();
+
+    next();
+  });
+
+  const Post = lounge.model('Post2', schema);
+
+  const post = new Post({
+    title: 'sample title'
+  });
+
+  const savedDoc = await post.save();
+  t.truthy(savedDoc);
+  t.true(savedDoc instanceof Post);
+  t.true(typeof savedDoc === 'object');
+  t.true(typeof savedDoc.id === 'string');
+  t.truthy(savedDoc.cas);
+  t.is(savedDoc.title, 'sample title');
+});
+
+test('should save a nested document with pre save middleware', async t => {
+  t.plan(15);
+
+  const base = lounge.schema({
+    metadata: {
+      doctype: String,
+      createdAt: Date,
+      updatedAt: Date
+    }
+  });
+
+  base.pre('save', function (next) {
+    if (!this.metadata) {
+      this.metadata = {};
+    }
+
+    const now = new Date();
+
+    if (!this.metadata.createdAt) {
+      this.metadata.createdAt = now;
+    }
+
+    this.metadata.updatedAt = now;
+    this.metadata.doctype = this.modelName.toLowerCase();
+
+    next();
+  });
+
+  function xform(doc, ret) {
+    delete ret.metadata;
+    return ret;
+  }
+
+  base.set('toJSON', { transform: xform });
+
+  const userSchema2 = lounge.schema({
+    firstName: String,
+    lastName: String,
+    email: { type: String, index: true }
+  });
+
+  userSchema2.extend(base);
+
+  userSchema2.pre('save', function (next) {
+    if (this.email) {
+      this.email = this.email.toLowerCase();
+    }
+    next();
+  });
+
+  const User2 = lounge.model('User2', userSchema2);
+
+  const schema = lounge.schema({
+    title: String,
+    owner: { type: User2, index: true }
+  });
+
+  schema.extend(base);
+
+  const Post = lounge.model('Post', schema);
+
+  const userData = {
+    firstName: 'Joe',
+    lastName: 'Smith',
+    email: 'JOE@gmail.com'
+  };
+
+  const post = new Post({
+    title: 'sample title',
+    owner: new User2(userData)
+  });
+
+  const savedDoc = await post.save();
+  t.truthy(savedDoc);
+  t.true(savedDoc instanceof Post);
+  t.true(typeof savedDoc === 'object');
+  t.true(typeof savedDoc.id === 'string');
+  t.truthy(savedDoc.cas);
+  t.is(savedDoc.title, 'sample title');
+  t.true(savedDoc.owner instanceof User2);
+  t.true(typeof savedDoc.owner.id === 'string');
+  t.is(savedDoc.owner.firstName, 'Joe');
+  t.is(savedDoc.owner.lastName, 'Smith');
+  t.is(savedDoc.owner.email, 'joe@gmail.com');
+  t.true(typeof savedDoc.metadata === 'object');
+  t.true(savedDoc.metadata.createdAt instanceof Date);
+  t.true(savedDoc.metadata.updatedAt instanceof Date);
+  t.true(typeof savedDoc.metadata.doctype === 'string');
+});
+
 test('should get the document via index function', async t => {
   t.plan(8);
 

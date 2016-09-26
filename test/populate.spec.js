@@ -1587,10 +1587,9 @@ describe('Model populate tests', function () {
         expect(rdoc.tickets).to.be.ok;
         expect(rdoc.tickets).to.be.an.instanceof(Array);
 
-        var expectedTickets = [ts.data.tickets[0].id, ts.data.tickets[1], ts.data.tickets[2].id];
-        rdoc.tickets.forEach(function (ticketrdoc, index) {
-          expect(ticketrdoc).to.deep.equal(expectedTickets[index]);
-        });
+        var expectedTickets = [ts.data.tickets[0].id, ts.data.tickets[1], ts.data.tickets[2].id].sort();
+        var actual = rdoc.tickets.toArray().sort();
+        expect(actual).to.deep.equal(expectedTickets);
         done();
       });
     });
@@ -1620,10 +1619,9 @@ describe('Model populate tests', function () {
 
         var ticket2 = _.cloneDeep(ts.data.tickets[2]);
         ticket2.profile = ts.data.profiles[1];
-        var expectedTicetkets = [ts.data.tickets[0].id, ts.data.tickets[1].id, ticket2];
-        rdoc.tickets.forEach(function (ticketrdoc, index) {
-          expect(ticketrdoc).to.deep.equal(expectedTicetkets[index]);
-        });
+        var expectedTicetkets = [ts.data.tickets[0].id, ts.data.tickets[1].id, ticket2].sort();
+        var actual = rdoc.tickets.toArray().sort();
+        expect(actual).to.deep.equal(expectedTicetkets);
         done();
       });
     });

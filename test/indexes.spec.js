@@ -644,5 +644,45 @@ describe('Model index tests', function () {
       var actualRefs = couchUtil.buildRefValues(userSchema.indexes, data);
       expect(actualRefs).to.deep.equal(expected);
     });
+
+    it('should create index values for subdocument values', function () {
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        profile: {
+          email: { type: String, index: true },
+          profileType: String
+        }
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      expect(User.findByEmail).to.be.ok;
+      expect(User.findByEmail).to.be.an.instanceof(Function);
+
+      var data = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        profile: {
+          email: 'joe@gmail.com',
+          profileType: 'admin'
+        }
+      };
+
+      var expected = {
+        email: {
+          path: 'profile.email',
+          value: 'joe@gmail.com',
+          name: 'email',
+          indexType: 'single'
+        }
+      };
+
+      // we have to generate this manually since we don't have access to object internals
+      // this has to match how we would use it in CouchDocument, specifically constructor to build the initial list
+      var actual = couchUtil.buildRefValues(userSchema.indexes, data);
+
+      expect(actual).to.deep.equal(expected);
+    });
   });
 });

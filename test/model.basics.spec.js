@@ -495,7 +495,8 @@ describe('Model basics', function () {
         foos: foos1
       });
 
-      expect(user.foos.toArray()).to.deep.equal(foos1);
+      expect(user.foos.map(function (r) { return r.toObject(); }))
+        .to.deep.equal(foos1.map(function (r) { return r.toObject(); }));
 
       user.foos.push(new Foo({
         a: 'a3',
@@ -607,7 +608,7 @@ describe('Model basics', function () {
       });
 
       expect(user.name).to.equal(user.name);
-      expect(user.profile).to.deep.equal({ email: 'p1@p1.com', age: 10 });
+      expect(user.profile.toObject()).to.deep.equal({ email: 'p1@p1.com', age: 10 });
 
       // this should work
       user.set('profile', {
@@ -630,14 +631,14 @@ describe('Model basics', function () {
         foo: 'bar'
       };
 
-      expect(user.profile).to.deep.equal({
+      expect(user.profile.toObject()).to.deep.equal({
         email: 'bsmith2@gmail.com',
         age: 22
       });
 
       user.profile.email = 123;
 
-      expect(user.profile).to.deep.equal({
+      expect(user.profile.toObject()).to.deep.equal({
         email: '123',
         age: 22
       });
@@ -648,7 +649,7 @@ describe('Model basics', function () {
         age: 23
       });
 
-      expect(user.profile).to.deep.equal({
+      expect(user.profile.toObject()).to.deep.equal({
         email: 'bsmith3@gmail.com',
         age: 23
       });
@@ -658,7 +659,7 @@ describe('Model basics', function () {
         age: 23
       });
 
-      expect(user.profile).to.deep.equal({
+      expect(user.profile.toObject()).to.deep.equal({
         email: 'bsmith3@gmail.com',
         age: 23
       });
@@ -683,7 +684,7 @@ describe('Model basics', function () {
       });
 
       expect(user.name).to.equal(user.name);
-      expect(user.profile).to.deep.equal({ email: 'bsmith2@gmail.com', age: 22 });
+      expect(user.profile.toObject()).to.deep.equal({ email: 'bsmith2@gmail.com', age: 22 });
 
       user.profile.set({
         email: 'bsmith@gmail.com',
@@ -691,14 +692,14 @@ describe('Model basics', function () {
         foo: 'bar'
       });
 
-      expect(user.profile).to.deep.equal({
+      expect(user.profile.toObject()).to.deep.equal({
         email: 'bsmith@gmail.com',
         age: 20
       });
 
       user.profile.email = 123;
 
-      expect(user.profile).to.deep.equal({
+      expect(user.profile.toObject()).to.deep.equal({
         email: '123',
         age: 20
       });
@@ -806,6 +807,124 @@ describe('Model basics', function () {
 
       expect(user.usernames.toArray()).to.deep.equal(['user7', 'user8', 'true', 'user8']);
     })
+
+    it('Should properly work with object in an array and mixing with actions', function () {
+      var userSchema = lounge.schema({
+        name: String,
+        profiles: [{
+          email: String,
+          age: Number
+        }]
+      });
+
+      var User = lounge.model('User', userSchema);
+      var user = new User({
+        name: 'Bob Smith'
+      });
+
+      expect(user.name).to.equal(user.name);
+      expect(user.profiles.toArray()).to.deep.equal([]);
+
+      user.profiles.push({
+        email: 'bsmith@gmail.com',
+        age: 20
+      });
+
+      expect(user.profiles.toArray()).to.deep.equal([{ email: 'bsmith@gmail.com', age: 20 }]);
+
+      user.profiles = [{
+        email: 'bsmith2@gmail.com',
+        age: 21
+      }, {
+        email: 'bsmith3@gmail.com',
+        age: 22
+      }];
+
+      expect(user.profiles.toArray()).to.deep.equal([{
+        email: 'bsmith2@gmail.com',
+        age: 21
+      }, {
+        email: 'bsmith3@gmail.com',
+        age: 22
+      }]);
+
+      var user1Profiles = user.profiles;
+      var existing = _.find(user1Profiles, { email: 'bsmith2@gmail.com' });
+      expect(existing).to.be.ok;
+
+      var profiles2 = [{
+        email: 'bsmith4@gmail.com',
+        age: 24
+      }, existing];
+
+      var user2 = new User({
+        name: 'User 2',
+        profiles: profiles2
+      });
+
+      expect(user2.profiles.toArray()).to.deep.equal([{
+        email: 'bsmith4@gmail.com',
+        age: 24
+      }, {
+        email: 'bsmith2@gmail.com',
+        age: 21
+      }]);
+
+      var user3 = new User({
+        name: 'User 3'
+      });
+
+      var profiles3 = [{
+        email: 'bsmith4@gmail.com',
+        age: 24
+      }, existing];
+
+      user3.profiles = profiles3;
+
+      expect(user3.profiles.toArray()).to.deep.equal([{
+        email: 'bsmith4@gmail.com',
+        age: 24
+      }, {
+        email: 'bsmith2@gmail.com',
+        age: 21
+      }]);
+
+      var user4 = new User({
+        name: 'User 4',
+        profiles: [existing]
+      });
+
+      user4.profiles.push({
+        email: 'bsmith4@gmail.com',
+        age: 24
+      });
+
+      expect(user4.profiles.toArray()).to.deep.equal([{
+        email: 'bsmith2@gmail.com',
+        age: 21
+      }, {
+        email: 'bsmith4@gmail.com',
+        age: 24
+      }]);
+
+      var user5 = new User({
+        name: 'User 5',
+        profiles: [{
+          email: 'bsmith4@gmail.com',
+          age: 24
+        }]
+      });
+
+      user5.profiles.push(existing);
+
+      expect(user5.profiles.toArray()).to.deep.equal([{
+        email: 'bsmith4@gmail.com',
+        age: 24
+      }, {
+        email: 'bsmith2@gmail.com',
+        age: 21
+      }]);
+    });
   });
 
   describe('clear()', function () {

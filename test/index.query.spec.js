@@ -1373,7 +1373,7 @@ describe('Model index query tests', function () {
           expect(doc.email).to.equal(user.email);
 
           if (company) {
-            expect(doc.company).to.deep.equal(company);
+            expect(doc.company.toObject()).to.deep.equal(company);
           } else {
             expect(doc.company).to.not.be.ok;
           }
@@ -1477,7 +1477,9 @@ describe('Model index query tests', function () {
 
         rdoc = _.sortBy(rdoc, 'firstName');
 
-        expect(rdoc).to.deep.equal(expectedUsers);
+        var actual = _.map(rdoc, function (r) { return r.toObject(); });
+
+        expect(actual).to.deep.equal(expectedUsers);
         done();
       });
     });
@@ -1500,8 +1502,8 @@ describe('Model index query tests', function () {
         expect(rdoc.length).to.equal(2);
 
         rdoc = _.sortBy(rdoc, 'firstName');
-
-        expect(rdoc).to.deep.equal(expectedUsers);
+        var actual = _.map(rdoc, function (r) { return r.toObject(); });
+        expect(actual).to.deep.equal(expectedUsers);
         done();
       });
     });
@@ -1524,8 +1526,8 @@ describe('Model index query tests', function () {
         expect(rdoc.length).to.equal(3);
 
         rdoc = _.sortBy(rdoc, 'firstName');
-
-        expect(rdoc).to.deep.equal(expectedUsers);
+        var actual = _.map(rdoc, function (r) { return r.toObject(); });
+        expect(actual).to.deep.equal(expectedUsers);
         done();
       });
     });
@@ -1548,8 +1550,8 @@ describe('Model index query tests', function () {
         expect(rdoc.length).to.equal(1);
 
         rdoc = _.sortBy(rdoc, 'firstName');
-
-        expect(rdoc).to.deep.equal(expectedUsers);
+        var actual = _.map(rdoc, function (r) { return r.toObject(); });
+        expect(actual).to.deep.equal(expectedUsers);
         done();
       });
     });
