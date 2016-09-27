@@ -586,6 +586,31 @@ describe('Model basics', function () {
       expect(email).to.equal('jsmith@gmail.com');
       expect(unknown).to.not.be.ok;
     });
+
+    it.only('should properly iterate through properties', function () {
+      var userSchema = lounge.schema({
+        email: String,
+        name: String
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var user = new User({
+        name: 'Joe Smith',
+        email: 'jsmith@gmail.com'
+      });
+
+      var c = 0;
+      var expectedKeys = ['name', 'email', 'id'];
+      console.dir(user)
+      console.log('for ======')
+      for (const key in user) {
+        console.log(key)
+        c++;
+        expect(expectedKeys.indexOf(key)).to.be.at.least(0);
+      }
+      expect(c).to.equal(expectedKeys.length);
+    });
   });
 
   describe('Nested properties tests', function () {
