@@ -1,7 +1,7 @@
 {
-  "name": "lounge",
+  "name": "lounge-atrites",
   "description": "Simple Mongoose-inspired ODM for Couchbase",
-  "version": "0.6.3",
+  "version": "0.7.0-pre.0",
   "homepage": "https://github.com/bojand/lounge",
   "license": "MIT",
   "repository": {
@@ -66,6 +66,9 @@
     "shelljs": "^0.7.3",
     "validator": "^5.2.0",
     "xo": "^0.16.0"
+  },
+  "publishConfig": {
+    "registry": "http://nexus-01.cvent.net:8081/nexus/content/repositories/npm-local/"
   },
   "ava": {
     "files": [
