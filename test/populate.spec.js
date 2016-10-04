@@ -1533,7 +1533,7 @@ describe('Model populate tests', function () {
       var userId = ts.data.users[0].email;
       var userData = ts.data.users[0];
 
-      User.findById(userId, { populate: { path: 'location.countryCode', field: 'location.country' } }, function (err, rdoc, missed) {
+      User.findById(userId, { populate: { path: 'location.countryCode', target: 'location.country' } }, function (err, rdoc, missed) {
         expect(err).to.not.be.ok;
 
         expect(rdoc).to.be.ok;
