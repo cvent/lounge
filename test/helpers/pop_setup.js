@@ -3,34 +3,61 @@ var _ = require('lodash');
 var uuid = require('uuid');
 
 var data = {
+  countries: [{
+    "name": "Canada",
+    "code": "CA"
+  }, {
+    "name": "United States",
+    "code": "US"
+  }],
   users: [{
     "firstName": "Bobby",
     "lastName": "Jordan",
     "email": "bjordan0@apple.com",
     "dateOfBirth": "1958-11-01T23:28:14Z",
-    "company": "f32a5f17-b827-41b8-83fc-637976a393a5"
+    "company": "f32a5f17-b827-41b8-83fc-637976a393a5",
+    "location": {
+      "countryCode": "CA",
+      "city": "Fredericton"
+    }
   }, {
     "firstName": "Rachel",
     "lastName": "Porter",
     "email": "rporter1@ning.com",
     "dateOfBirth": "1977-04-23T10:32:14Z",
-    "company": "company::9be225c9-79a8-4ec4-9113-689a800f825c"
+    "company": "company::9be225c9-79a8-4ec4-9113-689a800f825c",
+    "location": {
+      "countryCode": "US",
+      "city": "Washington"
+    }
   }, {
     "firstName": "Judith",
     "lastName": "Oliver",
     "email": "joliver2@imgur.com",
     "dateOfBirth": "1967-10-30T08:36:54Z",
-    "company": "company::52a1a9b1-5669-4133-9575-2786ebc69635"
+    "company": "company::52a1a9b1-5669-4133-9575-2786ebc69635",
+    "location": {
+      "countryCode": "CA",
+      "city": "Montreal"
+    }
   }, {
     "firstName": "Kathleen",
     "lastName": "Hernandez",
     "email": "khernandez3@who.int",
-    "dateOfBirth": "2014-11-04T07:23:56Z"
+    "dateOfBirth": "2014-11-04T07:23:56Z",
+    "location": {
+      "countryCode": "US",
+      "city": "San Francisco"
+    }
   }, {
     "firstName": "Nicholas",
     "lastName": "Coleman",
     "email": "ncoleman4@europa.eu",
-    "dateOfBirth": "1958-04-27T01:21:52Z"
+    "dateOfBirth": "1958-04-27T01:21:52Z",
+    "location": {
+      "countryCode": "CA",
+      "city": "Fredericton"
+    }
   }],
   companies: [{
     "id": "f32a5f17-b827-41b8-83fc-637976a393a5",
@@ -199,7 +226,8 @@ var keymapping = {
   'users': 'email',
   'companies': 'id',
   'posts': 'id',
-  'comments': 'id'
+  'comments': 'id',
+  'countries': 'code'
 };
 
 exports.setup = function (bucket, fn) {
