@@ -1555,14 +1555,6 @@ describe('Model populate tests', function () {
         expect(rdoc.location.country.code).to.equal(countryData.code);
         expect(rdoc.location.country.name).to.equal(countryData.name);
 
-        var cas2 = rdoc.company.cas;
-        expect(cas2).to.be.a('string');
-
-        expect(cas).to.not.equal(cas2);
-
-        expect(missed).to.be.an.instanceof(Array);
-        expect(missed.length).to.equal(0);
-
         done();
       });
     });
