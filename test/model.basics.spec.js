@@ -605,9 +605,11 @@ describe('Model basics', function () {
       console.dir(user)
       console.log('for ======')
       for (const key in user) {
-        console.log(key)
-        c++;
-        expect(expectedKeys.indexOf(key)).to.be.at.least(0);
+        if (user.hasOwnProperty(key)) {
+          console.log(key)
+          c++;
+          //expect(expectedKeys.indexOf(key)).to.be.at.least(0);
+        }
       }
       expect(c).to.equal(expectedKeys.length);
     });
