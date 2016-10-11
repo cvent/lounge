@@ -281,6 +281,62 @@ describe('Model index function tests', function () {
     });
   });
 
+  it('should index() values according to refKeyCase settings', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: { type: String, index: true, refKeyCase: 'upper' },
+      username: { type: String, key: true, generate: false }
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe@gmail.com',
+      username: 'jsmith'
+    });
+
+    var indexCalled = false;
+    user.on('index', function (err) {
+      indexCalled = true;
+    });
+
+    function checkIndexRes(err, indexRes) {
+      expect(err).to.not.be.ok;
+      expect(indexRes).to.be.ok;
+      expect(indexRes.value).to.be.ok;
+      expect(indexRes.value.key).to.be.ok;
+      expect(indexRes.value.key).to.equal(user.getDocumentKeyValue(true));
+    }
+
+    function checkGetRes(err, gd) {
+      expect(err).to.not.be.ok;
+      expect(gd).to.be.ok;
+      expect(gd.value).to.be.ok;
+      expect(gd.value.email).to.equal(user.email);
+      expect(gd.value.username).to.equal(user.username);
+      expect(gd.value.firstName).to.equal(user.firstName);
+      expect(gd.value.lastName).to.equal(user.lastName);
+    }
+
+    user.save(function (err, savedDoc) {
+      expect(err).to.not.be.ok;
+      expect(savedDoc).to.be.ok;
+
+      var k = userSchema.getRefKey('email', user.email);
+      bucket.get(k, function (err, indexRes) {
+        checkIndexRes(err, indexRes);
+
+        bucket.get(indexRes.value.key, function (err, gd) {
+          checkGetRes(err, gd);
+          done();
+        });
+      });
+    });
+  });
+
   it('should index() using multiple simple reference documents', function (done) {
     var userSchema = lounge.schema({
       firstName: String,
