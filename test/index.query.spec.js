@@ -412,6 +412,59 @@ describe('Model index query tests', function () {
       });
     });
 
+    it('should query using simple reference document respecting ref key case', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: { type: String, index: true, refKeyCase: 'lower' }
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var userData = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com'
+      };
+
+      var user = new User(userData);
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+
+
+        User.findByEmail(user.email, function (err, rdoc) {
+          expect(err).to.not.be.ok;
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.an('object');
+          expect(rdoc).to.be.an.instanceof(User);
+
+          expect(rdoc.username).to.equal(user.username);
+          expect(rdoc.firstName).to.equal(userData.firstName);
+          expect(rdoc.lastName).to.equal(userData.lastName);
+          expect(rdoc.email).to.equal(userData.email);
+
+          // Index query functions should now be case insensitive
+          User.findByEmail('JoE@GmaIl.COM', function(err, rdoc2){
+            expect(err).to.not.be.ok;
+            expect(rdoc2).to.be.ok;
+            expect(rdoc2).to.be.an('object');
+            expect(rdoc2).to.be.an.instanceof(User);
+
+            expect(rdoc2.username).to.equal(user.username);
+            expect(rdoc2.firstName).to.equal(userData.firstName);
+            expect(rdoc2.lastName).to.equal(userData.lastName);
+            expect(rdoc2.email).to.equal(userData.email);
+
+            done();
+          });
+
+
+        });
+      });
+    });
+
     it('should query index values for array', function (done) {
       var userSchema = new lounge.Schema({
         firstName: String,
