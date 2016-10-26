@@ -33,7 +33,7 @@ describe('Model index function tests', function () {
     var userSchema = lounge.schema({
       firstName: String,
       lastName: String,
-      email: {type: String, index: true}
+      email: { type: String, index: true }
     });
 
     var User = lounge.model('User', userSchema);
@@ -90,12 +90,125 @@ describe('Model index function tests', function () {
     });
   });
 
+  it('should properly create index when defined separately', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String
+    });
+
+    userSchema.index('email');
+
+    var User = lounge.model('User', userSchema);
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe3@gmail.com'
+    });
+
+    var indexCalled = false;
+    user.on('index', function (err) {
+      indexCalled = true;
+    });
+
+    function checkIndexRes(err, indexRes) {
+      expect(err).to.not.be.ok;
+      expect(indexRes).to.be.ok;
+      expect(indexRes.value).to.be.ok;
+      expect(indexRes.value.key).to.be.ok;
+      expect(indexRes.value.key).to.equal(user.getDocumentKeyValue(true));
+    }
+
+    function checkGetRes(err, gd) {
+      expect(err).to.not.be.ok;
+      expect(gd).to.be.ok;
+      expect(gd.value).to.be.ok;
+      expect(gd.value.email).to.equal(user.email);
+      expect(gd.value.firstName).to.equal(user.firstName);
+      expect(gd.value.lastName).to.equal(user.lastName);
+    }
+
+    user.save(function (err, savedDoc) {
+      expect(err).to.not.be.ok;
+      expect(savedDoc).to.be.ok;
+
+      var k = userSchema.getRefKey('email', user.email);
+      bucket.get(k, function (err, indexRes) {
+        checkIndexRes(err, indexRes);
+
+        bucket.get(indexRes.value.key, function (err, gd) {
+          checkGetRes(err, gd);
+
+          done();
+        });
+      });
+    });
+  });
+
+
+  it('should create a compound index', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String,
+      username: String,
+    });
+
+    userSchema.index(['email', 'username']);
+
+    var User = lounge.model('User', userSchema);
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe3@gmail.com',
+      username: 'jsmith'
+    });
+
+    var indexCalled = false;
+    user.on('index', function (err) {
+      indexCalled = true;
+    });
+
+    function checkIndexRes(err, indexRes) {
+      expect(err).to.not.be.ok;
+      expect(indexRes).to.be.ok;
+      expect(indexRes.value).to.be.ok;
+      expect(indexRes.value.key).to.be.ok;
+      expect(indexRes.value.key).to.equal(user.getDocumentKeyValue(true));
+    }
+
+    function checkGetRes(err, gd) {
+      expect(err).to.not.be.ok;
+      expect(gd).to.be.ok;
+      expect(gd.value).to.be.ok;
+      expect(gd.value.email).to.equal(user.email);
+      expect(gd.value.firstName).to.equal(user.firstName);
+      expect(gd.value.lastName).to.equal(user.lastName);
+    }
+
+    user.save(function (err, savedDoc) {
+      expect(err).to.not.be.ok;
+      expect(savedDoc).to.be.ok;
+
+      var k = userSchema.getRefKey('email_and_username', user.email + '_' + user.username);
+      bucket.get(k, function (err, indexRes) {
+        checkIndexRes(err, indexRes);
+        bucket.get(indexRes.value.key, function (err, gd) {
+          checkGetRes(err, gd);
+          done();
+        });
+      });
+    });
+  });
+
   it('should index() using simple reference document using key options', function (done) {
     var userSchema = lounge.schema({
       firstName: String,
       lastName: String,
-      email: {type: String, index: true},
-      username: {type: String, key: true, generate: false}
+      email: { type: String, index: true },
+      username: { type: String, key: true, generate: false }
     });
 
     var User = lounge.model('User', userSchema);
@@ -168,13 +281,152 @@ describe('Model index function tests', function () {
     });
   });
 
+  it('should index() values according to refKeyCase settings', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: { type: String, index: true, refKeyCase: 'upper' },
+      username: { type: String, key: true, generate: false }
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe@gmail.com',
+      username: 'jsmith'
+    });
+
+    var indexCalled = false;
+    user.on('index', function (err) {
+      indexCalled = true;
+    });
+
+    function checkIndexRes(err, indexRes) {
+      expect(err).to.not.be.ok;
+      expect(indexRes).to.be.ok;
+      expect(indexRes.value).to.be.ok;
+      expect(indexRes.value.key).to.be.ok;
+      expect(indexRes.value.key).to.equal(user.getDocumentKeyValue(true));
+    }
+
+    function checkGetRes(err, gd) {
+      expect(err).to.not.be.ok;
+      expect(gd).to.be.ok;
+      expect(gd.value).to.be.ok;
+      expect(gd.value.email).to.equal(user.email);
+      expect(gd.value.username).to.equal(user.username);
+      expect(gd.value.firstName).to.equal(user.firstName);
+      expect(gd.value.lastName).to.equal(user.lastName);
+    }
+
+    user.save(function (err, savedDoc) {
+      expect(err).to.not.be.ok;
+      expect(savedDoc).to.be.ok;
+
+      var k = userSchema.getRefKey('email', user.email);
+      bucket.get(k, function (err, indexRes) {
+        checkIndexRes(err, indexRes);
+
+        bucket.get(indexRes.value.key, function (err, gd) {
+          checkGetRes(err, gd);
+          done();
+        });
+      });
+    });
+  });
+
   it('should index() using multiple simple reference documents', function (done) {
     var userSchema = lounge.schema({
       firstName: String,
       lastName: String,
-      email: {type: String, index: true},
-      username: {type: String, index: true, indexName: 'userName'}
+      email: { type: String, index: true },
+      username: { type: String, index: true, indexName: 'userName' }
     });
+
+    var User = lounge.model('User', userSchema);
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe@gmail.com',
+      username: 'jsmith'
+    });
+
+    function checkRes(err, rdoc) {
+      expect(err).to.not.be.ok;
+      expect(rdoc).to.be.ok;
+      expect(rdoc.value).to.be.ok;
+      expect(rdoc.value.key).to.be.ok;
+      expect(rdoc.value.key).to.equal(user.id);
+    }
+
+    user.save(function (err, savedDoc) {
+      expect(err).to.not.be.ok;
+      expect(savedDoc).to.be.ok;
+
+      var indexCalled = 0;
+      user.on('index', function (err) {
+        indexCalled = indexCalled + 1;
+      });
+
+      var k = userSchema.getRefKey('email', user.email);
+      bucket.get(k, function (err, indexRes) {
+        checkRes(err, indexRes);
+
+        k = userSchema.getRefKey('userName', user.username);
+        bucket.get(k, function (err, indexRes) {
+          checkRes(err, indexRes);
+
+          user.email = 'joe2@gmail.com';
+          user.username = 'jsmith2';
+
+          user.index(function (err, savedDoc) {
+            expect(err).to.not.be.ok;
+
+            // old ones
+            k = userSchema.getRefKey('email', 'joe@gmail.com');
+            bucket.get(k, function (err, gdoc) {
+              expect(err).to.be.ok;
+              expect(err.code).to.equal(couchbase.errors.keyNotFound);
+
+              k = userSchema.getRefKey('username', 'jsmith');
+              bucket.get(k, function (err, gdoc) {
+                expect(err).to.be.ok;
+                expect(err.code).to.equal(couchbase.errors.keyNotFound);
+
+                // new ones
+                var k = userSchema.getRefKey('email', user.email);
+                bucket.get(k, function (err, indexRes) {
+                  checkRes(err, indexRes);
+                  k = userSchema.getRefKey('userName', user.username);
+                  bucket.get(k, function (err, indexRes) {
+                    checkRes(err, indexRes);
+
+                    expect(indexCalled).to.equal(1);
+
+                    done();
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+
+  it('should index() using multiple simple reference documents defined separately', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String,
+      username: String
+    });
+
+    userSchema.index('email');
+    userSchema.index('username', { indexName: 'userName' });
 
     var User = lounge.model('User', userSchema);
 
@@ -252,8 +504,8 @@ describe('Model index function tests', function () {
     var userSchema = lounge.schema({
       firstName: String,
       lastName: String,
-      email: {type: String, key: true, generate: false},
-      usernames: [{type: String, index: true, indexName: 'username'}]
+      email: { type: String, key: true, generate: false },
+      usernames: [{ type: String, index: true, indexName: 'username' }]
     }, {
       refIndexKeyPrefix: 'app::dev::ref::',
       delimiter: '::'
@@ -336,11 +588,242 @@ describe('Model index function tests', function () {
     });
   });
 
+  it('should index() using array of reference documents with a compound index', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: { type: String, key: true, generate: false },
+      usernames: [{ type: String, indexName: 'username' }]
+    }, {
+      refIndexKeyPrefix: 'app::dev::ref::',
+      delimiter: '::'
+    });
+
+    userSchema.index(['email', 'usernames']);
+
+    var User = lounge.model('User', userSchema);
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe@gmail.com',
+      usernames: ['js1', 'js2', 'js3']
+    });
+
+    user.save(function (err, savedDoc) {
+      expect(err).to.not.be.ok;
+      expect(savedDoc).to.be.ok;
+
+      var indexCalled = 0;
+      user.on('index', function (err) {
+        indexCalled = indexCalled + 1;
+      });
+
+      var keys = _.map(user.usernames, function (un) {
+        return userSchema.getRefKey('email_and_username', user.email + '_' + un);
+      });
+
+      bucket.getMulti(keys, function (err, indexRes) {
+        expect(err).to.not.be.ok;
+        expect(indexRes).to.be.ok;
+
+        var resKeys = Object.keys(indexRes);
+
+        _.each(resKeys, function (ik) {
+          var v = indexRes[ik].value;
+          expect(v).to.be.ok;
+          expect(v.key).to.be.ok;
+          expect(v.key).to.equal(user.email);
+        });
+
+        user.usernames = ['jsnew1', 'js2', 'jsnew3'];
+
+        user.index(function (err) {
+          expect(err).to.not.be.ok;
+
+          // check old ones
+          keys = _.map(['js1', 'js3'], function (un) {
+            return userSchema.getRefKey('email_and_username', user.email + '_' + un);
+          });
+
+          bucket.getMulti(keys, function (err, indexRes) {
+
+            expect(err).to.be.ok;
+            expect(err).to.equal(2);
+
+            keys = _.map(user.usernames, function (un) {
+              return userSchema.getRefKey('email_and_username', user.email + '_' + un);
+            });
+
+            bucket.getMulti(keys, function (err, indexRes) {
+              expect(err).to.not.be.ok;
+              expect(indexRes).to.be.ok;
+
+              var resKeys = Object.keys(indexRes);
+
+              _.each(resKeys, function (ik) {
+                var v = indexRes[ik].value;
+                expect(v).to.be.ok;
+                expect(v.key).to.be.ok;
+                expect(v.key).to.equal(user.email);
+              });
+
+              expect(indexCalled).to.equal(1);
+
+              done();
+            });
+          });
+        });
+      });
+    });
+  });
+
   it('should index using simple reference document for array index type', function (done) {
     var userSchema = lounge.schema({
       name: String,
-      email: {type: String, index: true, indexType: 'array'}
+      email: { type: String, index: true, indexType: 'array' }
     });
+
+    var User = lounge.model('User', userSchema);
+
+    var user = new User({
+      name: 'Joe Smith',
+      email: 'joe@gmail.com'
+    });
+
+    var user2 = new User({
+      name: 'Bob Jones',
+      email: 'joe@gmail.com'
+    });
+
+    var indexCalled = false;
+    user.on('index', function () {
+      indexCalled = true;
+    });
+
+    function checkRes(indexRes, expected) {
+
+      expect(indexRes).to.be.ok;
+      expect(indexRes.value).to.be.ok;
+      expect(indexRes.value.keys).to.be.ok;
+      expect(indexRes.value.keys).to.deep.equal(expected);
+    }
+
+    user.index(function (err, indexDoc) {
+      expect(err).to.not.be.ok;
+
+      user2.index(function (err, savedDoc) {
+
+        var k = userSchema.getRefKey('email', user.email);
+        bucket.get(k, function (err, indexRes) {
+          expect(err).to.not.be.ok;
+          checkRes(indexRes, [user.id, user2.id]);
+
+          user.email = 'joe2@gmail.com';
+
+          user.index(function (err, indexRes) {
+            expect(err).to.not.be.ok;
+
+            // old one
+            k = userSchema.getRefKey('email', 'joe@gmail.com');
+            bucket.get(k, function (err, indexRes) {
+              expect(err).to.not.be.ok;
+              checkRes(indexRes, [user2.id]);
+
+              k = userSchema.getRefKey('email', user.email);
+              bucket.get(k, function (err, indexRes) {
+                checkRes(indexRes, [user.id]);
+
+                expect(indexCalled).to.be.ok;
+
+                done();
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+
+  it('should index using simple reference document for array index type with compound index', function (done) {
+    var userSchema = lounge.schema({
+      name: String,
+      email: String,
+      username: String
+    });
+
+    userSchema.index(['email', 'username'], { indexType: 'array' });
+
+    var User = lounge.model('User', userSchema);
+
+    var user = new User({
+      name: 'Joe Smith',
+      email: 'joe@gmail.com',
+      username: 'jsmith'
+    });
+
+    var user2 = new User({
+      name: 'Bob Jones',
+      email: 'joe@gmail.com',
+      username: 'jsmith'
+    });
+
+    var indexCalled = false;
+    user.on('index', function () {
+      indexCalled = true;
+    });
+
+    function checkRes(indexRes, expected) {
+
+      expect(indexRes).to.be.ok;
+      expect(indexRes.value).to.be.ok;
+      expect(indexRes.value.keys).to.be.ok;
+      expect(indexRes.value.keys).to.deep.equal(expected);
+    }
+
+    user.index(function (err, indexDoc) {
+      expect(err).to.not.be.ok;
+
+      user2.index(function (err, savedDoc) {
+
+        var k = userSchema.getRefKey('email_and_username', user.email + '_' + user.username);
+        bucket.get(k, function (err, indexRes) {
+          expect(err).to.not.be.ok;
+          checkRes(indexRes, [user.id, user2.id]);
+
+          user.email = 'joe2@gmail.com';
+
+          user.index(function (err, indexRes) {
+            expect(err).to.not.be.ok;
+
+            // old one
+            k = userSchema.getRefKey('email_and_username', 'joe@gmail.com' + '_' + user.username);
+            bucket.get(k, function (err, indexRes) {
+              expect(err).to.not.be.ok;
+              checkRes(indexRes, [user2.id]);
+
+              k = userSchema.getRefKey('email_and_username', user.email + '_' + user.username);
+              bucket.get(k, function (err, indexRes) {
+                checkRes(indexRes, [user.id]);
+
+                expect(indexCalled).to.be.ok;
+
+                done();
+              });
+            });
+          });
+        });
+      });
+    });
+  });
+
+  it('should index using simple reference document for array index type defined separately', function (done) {
+    var userSchema = lounge.schema({
+      name: String,
+      email: String
+    });
+
+    userSchema.index('email', { indexType: 'array' });
 
     var User = lounge.model('User', userSchema);
 
@@ -406,7 +889,7 @@ describe('Model index function tests', function () {
   it('should index using array reference document for array index type', function (done) {
     var userSchema = lounge.schema({
       name: String,
-      email: [{type: String, index: true, indexType: 'array'}]
+      email: [{ type: String, index: true, indexType: 'array' }]
     });
 
     var User = lounge.model('User', userSchema);
@@ -446,7 +929,11 @@ describe('Model index function tests', function () {
         bucket.getMulti(keys, function (err, indexRes) {
           expect(err).to.not.be.ok;
 
-          var ex = [[user.id], [user.id, user2.id], [user2.id]];
+          var ex = [
+            [user.id],
+            [user.id, user2.id],
+            [user2.id]
+          ];
           _.values(indexRes).forEach(function (ir, i) {
             checkRes(ir, ex[i]);
           });
@@ -469,7 +956,11 @@ describe('Model index function tests', function () {
               bucket.getMulti(keys, function (err, indexRes) {
                 expect(err).to.not.be.ok;
 
-                var ex = [[user.id, user2.id], [user2.id], [user.id]];
+                var ex = [
+                  [user.id, user2.id],
+                  [user2.id],
+                  [user.id]
+                ];
                 _.values(indexRes).forEach(function (ir, i) {
                   checkRes(ir, ex[i]);
                 });
@@ -495,8 +986,8 @@ describe('Model index function tests', function () {
 
     var userSchema = lounge.schema({
       name: String,
-      email: {type: String, key: true, generate: 'false'},
-      company: {type: Company, index: true}
+      email: { type: String, key: true, generate: 'false' },
+      company: { type: Company, index: true }
     });
 
     var User = lounge.model('User', userSchema);
@@ -569,8 +1060,8 @@ describe('Model index function tests', function () {
 
     var userSchema = lounge.schema({
       name: String,
-      email: {type: String, key: true, generate: 'false'},
-      company: [{type: Company, index: true}]
+      email: { type: String, key: true, generate: 'false' },
+      company: [{ type: Company, index: true }]
     });
 
     var User = lounge.model('User', userSchema);
@@ -659,8 +1150,8 @@ describe('Model index function tests', function () {
 
     var userSchema = lounge.schema({
       name: String,
-      email: {type: String, key: true, generate: false},
-      company: {type: Company, index: true, indexType: 'array'}
+      email: { type: String, key: true, generate: false },
+      company: { type: Company, index: true, indexType: 'array' }
     });
 
     var User = lounge.model('User', userSchema);
@@ -742,7 +1233,7 @@ describe('Model index function tests', function () {
 
     var userSchema = lounge.schema({
       name: String,
-      company: [{type: Company, index: true, indexType: 'array'}]
+      company: [{ type: Company, index: true, indexType: 'array' }]
     });
 
     var User = lounge.model('User', userSchema);
@@ -797,7 +1288,11 @@ describe('Model index function tests', function () {
         bucket.getMulti(keys, function (err, indexRes) {
           expect(err).to.not.be.ok;
 
-          var ex = [[user.id], [user.id, user2.id], [user2.id]];
+          var ex = [
+            [user.id],
+            [user.id, user2.id],
+            [user2.id]
+          ];
           _.values(indexRes).forEach(function (ir, i) {
             checkRes(ir, ex[i]);
           });
@@ -820,7 +1315,11 @@ describe('Model index function tests', function () {
               bucket.getMulti(keys, function (err, indexRes) {
                 expect(err).to.not.be.ok;
 
-                var ex = [[user.id, user2.id], [user2.id], [user.id]];
+                var ex = [
+                  [user.id, user2.id],
+                  [user2.id],
+                  [user.id]
+                ];
                 _.values(indexRes).forEach(function (ir, i) {
                   checkRes(ir, ex[i]);
                 });

@@ -55,12 +55,24 @@ describe('Model populate tests', function () {
 
           Company = lounge.model('Company', companySchema);
 
+          var countrySchema = lounge.schema({
+            code: {type: String, key: true, generate: false},
+            name: String
+          });
+
+          Country = lounge.model('Country', countrySchema);
+
           var userSchema = lounge.schema({
             firstName: String,
             lastName: String,
             email: {type: String, key: true, generate: false},
             dateOfBirth: Date,
-            company: Company
+            company: Company,
+            location: {
+              city: String,
+              countryCode: Country,
+              country: Object
+            }
           });
 
           User = lounge.model('User', userSchema);
@@ -173,6 +185,14 @@ describe('Model populate tests', function () {
         expect(rdoc.company.postalCode).to.equal(companyData.postalCode);
         expect(rdoc.company.founded).to.be.ok;
         expect(rdoc.company.founded).to.be.an.instanceof(Date);
+
+        var countryData = ts.data.countries[0];
+
+        expect(rdoc.location).to.be.ok;
+        expect(rdoc.location.countryCode).to.be.ok;
+        expect(rdoc.location.countryCode).to.be.an('object');
+        expect(rdoc.location.countryCode.code).to.equal(countryData.code);
+        expect(rdoc.location.countryCode.name).to.equal(countryData.name);
 
         var cas2 = rdoc.company.cas;
         expect(cas2).to.be.a('string');
@@ -1504,6 +1524,36 @@ describe('Model populate tests', function () {
 
         expect(missed).to.be.an.instanceof(Array);
         expect(missed.length).to.equal(0);
+
+        done();
+      });
+    });
+
+    it('should get a document and populate nested refs with populate option as an object and target option', function (done) {
+      var userId = ts.data.users[0].email;
+      var userData = ts.data.users[0];
+
+      User.findById(userId, { populate: { path: 'location.countryCode', target: 'location.country' } }, function (err, rdoc, missed) {
+        expect(err).to.not.be.ok;
+
+        expect(rdoc).to.be.ok;
+        expect(rdoc).to.be.an('object');
+        expect(rdoc).to.be.an.instanceof(User);
+        expect(rdoc.id).to.not.be.ok;
+
+        expect(rdoc.firstName).to.equal(userData.firstName);
+        expect(rdoc.lastName).to.equal(userData.lastName);
+        expect(rdoc.email).to.equal(userData.email);
+        expect(rdoc.dateOfBirth).to.be.ok;
+        expect(rdoc.dateOfBirth).to.be.an.instanceof(Date);
+
+        var countryData = ts.data.countries[0];
+
+        expect(rdoc.location).to.be.ok;
+        expect(rdoc.location.country).to.be.ok;
+        expect(rdoc.location.country).to.be.an('object');
+        expect(rdoc.location.country.code).to.equal(countryData.code);
+        expect(rdoc.location.country.name).to.equal(countryData.name);
 
         done();
       });

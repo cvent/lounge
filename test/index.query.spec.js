@@ -73,6 +73,193 @@ describe('Model index query tests', function () {
       });
     });
 
+    it('should query using compound indexes', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        username: String
+      });
+
+      userSchema.index(['email', 'username']);
+
+      var User = lounge.model('User', userSchema);
+
+      var userData = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        username: 'jsmith'
+      };
+
+      var user = new User(userData);
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+
+        User.findByEmailAndUsername(user.email, user.username, function (err, rdoc) {
+          expect(err).to.not.be.ok;
+
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.an('object');
+          expect(rdoc).to.be.an.instanceof(User);
+          expect(rdoc.id).to.be.ok;
+          expect(rdoc.id).to.be.a('string');
+
+          expect(rdoc.id).to.equal(user.id);
+          expect(rdoc.firstName).to.equal(userData.firstName);
+          expect(rdoc.lastName).to.equal(userData.lastName);
+          expect(rdoc.email).to.equal(userData.email);
+          expect(rdoc.username).to.equal(userData.username);
+
+          done();
+        });
+      });
+    });
+
+    it('should query using compound indexes with nested values', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        company: {
+          name: String
+        }
+      });
+
+      userSchema.index(['email', 'company.name']);
+
+      var User = lounge.model('User', userSchema);
+
+      var userData = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        company: {
+          name: 'Acme Inc'
+        }
+      };
+
+      var user = new User(userData);
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+
+        User.findByEmailAndCompanyName(user.email, user.company.name, function (err, rdoc) {
+          expect(err).to.not.be.ok;
+
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.an('object');
+          expect(rdoc).to.be.an.instanceof(User);
+          expect(rdoc.id).to.be.ok;
+          expect(rdoc.id).to.be.a('string');
+
+          expect(rdoc.id).to.equal(user.id);
+          expect(rdoc.firstName).to.equal(userData.firstName);
+          expect(rdoc.lastName).to.equal(userData.lastName);
+          expect(rdoc.email).to.equal(userData.email);
+          expect(rdoc.company).to.be.ok;
+          expect(rdoc.company).to.be.an('object');
+          expect(rdoc.company.name).to.equal(userData.company.name);
+
+          done();
+        });
+      });
+    });
+
+    it('should query using compound indexes of type array with nested values', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        company: {
+          name: String
+        }
+      });
+
+      userSchema.index(['email', 'company.name'], { indexType: 'array' });
+
+      var User = lounge.model('User', userSchema);
+
+      var userData = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        company: {
+          name: 'Acme Inc'
+        }
+      };
+
+      var user = new User(userData);
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+
+        User.findByEmailAndCompanyName(user.email, user.company.name, function (err, rdoc) {
+          expect(err).to.not.be.ok;
+
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.an('array');
+          expect(rdoc.length).to.equal(1);
+
+          expect(rdoc[0]).to.be.an('object');
+          expect(rdoc[0]).to.be.an.instanceof(User);
+          expect(rdoc[0].id).to.be.ok;
+          expect(rdoc[0].id).to.be.a('string');
+
+          expect(rdoc[0].id).to.equal(user.id);
+          expect(rdoc[0].firstName).to.equal(userData.firstName);
+          expect(rdoc[0].lastName).to.equal(userData.lastName);
+          expect(rdoc[0].email).to.equal(userData.email);
+          expect(rdoc[0].company).to.be.ok;
+          expect(rdoc[0].company).to.be.an('object');
+          expect(rdoc[0].company.name).to.equal(userData.company.name);
+
+          var userData2 = {
+            firstName: 'Joe2',
+            lastName: 'Smith2',
+            email: 'joe@gmail.com',
+            company: {
+              name: 'Acme Inc'
+            }
+          };
+
+          var user2 = new User(userData2);
+
+          user2.save(function (err, savedDoc) {
+            expect(err).to.not.be.ok;
+            expect(savedDoc).to.be.ok;
+
+            User.findByEmailAndCompanyName(user2.email, user2.company.name, function (err, rdoc) {
+              expect(err).to.not.be.ok;
+
+              expect(rdoc).to.be.ok;
+              expect(rdoc).to.be.an('array');
+              expect(rdoc.length).to.equal(2);
+
+              expect(rdoc[1]).to.be.an('object');
+              expect(rdoc[1]).to.be.an.instanceof(User);
+              expect(rdoc[1].id).to.be.ok;
+              expect(rdoc[1].id).to.be.a('string');
+
+              expect(rdoc[1].id).to.equal(user2.id);
+              expect(rdoc[1].firstName).to.equal(userData2.firstName);
+              expect(rdoc[1].lastName).to.equal(userData2.lastName);
+              expect(rdoc[1].email).to.equal(userData2.email);
+              expect(rdoc[1].company).to.be.ok;
+              expect(rdoc[1].company).to.be.an('object');
+              expect(rdoc[1].company.name).to.equal(userData2.company.name);
+
+              done();
+            });
+          });
+        });
+      });
+    });
+
     it('should query using simple reference document using promises', function (done) {
       var userSchema = lounge.schema({
         firstName: String,
@@ -147,6 +334,44 @@ describe('Model index query tests', function () {
       });
     });
 
+    it('should query using compound index using lean option', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        username: String
+      });
+
+      userSchema.index(['email', 'username']);
+
+      var User = lounge.model('User', userSchema);
+
+      var userData = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        username: 'jsmith'
+      };
+
+      var user = new User(userData);
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+
+
+        User.findByEmailAndUsername(user.email, user.username, { lean: true }, function (err, rdoc) {
+          expect(err).to.not.be.ok;
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.a('string');
+
+          expect(rdoc).to.equal(user.id);
+
+          done();
+        });
+      });
+    });
+
     it('should query using simple reference document respecting key options', function (done) {
       var userSchema = lounge.schema({
         firstName: String,
@@ -187,6 +412,59 @@ describe('Model index query tests', function () {
       });
     });
 
+    it('should query using simple reference document respecting ref key case', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: { type: String, index: true, refKeyCase: 'lower' }
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var userData = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com'
+      };
+
+      var user = new User(userData);
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+
+
+        User.findByEmail(user.email, function (err, rdoc) {
+          expect(err).to.not.be.ok;
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.an('object');
+          expect(rdoc).to.be.an.instanceof(User);
+
+          expect(rdoc.username).to.equal(user.username);
+          expect(rdoc.firstName).to.equal(userData.firstName);
+          expect(rdoc.lastName).to.equal(userData.lastName);
+          expect(rdoc.email).to.equal(userData.email);
+
+          // Index query functions should now be case insensitive
+          User.findByEmail('JoE@GmaIl.COM', function(err, rdoc2){
+            expect(err).to.not.be.ok;
+            expect(rdoc2).to.be.ok;
+            expect(rdoc2).to.be.an('object');
+            expect(rdoc2).to.be.an.instanceof(User);
+
+            expect(rdoc2.username).to.equal(user.username);
+            expect(rdoc2.firstName).to.equal(userData.firstName);
+            expect(rdoc2.lastName).to.equal(userData.lastName);
+            expect(rdoc2.email).to.equal(userData.email);
+
+            done();
+          });
+
+
+        });
+      });
+    });
+
     it('should query index values for array', function (done) {
       var userSchema = new lounge.Schema({
         firstName: String,
@@ -220,6 +498,59 @@ describe('Model index query tests', function () {
           expect(rdoc.email).to.equal(user.email);
 
           User.findByUsername(user.usernames[1], function (err, rdoc) {
+            expect(err).to.not.be.ok;
+
+            expect(rdoc).to.be.ok;
+            expect(rdoc).to.be.an('object');
+            expect(rdoc).to.be.an.instanceof(User);
+
+            expect(rdoc.usernames.sort()).to.deep.equal(user.usernames.sort());
+            expect(rdoc.firstName).to.equal(user.firstName);
+            expect(rdoc.lastName).to.equal(user.lastName);
+            expect(rdoc.email).to.equal(user.email);
+
+            done();
+          });
+        });
+      });
+    });
+
+    it('should query index values for array in a compound index', function (done) {
+      var userSchema = new lounge.Schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        usernames: [String]
+      });
+
+      userSchema.index(['email', 'usernames']);
+
+      var User = lounge.model('User', userSchema);
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        usernames: ['user1', 'user2']
+      });
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+
+        User.findByEmailAndUsername(user.email, user.usernames[0], function (err, rdoc, missing) {
+          expect(err).to.not.be.ok;
+          expect(missing).to.deep.equal([]);
+
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.an('object');
+          expect(rdoc).to.be.an.instanceof(User);
+
+          expect(rdoc.usernames.sort()).to.deep.equal(user.usernames.sort());
+          expect(rdoc.firstName).to.equal(user.firstName);
+          expect(rdoc.lastName).to.equal(user.lastName);
+          expect(rdoc.email).to.equal(user.email);
+
+          User.findByEmailAndUsername(user.email, user.usernames[1], function (err, rdoc) {
             expect(err).to.not.be.ok;
 
             expect(rdoc).to.be.ok;
