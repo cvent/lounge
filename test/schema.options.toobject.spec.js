@@ -1261,4 +1261,79 @@ describe('Schema options', function () {
       expect(obj).to.deep.equal(expected);
     });
   });
+
+  it('should not return empty properties by default', function () {
+    var userSchema = lounge.schema({
+      name: String,
+      email: String,
+      arrProp: [String],
+      nickname: { type: String }
+    });
+
+    var User = lounge.model('User', userSchema);
+    var user = new User({ name: 'Joe', email: 'joe@gmail.com', arrProp: [] });
+    var obj = user.toObject();
+
+    var expected = {
+      name: 'Joe',
+      email: 'joe@gmail.com'
+    };
+
+    expect(obj.id).to.be.ok;
+    expect(obj.id).to.be.a('string');
+    delete obj.id;
+    expect(obj).to.deep.equal(expected);
+  });
+
+  it('should return empty properties if minimize set to false in options', function () {
+    var userSchema = lounge.schema({
+      name: String,
+      email: String,
+      arrProp: [String],
+      nickname: { type: String }
+    });
+
+    var User = lounge.model('User', userSchema);
+    var user = new User({ name: 'Joe', email: 'joe@gmail.com', nickname: '', arrProp: [] });
+    var obj = user.toObject({ minimize: false });
+
+    var expected = {
+      name: 'Joe',
+      email: 'joe@gmail.com',
+      nickname: '',
+      arrProp: []
+    };
+
+    expect(obj.id).to.be.ok;
+    expect(obj.id).to.be.a('string');
+    delete obj.id;
+    expect(obj).to.deep.equal(expected);
+  });
+
+  it('should return empty properties if minimize set to false in schema options', function () {
+    var userSchema = lounge.schema({
+      name: String,
+      email: String,
+      arrProp: [String],
+      nickname: { type: String }
+    });
+
+    userSchema.set('toObject', { minimize: false });
+
+    var User = lounge.model('User', userSchema);
+    var user = new User({ name: 'Joe', email: 'joe@gmail.com', nickname: '', arrProp: [] });
+    var obj = user.toObject();
+
+    var expected = {
+      name: 'Joe',
+      email: 'joe@gmail.com',
+      nickname: '',
+      arrProp: []
+    };
+
+    expect(obj.id).to.be.ok;
+    expect(obj.id).to.be.a('string');
+    delete obj.id;
+    expect(obj).to.deep.equal(expected);
+  });
 });

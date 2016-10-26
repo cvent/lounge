@@ -1764,4 +1764,172 @@ describe('Model save tests', function () {
       }, 100);
     });
   });
+
+  it('should save a simple document and minimize empty values', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String,
+      arrProp: [String]
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var dob = new Date('March 3, 1990 03:30:00');
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: null,
+      arrProp: []
+    });
+
+    user.save(function (err, savedDoc) {
+      expect(err).to.not.be.ok;
+
+      expect(savedDoc).to.be.ok;
+      expect(savedDoc).to.be.an('object');
+      expect(savedDoc.id).to.be.ok;
+      expect(savedDoc.id).to.be.a('string');
+
+      expect(savedDoc.firstName).to.equal('Joe');
+      expect(savedDoc.lastName).to.equal('Smith');
+      expect(savedDoc.email).to.equal(null);
+      expect(savedDoc.arrProp.toArray()).to.deep.equal([]);
+
+      expect(savedDoc.cas).to.be.ok;
+
+      bucket.get(savedDoc.getDocumentKeyValue(true), function (err, dbDoc) {
+        expect(err).to.not.be.ok;
+
+        expect(dbDoc).to.be.ok;
+        expect(dbDoc.value).to.be.ok;
+        expect(dbDoc.value).to.be.an('object');
+
+        var expected = {
+          firstName: 'Joe',
+          lastName: 'Smith'
+        };
+
+        expected.id = savedDoc.getDocumentKeyValue(true);
+
+        expect(dbDoc.value).to.deep.equal(expected);
+        done();
+      });
+    });
+  });
+
+  it('should save a simple document including empty values when minimize set to false inline', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String,
+      arrProp: [String]
+    });
+
+    var User = lounge.model('User', userSchema);
+
+    var dob = new Date('March 3, 1990 03:30:00');
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: null,
+      arrProp: []
+    });
+
+    user.save({ minimize: false }, function (err, savedDoc) {
+      expect(err).to.not.be.ok;
+
+      expect(savedDoc).to.be.ok;
+      expect(savedDoc).to.be.an('object');
+      expect(savedDoc.id).to.be.ok;
+      expect(savedDoc.id).to.be.a('string');
+
+      expect(savedDoc.firstName).to.equal('Joe');
+      expect(savedDoc.lastName).to.equal('Smith');
+      expect(savedDoc.email).to.equal(null);
+      expect(savedDoc.arrProp.toArray()).to.deep.equal([]);
+
+      expect(savedDoc.cas).to.be.ok;
+
+      bucket.get(savedDoc.getDocumentKeyValue(true), function (err, dbDoc) {
+        expect(err).to.not.be.ok;
+
+        expect(dbDoc).to.be.ok;
+        expect(dbDoc.value).to.be.ok;
+        expect(dbDoc.value).to.be.an('object');
+
+        var expected = {
+          firstName: 'Joe',
+          lastName: 'Smith',
+          email: null,
+          arrProp: []
+        };
+
+        expected.id = savedDoc.getDocumentKeyValue(true);
+
+        expect(dbDoc.value).to.deep.equal(expected);
+        done();
+      });
+    });
+  });
+
+  it('should save a simple document including empty values when minimize set to false in schema', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: String,
+      arrProp: [String]
+    });
+
+    userSchema.set('toObject', { minimize: false });
+
+    var User = lounge.model('User', userSchema);
+
+    var dob = new Date('March 3, 1990 03:30:00');
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: null,
+      arrProp: []
+    });
+
+    user.save(function (err, savedDoc) {
+      expect(err).to.not.be.ok;
+
+      expect(savedDoc).to.be.ok;
+      expect(savedDoc).to.be.an('object');
+      expect(savedDoc.id).to.be.ok;
+      expect(savedDoc.id).to.be.a('string');
+
+      expect(savedDoc.firstName).to.equal('Joe');
+      expect(savedDoc.lastName).to.equal('Smith');
+      expect(savedDoc.email).to.equal(null);
+      expect(savedDoc.arrProp.toArray()).to.deep.equal([]);
+
+      expect(savedDoc.cas).to.be.ok;
+
+      bucket.get(savedDoc.getDocumentKeyValue(true), function (err, dbDoc) {
+        expect(err).to.not.be.ok;
+
+        expect(dbDoc).to.be.ok;
+        expect(dbDoc.value).to.be.ok;
+        expect(dbDoc.value).to.be.an('object');
+
+        var expected = {
+          firstName: 'Joe',
+          lastName: 'Smith',
+          email: null,
+          arrProp: []
+        };
+
+        expected.id = savedDoc.getDocumentKeyValue(true);
+
+        expect(dbDoc.value).to.deep.equal(expected);
+        done();
+      });
+    });
+  });
 });
