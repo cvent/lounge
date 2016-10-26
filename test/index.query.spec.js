@@ -979,6 +979,44 @@ describe('Model index query tests', function () {
       });
     });
 
+    it('should query using compound index reference document and get empty array for unknown value', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        username: String
+      });
+
+      userSchema.index(['email', 'username'], {indexType: 'array'});
+
+      var User = lounge.model('User', userSchema);
+
+      var userData = [{
+        firstName: 'Bob',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        username: 'bsmith'
+      }];
+
+      var user = new User(userData[0]);
+
+      user.save(function (err, savedDoc) {
+
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+
+        User.findByEmailAndUsername('unknown+123@gmail.com', 'bsmith', function (err, rdoc) {
+          expect(err).to.not.be.ok;
+
+          expect(rdoc).to.be.ok;
+          expect(rdoc).to.be.an.instanceof(Array);
+          expect(rdoc.length).to.equal(0);
+
+          done();
+        });
+      });
+    });
+
     it('should query using simple reference document respecting key options', function (done) {
       var userSchema = lounge.schema({
         firstName: String,
