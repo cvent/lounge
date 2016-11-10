@@ -70,6 +70,9 @@ A lookup document will be generated for each value in the array. Index lookup pr
 Index lookup documents are automatically managed by lounge when documents are saved and removed using `save()` and
 `remove()` functions. You can also manually kick of this process by calling `index()` function on any model instance.
 
+You can control reference document key casing using `refKeyCase` option. Options are `'upper'` or `'lower'`.
+This will make query lookups case insensitive.
+
 ### Index queries <a id="queries"></a>
 
 Any indexed property the Model will automatically get a `findBy*` static function for easier lookup.
@@ -155,6 +158,8 @@ var userSchema = lounge.schema({
   company: { type: Company, index: true }
 });
 
+// ...
+
 var company = new Company({ id: 'acme_inc.', name: 'Acme Inc.' });
 var user = new User({ email: 'bob@gmail.com', company: company });
 ```
@@ -182,6 +187,8 @@ var userSchema = lounge.schema({
   company: { type: Company, index: true, indexType: 'array' }
 });
 
+// ...
+
 var company = new Company({ id: 'acme_inc.', name: 'Acme Inc.' });
 var user1 = new User({ email: 'bob@gmail.com', company: company });
 var user2 = new User({ email: 'joe@outlook.com', company: company });
@@ -197,6 +204,49 @@ Here now the company lookup reference document will have contents:
 ```
 
 We can use `User.findByCompany(company.id, ...)` to get both `User` instances.
+
+### Compound Indexes
+
+Additionally all of the indexing options can be specified using `index()` function.
+
+```js
+var userSchema = lounge.schema({
+  name: String,
+  username: String,
+});
+
+userSchema.index('username', { indexName: 'UserName', refKeyCase: 'upper' });
+
+var User = lounge.model('User', userSchema);
+
+// lookup will be case insensitive because of refKeyCase option
+User.findByUserName('uSeRnAmE123', function(err, doc) {
+  if(err) console.log(err);
+  else console.log(doc);
+});
+```
+
+The first param to `index()` function is the property name to index on.
+If the option is an array of property names, the module will create compound
+key indexes. For example if you wanted to index by both "email" _and_ "username"
+you could do:
+
+```js
+var userSchema = lounge.schema({
+  email: String,
+  username: String,
+});
+
+userSchema.index(['email', 'username']);
+var User = lounge.model('User', userSchema);
+
+User.findByEmailAndUsername('joe@gmail.com', 'username123', function(err, doc) {
+  if(err) console.log(err);
+  else console.log(doc);
+});
+```
+
+Compound indexes work with all other options as described above.
 
 ### Lean Queries
 
