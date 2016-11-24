@@ -1,6 +1,7 @@
 var couchbase = require('couchbase');
 var testUtil = require('./helpers/utils');
 var _ = require('lodash');
+var async = require('async');
 var expect = require('chai').expect;
 
 var lounge = require('../');
@@ -1929,6 +1930,152 @@ describe('Model save tests', function () {
 
         expect(dbDoc.value).to.deep.equal(expected);
         done();
+      });
+    });
+  });
+});
+
+describe('subdocument array change test', function () {
+  before(function (done) {
+    if (lounge) {
+      lounge.disconnect();
+    }
+
+    lounge = new lounge.Lounge(); // recreate it
+
+    var cluster = testUtil.getCluser();
+    bucket = cluster.openBucket('lounge_test', function (err) {
+      if (err) {
+        return done(err);
+      }
+
+      lounge.connect({
+        bucket: bucket
+      }, function () {
+        bucket.manager().flush(done);
+      });
+    });
+  });
+
+  var Attendee;
+  var aids = [];
+
+  it('should properly save the documents', function (done) {
+    var schema = lounge.schema({
+      name: String,
+      email: String,
+      sessions: [{
+        name: String,
+        checkIn: Date,
+        checkOut: Date
+      }]
+    });
+
+    Attendee = lounge.model('Attendee', schema);
+
+    var attendee1 = new Attendee({
+      name: 'Bob',
+      email: 'bob1@gmail.com',
+      sessions: [{
+          name: 'Session 1'
+        },
+        {
+          name: 'Session 2'
+        },
+        {
+          name: 'Session 3'
+        }
+      ]
+    });
+
+    var attendee2 = new Attendee({
+      name: 'Jane',
+      email: 'jane1@gmail.com',
+      sessions: [{
+          name: 'Session 1'
+        },
+        {
+          name: 'Session 2'
+        },
+        {
+          name: 'Session 3'
+        }
+      ]
+    });
+
+    var attendee3 = new Attendee({
+      name: 'Sara',
+      email: 'sara1@gmail.com',
+      sessions: [{
+          name: 'Session 1'
+        },
+        {
+          name: 'Session 2'
+        },
+        {
+          name: 'Session 3'
+        }
+      ]
+    });
+
+    async.each([attendee1, attendee2, attendee3], (a, cb) => {
+      a.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+
+        expect(savedDoc).to.be.ok;
+        expect(savedDoc).to.be.an('object');
+        expect(savedDoc.id).to.be.ok;
+        expect(savedDoc.id).to.be.a('string');
+        aids.push(savedDoc.id);
+        cb();
+      });
+    }, done);
+  });
+
+  it('should update and save documents properly', function (done) {
+    Attendee.findById(aids, function (err, attendees) {
+      expect(err).to.not.be.ok;
+
+      var attendeesById = _.keyBy(attendees, 'id');
+      var aidToUpdate = aids[1];
+      var attendee = attendeesById[aidToUpdate];
+
+      var findCriteria = { name: 'Session 2' };
+      var index = _.findIndex(attendee.sessions, findCriteria);
+      var session = (index >= 0) ? attendee.sessions[index] : {};
+
+      session.checkIn = new Date();
+      session.checkOut = new Date();
+
+      if (index >= 0) {
+        session = _.omit(session, _.isUndefined);
+        attendee.sessions[index] = session;
+      }
+
+      attendee.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+
+        expect(savedDoc).to.be.ok;
+        expect(savedDoc).to.be.an('object');
+        expect(savedDoc.id).to.be.ok;
+        expect(savedDoc.id).to.be.a('string');
+
+        lounge.get(savedDoc.id, function (err, doc) {
+          expect(err).to.not.be.ok;
+          expect(doc).to.be.ok;
+          expect(doc).to.be.an('object');
+          expect(doc.value).to.be.an('object');
+          expect(doc.value.sessions).to.be.an.instanceof(Array);
+
+          var findCriteria = { name: 'Session 2' };
+          var index = _.findIndex(doc.value.sessions, findCriteria);
+          var session = (index >= 0) ? doc.value.sessions[index] : null;
+
+          expect(session).to.be.an('object');
+          var keys = _.keys(session);
+          expect(keys.sort()).to.deep.equal(['checkIn', 'checkOut', 'name'])
+          done();
+        });
       });
     });
   });
