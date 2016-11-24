@@ -72,7 +72,6 @@ To run tests against an actual local database create a bucket `lounge_test` and 
 Lots of code and design inspired by [Mongoose](http://mongoosejs.com/).
 Uses modified code from [node-schema-object](https://github.com/scotthovestadt/node-schema-object) for modeling
 available as a separate module [Plaster](https://github.com/bojand/plaster).
-Website design based on [koajs.com](http://koajs.com/) design.
 
 ## License
 
