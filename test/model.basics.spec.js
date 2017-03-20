@@ -1196,6 +1196,101 @@ describe('Model basics', function () {
       expect(user.SSN).to.equal('1234567890');
       expect(user.name).to.not.be.ok;
       expect(user.email).to.not.be.ok;
-    })
+    });
+
+    it('should clear() when a field has no value', function () {
+      var userSchema = lounge.schema({
+        SSN: String,
+        name: String,
+        email: String
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var user = new User({
+        SSN: '1234567890',
+        name: null,
+        email: 'bruce@wayne-industries.com'
+      });
+
+      expect(user instanceof User).to.be.ok;
+      expect(user instanceof lounge.Model).to.be.ok;
+
+      expect(user.name).to.not.be.ok;
+      expect(user.SSN).to.equal('1234567890');
+      expect(user.email).to.equal('bruce@wayne-industries.com');
+
+      user.clear();
+
+      expect(user.name).to.not.be.ok;
+      expect(user.SSN).to.not.be.ok;
+      expect(user.email).to.not.be.ok;
+    });
+
+    it('should clear() transient field when value is set', function () {
+      var userSchema = lounge.schema({
+        SSN: String,
+        name: String,
+        email: String,
+        address: {type: Object, serializable: false}
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var user = new User({
+        SSN: '1234567890',
+        name: 'Bruce Wayne',
+        email: 'bruce@wayne-industries.com',
+        address: {
+          streetAddress: 'Wayne Manor',
+          city: 'Gotham City'
+        }
+      });
+
+      expect(user instanceof User).to.be.ok;
+      expect(user instanceof lounge.Model).to.be.ok;
+
+      expect(user.name).to.equal('Bruce Wayne');
+      expect(user.SSN).to.equal('1234567890');
+      expect(user.email).to.equal('bruce@wayne-industries.com');
+      expect(user.address).to.be.an('object');
+
+      user.clear();
+
+      expect(user.name).to.not.be.ok;
+      expect(user.SSN).to.not.be.ok;
+      expect(user.email).to.not.be.ok;
+      expect(user.address).to.not.be.ok;
+    });
+
+    it('should clear() transient field when value is not set', function () {
+      var userSchema = lounge.schema({
+        SSN: String,
+        name: String,
+        email: String,
+        address: {type: Object, serializable: false}
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var user = new User({
+        SSN: '1234567890',
+        name: 'Bruce Wayne',
+        email: 'bruce@wayne-industries.com'
+      });
+
+      expect(user instanceof User).to.be.ok;
+      expect(user instanceof lounge.Model).to.be.ok;
+
+      expect(user.name).to.equal('Bruce Wayne');
+      expect(user.SSN).to.equal('1234567890');
+      expect(user.email).to.equal('bruce@wayne-industries.com');
+
+      user.clear();
+
+      expect(user.name).to.not.be.ok;
+      expect(user.SSN).to.not.be.ok;
+      expect(user.email).to.not.be.ok;
+    });
   });
 });
