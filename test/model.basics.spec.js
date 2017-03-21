@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 /* eslint-disable no-unused-expressions */
 var _ = require('lodash')
+var lo3 = require('lodash3')
 var expect = require('chai').expect
 var lounge = require('../index')
 
@@ -1235,7 +1236,7 @@ describe('Model basics', function () {
         SSN: String,
         name: String,
         email: String,
-        address: {type: Object, serializable: false}
+        address: { type: Object, serializable: false }
       })
 
       var User = lounge.model('User', userSchema)
@@ -1271,7 +1272,7 @@ describe('Model basics', function () {
         SSN: String,
         name: String,
         email: String,
-        address: {type: Object, serializable: false}
+        address: { type: Object, serializable: false }
       })
 
       var User = lounge.model('User', userSchema)
@@ -1297,7 +1298,7 @@ describe('Model basics', function () {
     })
   })
 
-  describe.only('lodash usage tests', function () {
+  describe('lodash usage tests', function () {
     it('should perform chained operation on embedded sub documents ok', function () {
       var schema = lounge.schema({
         name: String,
@@ -1332,8 +1333,8 @@ describe('Model basics', function () {
       })
 
       var results = {
-        results: [ session1, session2, session3, session4 ],
-        total: 3
+        results: [session1, session2, session3, session4],
+        total: 4
       }
 
       var picker = _.partialRight(_.pick, ['id', 'settings'])
@@ -1344,6 +1345,84 @@ describe('Model basics', function () {
         .value()
 
       expect(r).to.be.ok
+      expect(Array.isArray(r)).to.be.ok
+      expect(r.length).to.equal(3)
+
+      r.forEach(e => {
+        expect(e.id).to.be.ok
+        delete e.id
+      })
+
+      const expected = [
+        { settings: { threshold: 10000 } },
+        { settings: { threshold: 20000 } },
+        { settings: { threshold: 30000 } }
+      ]
+
+      expect(r).to.deep.equal(expected)
+    })
+
+    it('should perform chained operation on embedded sub documents ok with lodash 3', function () {
+      var schema = lounge.schema({
+        name: String,
+        settings: Object
+      })
+
+      var Session = lounge.model('Session', schema)
+
+      var session1 = new Session({
+        name: 'Session 1',
+        settings: {
+          threshold: 10000
+        }
+      })
+
+      var session2 = new Session({
+        name: 'Session 2',
+        settings: {
+          threshold: 20000
+        }
+      })
+
+      var session3 = new Session({
+        name: 'Session 3',
+        settings: {
+          threshold: 30000
+        }
+      })
+
+      var session4 = new Session({
+        name: 'Session 4'
+      })
+
+      var results = {
+        results: [session1, session2, session3, session4],
+        total: 4
+      }
+
+      var picker = lo3.partialRight(lo3.pick, ['id', 'settings'])
+
+      var r = lo3(results.results)
+        .filter('settings')
+        .map(picker)
+        .value()
+
+      expect(r).to.be.ok
+      expect(Array.isArray(r)).to.be.ok
+      expect(r.length).to.equal(3)
+
+      r.forEach(e => {
+        expect(e.id).to.be.ok
+        delete e.id
+      })
+
+      const expected = [
+        { settings: { threshold: 10000 } },
+        { settings: { threshold: 20000 } },
+        { settings: { threshold: 30000 } }
+      ]
+
+      expect(r).to.deep.equal(expected)
     })
   })
 })
