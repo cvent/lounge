@@ -1,4 +1,5 @@
 var couchbase = require('couchbase');
+var uuid = require('uuid');
 var testUtil = require('./helpers/utils');
 var _ = require('lodash');
 var async = require('async');
@@ -1581,7 +1582,6 @@ describe('Model save tests', function () {
       var postCalled = false;
 
       userSchema.post('save', function () {
-        console.log('post save');
         postCalled = true;
       });
 
@@ -1667,9 +1667,7 @@ describe('Model save tests', function () {
 
       user.save();
       expect(preSaveCalled).to.be.ok;
-      setTimeout(function () {
-        done();
-      }, 100);
+      setTimeout(done, 100);
     });
 
     it('should call post save hook ok on a simple document without callback', function (done) {
@@ -1764,6 +1762,85 @@ describe('Model save tests', function () {
         lounge.setOption('promisify', true)
         done();
       }, 100);
+    });
+
+    it('should have _isNew in post save when created without id', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date
+      });
+
+      var postCalled = false;
+
+      userSchema.post('save', function () {
+        expect(this._isNew).to.be.true;
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('March 3, 1990 03:30:00');
+
+      var email = 'joe@gmail.com';
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: email,
+        dateOfBirth: dob
+      });
+
+      expect(user._isNew).to.be.true;
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+        expect(savedDoc.email).to.equal(email);
+        expect(savedDoc._isNew).to.be.true;
+
+        setTimeout(done, 100);
+      });
+    });
+
+    it('should not have _isNew in post save when created with an id', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date
+      });
+
+      var postCalled = false;
+
+      userSchema.post('save', function () {
+        expect(this._isNew).to.be.undefined;
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('March 3, 1990 03:30:00');
+
+      var email = 'joe@gmail.com';
+
+      var user = new User({
+        id: uuid(),
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: email,
+        dateOfBirth: dob
+      });
+
+      expect(user._isNew).to.be.undefined;
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+        expect(savedDoc).to.be.ok;
+        expect(savedDoc.email).to.equal(email);
+        expect(savedDoc._isNew).to.be.undefined;
+
+        setTimeout(done, 100);
+      });
     });
   });
 
