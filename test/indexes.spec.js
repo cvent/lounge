@@ -4,7 +4,7 @@ var testUtil = require('./helpers/utils')
 var expect = require('chai').expect
 
 var lounge = require('../')
-var couchUtil = require('../dist/cbdocument.utils')
+var couchUtil = require('../lib/cbdocument.utils')
 
 var bucket
 

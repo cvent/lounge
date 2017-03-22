@@ -120,10 +120,7 @@ describe('Model index on remove tests', function () {
       return lounge.get(k)
     }).then(function (indexRes) {
       expect(indexRes).to.not.be.ok
-    }).catch(function (err) {
-      expect(err).to.not.be.ok
-      throw (new Error('should not have an error'))
-    }).finally(function () {
+    }).then(function () {
       // for sanity check with native bucket
       var k = userSchema.getRefKey('email', user.email)
       bucket.get(rdocId, function (err, doc) {
@@ -139,6 +136,8 @@ describe('Model index on remove tests', function () {
           done()
         })
       })
+    }).catch(err => {
+      expect(err).to.not.be.ok
     })
   })
 

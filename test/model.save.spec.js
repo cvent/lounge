@@ -1479,6 +1479,14 @@ describe('Model save tests', function () {
   describe('save() post hooks tests', function () {
     this.slow(200)
 
+    before(function () {
+      delete process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL
+    })
+
+    afterEach(function () {
+      delete process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL
+    })
+
     it('should call sync post save', function (done) {
       var userSchema = lounge.schema({
         firstName: String,

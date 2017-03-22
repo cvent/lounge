@@ -3,10 +3,7 @@
 var _ = require('lodash')
 var async = require('async')
 var testUtil = require('./helpers/utils')
-var chai = require('chai')
-chai.config.truncateThreshold = 0;
 var expect = require('chai').expect
-var version = require('node-version')
 var lounge = require('../')
 
 var bucket
@@ -486,16 +483,10 @@ describe('Model index query tests', function () {
           expect(rdoc).to.be.an('object')
           expect(rdoc).to.be.an.instanceof(User)
 
-          if (version.major < 6) {
-            var actual = rdoc.usernames.toArray().sort();
-            var expected = user.usernames.toArray().sort();
-          } else {
-            var actual = rdoc.usernames.sort();
-            var expected = user.usernames.sort();
-          }
+          var actual = rdoc.usernames.sort()
+          var expected = user.usernames.sort()
 
           expect(actual).to.eql(expected)
-          //expect(rdoc.usernames.sort()).to.eql(user.usernames.sort())
           expect(rdoc.firstName).to.equal(user.firstName)
           expect(rdoc.lastName).to.equal(user.lastName)
           expect(rdoc.email).to.equal(user.email)
@@ -507,13 +498,8 @@ describe('Model index query tests', function () {
             expect(rdoc).to.be.an('object')
             expect(rdoc).to.be.an.instanceof(User)
 
-            if (version.major < 6) {
-              var actual = rdoc.usernames.toArray().sort();
-              var expected = user.usernames.toArray().sort();
-            } else {
-              var actual = rdoc.usernames.sort();
-              var expected = user.usernames.sort();
-            }
+            var actual = rdoc.usernames.sort()
+            var expected = user.usernames.sort()
 
             expect(actual).to.eql(expected)
             expect(rdoc.firstName).to.equal(user.firstName)
@@ -556,13 +542,8 @@ describe('Model index query tests', function () {
           expect(rdoc).to.be.an('object')
           expect(rdoc).to.be.an.instanceof(User)
 
-          if (version.major < 6) {
-            var actual = rdoc.usernames.toArray().sort();
-            var expected = user.usernames.toArray().sort();
-          } else {
-            var actual = rdoc.usernames.sort();
-            var expected = user.usernames.sort();
-          }
+          var actual = rdoc.usernames.sort()
+          var expected = user.usernames.sort()
 
           expect(actual).to.eql(expected)
           expect(rdoc.firstName).to.equal(user.firstName)
@@ -576,13 +557,8 @@ describe('Model index query tests', function () {
             expect(rdoc).to.be.an('object')
             expect(rdoc).to.be.an.instanceof(User)
 
-            if (version.major < 6) {
-              var actual = rdoc.usernames.toArray().sort();
-              var expected = user.usernames.toArray().sort();
-            } else {
-              var actual = rdoc.usernames.sort();
-              var expected = user.usernames.sort();
-            }
+            var actual = rdoc.usernames.sort()
+            var expected = user.usernames.sort()
 
             expect(actual).to.eql(expected)
             expect(rdoc.firstName).to.equal(user.firstName)
@@ -623,13 +599,8 @@ describe('Model index query tests', function () {
           expect(rdoc).to.be.an('object')
           expect(rdoc).to.be.an.instanceof(User)
 
-          if (version.major < 6) {
-            var actual = rdoc.usernames.toArray().sort();
-            var expected = user.usernames.toArray().sort();
-          } else {
-            var actual = rdoc.usernames.sort();
-            var expected = user.usernames.sort();
-          }
+          var actual = rdoc.usernames.sort()
+          var expected = user.usernames.sort()
 
           expect(actual).to.eql(expected)
           expect(rdoc.firstName).to.equal(user.firstName)
@@ -643,13 +614,8 @@ describe('Model index query tests', function () {
             expect(rdoc).to.be.an('object')
             expect(rdoc).to.be.an.instanceof(User)
 
-            if (version.major < 6) {
-              var actual = rdoc.usernames.toArray().sort();
-              var expected = user.usernames.toArray().sort();
-            } else {
-              var actual = rdoc.usernames.sort();
-              var expected = user.usernames.sort();
-            }
+            var actual = rdoc.usernames.sort()
+            var expected = user.usernames.sort()
 
             expect(actual).to.eql(expected)
             expect(rdoc.firstName).to.equal(user.firstName)
@@ -691,13 +657,8 @@ describe('Model index query tests', function () {
           expect(rdoc).to.be.an('object')
           expect(rdoc).to.be.an.instanceof(User)
 
-          if (version.major < 6) {
-            var actual = rdoc.usernames.toArray().sort();
-            var expected = user.usernames.toArray().sort();
-          } else {
-            var actual = rdoc.usernames.sort();
-            var expected = user.usernames.sort();
-          }
+          var actual = rdoc.usernames.sort()
+          var expected = user.usernames.sort()
 
           expect(actual).to.eql(expected)
           expect(rdoc.firstName).to.equal(user.firstName)
@@ -711,13 +672,8 @@ describe('Model index query tests', function () {
             expect(rdoc).to.be.an('object')
             expect(rdoc).to.be.an.instanceof(User)
 
-            if (version.major < 6) {
-              var actual = rdoc.usernames.toArray().sort();
-              var expected = user.usernames.toArray().sort();
-            } else {
-              var actual = rdoc.usernames.sort();
-              var expected = user.usernames.sort();
-            }
+            var actual = rdoc.usernames.sort()
+            var expected = user.usernames.sort()
 
             expect(actual).to.eql(expected)
             expect(rdoc.firstName).to.equal(user.firstName)
@@ -758,13 +714,8 @@ describe('Model index query tests', function () {
           expect(rdoc).to.be.an('object')
           expect(rdoc).to.be.an.instanceof(User)
 
-          if (version.major < 6) {
-            var actual = rdoc.usernames.toArray().sort();
-            var expected = user.usernames.toArray().sort();
-          } else {
-            var actual = rdoc.usernames.sort();
-            var expected = user.usernames.sort();
-          }
+          var actual = rdoc.usernames.sort()
+          var expected = user.usernames.sort()
 
           expect(actual).to.eql(expected)
           expect(rdoc.firstName).to.equal(user.firstName)
@@ -778,13 +729,8 @@ describe('Model index query tests', function () {
             expect(rdoc).to.be.an('object')
             expect(rdoc).to.be.an.instanceof(User)
 
-            if (version.major < 6) {
-              var actual = rdoc.usernames.toArray().sort();
-              var expected = user.usernames.toArray().sort();
-            } else {
-              var actual = rdoc.usernames.sort();
-              var expected = user.usernames.sort();
-            }
+            var actual = rdoc.usernames.sort()
+            var expected = user.usernames.sort()
 
             expect(actual).to.eql(expected)
             expect(rdoc.firstName).to.equal(user.firstName)
@@ -1184,13 +1130,8 @@ describe('Model index query tests', function () {
             expect(rdoc).to.be.an.instanceof(Array)
             expect(rdoc.length).to.equal(1)
 
-            if (version.major < 6) {
-              var actual = rdoc[0].usernames.toArray().sort();
-              var expected = user.usernames.toArray().sort();
-            } else {
-              var actual = rdoc[0].usernames.sort();
-              var expected = user.usernames.sort();
-            }
+            var actual = rdoc[0].usernames.sort()
+            var expected = user.usernames.sort()
 
             expect(actual).to.eql(expected)
             expect(rdoc[0].firstName).to.equal(user.firstName)
