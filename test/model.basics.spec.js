@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var uuid = require('uuid');
 var expect = require('chai').expect;
 var lounge = require('../index');
 
@@ -48,8 +49,11 @@ describe('Model basics', function () {
       expect(user.modelName).to.equal('User');
       user.modelName = 'Foo';
       expect(user.modelName).to.equal('User');
-      User.modelName = 'Foo';
-      expect(User.modelName).to.equal('User');
+
+      // should not be able to change _isNew property
+      expect(user._isNew).to.be.true;
+      user._isNew = false;
+      expect(user._isNew).to.be.true;
     });
 
     it('Should properly create multiple models from same source data', function () {
@@ -88,8 +92,11 @@ describe('Model basics', function () {
       expect(user.modelName).to.equal('User');
       user.modelName = 'Foo';
       expect(user.modelName).to.equal('User');
-      User.modelName = 'Foo';
-      expect(User.modelName).to.equal('User');
+
+      // should not be able to change _isNew property
+      expect(user._isNew).to.be.true;
+      user._isNew = false;
+      expect(user._isNew).to.be.true;
 
       var user2 = new User(data);
 
@@ -108,6 +115,11 @@ describe('Model basics', function () {
       expect(user2.modelName).to.equal('User');
       user2.modelName = 'Foo';
       expect(user2.modelName).to.equal('User');
+
+      // should not be able to change _isNew property
+      expect(user._isNew).to.be.true;
+      user._isNew = false;
+      expect(user._isNew).to.be.true;
     });
 
     it('Should properly create a model with sub documents and arrays', function () {
@@ -585,6 +597,29 @@ describe('Model basics', function () {
       expect(name).to.equal('Joe Smith');
       expect(email).to.equal('jsmith@gmail.com');
       expect(unknown).to.not.be.ok;
+    });
+
+    it('should not be _isNew when created with an id', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        dateOfBirth: Date
+      });
+
+      var User = lounge.model('User', userSchema);
+
+      var dob = new Date('December 10, 1990 03:33:00');
+
+      var user = new User({
+        id: uuid(),
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe@gmail.com',
+        dateOfBirth: dob
+      });
+
+      expect(user._isNew).to.be.undefined;
     });
   });
 
