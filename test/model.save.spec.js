@@ -2042,7 +2042,7 @@ describe('subdocument array change test', function () {
       session.checkOut = new Date()
 
       if (index >= 0) {
-        session = _.omit(session, _.isUndefined)
+        // session = _.omit(session, _.isUndefined)
         attendee.sessions[index] = session
       }
 
