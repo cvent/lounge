@@ -1,7 +1,9 @@
 var couchbase = require('couchbase');
 var testUtil = require('./helpers/utils');
 var _ = require('lodash');
+var async = require('async');
 var expect = require('chai').expect;
+var lo3 = require('lodash3')
 
 var lounge = require('../');
 
@@ -1931,5 +1933,278 @@ describe('Model save tests', function () {
         done();
       });
     });
+  });
+});
+
+describe('subdocument array change test', function () {
+  before(function (done) {
+    if (lounge) {
+      lounge.disconnect();
+    }
+
+    lounge = new lounge.Lounge(); // recreate it
+
+    var cluster = testUtil.getCluser();
+    bucket = cluster.openBucket('lounge_test', function (err) {
+      if (err) {
+        return done(err);
+      }
+
+      lounge.connect({
+        bucket: bucket
+      }, function () {
+        bucket.manager().flush(done);
+      });
+    });
+  });
+
+  var Attendee;
+  var aids = [];
+
+  it('should properly save the documents', function (done) {
+    var schema = lounge.schema({
+      name: String,
+      email: String,
+      sessions: [{
+        name: String,
+        checkIn: Date,
+        checkOut: Date
+      }]
+    });
+
+    Attendee = lounge.model('Attendee', schema);
+
+    var attendee1 = new Attendee({
+      name: 'Bob',
+      email: 'bob1@gmail.com',
+      sessions: [{
+          name: 'Session 1'
+        },
+        {
+          name: 'Session 2'
+        },
+        {
+          name: 'Session 3'
+        }
+      ]
+    });
+
+    var attendee2 = new Attendee({
+      name: 'Jane',
+      email: 'jane1@gmail.com',
+      sessions: [{
+          name: 'Session 1'
+        },
+        {
+          name: 'Session 2'
+        },
+        {
+          name: 'Session 3'
+        }
+      ]
+    });
+
+    var attendee3 = new Attendee({
+      name: 'Sara',
+      email: 'sara1@gmail.com',
+      sessions: [{
+          name: 'Session 1'
+        },
+        {
+          name: 'Session 2'
+        },
+        {
+          name: 'Session 3'
+        }
+      ]
+    });
+
+    async.each([attendee1, attendee2, attendee3], (a, cb) => {
+      a.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+
+        expect(savedDoc).to.be.ok;
+        expect(savedDoc).to.be.an('object');
+        expect(savedDoc.id).to.be.ok;
+        expect(savedDoc.id).to.be.a('string');
+        aids.push(savedDoc.id);
+        cb();
+      });
+    }, done);
+  });
+
+  it('should update and save documents properly', function (done) {
+    Attendee.findById(aids, function (err, attendees) {
+      expect(err).to.not.be.ok;
+
+      var attendeesById = _.keyBy(attendees, 'id');
+      var aidToUpdate = aids[1];
+      var attendee = attendeesById[aidToUpdate];
+
+      var findCriteria = { name: 'Session 2' };
+      var index = _.findIndex(attendee.sessions, findCriteria);
+      var session = (index >= 0) ? attendee.sessions[index] : {};
+
+      session.checkIn = new Date();
+      session.checkOut = new Date();
+
+      if (index >= 0) {
+        attendee.sessions[index] = session;
+      }
+
+      attendee.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok;
+
+        expect(savedDoc).to.be.ok;
+        expect(savedDoc).to.be.an('object');
+        expect(savedDoc.id).to.be.ok;
+        expect(savedDoc.id).to.be.a('string');
+
+        lounge.get(savedDoc.id, function (err, doc) {
+          expect(err).to.not.be.ok;
+          expect(doc).to.be.ok;
+          expect(doc).to.be.an('object');
+          expect(doc.value).to.be.an('object');
+          expect(doc.value.sessions).to.be.an.instanceof(Array);
+
+          var findCriteria = { name: 'Session 2' };
+          var index = _.findIndex(doc.value.sessions, findCriteria);
+          var session = (index >= 0) ? doc.value.sessions[index] : null;
+
+          expect(session).to.be.an('object');
+          var keys = _.keys(session);
+          expect(keys.sort()).to.deep.equal(['checkIn', 'checkOut', 'name'])
+          done();
+        });
+      });
+    });
+  });
+
+  describe('lodash usage tests', function () {
+    it('should perform chained operation on embedded sub documents ok', function () {
+      var schema = lounge.schema({
+        name: String,
+        settings: Object
+      })
+
+      var Session = lounge.model('Session', schema)
+
+      var session1 = new Session({
+        name: 'Session 1',
+        settings: {
+          threshold: 10000
+        }
+      })
+
+      var session2 = new Session({
+        name: 'Session 2',
+        settings: {
+          threshold: 20000
+        }
+      })
+
+      var session3 = new Session({
+        name: 'Session 3',
+        settings: {
+          threshold: 30000
+        }
+      })
+
+      var session4 = new Session({
+        name: 'Session 4'
+      })
+
+      var results = {
+        results: [session1, session2, session3, session4],
+        total: 4
+      }
+
+      var picker = _.partialRight(_.pick, ['id', 'settings'])
+
+      var r = _(results.results)
+        .filter('settings')
+        .map(picker)
+        .value()
+
+      expect(r).to.be.ok
+      expect(Array.isArray(r)).to.be.ok
+      expect(r.length).to.equal(3)
+
+      r.forEach(e => {
+        expect(e.id).to.be.ok
+        delete e.id
+      })
+
+      const expected = [
+        { settings: { threshold: 10000 } },
+        { settings: { threshold: 20000 } },
+        { settings: { threshold: 30000 } }
+      ]
+
+      expect(r).to.deep.equal(expected)
+    })
+
+    it('should perform chained operation on embedded sub documents ok with lodash 3', function () {
+      var schema = lounge.schema({
+        name: String,
+        settings: Object
+      })
+
+      var Session = lounge.model('Session', schema)
+
+      var session1 = new Session({
+        name: 'Session 1',
+        settings: {
+          threshold: 10000
+        }
+      })
+
+      var session2 = new Session({
+        name: 'Session 2',
+        settings: {
+          threshold: 20000
+        }
+      })
+
+      var session3 = new Session({
+        name: 'Session 3',
+        settings: {
+          threshold: 30000
+        }
+      })
+
+      var session4 = new Session({
+        name: 'Session 4'
+      })
+
+      var results = {
+        results: [session1, session2, session3, session4],
+        total: 4
+      }
+
+      var picker = lo3.partialRight(lo3.pick, ['id', 'settings'])
+
+      var r = lo3(results.results)
+        .filter('settings')
+        .map(picker)
+        .value()
+
+      expect(r).to.be.ok
+      expect(Array.isArray(r)).to.be.ok
+      expect(r.length).to.equal(3)
+
+      r.forEach(e => {
+        expect(e.id).to.be.ok
+        delete e.id
+      })
+
+      const expected = [
+        { settings: { threshold: 10000 } },
+        { settings: { threshold: 20000 } },
+        { settings: { threshold: 30000 } }
+      ]
+
+      expect(r).to.deep.equal(expected)
+    })
   });
 });
