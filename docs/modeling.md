@@ -287,6 +287,10 @@ We can also pass an object of function keys and function values, and they will a
 There is a special `init` method that if specified in schema definition will be called at the end of model creation.
 You can do additional setup here. This method is not passed in any arguments.
 
+**_isNew property**
+
+There is a special `_isNew` property that specified that an instance was created without a key property and that we generated one. This is only applicable for models with schemas where `generate` is set to `true`, that is we want `Lounge` to generate key automatically if not present.
+
 **toObject()**
 
 Model instances come with `toObject` function that is automatically used for `console.log` inspection.
