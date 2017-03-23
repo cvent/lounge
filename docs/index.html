@@ -15,12 +15,21 @@
     repo: 'https://github.com/bojand/lounge',
     name: 'Lounge',
     auto2top: true,
-    coverpage: true,
     executeScript: true,
     loadSidebar: true,
     subMaxLevel: 2,
     maxLevel: 4,
+    search: {
+      noData: {
+        '/': 'No results!'
+      },
+      paths: 'auto',
+      placeholder: {
+        '/': 'Search'
+      }
+    }
   }
 </script>
 <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+<script src="//unpkg.com/prismjs/components/prism-javascript.min.js"></script>
 </html>

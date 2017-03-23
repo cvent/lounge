@@ -19,6 +19,6 @@
   - [Compound Indexes](/compound)
   - [Lean Queries](/lean_queries)
 
-- [Events](/events)
+- [Document Events](/events)
 - [Promises](/promises)
 - [API Reference](/api)
