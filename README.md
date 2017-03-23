@@ -9,8 +9,6 @@ Simple Mongoose-inspired ODM for [Couchbase](http://www.couchbase.com).
 
 `npm install lounge`
 
-**Node.js >= 4.0 supported. For Node.js versions < 6.0 run `node` with the harmony `--harmony` and harmony proxies `--harmony_proxies` flags. For Node.js version >= 6.0 no special flags are needed.**
-
 ## Overview
 
 Lounge is a simple, somewhat opinionated, Mongoose-inspired ODM for [Couchbase](http://www.couchbase.com). Main goal is

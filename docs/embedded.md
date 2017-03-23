@@ -1,4 +1,4 @@
-## Embedded Documents <a id="embedded"></a>
+# Embedded Documents <a id="embedded"></a>
 
 Lounge allows for embedding and referencing other Models within schema.
 

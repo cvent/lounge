@@ -1,4 +1,4 @@
-## Promises <a id="promises"></a>
+# Promises <a id="promises"></a>
 
 Lounge implements [Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise) support
 using the [Bluebird](bluebirdjs.com) module for all async operations. We support callback-style and Promise-style API, but you should not mix and use both at the same time. If a callback is provided a promise is not returned and normal callback-style
