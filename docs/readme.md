@@ -1,6 +1,6 @@
 # Lounge {docsify-ignore-all}
 
-Simple Mongoose-inspired ODM for [Couchbase](http://www.couchbase.com).
+> Simple Mongoose-inspired ODM for [Couchbase](http://www.couchbase.com).
 
 [![npm version](https://img.shields.io/npm/v/lounge.svg?style=flat-square)](https://www.npmjs.com/package/lounge)
 [![build status](https://img.shields.io/travis/bojand/lounge/master.svg?style=flat-square)](https://travis-ci.org/bojand/lounge)
