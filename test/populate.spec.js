@@ -2653,7 +2653,7 @@ describe('Model populate tests', function () {
   })
 
   describe('pupulate instance method', function (dene) {
-    it('should get a document and populate refs with populate option = true', function (done) {
+    it('should populate refs within an instance with no options specidied', function (done) {
       var userId = ts.data.users[0].email
       var userData = ts.data.users[0]
 
@@ -2716,7 +2716,7 @@ describe('Model populate tests', function () {
       })
     })
 
-    it('should get a document and populate refs with populate option being a path', function (done) {
+    it('should populate refs within an instance with option being a path', function (done) {
       var userId = ts.data.users[0].email
       var userData = ts.data.users[0]
 
@@ -2771,7 +2771,7 @@ describe('Model populate tests', function () {
       })
     })
 
-    it('should get a document and populate refs with populate option = true - promised', function (done) {
+    it('should populate refs within an instance with no option - promised', function (done) {
       var userId = ts.data.users[0].email
       var userData = ts.data.users[0]
 
@@ -2834,7 +2834,7 @@ describe('Model populate tests', function () {
       })
     })
 
-    it('should get a document and populate refs with populate being a path - promised', function (done) {
+    it('should populate refs within an instance with poption being a path - promised', function (done) {
       var userId = ts.data.users[0].email
       var userData = ts.data.users[0]
 
