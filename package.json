@@ -25,7 +25,8 @@
     "docs:api": "jsdoc --package package.json -c jsdoc.json -R docs/readme.md",
     "docs:clean": "rm -rf ./api-docs",
     "docs:move": "./mvapidocs.sh",
-    "docs": "npm run docs:api && docs:move && docs:clean"
+    "docs": "npm run docs:api && docs:move && docs:clean",
+    "mddocs": "jsdoc2md lib/*.js > docs/api2.md"
   },
   "dependencies": {
     "async": "^2.0.1",
@@ -46,7 +47,8 @@
     "ava": "^0.18.0",
     "chai": "^3.4.1",
     "docdash": "^0.4.0",
-    "jsdoc": "3.4.0",
+    "jsdoc": "^3.4.0",
+    "jsdoc-to-markdown": "^3.0.0",
     "lodash3": "~3.10.0",
     "mocha": "^3.0.2",
     "nyc": "^8.4.0",
