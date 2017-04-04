@@ -122,6 +122,20 @@ describe('Schema options', function () {
       var r = User.foo()
       expect(r).to.equal('foo')
     })
+
+    it('Should create a static model property', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String
+      })
+
+      userSchema.static('FOO', 'bar')
+
+      var User = lounge.model('User', userSchema)
+
+      expect(User.FOO).to.be.a('string')
+      expect(User.FOO).to.equal('bar')
+    })
   })
 
   describe('hooks', function () {

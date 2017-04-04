@@ -214,6 +214,8 @@ describe('Schema extend tests', function () {
       datacheck.baseStatic = true
     })
 
+    baseSchema.static('BASE_STATIC_PROP', 'BASE_FOO')
+
     baseSchema.static('fooStatic', function () {
       datacheck.baseFooStatic = true
     })
@@ -299,6 +301,8 @@ describe('Schema extend tests', function () {
       email: 'JOE@Gmail.com',
       dateOfBirth: dob
     })
+
+    expect(User.BASE_STATIC_PROP).to.equal('BASE_FOO')
 
     User.userStatic()
     User.baseStatic()

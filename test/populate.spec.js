@@ -2651,4 +2651,241 @@ describe('Model populate tests', function () {
       })
     })
   })
+
+  describe('pupulate instance method', function (dene) {
+    it('should populate refs within an instance with no options specidied', function (done) {
+      var userId = ts.data.users[0].email
+      var userData = ts.data.users[0]
+
+      User.findById(userId, function (err, user, missed) {
+        expect(err).to.not.be.ok
+
+        expect(user).to.be.ok
+        expect(user).to.be.an('object')
+        expect(user).to.be.an.instanceof(User)
+        expect(user.id).to.not.be.ok
+
+        expect(user.firstName).to.equal(userData.firstName)
+        expect(user.lastName).to.equal(userData.lastName)
+        expect(user.email).to.equal(userData.email)
+        expect(user.dateOfBirth).to.be.ok
+        expect(user.dateOfBirth).to.be.an.instanceof(Date)
+
+        var cas = user.cas
+        expect(cas).to.be.a('string')
+
+        expect(user.company).to.be.ok
+        expect(user.company).to.be.a('string')
+
+        user.populate((err, rdoc) => {
+          expect(err).to.not.be.ok
+          expect(rdoc.company).to.be.ok
+          expect(rdoc.company).to.be.an('object')
+          expect(rdoc.company).to.be.an.instanceof(Company)
+
+          var companyData = ts.data.companies[0]
+
+          expect(rdoc.company.id).to.equal(companyData.id)
+          expect(rdoc.company.name).to.equal(companyData.name)
+          expect(rdoc.company.streetAddress).to.equal(companyData.streetAddress)
+          expect(rdoc.company.city).to.equal(companyData.city)
+          expect(rdoc.company.country).to.equal(companyData.country)
+          expect(rdoc.company.state).to.equal(companyData.state)
+          expect(rdoc.company.postalCode).to.equal(companyData.postalCode)
+          expect(rdoc.company.founded).to.be.ok
+          expect(rdoc.company.founded).to.be.an.instanceof(Date)
+
+          var countryData = ts.data.countries[0]
+
+          expect(rdoc.location).to.be.ok
+          expect(rdoc.location.countryCode).to.be.ok
+          expect(rdoc.location.countryCode).to.be.an('object')
+          expect(rdoc.location.countryCode.code).to.equal(countryData.code)
+          expect(rdoc.location.countryCode.name).to.equal(countryData.name)
+
+          var cas2 = rdoc.company.cas
+          expect(cas2).to.be.a('string')
+
+          expect(cas).to.not.equal(cas2)
+
+          expect(missed).to.be.an.instanceof(Array)
+          expect(missed.length).to.equal(0)
+
+          done()
+        })
+      })
+    })
+
+    it('should populate refs within an instance with option being a path', function (done) {
+      var userId = ts.data.users[0].email
+      var userData = ts.data.users[0]
+
+      User.findById(userId, function (err, user, missed) {
+        expect(err).to.not.be.ok
+
+        expect(user).to.be.ok
+        expect(user).to.be.an('object')
+        expect(user).to.be.an.instanceof(User)
+        expect(user.id).to.not.be.ok
+
+        expect(user.firstName).to.equal(userData.firstName)
+        expect(user.lastName).to.equal(userData.lastName)
+        expect(user.email).to.equal(userData.email)
+        expect(user.dateOfBirth).to.be.ok
+        expect(user.dateOfBirth).to.be.an.instanceof(Date)
+
+        var cas = user.cas
+        expect(cas).to.be.a('string')
+
+        expect(user.company).to.be.ok
+        expect(user.company).to.be.a('string')
+
+        user.populate('company', (err, rdoc) => {
+          expect(err).to.not.be.ok
+          expect(rdoc.company).to.be.ok
+          expect(rdoc.company).to.be.an('object')
+          expect(rdoc.company).to.be.an.instanceof(Company)
+
+          var companyData = ts.data.companies[0]
+
+          expect(rdoc.company.id).to.equal(companyData.id)
+          expect(rdoc.company.name).to.equal(companyData.name)
+          expect(rdoc.company.streetAddress).to.equal(companyData.streetAddress)
+          expect(rdoc.company.city).to.equal(companyData.city)
+          expect(rdoc.company.country).to.equal(companyData.country)
+          expect(rdoc.company.state).to.equal(companyData.state)
+          expect(rdoc.company.postalCode).to.equal(companyData.postalCode)
+          expect(rdoc.company.founded).to.be.ok
+          expect(rdoc.company.founded).to.be.an.instanceof(Date)
+
+          var cas2 = rdoc.company.cas
+          expect(cas2).to.be.a('string')
+
+          expect(cas).to.not.equal(cas2)
+
+          expect(missed).to.be.an.instanceof(Array)
+          expect(missed.length).to.equal(0)
+
+          done()
+        })
+      })
+    })
+
+    it('should populate refs within an instance with no option - promised', function (done) {
+      var userId = ts.data.users[0].email
+      var userData = ts.data.users[0]
+
+      User.findById(userId, function (err, user, missed) {
+        expect(err).to.not.be.ok
+
+        expect(user).to.be.ok
+        expect(user).to.be.an('object')
+        expect(user).to.be.an.instanceof(User)
+        expect(user.id).to.not.be.ok
+
+        expect(user.firstName).to.equal(userData.firstName)
+        expect(user.lastName).to.equal(userData.lastName)
+        expect(user.email).to.equal(userData.email)
+        expect(user.dateOfBirth).to.be.ok
+        expect(user.dateOfBirth).to.be.an.instanceof(Date)
+
+        var cas = user.cas
+        expect(cas).to.be.a('string')
+
+        expect(user.company).to.be.ok
+        expect(user.company).to.be.a('string')
+
+        user.populate().then(rdoc => {
+          expect(err).to.not.be.ok
+          expect(rdoc.company).to.be.ok
+          expect(rdoc.company).to.be.an('object')
+          expect(rdoc.company).to.be.an.instanceof(Company)
+
+          var companyData = ts.data.companies[0]
+
+          expect(rdoc.company.id).to.equal(companyData.id)
+          expect(rdoc.company.name).to.equal(companyData.name)
+          expect(rdoc.company.streetAddress).to.equal(companyData.streetAddress)
+          expect(rdoc.company.city).to.equal(companyData.city)
+          expect(rdoc.company.country).to.equal(companyData.country)
+          expect(rdoc.company.state).to.equal(companyData.state)
+          expect(rdoc.company.postalCode).to.equal(companyData.postalCode)
+          expect(rdoc.company.founded).to.be.ok
+          expect(rdoc.company.founded).to.be.an.instanceof(Date)
+
+          var countryData = ts.data.countries[0]
+
+          expect(rdoc.location).to.be.ok
+          expect(rdoc.location.countryCode).to.be.ok
+          expect(rdoc.location.countryCode).to.be.an('object')
+          expect(rdoc.location.countryCode.code).to.equal(countryData.code)
+          expect(rdoc.location.countryCode.name).to.equal(countryData.name)
+
+          var cas2 = rdoc.company.cas
+          expect(cas2).to.be.a('string')
+
+          expect(cas).to.not.equal(cas2)
+
+          expect(missed).to.be.an.instanceof(Array)
+          expect(missed.length).to.equal(0)
+
+          done()
+        })
+      })
+    })
+
+    it('should populate refs within an instance with poption being a path - promised', function (done) {
+      var userId = ts.data.users[0].email
+      var userData = ts.data.users[0]
+
+      User.findById(userId, function (err, user, missed) {
+        expect(err).to.not.be.ok
+
+        expect(user).to.be.ok
+        expect(user).to.be.an('object')
+        expect(user).to.be.an.instanceof(User)
+        expect(user.id).to.not.be.ok
+
+        expect(user.firstName).to.equal(userData.firstName)
+        expect(user.lastName).to.equal(userData.lastName)
+        expect(user.email).to.equal(userData.email)
+        expect(user.dateOfBirth).to.be.ok
+        expect(user.dateOfBirth).to.be.an.instanceof(Date)
+
+        var cas = user.cas
+        expect(cas).to.be.a('string')
+
+        expect(user.company).to.be.ok
+        expect(user.company).to.be.a('string')
+
+        user.populate('company').then(rdoc => {
+          expect(err).to.not.be.ok
+          expect(rdoc.company).to.be.ok
+          expect(rdoc.company).to.be.an('object')
+          expect(rdoc.company).to.be.an.instanceof(Company)
+
+          var companyData = ts.data.companies[0]
+
+          expect(rdoc.company.id).to.equal(companyData.id)
+          expect(rdoc.company.name).to.equal(companyData.name)
+          expect(rdoc.company.streetAddress).to.equal(companyData.streetAddress)
+          expect(rdoc.company.city).to.equal(companyData.city)
+          expect(rdoc.company.country).to.equal(companyData.country)
+          expect(rdoc.company.state).to.equal(companyData.state)
+          expect(rdoc.company.postalCode).to.equal(companyData.postalCode)
+          expect(rdoc.company.founded).to.be.ok
+          expect(rdoc.company.founded).to.be.an.instanceof(Date)
+
+          var cas2 = rdoc.company.cas
+          expect(cas2).to.be.a('string')
+
+          expect(cas).to.not.equal(cas2)
+
+          expect(missed).to.be.an.instanceof(Array)
+          expect(missed.length).to.equal(0)
+          done()
+        })
+      })
+    })
+  })
 })
