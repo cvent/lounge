@@ -19,7 +19,19 @@
     loadSidebar: true,
     subMaxLevel: 1,
     maxLevel: 0,
-    themeColor: '#CD3918'
+    themeColor: '#CD3918',
+    markdown: {
+      smartypants: true,
+      renderer: {
+        tablerow: function (content) {
+          const re = /\\<\/td>\n<td>/gi
+          if (content.indexOf('\\</td>\n<td>') >= 0) {
+            content = content.replace(re, '</br>')
+          }
+          return '<tr>\n' + content + '</tr>\n';
+        }
+      }
+    },
   }
 </script>
 <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>

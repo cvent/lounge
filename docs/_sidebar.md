@@ -22,4 +22,3 @@
 - [Document Events](/events)
 - [Promises](/promises)
 - [API Reference](/api)
-- [API Reference](/api2)
