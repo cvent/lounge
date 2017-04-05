@@ -244,11 +244,11 @@ Clients should never have to call this directly.
     * [new CouchbaseDocument(values, cas, options, schema, name)](#new_CouchbaseDocument_new)
     * _instance_
         * [.cas](#CouchbaseDocument+cas) ⇒ <code>String</code>
-        * [.db](#CouchbaseDocument+db) ⇒ <code>Driver</code> \| <code>null</code>
+        * [.db](#CouchbaseDocument+db) ⇒ <code>Driver</code> &#124; <code>null</code>
         * [.config](#CouchbaseDocument+config) ⇒ <code>Object</code>
         * [.modelName](#Document+modelName) : <code>String</code>
         * [._isNew](#Document+_isNew) : <code>Boolean</code>
-        * [.getCAS(raw)](#CouchbaseDocument+getCAS) ⇒ <code>String</code> \| <code>Object</code>
+        * [.getCAS(raw)](#CouchbaseDocument+getCAS) ⇒ <code>String</code> &#124; <code>Object</code>
         * [.save(options, replicate_to, fn)](#CouchbaseDocument+save)
         * [.index(options, fn)](#CouchbaseDocument+index)
         * [.remove(options, fn)](#CouchbaseDocument+remove)
@@ -287,7 +287,7 @@ console.log(doc.cas); // String: 00000000a71626e4
 ```
 <a name="CouchbaseDocument+db"></a>
 
-### couchbaseDocument.db ⇒ <code>Driver</code> \| <code>null</code>
+### couchbaseDocument.db ⇒ <code>Driver</code> &#124; <code>null</code>
 Gets the database driver of the model
 
 **Kind**: instance property of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
@@ -328,11 +328,11 @@ console.log(kat._isNew); // false
 ```
 <a name="CouchbaseDocument+getCAS"></a>
 
-### couchbaseDocument.getCAS(raw) ⇒ <code>String</code> \| <code>Object</code>
+### couchbaseDocument.getCAS(raw) ⇒ <code>String</code> &#124; <code>Object</code>
 Returns the document <code>CAS</code> value.
 
 **Kind**: instance method of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
-**Returns**: <code>String</code> \| <code>Object</code> - the CAS value  
+**Returns**: <code>String</code> &#124; <code>Object</code> - the CAS value  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -427,7 +427,7 @@ Populates this instance given the options
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>Boolean</code> \| <code>String</code> \| <code>Array</code> | populate options, can be a <code>Boolean</code>;                               <code>String</code> representing a path;                               <code>Object</code> with form <code>{ path: String, target: String}</code> where                               <code>path</code> is the path to be populated and <code>target</code> is the target                               field into which to populate. If this format is used, <code>target</code> should be                               part of schema;                               or an <code>Array</code> of                               <code>Strings</code> or <code>Object</code>. |
+| options | <code>Boolean</code> &#124; <code>String</code> &#124; <code>Array</code> | populate options, can be a <code>Boolean</code>;                               <code>String</code> representing a path;                               <code>Object</code> with form <code>{ path: String, target: String}</code> where                               <code>path</code> is the path to be populated and <code>target</code> is the target                               field into which to populate. If this format is used, <code>target</code> should be                               part of schema;                               or an <code>Array</code> of                               <code>Strings</code> or <code>Object</code>. |
 | fn | <code>function</code> | Callback |
 
 **Example** *(Populate an instance)*  
@@ -495,9 +495,9 @@ or multiple keys and retrieve documents from the database. If key does not exist
 
 | Param | Type | Description |
 | --- | --- | --- |
-| id | <code>String</code> \| <code>Array</code> | the document id / key or an array of keys |
+| id | <code>String</code> &#124; <code>Array</code> | the document id / key or an array of keys |
 | options | <code>Object</code> |  |
-| options.populate | <code>Boolean</code> \| <code>String</code> \| <code>Array</code> | populate options, can be a <code>Boolean</code>;                               <code>String</code> representing a path;                               <code>Object</code> with form <code>{ path: String, target: String}</code> where                               <code>path</code> is the path to be populated and <code>target</code> is the target                               field into which to populate. If this format is used, <code>target</code> should be                               part of schema;                               or an <code>Array</code> of                               <code>Strings</code> or <code>Object</code>. |
+| options.populate | <code>Boolean</code> &#124; <code>String</code> &#124; <code>Array</code> | populate options, can be a <code>Boolean</code>;                               <code>String</code> representing a path;                               <code>Object</code> with form <code>{ path: String, target: String}</code> where                               <code>path</code> is the path to be populated and <code>target</code> is the target                               field into which to populate. If this format is used, <code>target</code> should be                               part of schema;                               or an <code>Array</code> of                               <code>Strings</code> or <code>Object</code>. |
 | options.keepSortOrder | <code>Boolean</code> | If getting an array of objects, whether we should keep same sort order of                                        returned objects as the <code>id</code>'s passed in.                                        Default: <code>false</code> |
 | options.missing | <code>Boolean</code> | If set to <code>false</code> we won't return missing keys as the final param in                                  the callback. This option overwrites the Lounge config <code>missing</code> option.                                  Default: <code>true</code>. |
 | fn | <code>function</code> | callback |
@@ -519,7 +519,7 @@ Removes specified document(s).
 
 | Param | Type | Description |
 | --- | --- | --- |
-| id | <code>String</code> \| <code>Array</code> | id(s) to remove |
+| id | <code>String</code> &#124; <code>Array</code> | id(s) to remove |
 | options | <code>Object</code> | options |
 | options.lean | <code>Boolean</code> | if <code>true</code> we will directly do document removal. We do not create an instance of model.                                 No middleware is invoked. No indexes updated. Embedded documents are not deleted. Default: <code>false</code>. |
 | options.removeRefs | <code>Boolean</code> | If set to <code>true</code> will remove embedded reference documents. Default: <code>false</code>. |
@@ -674,7 +674,7 @@ so you can call them generically = require(this instance as well.
     * [.disconnect()](#Lounge+disconnect)
     * [.schema(descriptor, options)](#Lounge+schema) ⇒ <code>[Schema](#Schema)</code>
     * [.model(name, schema, options)](#Lounge+model) ⇒ <code>[ModelInstance](#ModelInstance)</code>
-    * [.getModel(name)](#Lounge+getModel) ⇒ <code>[Model](#Model)</code> \| <code>undefined</code>
+    * [.getModel(name)](#Lounge+getModel) ⇒ <code>[Model](#Model)</code> &#124; <code>undefined</code>
     * [.setOption(key, value)](#Lounge+setOption)
     * [.getOption(key)](#Lounge+getOption) ⇒ <code>\*</code>
     * [.modelNames()](#Lounge+modelNames) ⇒ <code>Array</code>
@@ -748,7 +748,7 @@ instances before connecting to the database.
 | --- | --- | --- |
 | options | <code>Object</code> |  |
 | options.connectionString | <code>String</code> | connection string for the cluster |
-| options.bucket | <code>String</code> \| <code>Bucket</code> | name of the bucket or the actual Couchbase <code>bucket</code> instance |
+| options.bucket | <code>String</code> &#124; <code>Bucket</code> | name of the bucket or the actual Couchbase <code>bucket</code> instance |
 | options.password | <code>String</code> | password |
 | options.certpath | <code>String</code> | certpath for cluster |
 | options.mock | <code>Boolean</code> | whether to use mocking |
@@ -807,11 +807,11 @@ var Cat = lounge.model('Cat', schema);
 ```
 <a name="Lounge+getModel"></a>
 
-### lounge.getModel(name) ⇒ <code>[Model](#Model)</code> \| <code>undefined</code>
+### lounge.getModel(name) ⇒ <code>[Model](#Model)</code> &#124; <code>undefined</code>
 Returns the model given the name.
 
 **Kind**: instance method of <code>[Lounge](#Lounge)</code>  
-**Returns**: <code>[Model](#Model)</code> \| <code>undefined</code> - The <code>ModelInstance</code> or <code>undefined</code> if the model by that name does
+**Returns**: <code>[Model](#Model)</code> &#124; <code>undefined</code> - The <code>ModelInstance</code> or <code>undefined</code> if the model by that name does
 not exist.  
 
 | Param |
@@ -884,11 +884,11 @@ Model class is a base class for all <code>ModelInstances</code> and it extends <
 * [Model](#Model) ⇐ <code>[CouchbaseDocument](#CouchbaseDocument)</code>
     * [new Model()](#new_Model_new)
     * [.cas](#CouchbaseDocument+cas) ⇒ <code>String</code>
-    * [.db](#CouchbaseDocument+db) ⇒ <code>Driver</code> \| <code>null</code>
+    * [.db](#CouchbaseDocument+db) ⇒ <code>Driver</code> &#124; <code>null</code>
     * [.config](#CouchbaseDocument+config) ⇒ <code>Object</code>
     * [.modelName](#Document+modelName) : <code>String</code>
     * [._isNew](#Document+_isNew) : <code>Boolean</code>
-    * [.getCAS(raw)](#CouchbaseDocument+getCAS) ⇒ <code>String</code> \| <code>Object</code>
+    * [.getCAS(raw)](#CouchbaseDocument+getCAS) ⇒ <code>String</code> &#124; <code>Object</code>
     * [.save(options, replicate_to, fn)](#CouchbaseDocument+save)
     * [.index(options, fn)](#CouchbaseDocument+index)
     * [.remove(options, fn)](#CouchbaseDocument+remove)
@@ -914,7 +914,7 @@ console.log(doc.cas); // String: 00000000a71626e4
 ```
 <a name="CouchbaseDocument+db"></a>
 
-### model.db ⇒ <code>Driver</code> \| <code>null</code>
+### model.db ⇒ <code>Driver</code> &#124; <code>null</code>
 Gets the database driver of the model
 
 **Kind**: instance property of <code>[Model](#Model)</code>  
@@ -955,11 +955,11 @@ console.log(kat._isNew); // false
 ```
 <a name="CouchbaseDocument+getCAS"></a>
 
-### model.getCAS(raw) ⇒ <code>String</code> \| <code>Object</code>
+### model.getCAS(raw) ⇒ <code>String</code> &#124; <code>Object</code>
 Returns the document <code>CAS</code> value.
 
 **Kind**: instance method of <code>[Model](#Model)</code>  
-**Returns**: <code>String</code> \| <code>Object</code> - the CAS value  
+**Returns**: <code>String</code> &#124; <code>Object</code> - the CAS value  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1054,7 +1054,7 @@ Populates this instance given the options
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>Boolean</code> \| <code>String</code> \| <code>Array</code> | populate options, can be a <code>Boolean</code>;                               <code>String</code> representing a path;                               <code>Object</code> with form <code>{ path: String, target: String}</code> where                               <code>path</code> is the path to be populated and <code>target</code> is the target                               field into which to populate. If this format is used, <code>target</code> should be                               part of schema;                               or an <code>Array</code> of                               <code>Strings</code> or <code>Object</code>. |
+| options | <code>Boolean</code> &#124; <code>String</code> &#124; <code>Array</code> | populate options, can be a <code>Boolean</code>;                               <code>String</code> representing a path;                               <code>Object</code> with form <code>{ path: String, target: String}</code> where                               <code>path</code> is the path to be populated and <code>target</code> is the target                               field into which to populate. If this format is used, <code>target</code> should be                               part of schema;                               or an <code>Array</code> of                               <code>Strings</code> or <code>Object</code>. |
 | fn | <code>function</code> | Callback |
 
 **Example** *(Populate an instance)*  
@@ -1125,11 +1125,11 @@ See [grappling-hook](https://www.github.com/bojand/grappling-hook) for pre and p
     * [new ModelInstance(data, options, cas)](#new_ModelInstance_new)
     * _instance_
         * [.cas](#CouchbaseDocument+cas) ⇒ <code>String</code>
-        * [.db](#CouchbaseDocument+db) ⇒ <code>Driver</code> \| <code>null</code>
+        * [.db](#CouchbaseDocument+db) ⇒ <code>Driver</code> &#124; <code>null</code>
         * [.config](#CouchbaseDocument+config) ⇒ <code>Object</code>
         * [.modelName](#Document+modelName) : <code>String</code>
         * [._isNew](#Document+_isNew) : <code>Boolean</code>
-        * [.getCAS(raw)](#CouchbaseDocument+getCAS) ⇒ <code>String</code> \| <code>Object</code>
+        * [.getCAS(raw)](#CouchbaseDocument+getCAS) ⇒ <code>String</code> &#124; <code>Object</code>
         * [.save(options, replicate_to, fn)](#CouchbaseDocument+save)
         * [.index(options, fn)](#CouchbaseDocument+index)
         * [.remove(options, fn)](#CouchbaseDocument+remove)
@@ -1168,7 +1168,7 @@ console.log(doc.cas); // String: 00000000a71626e4
 ```
 <a name="CouchbaseDocument+db"></a>
 
-### modelInstance.db ⇒ <code>Driver</code> \| <code>null</code>
+### modelInstance.db ⇒ <code>Driver</code> &#124; <code>null</code>
 Gets the database driver of the model
 
 **Kind**: instance property of <code>[ModelInstance](#ModelInstance)</code>  
@@ -1209,11 +1209,11 @@ console.log(kat._isNew); // false
 ```
 <a name="CouchbaseDocument+getCAS"></a>
 
-### modelInstance.getCAS(raw) ⇒ <code>String</code> \| <code>Object</code>
+### modelInstance.getCAS(raw) ⇒ <code>String</code> &#124; <code>Object</code>
 Returns the document <code>CAS</code> value.
 
 **Kind**: instance method of <code>[ModelInstance](#ModelInstance)</code>  
-**Returns**: <code>String</code> \| <code>Object</code> - the CAS value  
+**Returns**: <code>String</code> &#124; <code>Object</code> - the CAS value  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1308,7 +1308,7 @@ Populates this instance given the options
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>Boolean</code> \| <code>String</code> \| <code>Array</code> | populate options, can be a <code>Boolean</code>;                               <code>String</code> representing a path;                               <code>Object</code> with form <code>{ path: String, target: String}</code> where                               <code>path</code> is the path to be populated and <code>target</code> is the target                               field into which to populate. If this format is used, <code>target</code> should be                               part of schema;                               or an <code>Array</code> of                               <code>Strings</code> or <code>Object</code>. |
+| options | <code>Boolean</code> &#124; <code>String</code> &#124; <code>Array</code> | populate options, can be a <code>Boolean</code>;                               <code>String</code> representing a path;                               <code>Object</code> with form <code>{ path: String, target: String}</code> where                               <code>path</code> is the path to be populated and <code>target</code> is the target                               field into which to populate. If this format is used, <code>target</code> should be                               part of schema;                               or an <code>Array</code> of                               <code>Strings</code> or <code>Object</code>. |
 | fn | <code>function</code> | Callback |
 
 **Example** *(Populate an instance)*  
@@ -1589,7 +1589,7 @@ specifying the get and optionally set function
 | Param | Type | Description |
 | --- | --- | --- |
 | name | <code>String</code> | name of the virtual property |
-| type | <code>String</code> \| <code>function</code> \| <code>Object</code> | optional type to be used for the virtual property. If not provided default is                                      <code>'any'</code> type. |
+| type | <code>String</code> &#124; <code>function</code> &#124; <code>Object</code> | optional type to be used for the virtual property. If not provided default is                                      <code>'any'</code> type. |
 | options | <code>Object</code> | virtual options |
 | options.get | <code>function</code> | the virtual getter function |
 | options.set | <code>function</code> | the virtual setter function. If not provided the virtual becomes read-only. |
@@ -1669,7 +1669,7 @@ Adds the descriptor to the schema at the given key. Or add an <code>object</code
 
 | Param | Type | Description |
 | --- | --- | --- |
-| key | <code>String</code> \| <code>Object</code> | the property key |
+| key | <code>String</code> &#124; <code>Object</code> | the property key |
 | descriptor | <code>Object</code> | the property descriptor |
 
 **Example**  
@@ -1737,5 +1737,5 @@ Returns whether this schema has the specified reference path
 
 | Param | Type | Description |
 | --- | --- | --- |
-| id | <code>String</code> \| <code>Array</code> | the document id / key or an array of keys 
+| id | <code>String</code> &#124; <code>Array</code> | the document id / key or an array of keys 
 
