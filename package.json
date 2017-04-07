@@ -26,7 +26,9 @@
     "docs:clean": "rm -rf ./api-docs",
     "docs:move": "./mvapidocs.sh",
     "docs": "npm run docs:api && docs:move && docs:clean",
-    "mddocs": "jsdoc2md lib/*.js > docs/api.md"
+    "mddocs": "jsdoc2md lib/*.js > docs/apimd.md",
+    "fixdocs": "cat docs/apimd.md | gsed 's/<a name=\"\\(.*\\)\"><\\/a>/<a name=\"\\L\\1\" id=\"\\L\\1\" data-id=\"\\L\\1\"><\\/a>/' | sed -e 's/e\\+/e/g; s/l\\+/l/g; s/t\\+/t/g; s/a\\+/a/g' > docs/api.md",
+    "apimd": "npm run mddocs && npm run fixdocs && rm docs/apimd.md"
   },
   "dependencies": {
     "async": "^2.0.1",
