@@ -26,7 +26,7 @@
     "docs:clean": "rm -rf ./api-docs",
     "docs:move": "./mvapidocs.sh",
     "docs": "npm run docs:api && docs:move && docs:clean",
-    "mddocs": "jsdoc2md lib/*.js > docs/api2.md"
+    "mddocs": "jsdoc2md lib/*.js > docs/api.md"
   },
   "dependencies": {
     "async": "^2.0.1",
