@@ -22,13 +22,9 @@
     "test": "LOUNGE_COUCHBASE_MOCK=true mocha test/*.spec.js && LOUNGE_COUCHBASE_MOCK=true ava -v -s",
     "test-ava": "LOUNGE_COUCHBASE_MOCK=true ava -v -s",
     "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha",
-    "docs:api": "jsdoc --package package.json -c jsdoc.json -R docs/readme.md",
-    "docs:clean": "rm -rf ./api-docs",
-    "docs:move": "./mvapidocs.sh",
-    "docs": "npm run docs:api && docs:move && docs:clean",
     "mddocs": "jsdoc2md lib/*.js > docs/apimd.md",
     "fixdocs": "cat docs/apimd.md | gsed 's/<a name=\"\\(.*\\)\"><\\/a>/<a name=\"\\L\\1\" id=\"\\L\\1\" data-id=\"\\L\\1\"><\\/a>/' | sed -e 's/e\\+/e/g; s/l\\+/l/g; s/t\\+/t/g; s/a\\+/a/g' > docs/api.md",
-    "apimd": "npm run mddocs && npm run fixdocs && rm docs/apimd.md"
+    "docs": "npm run mddocs && npm run fixdocs && rm docs/apimd.md"
   },
   "dependencies": {
     "async": "^2.0.1",
@@ -48,13 +44,10 @@
   "devDependencies": {
     "ava": "^0.19.0",
     "chai": "^3.4.1",
-    "docdash": "^0.4.0",
-    "jsdoc": "^3.4.0",
     "jsdoc-to-markdown": "^3.0.0",
     "lodash3": "~3.10.0",
     "mocha": "^3.0.2",
     "nyc": "^8.4.0",
-    "shelljs": "^0.7.3",
     "standard": "^10.0.1",
     "validator": "^7.0.0"
   },
