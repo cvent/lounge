@@ -1,4 +1,4 @@
-## Types <a id="types"></a>
+# Types <a id="types"></a>
 
 Supported types:
 - String

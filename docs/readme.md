@@ -1,6 +1,6 @@
-# Lounge
+# Lounge {docsify-ignore-all}
 
-Simple Mongoose-inspired ODM for [Couchbase](http://www.couchbase.com).
+> Simple Mongoose-inspired ODM for [Couchbase](http://www.couchbase.com).
 
 [![npm version](https://img.shields.io/npm/v/lounge.svg?style=flat-square)](https://www.npmjs.com/package/lounge)
 [![build status](https://img.shields.io/travis/bojand/lounge/master.svg?style=flat-square)](https://travis-ci.org/bojand/lounge)
@@ -8,8 +8,6 @@ Simple Mongoose-inspired ODM for [Couchbase](http://www.couchbase.com).
 ## Installation
 
 `npm install lounge`
-
-**Node.js >= 4.0 supported. For Node.js versions < 6.0 run `node` with the harmony `--harmony` and harmony proxies `--harmony_proxies` flags. For Node.js version >= 6.0 no special flags are needed.**
 
 ## Overview
 

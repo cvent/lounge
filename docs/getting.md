@@ -1,39 +1,4 @@
-## Document Operations <a id="docops"></a>
-
-### Saving Documents <a id="saving"></a>
-
-Saving documents is done using `save` function that every model instance has. This will execute all pre
-'save' middleware and then perform Couchbase `upsert` operation on any subdocuments and the actual document. It will also
-perform lookup document updates and finally execute any post hook middleware.
-
-From our example code above:
-
-```js
-user.save(function(err, savedDoc) {
-  if(err) console.log(err);
-});
-```
-
-All documents and subdocuments would be upserted into the database.
-
-**Model.save(data, options, fn)**
-
-`data` - any data to be set into the model before saving.
-
-**options**
-
-All options not present here are first looked up from schema options, and then from config options.
-* `storeFullReferenceId` - whether to save embedded document property values as full document keys or just the base value
-* `storeFullKey` - whether to save the internal document key property as fully expanded value or as the simple value
-* `refIndexKeyPrefix` - lookup index document key prefix.
-* `waitForIndex` - whether we want to wait for indexing to finish before returning. default is false.
-* `virtuals` - whether we want to save virtuals. default is `false`.
-* `minimize` - to "minimize" the document by removing any empty properties. Default: `true`
-* `expiry` - couchbase upsert option
-* `persist_to` - couchbase persist_to option
-* `replicate_to` - couchbase option
-
-### Getting Documents <a id="getting"></a>
+# Getting Documents <a id="getting"></a>
 
 All models created come with a static function `findById` that can be used to look up a single or multiple keys and
 retrieve documents from the database. If key does not exist and document is not found we **do not** return an error
@@ -86,36 +51,5 @@ User.findById(['user123', 'user456'], { missing: true },function(err, docs, miss
   if(err) console.log(err); // there was an error looking up the key
   console.dir(docs);        // array of Users found
   console.dir(misses);      // array of missing keys, as the option in function params takes presidence
-});
-```
-
-### Removing Documents <a id="removing"></a>
-
-Removing documents is done using `remove` function that every model instance has. This will execute all pre
-'remove' middleware and then perform Couchbase `remove` operation. It will also perform lookup document updates
-and finally execute any post hook middleware. By default this function **does not** remove embedded documents. To do
-this set `removeRefs` options to `true`.
-
-```js
-user.remove(function(err, doc) {
-  if(err) console.log(err);
-});
-```
-
-If we want all subdocuments to be removed:
-
-```js
-user.remove(function(err, {removeRefs: true}, doc) {
-  if(err) console.log(err);
-});
-```
-
-This will execute removal, hooks and indexing operations for all documents and subdocuments.
-
-Models have static `remove` function that can be used to perform document removal. 
-
-```js
-User.remove('user123', function(err, doc) {
-  if(err) console.log(err);
 });
 ```

@@ -1,4 +1,4 @@
-## Population <a id="population"></a>
+# Population <a id="population"></a>
 
 `findById` comes with an options parameter that can have one property `populate` that can be used to dictate
 if and how we want to get any embedded subdocuments from the database. If `populate` option is `true` all embedded

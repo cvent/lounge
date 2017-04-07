@@ -21,7 +21,7 @@
   "opts": {
     "template": "node_modules/docdash",
     "encoding": "utf8",
-    "destination": "_book/api-docs/",
+    "destination": "/api-docs/",
     "recurse": true,
     "verbose": true
   },
