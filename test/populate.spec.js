@@ -10,7 +10,7 @@ var lounge = require('../')
 var bucket
 var User, Company, Post, Comment, Ticket, Profile, Event
 
-describe('Model populate tests', function () {
+describe.only('Model populate tests', function () {
   beforeEach(function (done) {
     var t = process.env.LOUNGE_COUCHBASE_MOCK ? 10 : 100
     setTimeout(done, t)
@@ -439,7 +439,7 @@ describe('Model populate tests', function () {
       })
     })
 
-    it('should work with array refs', function (done) {
+    it.only('should work with array refs', function (done) {
       var postId = ts.data.posts[0].id
       var expectedData = ts.data.posts[0]
 
