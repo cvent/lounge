@@ -439,7 +439,7 @@ describe.only('Model populate tests', function () {
       })
     })
 
-    it.only('should work with array refs', function (done) {
+    it('should work with array refs', function (done) {
       var postId = ts.data.posts[0].id
       var expectedData = ts.data.posts[0]
 
