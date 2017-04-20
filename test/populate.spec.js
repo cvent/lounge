@@ -10,7 +10,7 @@ var lounge = require('../')
 var bucket
 var User, Company, Post, Comment, Ticket, Profile, Event
 
-describe.only('Model populate tests', function () {
+describe('Model populate tests', function () {
   beforeEach(function (done) {
     var t = process.env.LOUNGE_COUCHBASE_MOCK ? 10 : 100
     setTimeout(done, t)
