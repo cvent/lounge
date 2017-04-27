@@ -18,6 +18,28 @@ describe('Model basics', function () {
   })
 
   describe('Model creation', function () {
+    it('Should properly create an empty model without any params', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String
+      })
+
+      var User = lounge.model('User', userSchema)
+
+      var user = new User()
+
+      expect(user instanceof User).to.be.ok
+      expect(user instanceof lounge.Document).to.be.ok
+      expect(user instanceof lounge.Model).to.be.ok
+
+      expect(user.id).to.be.a('string')
+      expect(user.id).to.be.ok
+      expect(user.firstName).to.not.be.ok
+      expect(user.lastName).to.not.be.ok
+      expect(user.email).to.not.be.ok
+    })
+
     it('Should properly create a model', function () {
       var userSchema = lounge.schema({
         firstName: String,
