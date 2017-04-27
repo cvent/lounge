@@ -16,25 +16,25 @@ performed on, and `options` are the options used for the action. When an `'error
 var userSchema = lounge.schema({
   name: String,
   email: { type: String, index: true }
-});
+})
 
-var User = lounge.model('User', userSchema);
+var User = lounge.model('User', userSchema)
 var user = new User({
   name: 'Bob Smith',
   email: 'bob@gmail.com'
-});
+})
 
 user.on('index', function (doc) {
-  console.log('indexed document: ' + doc.id);
-});
+  console.log('indexed document: ' + doc.id)
+})
 
 user.on('remove', function (doc) {
-  console.log('document removed');
-});
+  console.log('document removed')
+})
 
 user.on('save', function (doc) {
-  console.log('document saved');
-});
+  console.log('document saved')
+})
 ```
 
 Similarly, the generated Model classes emit events when actions happen for any model instance of that type.
@@ -43,28 +43,28 @@ Similarly, the generated Model classes emit events when actions happen for any m
 var userSchema = lounge.schema({
   name: String,
   email: { type: String, key: true, generate: false }
-});
+})
 
-var User = lounge.model('User', userSchema);
+var User = lounge.model('User', userSchema)
 
 User.on('index', function (doc, options) {
-  console.log('indexed User document: ' + doc.id);
-});
+  console.log('indexed User document: ' + doc.id)
+})
 
 User.on('save', function (doc, options) {
-  console.log('saved User document: ' + doc.id);
-});
+  console.log('saved User document: ' + doc.id)
+})
 
 User.on('remove', function (doc, options) {
-  console.log('removed User document: ' + doc.id);
-});
+  console.log('removed User document: ' + doc.id)
+})
 
 var user = new User({
   name: 'Bob Smith',
   email: 'bob@gmail.com'
-});
+})
 
-user.save(); // prints 'saved User document: bob@gmail.com'
+user.save() // prints 'saved User document: bob@gmail.com'
 ```
 
 Finally, the `lounge` object itself is an instance of `EventEmitter` that emits events when actions happen
@@ -72,27 +72,27 @@ for any model instance of any type:
 
 ```js
 lounge.on('index', function (doc, options) {
-  console.log('indexed ' + doc.modelName + ' document: ' + doc.id);
-});
+  console.log('indexed ' + doc.modelName + ' document: ' + doc.id)
+})
 
 lounge.on('save', function (doc, options) {
-  console.log('saved ' + doc.modelName + ' document: ' + doc.id);
-});
+  console.log('saved ' + doc.modelName + ' document: ' + doc.id)
+})
 
 lounge.on('remove', function (doc, options) {
-  console.log('removed ' + doc.modelName + ' document: ' + doc.id);
-});
+  console.log('removed ' + doc.modelName + ' document: ' + doc.id)
+})
 
 var userSchema = lounge.schema({
   name: String,
   email: { type: String, key: true, generate: false }
-});
+})
 
-var User = lounge.model('User', userSchema);
+var User = lounge.model('User', userSchema)
 var user = new User({
   name: 'Bob Smith',
   email: 'bob@gmail.com'
-});
+})
 
-user.save(); // prints 'saved User document: bob@gmail.com'
+user.save() // prints 'saved User document: bob@gmail.com'
 ```

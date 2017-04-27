@@ -15,20 +15,20 @@ Lounge is a simple, somewhat opinionated, Mongoose-inspired ODM for [Couchbase](
 to provide modeling tool framework for working with Couchbase databases in an asynchronous environment of Node.js.
 
 ```js
-var lounge = require('lounge');
+var lounge = require('lounge')
 lounge.connect({
   connectionString: 'couchbase://127.0.0.1',
   bucket: 'lounge_test'
-});
+})
 
-var schema = lounge.schema({ name: String });
-var Cat = lounge.model('Cat', schema);
+var schema = lounge.schema({ name: String })
+var Cat = lounge.model('Cat', schema)
 
-var kitty = new Cat({ name: 'Zildjian' });
+var kitty = new Cat({ name: 'Zildjian' })
 kitty.save(function (err) {
   if (err) // ...
-  console.log('meow');
-});
+  console.log('meow')
+})
 ```
 
 **Features**

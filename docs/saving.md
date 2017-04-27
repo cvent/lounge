@@ -8,8 +8,8 @@ From our example code above:
 
 ```js
 user.save(function(err, savedDoc) {
-  if(err) console.log(err);
-});
+  if(err) console.log(err)
+})
 ```
 
 All documents and subdocuments would be upserted into the database.

@@ -8,7 +8,7 @@ indexes. Specifying an index property is done at schema level:
 var userSchema = lounge.schema({
   name: String,
   email: { type: String, index: true }
-});
+})
 ```
 
 Here we wish `User` models to have their own `id` as document key, but we want to be able to look up documents via email
@@ -19,9 +19,9 @@ as user is `saved` or `removed`.
 var user = new User({
   name: 'Joe Smith',
   email: 'joe@gmail.com'
-});
+})
 
-user.save();
+user.save()
 ```
 
 This will create the a lookup document similar to:
@@ -39,7 +39,7 @@ var userSchema = lounge.schema({
 }, {
   keyPrefix: 'user::',
   delimiter: '::'
-});
+})
 ```
 
 Saving a document defined with this schema will save user document with key `'user::5c4bfd6d-9c80-452b-be3a-3e528e4f53f5'`
@@ -61,7 +61,7 @@ Indexes can also be arrays:
 var userSchema = lounge.schema({
   name: String
   usernames: [{ type: String, index: true }]
-});
+})
 ```
 
 A lookup document will be generated for each value in the array. Index lookup properties have to be of type `String` or

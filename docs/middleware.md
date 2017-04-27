@@ -10,20 +10,20 @@ var userSchema = lounge.schema({
   firstName: String,
   lastName: String,
   email: String
-});
+})
 
 userSchema.pre('save', function (next) {
   if (this.email) {
-    this.email = this.email.toLowerCase();
+    this.email = this.email.toLowerCase()
   }
 
   // we must call next to continue control flow
-  next();
-});
+  next()
+})
 
 userSchema.post('remove', function () {
-  console.log('document %s removed', this.id);
-});
+  console.log('document %s removed', this.id)
+})
 ```
 
 Important note here is that `post` 'save' and 'remove' hooks do not receive any form of control flow. There are no
@@ -35,17 +35,17 @@ The callback passed into `pre` hooks can be used to control flow of logic and ex
 schema.pre('save', function (next) {
   // some custom validation method
   if (!this.validate()) {
-    return next(new Error('Validation error!'));
+    return next(new Error('Validation error!'))
   }
 
-  next();
-});
+  next()
+})
 
 // elsewhere...
 
 doc.save(function(err, savedDoc) {
-  if(err) console.log(err); // 'Validation error!' Document was not saved
-});
+  if(err) console.log(err) // 'Validation error!' Document was not saved
+})
 ```
 
 **onBeforeValueSet(key, value) / onValueSet(key, value)**
@@ -59,13 +59,13 @@ cancelled. Throwing an error will add the error to the error stack.
 var User = lounge.schema({ name: String }, {
   onBeforeValueSet: function(key, value) {
     if(key === 'name' && value.indexOf('Joe') === -1) {
-      return false;
-    });
+      return false
+    })
   }
-});
+})
 
-var User = lounge.model('User', schema);
-var user = new User();
-user.name = 'Bill'; // { name: undefined }
-user.name = 'Joe Smith'; //  { name: 'Joe Smith' }
+var User = lounge.model('User', schema)
+var user = new User()
+user.name = 'Bill' // { name: undefined }
+user.name = 'Joe Smith' //  { name: 'Joe Smith' }
 ```
