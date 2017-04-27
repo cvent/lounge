@@ -4,6 +4,7 @@
 
 [![npm version](https://img.shields.io/npm/v/lounge.svg?style=flat-square)](https://www.npmjs.com/package/lounge)
 [![build status](https://img.shields.io/travis/bojand/lounge/master.svg?style=flat-square)](https://travis-ci.org/bojand/lounge)
+[![stabdardjs](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
 
 ## Installation
 
