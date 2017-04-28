@@ -10,3 +10,4 @@ dist/
 api-docs
 docs/api-docs
 _book
+.vscode
