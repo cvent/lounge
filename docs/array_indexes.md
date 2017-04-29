@@ -7,14 +7,14 @@ store an array of document keys. This can be accomplished using `'array'` `index
 var userSchema = lounge.schema({
   email: { type: String, key: true, generate: false },
   username: { type: String, index: true, indexType: 'array' }
-});
+})
 ```
 
 Here we *really* mean that multiple users can have the same nickname and we would like to index both. Example:
 
 ```js
-var user1 = new User({ email: 'bob@gmail.com', nickname: 'bobby' });
-var user2 = new User({ email: 'robert@outlook.com', nickname: 'bobby' });
+var user1 = new User({ email: 'bob@gmail.com', nickname: 'bobby' })
+var user2 = new User({ email: 'robert@outlook.com', nickname: 'bobby' })
 ```
 
 When these two documents are indexed the lookup reference document with the key `'$_ref_by_nickname_bobby'` would
@@ -34,5 +34,5 @@ combined within an array field:
 var userSchema = lounge.schema({
   email: { type: String, key: true, generate: false },
   usernames: [{ type: String, index: true, indexType: 'array' }]
-});
+})
 ```

@@ -4,6 +4,7 @@
 
 [![npm version](https://img.shields.io/npm/v/lounge.svg?style=flat-square)](https://www.npmjs.com/package/lounge)
 [![build status](https://img.shields.io/travis/bojand/lounge/master.svg?style=flat-square)](https://travis-ci.org/bojand/lounge)
+[![stabdardjs](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
 
 ## Installation
 
@@ -15,20 +16,20 @@ Lounge is a simple, somewhat opinionated, Mongoose-inspired ODM for [Couchbase](
 to provide modeling tool framework for working with Couchbase databases in an asynchronous environment of Node.js.
 
 ```js
-var lounge = require('lounge');
+var lounge = require('lounge')
 lounge.connect({
   connectionString: 'couchbase://127.0.0.1',
   bucket: 'lounge_test'
-});
+})
 
-var schema = lounge.schema({ name: String });
-var Cat = lounge.model('Cat', schema);
+var schema = lounge.schema({ name: String })
+var Cat = lounge.model('Cat', schema)
 
-var kitty = new Cat({ name: 'Zildjian' });
+var kitty = new Cat({ name: 'Zildjian' })
 kitty.save(function (err) {
   if (err) // ...
-  console.log('meow');
-});
+  console.log('meow')
+})
 ```
 
 **Features**

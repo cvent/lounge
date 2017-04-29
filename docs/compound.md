@@ -6,17 +6,17 @@ Additionally all of the indexing options can be specified using `index()` functi
 var userSchema = lounge.schema({
   name: String,
   username: String,
-});
+})
 
-userSchema.index('username', { indexName: 'UserName', refKeyCase: 'upper' });
+userSchema.index('username', { indexName: 'UserName', refKeyCase: 'upper' })
 
-var User = lounge.model('User', userSchema);
+var User = lounge.model('User', userSchema)
 
 // lookup will be case insensitive because of refKeyCase option
 User.findByUserName('uSeRnAmE123', function(err, doc) {
-  if(err) console.log(err);
-  else console.log(doc);
-});
+  if(err) console.log(err)
+  else console.log(doc)
+})
 ```
 
 The first param to `index()` function is the property name to index on.
@@ -28,15 +28,15 @@ you could do:
 var userSchema = lounge.schema({
   email: String,
   username: String,
-});
+})
 
-userSchema.index(['email', 'username']);
-var User = lounge.model('User', userSchema);
+userSchema.index(['email', 'username'])
+var User = lounge.model('User', userSchema)
 
 User.findByEmailAndUsername('joe@gmail.com', 'username123', function(err, doc) {
-  if(err) console.log(err);
-  else console.log(doc);
-});
+  if(err) console.log(err)
+  else console.log(doc)
+})
 ```
 
 Compound indexes work with all other options as described above.

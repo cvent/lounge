@@ -95,8 +95,8 @@ Accepts a key of property and value for the property, or object representing the
 **Access**: public  
 **Example**  
 ```js
-user.set('fistName', 'Joe');
-user.set({ lastName: 'Smith' });
+user.set('fistName', 'Joe')
+user.set({ lastName: 'Smith' })
 ```
 <a name="abstractbasemodelget" id="abstractbasemodelget" data-id="abstractbasemodelget"></a>
 
@@ -130,18 +130,18 @@ Converts this document into a plain javascript object.
 
 **Example**  
 ```js
-var userSchema = lounge.schema({ name: String });
-var User = lounge.model('User', userSchema);
-var user = new User({name: 'Joe Smith'});
-console.log(user); // automatically invokes toObject()
+var userSchema = lounge.schema({ name: String })
+var User = lounge.model('User', userSchema)
+var user = new User({name: 'Joe Smith'})
+console.log(user) // automatically invokes toObject()
 ```
 **Example** *(Example with transform option.)*  
 ```js
 var xform = function (doc, ret, options) {
-  ret.name = ret.name.toUpperCase();
-  return ret;
-};
-console.dir(user.toObject({transform: xform}); // { name: 'JOE SMITH' }
+  ret.name = ret.name.toUpperCase()
+  return ret
+}
+console.dir(user.toObject({transform: xform}) // { name: 'JOE SMITH' }
 ```
 <a name="abstractbasemodeltojson" id="abstractbasemodeltojson" data-id="abstractbasemodeltojson"></a>
 
@@ -261,7 +261,7 @@ Returns the string representation of <code>CAS</code> value.
 **Kind**: instance property of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
 **Example**  
 ```js
-console.log(doc.cas); // String: 00000000a71626e4
+console.log(doc.cas) // String: 00000000a71626e4
 ```
 <a name="couchbasedocumentdb" id="couchbasedocumentdb" data-id="couchbasedocumentdb"></a>
 
@@ -283,11 +283,11 @@ The name the name of the model. This is both a static and instance property.
 **Kind**: instance property of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
 **Example**  
 ```js
-var schema = lounge.schema({ name: String });
-var Cat = lounge.model('Cat', schema);
-var kitty = new Cat({ name: 'Zildjian' });
-console.log(Cat.modelName); // 'Cat'
-console.log(kitty.modelName); // 'Cat'
+var schema = lounge.schema({ name: String })
+var Cat = lounge.model('Cat', schema)
+var kitty = new Cat({ name: 'Zildjian' })
+console.log(Cat.modelName) // 'Cat'
+console.log(kitty.modelName) // 'Cat'
 ```
 <a name="document_isnew" id="document_isnew" data-id="document_isnew"></a>
 
@@ -297,12 +297,12 @@ Has a key been generated for this document.
 **Kind**: instance property of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
 **Example**  
 ```js
-var schema = lounge.schema({ name: String });
-var Cat = lounge.model('Cat', schema);
-var kitty = new Cat({ name: 'Zildjian' });
-console.log(kitty._isNew); // true
-var kat = new Cat({ id: '123abc', name: 'Sabian' });
-console.log(kat._isNew); // false
+var schema = lounge.schema({ name: String })
+var Cat = lounge.model('Cat', schema)
+var kitty = new Cat({ name: 'Zildjian' })
+console.log(kitty._isNew) // true
+var kat = new Cat({ id: '123abc', name: 'Sabian' })
+console.log(kat._isNew) // false
 ```
 <a name="couchbasedocumentgetcas" id="couchbasedocumentgetcas" data-id="couchbasedocumentgetcas"></a>
 
@@ -318,8 +318,8 @@ Returns the document <code>CAS</code> value.
 
 **Example**  
 ```js
-console.log(doc.getCAS()); // String: 00000000a71626e4
-console.log(doc.getCAS(true)); // Object: CouchbaseCas<11338961768815788032>
+console.log(doc.getCAS()) // String: 00000000a71626e4
+console.log(doc.getCAS(true)) // Object: CouchbaseCas<11338961768815788032>
 ```
 <a name="couchbasedocumentsave" id="couchbasedocumentsave" data-id="couchbasedocumentsave"></a>
 
@@ -344,10 +344,10 @@ Save the current model instance. Calls db set function for the model id and save
 
 **Example**  
 ```js
-var user = new User({ name: 'Bob Smith', email: 'bsmith@acme.com' });
+var user = new User({ name: 'Bob Smith', email: 'bsmith@acme.com' })
 user.save(function(err, savedDoc) {
-  if(err) console.log(err);
-});
+  if(err) console.log(err)
+})
 ```
 <a name="couchbasedocumentindex" id="couchbasedocumentindex" data-id="couchbasedocumentindex"></a>
 
@@ -380,8 +380,8 @@ Calls the bucket <code>remove()</code> function. Options can be passed to the dr
 **Example**  
 ```js
 user.remove(function(err, doc) {
-  if(err) console.log(err);
-});
+  if(err) console.log(err)
+})
 ```
 <a name="couchbasedocumentremoveindexes" id="couchbasedocumentremoveindexes" data-id="couchbasedocumentremoveindexes"></a>
 
@@ -405,7 +405,7 @@ Populates this instance given the options
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>Boolean</code> \| <code>String</code> \| <code>Array</code> | populate options, can be a <code>Boolean</code>;                               <code>String</code> representing a path;                               <code>Object</code> with form <code>{ path: String, target: String}</code> where                               <code>path</code> is the path to be populated and <code>target</code> is the target                               field into which to populate. If this format is used, <code>target</code> should be                               part of schema;                               or an <code>Array</code> of                               <code>Strings</code> or <code>Object</code>. |
+| options | <code>Boolean</code> \| <code>String</code> \| <code>Array</code> | populate options, can be a <code>Boolean</code>;                               <code>String</code> representing a path;                               <code>Object</code> with form <code>{ path: String, target: String }</code> where                               <code>path</code> is the path to be populated and <code>target</code> is the target                               field into which to populate. If this format is used, <code>target</code> should be                               part of schema;                               or an <code>Array</code> of                               <code>Strings</code> or <code>Object</code>. |
 | fn | <code>function</code> | Callback |
 
 **Example** *(Populate an instance)*  
@@ -441,11 +441,11 @@ Helper function to get the document key.
 
 **Example**  
 ```js
-var schema = lounge.schema({ email: String }, { keyPrefix: 'user::'});
-var User = lounge.model('User', schema);
-var user = new User({ email: 'bsmith@acme.com' });
-console.log(user.getDocumentKeyValue()); // 114477a8-1901-4146-8c90-0fc9eec57a58
-console.log(user.getDocumentKeyValue(true)); // user::114477a8-1901-4146-8c90-0fc9eec57a58
+var schema = lounge.schema({ email: String }, { keyPrefix: 'user::'})
+var User = lounge.model('User', schema)
+var user = new User({ email: 'bsmith@acme.com' })
+console.log(user.getDocumentKeyValue()) // 114477a8-1901-4146-8c90-0fc9eec57a58
+console.log(user.getDocumentKeyValue(true)) // user::114477a8-1901-4146-8c90-0fc9eec57a58
 ```
 <a name="documentgetdocumentkeykey" id="documentgetdocumentkeykey" data-id="documentgetdocumentkeykey"></a>
 
@@ -457,10 +457,10 @@ Gets the Document key property name.
 **Access**: public  
 **Example**  
 ```js
-var schema = lounge.schema({ email: { type: String, key: true, generate: false }});
-var User = lounge.model('User', schema);
-var user = new User({ email: 'bsmith@acme.com' });
-console.log(user.getDocumentKeyKey()); // email
+var schema = lounge.schema({ email: { type: String, key: true, generate: false }})
+var User = lounge.model('User', schema)
+var user = new User({ email: 'bsmith@acme.com' })
+console.log(user.getDocumentKeyKey()) // email
 ```
 <a name="couchbasedocument.findbyid" id="couchbasedocument.findbyid" data-id="couchbasedocument.findbyid"></a>
 
@@ -483,10 +483,10 @@ or multiple keys and retrieve documents from the database. If key does not exist
 **Example**  
 ```js
 User.findById('user123', function(err, doc, missing) {
-  if(err) console.log(err); // there was an error looking up the key
-  else if(!doc) console.log('no document found');
-  else console.log(doc); // doc is instance of User and will print it out
-});
+  if(err) console.log(err) // there was an error looking up the key
+  else if(!doc) console.log('no document found')
+  else console.log(doc) // doc is instance of User and will print it out
+})
 ```
 <a name="couchbasedocument.remove" id="couchbasedocument.remove" data-id="couchbasedocument.remove"></a>
 
@@ -506,8 +506,8 @@ Removes specified document(s).
 **Example**  
 ```js
 User.remove('user123', function(err, doc) {
-  if(err) console.log(err);
-});
+  if(err) console.log(err)
+})
 ```
 <a name="document" id="document" data-id="document"></a>
 
@@ -551,11 +551,11 @@ The name the name of the model. This is both a static and instance property.
 **Kind**: instance property of <code>[Document](#Document)</code>  
 **Example**  
 ```js
-var schema = lounge.schema({ name: String });
-var Cat = lounge.model('Cat', schema);
-var kitty = new Cat({ name: 'Zildjian' });
-console.log(Cat.modelName); // 'Cat'
-console.log(kitty.modelName); // 'Cat'
+var schema = lounge.schema({ name: String })
+var Cat = lounge.model('Cat', schema)
+var kitty = new Cat({ name: 'Zildjian' })
+console.log(Cat.modelName) // 'Cat'
+console.log(kitty.modelName) // 'Cat'
 ```
 <a name="document_isnew" id="document_isnew" data-id="document_isnew"></a>
 
@@ -565,12 +565,12 @@ Has a key been generated for this document.
 **Kind**: instance property of <code>[Document](#Document)</code>  
 **Example**  
 ```js
-var schema = lounge.schema({ name: String });
-var Cat = lounge.model('Cat', schema);
-var kitty = new Cat({ name: 'Zildjian' });
-console.log(kitty._isNew); // true
-var kat = new Cat({ id: '123abc', name: 'Sabian' });
-console.log(kat._isNew); // false
+var schema = lounge.schema({ name: String })
+var Cat = lounge.model('Cat', schema)
+var kitty = new Cat({ name: 'Zildjian' })
+console.log(kitty._isNew) // true
+var kat = new Cat({ id: '123abc', name: 'Sabian' })
+console.log(kat._isNew) // false
 ```
 <a name="documentgetdocumentkeyvalue" id="documentgetdocumentkeyvalue" data-id="documentgetdocumentkeyvalue"></a>
 
@@ -587,11 +587,11 @@ Helper function to get the document key.
 
 **Example**  
 ```js
-var schema = lounge.schema({ email: String }, { keyPrefix: 'user::'});
-var User = lounge.model('User', schema);
-var user = new User({ email: 'bsmith@acme.com' });
-console.log(user.getDocumentKeyValue()); // 114477a8-1901-4146-8c90-0fc9eec57a58
-console.log(user.getDocumentKeyValue(true)); // user::114477a8-1901-4146-8c90-0fc9eec57a58
+var schema = lounge.schema({ email: String }, { keyPrefix: 'user::'})
+var User = lounge.model('User', schema)
+var user = new User({ email: 'bsmith@acme.com' })
+console.log(user.getDocumentKeyValue()) // 114477a8-1901-4146-8c90-0fc9eec57a58
+console.log(user.getDocumentKeyValue(true)) // user::114477a8-1901-4146-8c90-0fc9eec57a58
 ```
 <a name="documentgetdocumentkeykey" id="documentgetdocumentkeykey" data-id="documentgetdocumentkeykey"></a>
 
@@ -603,10 +603,10 @@ Gets the Document key property name.
 **Access**: public  
 **Example**  
 ```js
-var schema = lounge.schema({ email: { type: String, key: true, generate: false }});
-var User = lounge.model('User', schema);
-var user = new User({ email: 'bsmith@acme.com' });
-console.log(user.getDocumentKeyKey()); // email
+var schema = lounge.schema({ email: { type: String, key: true, generate: false }})
+var User = lounge.model('User', schema)
+var user = new User({ email: 'bsmith@acme.com' })
+console.log(user.getDocumentKeyKey()) // email
 ```
 <a name="document.getdocumentkeyvalue" id="document.getdocumentkeyvalue" data-id="document.getdocumentkeyvalue"></a>
 
@@ -625,10 +625,10 @@ Static version of <code>getDocumentKeyValue</code>.
 **Example**  
 ```js
 // assuming keyPrefix: 'user::'
-console.log(User.getDocumentKeyValue('114477a8-1901-4146-8c90-0fc9eec57a58', true)); // user::114477a8-1901-4146-8c90-0fc9eec57a58
-console.log(User.getDocumentKeyValue('user::114477a8-1901-4146-8c90-0fc9eec57a58', true)); // user::114477a8-1901-4146-8c90-0fc9eec57a58
-console.log(User.getDocumentKeyValue('user::114477a8-1901-4146-8c90-0fc9eec57a58', false)); // 114477a8-1901-4146-8c90-0fc9eec57a58
-console.log(User.getDocumentKeyValue('114477a8-1901-4146-8c90-0fc9eec57a58', false)); // 114477a8-1901-4146-8c90-0fc9eec57a58
+console.log(User.getDocumentKeyValue('114477a8-1901-4146-8c90-0fc9eec57a58', true)) // user::114477a8-1901-4146-8c90-0fc9eec57a58
+console.log(User.getDocumentKeyValue('user::114477a8-1901-4146-8c90-0fc9eec57a58', true)) // user::114477a8-1901-4146-8c90-0fc9eec57a58
+console.log(User.getDocumentKeyValue('user::114477a8-1901-4146-8c90-0fc9eec57a58', false)) // 114477a8-1901-4146-8c90-0fc9eec57a58
+console.log(User.getDocumentKeyValue('114477a8-1901-4146-8c90-0fc9eec57a58', false)) // 114477a8-1901-4146-8c90-0fc9eec57a58
 ```
 <a name="lounge" id="lounge" data-id="lounge"></a>
 
@@ -737,7 +737,7 @@ instances before connecting to the database.
 lounge.connect({
   connectionString: 'couchbase://127.0.0.1',
   bucket: 'lounge_test'
-});
+})
 ```
 <a name="loungedisconnect" id="loungedisconnect" data-id="loungedisconnect"></a>
 
@@ -761,7 +761,7 @@ Creates a schema. Prefer to use this over Schema constructor as this will pass a
 
 **Example**  
 ```js
-var schema = lounge.schema({ name: String });
+var schema = lounge.schema({ name: String })
 ```
 <a name="loungemodel" id="loungemodel" data-id="loungemodel"></a>
 
@@ -781,7 +781,7 @@ Creates a model = require(a schema.
 
 **Example**  
 ```js
-var Cat = lounge.model('Cat', schema);
+var Cat = lounge.model('Cat', schema)
 ```
 <a name="loungegetmodel" id="loungegetmodel" data-id="loungegetmodel"></a>
 
@@ -798,7 +798,7 @@ not exist.
 
 **Example**  
 ```js
-var Cat = lounge.getModel('Cat');
+var Cat = lounge.getModel('Cat')
 ```
 <a name="loungesetoption" id="loungesetoption" data-id="loungesetoption"></a>
 
@@ -835,7 +835,7 @@ Returns an array of model names created on this instance of Lounge.
 **Access**: public  
 **Example**  
 ```js
-console.log(lounge.modelNames()); // [ 'Cat', 'Dog' ]
+console.log(lounge.modelNames()) // [ 'Cat', 'Dog' ]
 ```
 <a name="model" id="model" data-id="model"></a>
 
@@ -874,7 +874,7 @@ Returns the string representation of <code>CAS</code> value.
 **Kind**: instance property of <code>[Model](#Model)</code>  
 **Example**  
 ```js
-console.log(doc.cas); // String: 00000000a71626e4
+console.log(doc.cas) // String: 00000000a71626e4
 ```
 <a name="couchbasedocumentdb" id="couchbasedocumentdb" data-id="couchbasedocumentdb"></a>
 
@@ -896,11 +896,11 @@ The name the name of the model. This is both a static and instance property.
 **Kind**: instance property of <code>[Model](#Model)</code>  
 **Example**  
 ```js
-var schema = lounge.schema({ name: String });
-var Cat = lounge.model('Cat', schema);
-var kitty = new Cat({ name: 'Zildjian' });
-console.log(Cat.modelName); // 'Cat'
-console.log(kitty.modelName); // 'Cat'
+var schema = lounge.schema({ name: String })
+var Cat = lounge.model('Cat', schema)
+var kitty = new Cat({ name: 'Zildjian' })
+console.log(Cat.modelName) // 'Cat'
+console.log(kitty.modelName) // 'Cat'
 ```
 <a name="document_isnew" id="document_isnew" data-id="document_isnew"></a>
 
@@ -910,12 +910,12 @@ Has a key been generated for this document.
 **Kind**: instance property of <code>[Model](#Model)</code>  
 **Example**  
 ```js
-var schema = lounge.schema({ name: String });
-var Cat = lounge.model('Cat', schema);
-var kitty = new Cat({ name: 'Zildjian' });
-console.log(kitty._isNew); // true
-var kat = new Cat({ id: '123abc', name: 'Sabian' });
-console.log(kat._isNew); // false
+var schema = lounge.schema({ name: String })
+var Cat = lounge.model('Cat', schema)
+var kitty = new Cat({ name: 'Zildjian' })
+console.log(kitty._isNew) // true
+var kat = new Cat({ id: '123abc', name: 'Sabian' })
+console.log(kat._isNew) // false
 ```
 <a name="couchbasedocumentgetcas" id="couchbasedocumentgetcas" data-id="couchbasedocumentgetcas"></a>
 
@@ -931,8 +931,8 @@ Returns the document <code>CAS</code> value.
 
 **Example**  
 ```js
-console.log(doc.getCAS()); // String: 00000000a71626e4
-console.log(doc.getCAS(true)); // Object: CouchbaseCas<11338961768815788032>
+console.log(doc.getCAS()) // String: 00000000a71626e4
+console.log(doc.getCAS(true)) // Object: CouchbaseCas<11338961768815788032>
 ```
 <a name="couchbasedocumentsave" id="couchbasedocumentsave" data-id="couchbasedocumentsave"></a>
 
@@ -957,10 +957,10 @@ Save the current model instance. Calls db set function for the model id and save
 
 **Example**  
 ```js
-var user = new User({ name: 'Bob Smith', email: 'bsmith@acme.com' });
+var user = new User({ name: 'Bob Smith', email: 'bsmith@acme.com' })
 user.save(function(err, savedDoc) {
-  if(err) console.log(err);
-});
+  if(err) console.log(err)
+})
 ```
 <a name="couchbasedocumentindex" id="couchbasedocumentindex" data-id="couchbasedocumentindex"></a>
 
@@ -993,8 +993,8 @@ Calls the bucket <code>remove()</code> function. Options can be passed to the dr
 **Example**  
 ```js
 user.remove(function(err, doc) {
-  if(err) console.log(err);
-});
+  if(err) console.log(err)
+})
 ```
 <a name="couchbasedocumentremoveindexes" id="couchbasedocumentremoveindexes" data-id="couchbasedocumentremoveindexes"></a>
 
@@ -1054,11 +1054,11 @@ Helper function to get the document key.
 
 **Example**  
 ```js
-var schema = lounge.schema({ email: String }, { keyPrefix: 'user::'});
-var User = lounge.model('User', schema);
-var user = new User({ email: 'bsmith@acme.com' });
-console.log(user.getDocumentKeyValue()); // 114477a8-1901-4146-8c90-0fc9eec57a58
-console.log(user.getDocumentKeyValue(true)); // user::114477a8-1901-4146-8c90-0fc9eec57a58
+var schema = lounge.schema({ email: String }, { keyPrefix: 'user::'})
+var User = lounge.model('User', schema)
+var user = new User({ email: 'bsmith@acme.com' })
+console.log(user.getDocumentKeyValue()) // 114477a8-1901-4146-8c90-0fc9eec57a58
+console.log(user.getDocumentKeyValue(true)) // user::114477a8-1901-4146-8c90-0fc9eec57a58
 ```
 <a name="documentgetdocumentkeykey" id="documentgetdocumentkeykey" data-id="documentgetdocumentkeykey"></a>
 
@@ -1070,10 +1070,10 @@ Gets the Document key property name.
 **Access**: public  
 **Example**  
 ```js
-var schema = lounge.schema({ email: { type: String, key: true, generate: false }});
-var User = lounge.model('User', schema);
-var user = new User({ email: 'bsmith@acme.com' });
-console.log(user.getDocumentKeyKey()); // email
+var schema = lounge.schema({ email: { type: String, key: true, generate: false }})
+var User = lounge.model('User', schema)
+var user = new User({ email: 'bsmith@acme.com' })
+console.log(user.getDocumentKeyKey()) // email
 ```
 <a name="modelinstance" id="modelinstance" data-id="modelinstance"></a>
 
@@ -1128,7 +1128,7 @@ Returns the string representation of <code>CAS</code> value.
 **Kind**: instance property of <code>[ModelInstance](#ModelInstance)</code>  
 **Example**  
 ```js
-console.log(doc.cas); // String: 00000000a71626e4
+console.log(doc.cas) // String: 00000000a71626e4
 ```
 <a name="couchbasedocumentdb" id="couchbasedocumentdb" data-id="couchbasedocumentdb"></a>
 
@@ -1150,11 +1150,11 @@ The name the name of the model. This is both a static and instance property.
 **Kind**: instance property of <code>[ModelInstance](#ModelInstance)</code>  
 **Example**  
 ```js
-var schema = lounge.schema({ name: String });
-var Cat = lounge.model('Cat', schema);
-var kitty = new Cat({ name: 'Zildjian' });
-console.log(Cat.modelName); // 'Cat'
-console.log(kitty.modelName); // 'Cat'
+var schema = lounge.schema({ name: String })
+var Cat = lounge.model('Cat', schema)
+var kitty = new Cat({ name: 'Zildjian' })
+console.log(Cat.modelName) // 'Cat'
+console.log(kitty.modelName) // 'Cat'
 ```
 <a name="document_isnew" id="document_isnew" data-id="document_isnew"></a>
 
@@ -1164,12 +1164,12 @@ Has a key been generated for this document.
 **Kind**: instance property of <code>[ModelInstance](#ModelInstance)</code>  
 **Example**  
 ```js
-var schema = lounge.schema({ name: String });
-var Cat = lounge.model('Cat', schema);
-var kitty = new Cat({ name: 'Zildjian' });
-console.log(kitty._isNew); // true
-var kat = new Cat({ id: '123abc', name: 'Sabian' });
-console.log(kat._isNew); // false
+var schema = lounge.schema({ name: String })
+var Cat = lounge.model('Cat', schema)
+var kitty = new Cat({ name: 'Zildjian' })
+console.log(kitty._isNew) // true
+var kat = new Cat({ id: '123abc', name: 'Sabian' })
+console.log(kat._isNew) // false
 ```
 <a name="couchbasedocumentgetcas" id="couchbasedocumentgetcas" data-id="couchbasedocumentgetcas"></a>
 
@@ -1185,8 +1185,8 @@ Returns the document <code>CAS</code> value.
 
 **Example**  
 ```js
-console.log(doc.getCAS()); // String: 00000000a71626e4
-console.log(doc.getCAS(true)); // Object: CouchbaseCas<11338961768815788032>
+console.log(doc.getCAS()) // String: 00000000a71626e4
+console.log(doc.getCAS(true)) // Object: CouchbaseCas<11338961768815788032>
 ```
 <a name="couchbasedocumentsave" id="couchbasedocumentsave" data-id="couchbasedocumentsave"></a>
 
@@ -1211,10 +1211,10 @@ Save the current model instance. Calls db set function for the model id and save
 
 **Example**  
 ```js
-var user = new User({ name: 'Bob Smith', email: 'bsmith@acme.com' });
+var user = new User({ name: 'Bob Smith', email: 'bsmith@acme.com' })
 user.save(function(err, savedDoc) {
-  if(err) console.log(err);
-});
+  if(err) console.log(err)
+})
 ```
 <a name="couchbasedocumentindex" id="couchbasedocumentindex" data-id="couchbasedocumentindex"></a>
 
@@ -1247,8 +1247,8 @@ Calls the bucket <code>remove()</code> function. Options can be passed to the dr
 **Example**  
 ```js
 user.remove(function(err, doc) {
-  if(err) console.log(err);
-});
+  if(err) console.log(err)
+})
 ```
 <a name="couchbasedocumentremoveindexes" id="couchbasedocumentremoveindexes" data-id="couchbasedocumentremoveindexes"></a>
 
@@ -1308,11 +1308,11 @@ Helper function to get the document key.
 
 **Example**  
 ```js
-var schema = lounge.schema({ email: String }, { keyPrefix: 'user::'});
-var User = lounge.model('User', schema);
-var user = new User({ email: 'bsmith@acme.com' });
-console.log(user.getDocumentKeyValue()); // 114477a8-1901-4146-8c90-0fc9eec57a58
-console.log(user.getDocumentKeyValue(true)); // user::114477a8-1901-4146-8c90-0fc9eec57a58
+var schema = lounge.schema({ email: String }, { keyPrefix: 'user::'})
+var User = lounge.model('User', schema)
+var user = new User({ email: 'bsmith@acme.com' })
+console.log(user.getDocumentKeyValue()) // 114477a8-1901-4146-8c90-0fc9eec57a58
+console.log(user.getDocumentKeyValue(true)) // user::114477a8-1901-4146-8c90-0fc9eec57a58
 ```
 <a name="documentgetdocumentkeykey" id="documentgetdocumentkeykey" data-id="documentgetdocumentkeykey"></a>
 
@@ -1324,10 +1324,10 @@ Gets the Document key property name.
 **Access**: public  
 **Example**  
 ```js
-var schema = lounge.schema({ email: { type: String, key: true, generate: false }});
-var User = lounge.model('User', schema);
-var user = new User({ email: 'bsmith@acme.com' });
-console.log(user.getDocumentKeyKey()); // email
+var schema = lounge.schema({ email: { type: String, key: true, generate: false }})
+var User = lounge.model('User', schema)
+var user = new User({ email: 'bsmith@acme.com' })
+console.log(user.getDocumentKeyKey()) // email
 ```
 <a name="modelinstance.schema" id="modelinstance.schema" data-id="modelinstance.schema"></a>
 
@@ -1403,22 +1403,22 @@ Creates an object schema
 
 **Example**  
 ```js
-var schema = new lounge.Schema({ name: String });
+var schema = new lounge.Schema({ name: String })
 ```
 **Example** *(with &lt;code&gt;onBeforeValueSet&lt;/code&gt;)*  
 ```js
 var User = lounge.schema({ name: String }, {
   onBeforeValueSet: function(key, value) {
     if(key === 'name' && value.indexOf('Joe') >= 0) {
-      return false;
-    });
+      return false
+    })
   }
-});
+})
 
-var User = lounge.model('User', schema);
-var user = new User();
-user.name = 'Bill'; // name not set
-user.name = 'Joe Smith'; //  { name: 'Joe Smith' }
+var User = lounge.model('User', schema)
+var user = new User()
+user.name = 'Bill' // name not set
+user.name = 'Joe Smith' //  { name: 'Joe Smith' }
 ```
 <a name="schemaindex" id="schemaindex" data-id="schemaindex"></a>
 
@@ -1442,10 +1442,10 @@ var userSchema = lounge.schema({
   firstName: String,
   lastName: String,
   username: String
-});
+})
 
-userSchema.index('username', { indexName: 'UserName' });
-var User = lounge.model('User', userSchema);
+userSchema.index('username', { indexName: 'UserName' })
+var User = lounge.model('User', userSchema)
 // use User.findByUserName(username) to query
 ```
 **Example** *(Simple coumpund document)*  
@@ -1453,10 +1453,10 @@ var User = lounge.model('User', userSchema);
 var userSchema = lounge.schema({
   email: String,
   username: String
-});
+})
 
-userSchema.index(['email', 'username'], { indexName: 'EmailAndUserName' });
-var User = lounge.model('User', userSchema);
+userSchema.index(['email', 'username'], { indexName: 'EmailAndUserName' })
+var User = lounge.model('User', userSchema)
 // use User.findByEmailAndUserName(email, username) to query
 ```
 <a name="schemamethod" id="schemamethod" data-id="schemamethod"></a>
@@ -1478,19 +1478,19 @@ An object of function names and functions can also be passed in.
 var userSchema = lounge.schema({
   firstName: String,
   lastName: String
-});
+})
 
 userSchema.method('getFullName', function () {
   return this.firstName + ' ' + this.lastName
-});
+})
 
-var User = lounge.model('User', userSchema);
+var User = lounge.model('User', userSchema)
 var user = new User({
   firstName: 'Joe',
   lastName: 'Smith'
-});
+})
 
-console.log(user.getFullName()); // Joe Smith
+console.log(user.getFullName()) // Joe Smith
 ```
 <a name="schemastatic" id="schemastatic" data-id="schemastatic"></a>
 
@@ -1508,20 +1508,20 @@ An object of function or property names and functions or values can also be pass
 
 **Example** *(Create a static function)*  
 ```js
-var userSchema = lounge.schema({ name: String });
+var userSchema = lounge.schema({ name: String })
 userSchema.static('foo', function () {
-  return 'bar';
-});
+  return 'bar'
+})
 
-var User = lounge.model('User', userSchema);
-console.log(User.foo()); // 'bar'
+var User = lounge.model('User', userSchema)
+console.log(User.foo()) // 'bar'
 ```
 **Example** *(Create a static property)*  
 ```js
-var userSchema = lounge.schema({ name: String });
-userSchema.static('FOO', 'bar');
-var User = lounge.model('User', userSchema);
-console.log(User.FOO); // 'bar'
+var userSchema = lounge.schema({ name: String })
+userSchema.static('FOO', 'bar')
+var User = lounge.model('User', userSchema)
+console.log(User.FOO) // 'bar'
 ```
 <a name="schemavirtual" id="schemavirtual" data-id="schemavirtual"></a>
 
@@ -1542,29 +1542,29 @@ specifying the get and optionally set function
 
 **Example**  
 ```js
-var userSchema = lounge.schema({firstName: String, lastName: String});
+var userSchema = lounge.schema({firstName: String, lastName: String})
 
 userSchema.virtual('fullName', String, {
   get: function () {
-    return this.firstName + ' ' + this.lastName;
+    return this.firstName + ' ' + this.lastName
   },
   set: function (v) {
     if (v !== undefined) {
-      var parts = v.split(' ');
-      this.firstName = parts[0];
-      this.lastName = parts[1];
+      var parts = v.split(' ')
+      this.firstName = parts[0]
+      this.lastName = parts[1]
     }
   }
-});
+})
 
-var User = lounge.model('User', userSchema);
+var User = lounge.model('User', userSchema)
 
-var user = new User({firstName: 'Joe', lastName: 'Smith'});
-console.log(user.fullName); // Joe Smith
-user.fullName = 'Bill Jones';
-console.log(user.firstName); // Bill
-console.log(user.lastName); // Jones
-console.log(user.fullName); // Bill Jones
+var user = new User({firstName: 'Joe', lastName: 'Smith'})
+console.log(user.fullName) // Joe Smith
+user.fullName = 'Bill Jones'
+console.log(user.firstName) // Bill
+console.log(user.lastName) // Jones
+console.log(user.fullName) // Bill Jones
 ```
 <a name="schemaset" id="schemaset" data-id="schemaset"></a>
 
@@ -1620,9 +1620,9 @@ Adds the descriptor to the schema at the given key. Or add an <code>object</code
 
 **Example**  
 ```js
-var userSchema = lounge.schema({firstName: String });
-userSchema.add('lastName', String);
-userSchema.add({ email: String });
+var userSchema = lounge.schema({firstName: String })
+userSchema.add('lastName', String)
+userSchema.add({ email: String })
 ```
 <a name="schemaextend" id="schemaextend" data-id="schemaextend"></a>
 
@@ -1650,11 +1650,11 @@ Helper function to get the document key
 
 **Example**  
 ```js
-var schema = lounge.schema({ email: String }, {keyPrefix: 'user::' });
-console.log(schema.getDocumentKeyValue('114477a8-1901-4146-8c90-0fc9eec57a58', true)); // user::114477a8-1901-4146-8c90-0fc9eec57a58
-console.log(schema.getDocumentKeyValue('user::114477a8-1901-4146-8c90-0fc9eec57a58', true)); // user::114477a8-1901-4146-8c90-0fc9eec57a58
-console.log(schema.getDocumentKeyValue('user::114477a8-1901-4146-8c90-0fc9eec57a58', false)); // 114477a8-1901-4146-8c90-0fc9eec57a58
-console.log(schema.getDocumentKeyValue('114477a8-1901-4146-8c90-0fc9eec57a58', false)); // 114477a8-1901-4146-8c90-0fc9eec57a58
+var schema = lounge.schema({ email: String }, {keyPrefix: 'user::' })
+console.log(schema.getDocumentKeyValue('114477a8-1901-4146-8c90-0fc9eec57a58', true)) // user::114477a8-1901-4146-8c90-0fc9eec57a58
+console.log(schema.getDocumentKeyValue('user::114477a8-1901-4146-8c90-0fc9eec57a58', true)) // user::114477a8-1901-4146-8c90-0fc9eec57a58
+console.log(schema.getDocumentKeyValue('user::114477a8-1901-4146-8c90-0fc9eec57a58', false)) // 114477a8-1901-4146-8c90-0fc9eec57a58
+console.log(schema.getDocumentKeyValue('114477a8-1901-4146-8c90-0fc9eec57a58', false)) // 114477a8-1901-4146-8c90-0fc9eec57a58
 ```
 <a name="schemagetrefkey" id="schemagetrefkey" data-id="schemagetrefkey"></a>
 

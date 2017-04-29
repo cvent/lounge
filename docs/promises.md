@@ -6,28 +6,28 @@ control flow happens. If no callback is provided a promise is returned, of cours
 methods that would normally return more than 2 arguments via a callback (such as the `missing` argument in `find*`) lose that parameter when invoked promise-style. If you need that call the methods using callbacks. Promise support can be completely turned off using `promisify` configuration setting within the Lounge object. Simple example for ES6:
 
 ```js
-const lounge = require('lounge');
+const lounge = require('lounge')
 
 const createUserSchema = () => {
   return lounge.schema({
     firstName: String,
     lastName: String,
     email: String
-  });
-};
+  })
+}
 
 const createUser = User => {
   return new User({
     firstName: 'Joe',
     lastName: 'Smith',
     email: 'joe@gmail.com'
-  });
-};
+  })
+}
 
 const connOpts = {
   connectionString: 'couchbase://127.0.0.1',
   bucket: 'lounge_test'
-};
+}
 
 lounge.connect(connOpts)
   .then(createUserSchema)
@@ -35,10 +35,10 @@ lounge.connect(connOpts)
   .then(createUser)
   .then(user => user.save())
   .then((savedDoc) => {
-    console.log(`User instance ${savedDoc.id} saved.`);
+    console.log(`User instance ${savedDoc.id} saved.`)
   }).catch(e => {
-    console.error(e);
-  });
+    console.error(e)
+  })
 ```
 
 With [Babel](https://babeljs.io/) we can use JavaScript features not available in Node yet, like `async / await` for async control.
@@ -47,22 +47,22 @@ With [Babel](https://babeljs.io/) we can use JavaScript features not available i
 await lounge.connect({
   connectionString: 'couchbase://127.0.0.1',
   bucket: 'lounge_test'
-});
+})
 
 const schema = lounge.schema({
   firstName: String,
   lastName: String,
   email: String
-});
+})
 
-const User = lounge.model('User', schema);
+const User = lounge.model('User', schema)
 
 const user = new User({
   firstName: 'Joe',
   lastName: 'Smith',
   email: 'joe@gmail.com'
-});
+})
 
-const doc = await user.save();
-console.log(`User instance ${doc.id} saved.`);
+const doc = await user.save()
+console.log(`User instance ${doc.id} saved.`)
 ```

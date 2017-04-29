@@ -6,10 +6,10 @@ but also no model is generated. This is different than present couchbase module 
 
 ```js
 User.findById('user123', function(err, doc) {
-  if(err) console.log(err); // there was an error looking up the key
-  else if(!doc) console.log('no document found');
-  else console.log(doc); // doc is instance of User and will print it out
-});
+  if(err) console.log(err) // there was an error looking up the key
+  else if(!doc) console.log('no document found')
+  else console.log(doc) // doc is instance of User and will print it out
+})
 ```
 
 We can get multiple keys using an array as the first parameter. In this case, the callback invoked is passed 3 arguments
@@ -17,10 +17,10 @@ in form `(err, documents, misses)`.
 
 ```js
 User.findById(['user123', 'user456'], function(err, docs, misses) {
-  if(err) console.log(err); // there was an error looking up the key
-  console.dir(docs);        // array of Users found
-  console.dir(misses);      // array if keys not found.
-});
+  if(err) console.log(err) // there was an error looking up the key
+  console.dir(docs)        // array of Users found
+  console.dir(misses)      // array if keys not found.
+})
 ```
 
 When `findById` is invoked using a single string argument the result returned is a single model instance. When an array
@@ -36,20 +36,20 @@ use the `missing` options either in `Lounge` settings to set globally, or indivi
 `missing` option is set to `false` we won't return missing keys as the final param in the callback.
 
 ```js
-lounge.setOption('missing', false);
+lounge.setOption('missing', false)
 User.findById(['user123', 'user456'], function(err, docs, misses) {
-  if(err) console.log(err); // there was an error looking up the key
-  console.dir(docs);        // array of Users found
-  console.dir(misses);      // undefined
-});
+  if(err) console.log(err) // there was an error looking up the key
+  console.dir(docs)        // array of Users found
+  console.dir(misses)      // undefined
+})
 ```
 
 
 ```js
-lounge.setOption('missing', false);
+lounge.setOption('missing', false)
 User.findById(['user123', 'user456'], { missing: true },function(err, docs, misses) {
-  if(err) console.log(err); // there was an error looking up the key
-  console.dir(docs);        // array of Users found
-  console.dir(misses);      // array of missing keys, as the option in function params takes presidence
-});
+  if(err) console.log(err) // there was an error looking up the key
+  console.dir(docs)        // array of Users found
+  console.dir(misses)      // array of missing keys, as the option in function params takes presidence
+})
 ```
