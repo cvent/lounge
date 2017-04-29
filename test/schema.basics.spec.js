@@ -19,20 +19,20 @@ describe('Schema basics', function () {
 
     it('Should accept a plain object', function () {
       try {
-        var sh = new Schema({property: String})
+        var sh = new Schema({ property: String })
       } catch (e) {
         console.log(e.stack)
       }
       expect(function () {
-        new Schema({property: String})
+        new Schema({ property: String })
       }).to.not.throw(TypeError)
     })
 
     it('Should throw with key type not a Number or String', function () {
       expect(
         function () {
-          var siteSchema = lounge.schema({
-            ip: {type: Boolean, key: true},
+          lounge.schema({
+            ip: { type: Boolean, key: true },
             name: String,
             url: String
           })
@@ -67,7 +67,7 @@ describe('Schema basics', function () {
       var User = lounge.model('User', userSchema)
 
       var siteSchema = lounge.schema({
-        owner: {type: User},
+        owner: { type: User },
         url: String
       })
 
@@ -117,7 +117,7 @@ describe('Schema basics', function () {
         firstName: String,
         lastName: String,
         posts: [
-          {type: Post}
+          { type: Post }
         ]
       })
 
@@ -179,7 +179,7 @@ describe('Schema basics', function () {
         lastName: String,
         blog: {
           posts: [
-            {Type: Post}
+            { Type: Post }
           ]
         },
         address: Address
@@ -201,7 +201,7 @@ describe('Schema basics', function () {
 
     it('should get the refs correctly in manual ref setup scenario', function () {
       var siteSchema = lounge.schema({
-        owner: {type: lounge.Model, modelName: 'User'},
+        owner: { type: lounge.Model, modelName: 'User' },
         url: String
       })
 
@@ -225,7 +225,7 @@ describe('Schema basics', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true}
+        email: { type: String, index: true }
       })
 
       var expected = {
@@ -243,7 +243,7 @@ describe('Schema basics', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: false}
+        email: { type: String, index: false }
       })
 
       var expected = {}
@@ -255,7 +255,7 @@ describe('Schema basics', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: 'true'}
+        email: { type: String, index: 'true' }
       })
 
       var expected = {}
@@ -268,7 +268,7 @@ describe('Schema basics', function () {
         firstName: String,
         lastName: String,
         posts: [
-          {type: String, index: true}
+          { type: String, index: true }
         ]
       })
 
@@ -289,7 +289,7 @@ describe('Schema basics', function () {
         lastName: String,
         blog: {
           posts: [
-            {Type: String, index: true, indexName: 'blogPost'}
+            { Type: String, index: true, indexName: 'blogPost' }
           ]
         }
       })
@@ -309,8 +309,8 @@ describe('Schema basics', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true},
-        username: {type: String, index: true, indexName: 'userName'}
+        email: { type: String, index: true },
+        username: { type: String, index: true, indexName: 'userName' }
       })
 
       var expected = {
@@ -339,7 +339,7 @@ describe('Schema basics', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true, indexType: 'array'}
+        email: { type: String, index: true, indexType: 'array' }
       })
 
       var expected = {
@@ -357,7 +357,7 @@ describe('Schema basics', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: false, indexType: 'array'}
+        email: { type: String, index: false, indexType: 'array' }
       })
 
       var expected = {}
@@ -369,7 +369,7 @@ describe('Schema basics', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: 'true', indexType: 'array'}
+        email: { type: String, index: 'true', indexType: 'array' }
       })
 
       var expected = {}
@@ -382,7 +382,7 @@ describe('Schema basics', function () {
         firstName: String,
         lastName: String,
         posts: [
-          {type: String, index: true, indexType: 'array'}
+          { type: String, index: true, indexType: 'array' }
         ]
       })
 
@@ -403,7 +403,7 @@ describe('Schema basics', function () {
         lastName: String,
         blog: {
           posts: [
-            {Type: String, index: true, indexName: 'blogPost', indexType: 'array'}
+            { Type: String, index: true, indexName: 'blogPost', indexType: 'array' }
           ]
         }
       })
@@ -423,8 +423,8 @@ describe('Schema basics', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true, indexType: 'array'},
-        username: {type: String, index: true, indexName: 'userName', indexType: 'array'}
+        email: { type: String, index: true, indexType: 'array' },
+        username: { type: String, index: true, indexName: 'userName', indexType: 'array' }
       })
 
       var expected = {
@@ -447,8 +447,8 @@ describe('Schema basics', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        email: {type: String, index: true, indexType: 'array'},
-        username: {type: String, index: true, indexName: 'userName'}
+        email: { type: String, index: true, indexType: 'array' },
+        username: { type: String, index: true, indexName: 'userName' }
       })
 
       var expected = {
@@ -484,12 +484,12 @@ describe('Schema basics', function () {
       })
 
       userSchema2 = new lounge.Schema({
-        id: {type: String, key: true, generate: true, prefix: 'pre:', suffix: ':suf'},
+        id: { type: String, key: true, generate: true, prefix: 'pre:', suffix: ':suf' },
         email: String
       })
 
       userSchema3 = new lounge.Schema({
-        email: {type: String, key: true, generate: false, prefix: 'user::'}
+        email: { type: String, key: true, generate: false, prefix: 'user::' }
       })
     })
 
@@ -555,7 +555,7 @@ describe('Schema basics', function () {
         firstName: String,
         lastName: String,
         email: String,
-        $_data: {type: Object, invisible: true}
+        $_data: { type: Object, invisible: true }
       })
 
       userSchema.method('init', function () {
@@ -595,7 +595,7 @@ describe('Schema basics', function () {
       var userSchema = new lounge.Schema({
         firstName: String,
         lastName: String,
-        email: {type: String, validate: validator.isEmail}
+        email: { type: String, validate: validator.isEmail }
       })
 
       var User = lounge.model('User', userSchema)
