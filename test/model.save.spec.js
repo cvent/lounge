@@ -2273,5 +2273,67 @@ describe('subdocument array change test', function () {
 
       expect(r).to.deep.equal(expected)
     })
+
+    it('should perform chained operation with model sub documents ok', function (done) {
+      const eventSchema = lounge.schema({
+        name: String
+      })
+
+      const leadSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        eventId: { type: lounge.Model, modelName: 'event' },
+        foo: String
+      })
+
+      const Event = lounge.model('event', eventSchema)
+      const Lead = lounge.model('lead', leadSchema)
+
+      const event = new Event({
+        name: 'Sample event'
+      })
+
+      event.save((err, savedEvent) => {
+        expect(err).to.be.not.ok
+        expect(savedEvent).to.be.ok
+
+        const lead = new Lead({
+          eventId: savedEvent,
+          firstName: 'Bob',
+          lastName: 'Smith',
+          foo: 'bar'
+        })
+
+        lead.save((err, savedLead) => {
+          expect(err).to.be.not.ok
+          expect(savedLead).to.be.ok
+
+          Lead.findById(savedLead.id, (err, l) => {
+            expect(err).to.be.not.ok
+            expect(l).to.be.ok
+            expect(l).to.be.an.instanceof(Lead)
+
+            const r = _(l)
+              .pick([
+                'eventId',
+                'firstName',
+                'lastName'
+              ])
+              .transform((result, val, key) => {
+                result[key] = _.toLower(val)
+              }).value()
+
+            expect(r).to.be.ok
+            expect(r).to.deep.equal({
+              eventId: l.eventId.toString(),
+              firstName: 'bob',
+              lastName: 'smith'
+            })
+            expect(r.foo).to.not.be.ok
+            done()
+          })
+        })
+      })
+    })
   })
 })
