@@ -59,6 +59,9 @@ describe('Lounge basics', function () {
 
       var old = new Cat({ name: 'Bob' })
 
+      expect(Cat.db).to.not.be.ok
+      expect(old.db).to.not.be.ok
+
       lounge.connect({
         connectionString: 'couchbase://127.0.0.1',
         bucket: 'lounge_test'
@@ -68,26 +71,26 @@ describe('Lounge basics', function () {
 
         expect(Cat.db).to.be.ok
         expect(Cat.db).to.be.an('object')
+        expect(Cat.db).to.equal(lounge.db)
         expect(Cat.db.config).to.be.ok
         expect(Cat.db.bucket).to.be.ok
 
-        expect(Cat._private).to.be.ok
-        expect(Cat._private.db).to.be.ok
+        expect(Cat._private).to.not.be.ok
 
         // should not be writable
         Cat._private = { foo: 'bar' }
 
         expect(Cat.db).to.be.ok
         expect(Cat.db).to.be.an('object')
+        expect(Cat.db).to.equal(lounge.db)
         expect(Cat.db.config).to.be.ok
         expect(Cat.db.bucket).to.be.ok
 
-        expect(Cat._private).to.be.ok
-        expect(Cat._private.db).to.be.ok
+        expect(Cat._private).to.not.be.ok
 
         var newer = new Cat({ name: 'Joe' })
 
-        expect(old.db).to.not.be.ok
+        expect(old.db).to.be.ok
         expect(newer.db).to.be.ok
 
         done()

@@ -53,7 +53,7 @@ Clients should never have to call this directly.
 
 * [AbstractBaseModel](#AbstractBaseModel)
     * [new AbstractBaseModel(values, options, schema)](#new_AbstractBaseModel_new)
-    * [.schema](#AbstractBaseModelschema) ⇒ <code>[Schema](#Schema)</code>
+    * [.schema](#AbstractBaseModelschema) ⇒ [<code>Schema</code>](#Schema)
     * [.set()](#AbstractBaseModelset)
     * [.get(path)](#AbstractBaseModelget) ⇒ <code>\*</code>
     * [.toObject(options)](#AbstractBaseModeltoObject) ⇒ <code>Object</code>
@@ -76,14 +76,14 @@ Clients do not need to create <code>AbstractBaseModel</code> instances manually.
 | values | <code>Object</code> | the object data |
 | options | <code>Object</code> | creation options |
 | options.clone | <code>Boolean</code> | Whether to deep clone the incoming data. Default: <code>false</code>.                                  Make sure you wish to do this as it has performance implications. This is                                  useful if you are creating multiple instances from same base data and then                                  wish to modify each instance. |
-| schema | <code>[Schema](#Schema)</code> | schema instance |
+| schema | [<code>Schema</code>](#Schema) | schema instance |
 
 <a name="abstractbasemodelschema" id="abstractbasemodelschema" data-id="abstractbasemodelschema"></a>
 
-### abstractBaseModel.schema ⇒ <code>[Schema](#Schema)</code>
+### abstractBaseModel.schema ⇒ [<code>Schema</code>](#Schema)
 Get the model schema instance
 
-**Kind**: instance property of <code>[AbstractBaseModel](#AbstractBaseModel)</code>  
+**Kind**: instance property of [<code>AbstractBaseModel</code>](#AbstractBaseModel)  
 **Access**: public  
 <a name="abstractbasemodelset" id="abstractbasemodelset" data-id="abstractbasemodelset"></a>
 
@@ -91,7 +91,7 @@ Get the model schema instance
 Sets data on the document based on the schema.
 Accepts a key of property and value for the property, or object representing the data for document.
 
-**Kind**: instance method of <code>[AbstractBaseModel](#AbstractBaseModel)</code>  
+**Kind**: instance method of [<code>AbstractBaseModel</code>](#AbstractBaseModel)  
 **Access**: public  
 **Example**  
 ```js
@@ -103,7 +103,7 @@ user.set({ lastName: 'Smith' })
 ### abstractBaseModel.get(path) ⇒ <code>\*</code>
 Gets value at a specified path.
 
-**Kind**: instance method of <code>[AbstractBaseModel](#AbstractBaseModel)</code>  
+**Kind**: instance method of [<code>AbstractBaseModel</code>](#AbstractBaseModel)  
 **Returns**: <code>\*</code> - The value at the path.  
 
 | Param | Type | Description |
@@ -115,7 +115,7 @@ Gets value at a specified path.
 ### abstractBaseModel.toObject(options) ⇒ <code>Object</code>
 Converts this document into a plain javascript object.
 
-**Kind**: instance method of <code>[AbstractBaseModel](#AbstractBaseModel)</code>  
+**Kind**: instance method of [<code>AbstractBaseModel</code>](#AbstractBaseModel)  
 **Returns**: <code>Object</code> - Plain javascript object representation of document.  
 **Access**: public  
 
@@ -148,7 +148,7 @@ console.dir(user.toObject({transform: xform}) // { name: 'JOE SMITH' }
 ### abstractBaseModel.toJSON(options) ⇒ <code>Object</code>
 Similar as <code>toObject</code> but applied when <code>JSON.stringify</code> is called
 
-**Kind**: instance method of <code>[AbstractBaseModel](#AbstractBaseModel)</code>  
+**Kind**: instance method of [<code>AbstractBaseModel</code>](#AbstractBaseModel)  
 **Returns**: <code>Object</code> - Plain javascript object representation of document.  
 **Access**: public  
 
@@ -161,39 +161,39 @@ Similar as <code>toObject</code> but applied when <code>JSON.stringify</code> is
 ### abstractBaseModel.inspect()
 Helper for <code>console.log</code>. Just invokes default <code>toObject</code>.
 
-**Kind**: instance method of <code>[AbstractBaseModel](#AbstractBaseModel)</code>  
+**Kind**: instance method of [<code>AbstractBaseModel</code>](#AbstractBaseModel)  
 **Access**: public  
 <a name="abstractbasemodeltostring" id="abstractbasemodeltostring" data-id="abstractbasemodeltostring"></a>
 
 ### abstractBaseModel.toString()
 Helper for <code>console.log</code>. Alias for <code>inspect</code>.
 
-**Kind**: instance method of <code>[AbstractBaseModel](#AbstractBaseModel)</code>  
+**Kind**: instance method of [<code>AbstractBaseModel</code>](#AbstractBaseModel)  
 **Access**: public  
 <a name="abstractbasemodelclear" id="abstractbasemodelclear" data-id="abstractbasemodelclear"></a>
 
 ### abstractBaseModel.clear()
 Clear the document data. This can be overridden at schema level using <code>Schema.set()</code>.
 
-**Kind**: instance method of <code>[AbstractBaseModel](#AbstractBaseModel)</code>  
+**Kind**: instance method of [<code>AbstractBaseModel</code>](#AbstractBaseModel)  
 <a name="abstractbasemodelgeterrors" id="abstractbasemodelgeterrors" data-id="abstractbasemodelgeterrors"></a>
 
 ### abstractBaseModel.getErrors()
 Gets the errors object.
 
-**Kind**: instance method of <code>[AbstractBaseModel](#AbstractBaseModel)</code>  
+**Kind**: instance method of [<code>AbstractBaseModel</code>](#AbstractBaseModel)  
 <a name="abstractbasemodelclearerrors" id="abstractbasemodelclearerrors" data-id="abstractbasemodelclearerrors"></a>
 
 ### abstractBaseModel.clearErrors()
 Clears all the errors.
 
-**Kind**: instance method of <code>[AbstractBaseModel](#AbstractBaseModel)</code>  
+**Kind**: instance method of [<code>AbstractBaseModel</code>](#AbstractBaseModel)  
 <a name="abstractbasemodelhaserrors" id="abstractbasemodelhaserrors" data-id="abstractbasemodelhaserrors"></a>
 
 ### abstractBaseModel.hasErrors() ⇒ <code>Boolean</code>
 Checks whether we have any errors.
 
-**Kind**: instance method of <code>[AbstractBaseModel](#AbstractBaseModel)</code>  
+**Kind**: instance method of [<code>AbstractBaseModel</code>](#AbstractBaseModel)  
 **Returns**: <code>Boolean</code> - <code>true</code> if we have errors, <code>false</code> otherwise.  
 <a name="basemodel" id="basemodel" data-id="basemodel"></a>
 
@@ -211,14 +211,14 @@ Clients do not need to create <code>BaseModel</code> instances manually.
 
 <a name="couchbasedocument" id="couchbasedocument" data-id="couchbasedocument"></a>
 
-## CouchbaseDocument ⇐ <code>[Document](#Document)</code>
+## CouchbaseDocument ⇐ [<code>Document</code>](#Document)
 CouchbaseDocument inherits Document and handles all the database related actions.
 Clients should never have to call this directly.
 
 **Kind**: global class  
-**Extends**: <code>[Document](#Document)</code>  
+**Extends**: [<code>Document</code>](#Document)  
 
-* [CouchbaseDocument](#CouchbaseDocument) ⇐ <code>[Document](#Document)</code>
+* [CouchbaseDocument](#CouchbaseDocument) ⇐ [<code>Document</code>](#Document)
     * [new CouchbaseDocument(values, cas, options, schema, name)](#new_CouchbaseDocument_new)
     * _instance_
         * [.cas](#CouchbaseDocumentcas) ⇒ <code>String</code>
@@ -250,7 +250,7 @@ Clients do not need to create Document manually.
 | cas | <code>Object</code> | the Couchbase <code>CAS</code> value for the document |
 | options | <code>Object</code> | creation options |
 | options.clone | <code>Boolean</code> | Whether to deep clone the incoming data. Default: <code>false</code>.                                  Make sure you wish to do this as it has performance implications. This is                                  useful if you are creating multiple instances from same base data and then                                  wish to modify each instance. |
-| schema | <code>[Schema](#Schema)</code> | schema instance |
+| schema | [<code>Schema</code>](#Schema) | schema instance |
 | name | <code>String</code> | the model name |
 
 <a name="couchbasedocumentcas" id="couchbasedocumentcas" data-id="couchbasedocumentcas"></a>
@@ -258,7 +258,7 @@ Clients do not need to create Document manually.
 ### couchbaseDocument.cas ⇒ <code>String</code>
 Returns the string representation of <code>CAS</code> value.
 
-**Kind**: instance property of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
+**Kind**: instance property of [<code>CouchbaseDocument</code>](#CouchbaseDocument)  
 **Example**  
 ```js
 console.log(doc.cas) // String: 00000000a71626e4
@@ -268,19 +268,19 @@ console.log(doc.cas) // String: 00000000a71626e4
 ### couchbaseDocument.db ⇒ <code>Driver</code> \| <code>null</code>
 Gets the database driver of the model
 
-**Kind**: instance property of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
+**Kind**: instance property of [<code>CouchbaseDocument</code>](#CouchbaseDocument)  
 <a name="couchbasedocumentconfig" id="couchbasedocumentconfig" data-id="couchbasedocumentconfig"></a>
 
 ### couchbaseDocument.config ⇒ <code>Object</code>
 Gets the config object
 
-**Kind**: instance property of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
+**Kind**: instance property of [<code>CouchbaseDocument</code>](#CouchbaseDocument)  
 <a name="documentmodelname" id="documentmodelname" data-id="documentmodelname"></a>
 
 ### couchbaseDocument.modelName : <code>String</code>
 The name the name of the model. This is both a static and instance property.
 
-**Kind**: instance property of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
+**Kind**: instance property of [<code>CouchbaseDocument</code>](#CouchbaseDocument)  
 **Example**  
 ```js
 var schema = lounge.schema({ name: String })
@@ -294,7 +294,7 @@ console.log(kitty.modelName) // 'Cat'
 ### couchbaseDocument._isNew : <code>Boolean</code>
 Has a key been generated for this document.
 
-**Kind**: instance property of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
+**Kind**: instance property of [<code>CouchbaseDocument</code>](#CouchbaseDocument)  
 **Example**  
 ```js
 var schema = lounge.schema({ name: String })
@@ -309,7 +309,7 @@ console.log(kat._isNew) // false
 ### couchbaseDocument.getCAS(raw) ⇒ <code>String</code> \| <code>Object</code>
 Returns the document <code>CAS</code> value.
 
-**Kind**: instance method of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
+**Kind**: instance method of [<code>CouchbaseDocument</code>](#CouchbaseDocument)  
 **Returns**: <code>String</code> \| <code>Object</code> - the CAS value  
 
 | Param | Type | Description |
@@ -326,7 +326,7 @@ console.log(doc.getCAS(true)) // Object: CouchbaseCas<11338961768815788032>
 ### couchbaseDocument.save(options, replicate_to, fn)
 Save the current model instance. Calls db set function for the model id and saves the properties.
 
-**Kind**: instance method of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
+**Kind**: instance method of [<code>CouchbaseDocument</code>](#CouchbaseDocument)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -355,7 +355,7 @@ user.save(function(err, savedDoc) {
 Update all lookup documents for this document instance. Creates new lookup documents for properties that have changed
 and deletes the old ones not needed any more.
 
-**Kind**: instance method of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
+**Kind**: instance method of [<code>CouchbaseDocument</code>](#CouchbaseDocument)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -370,7 +370,7 @@ and deletes the old ones not needed any more.
 Removes the instance from the database.
 Calls the bucket <code>remove()</code> function. Options can be passed to the driver.
 
-**Kind**: instance method of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
+**Kind**: instance method of [<code>CouchbaseDocument</code>](#CouchbaseDocument)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -388,7 +388,7 @@ user.remove(function(err, doc) {
 ### couchbaseDocument.removeIndexes(options, fn)
 Removes all lookup / index documents for this document.
 
-**Kind**: instance method of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
+**Kind**: instance method of [<code>CouchbaseDocument</code>](#CouchbaseDocument)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -401,11 +401,11 @@ Removes all lookup / index documents for this document.
 ### couchbaseDocument.populate(options, fn)
 Populates this instance given the options
 
-**Kind**: instance method of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
+**Kind**: instance method of [<code>CouchbaseDocument</code>](#CouchbaseDocument)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>Boolean</code> \| <code>String</code> \| <code>Array</code> | populate options, can be a <code>Boolean</code>;                               <code>String</code> representing a path;                               <code>Object</code> with form <code>{ path: String, target: String }</code> where                               <code>path</code> is the path to be populated and <code>target</code> is the target                               field into which to populate. If this format is used, <code>target</code> should be                               part of schema;                               or an <code>Array</code> of                               <code>Strings</code> or <code>Object</code>. |
+| options | <code>Boolean</code> \| <code>String</code> \| <code>Array</code> | populate options, can be a <code>Boolean</code>;                               <code>String</code> representing a path;                               <code>Object</code> with form <code>{ path: String, target: String}</code> where                               <code>path</code> is the path to be populated and <code>target</code> is the target                               field into which to populate. If this format is used, <code>target</code> should be                               part of schema;                               or an <code>Array</code> of                               <code>Strings</code> or <code>Object</code>. |
 | fn | <code>function</code> | Callback |
 
 **Example** *(Populate an instance)*  
@@ -431,7 +431,7 @@ User.findBy(userId, (err, user) {
 ### couchbaseDocument.getDocumentKeyValue(full) ⇒ <code>String</code>
 Helper function to get the document key.
 
-**Kind**: instance method of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
+**Kind**: instance method of [<code>CouchbaseDocument</code>](#CouchbaseDocument)  
 **Returns**: <code>String</code> - document key  
 **Access**: public  
 
@@ -452,7 +452,7 @@ console.log(user.getDocumentKeyValue(true)) // user::114477a8-1901-4146-8c90-0fc
 ### couchbaseDocument.getDocumentKeyKey() ⇒ <code>String</code>
 Gets the Document key property name.
 
-**Kind**: instance method of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
+**Kind**: instance method of [<code>CouchbaseDocument</code>](#CouchbaseDocument)  
 **Returns**: <code>String</code> - Document key property name  
 **Access**: public  
 **Example**  
@@ -469,13 +469,13 @@ All models created come with a static function <code>findById</code> that can be
 or multiple keys and retrieve documents from the database. If key does not exist and document is not found we
 **do not** return an error but also no model is generated. This is different than present couchbase module behaviour.
 
-**Kind**: static method of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
+**Kind**: static method of [<code>CouchbaseDocument</code>](#CouchbaseDocument)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | id | <code>String</code> \| <code>Array</code> | the document id / key or an array of keys |
 | options | <code>Object</code> |  |
-| options.populate | <code>Boolean</code> \| <code>String</code> \| <code>Array</code> | populate options, can be a <code>Boolean</code>;                               <code>String</code> representing a path;                               <code>Object</code> with form <code>{ path: String, target: String}</code> where                               <code>path</code> is the path to be populated and <code>target</code> is the target                               field into which to populate. If this format is used, <code>target</code> should be                               part of schema;                               or an <code>Array</code> of                               <code>Strings</code> or <code>Object</code>. |
+| options.populate | <code>Boolean</code> \| <code>String</code> \| <code>Array</code> | populate options, can be a <code>Boolean</code>;                               <code>String</code> representing a path;                               <code>Object</code> with form <code>{ path: String, target: String }</code> where                               <code>path</code> is the path to be populated and <code>target</code> is the target                               field into which to populate. If this format is used, <code>target</code> should be                               part of schema;                               or an <code>Array</code> of                               <code>Strings</code> or <code>Object</code>. |
 | options.keepSortOrder | <code>Boolean</code> | If getting an array of objects, whether we should keep same sort order of                                        returned objects as the <code>id</code>'s passed in.                                        Default: <code>false</code> |
 | options.missing | <code>Boolean</code> | If set to <code>false</code> we won't return missing keys as the final param in                                  the callback. This option overwrites the Lounge config <code>missing</code> option.                                  Default: <code>true</code>. |
 | fn | <code>function</code> | callback |
@@ -493,7 +493,7 @@ User.findById('user123', function(err, doc, missing) {
 ### CouchbaseDocument.remove(id, options, fn)
 Removes specified document(s).
 
-**Kind**: static method of <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
+**Kind**: static method of [<code>CouchbaseDocument</code>](#CouchbaseDocument)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -511,15 +511,15 @@ User.remove('user123', function(err, doc) {
 ```
 <a name="document" id="document" data-id="document"></a>
 
-## Document ⇐ <code>[BaseModel](#BaseModel)</code>
+## Document ⇐ [<code>BaseModel</code>](#BaseModel)
 Base constructor for all created Document instances.
 Represents just the document data and generic properties and functions.
 Clients should never have to call this directly.
 
 **Kind**: global class  
-**Extends**: <code>[BaseModel](#BaseModel)</code>  
+**Extends**: [<code>BaseModel</code>](#BaseModel)  
 
-* [Document](#Document) ⇐ <code>[BaseModel](#BaseModel)</code>
+* [Document](#Document) ⇐ [<code>BaseModel</code>](#BaseModel)
     * [new Document(values, options, schema, name)](#new_Document_new)
     * _instance_
         * [.modelName](#DocumentmodelName) : <code>String</code>
@@ -527,6 +527,7 @@ Clients should never have to call this directly.
         * [.getDocumentKeyValue(full)](#DocumentgetDocumentKeyValue) ⇒ <code>String</code>
         * [.getDocumentKeyKey()](#DocumentgetDocumentKeyKey) ⇒ <code>String</code>
     * _static_
+        * [.getDocumentKeyKey()](#Document.getDocumentKeyKey) ⇒ <code>String</code>
         * [.getDocumentKeyValue(id, full)](#Document.getDocumentKeyValue) ⇒ <code>string</code>
 
 <a name="new_document_new" id="new_document_new" data-id="new_document_new"></a>
@@ -540,7 +541,7 @@ Clients do not need to create Document manually.
 | values | <code>Object</code> | the object data |
 | options | <code>Object</code> | creation options |
 | options.clone | <code>Boolean</code> | Whether to deep clone the incoming data. Default: <code>false</code>.                                  Make sure you wish to do this as it has performance implications. This is                                  useful if you are creating multiple instances from same base data and then                                  wish to modify each instance. |
-| schema | <code>[Schema](#Schema)</code> | schema instance |
+| schema | [<code>Schema</code>](#Schema) | schema instance |
 | name | <code>String</code> | the model name |
 
 <a name="documentmodelname" id="documentmodelname" data-id="documentmodelname"></a>
@@ -548,7 +549,7 @@ Clients do not need to create Document manually.
 ### document.modelName : <code>String</code>
 The name the name of the model. This is both a static and instance property.
 
-**Kind**: instance property of <code>[Document](#Document)</code>  
+**Kind**: instance property of [<code>Document</code>](#Document)  
 **Example**  
 ```js
 var schema = lounge.schema({ name: String })
@@ -562,7 +563,7 @@ console.log(kitty.modelName) // 'Cat'
 ### document._isNew : <code>Boolean</code>
 Has a key been generated for this document.
 
-**Kind**: instance property of <code>[Document](#Document)</code>  
+**Kind**: instance property of [<code>Document</code>](#Document)  
 **Example**  
 ```js
 var schema = lounge.schema({ name: String })
@@ -577,7 +578,7 @@ console.log(kat._isNew) // false
 ### document.getDocumentKeyValue(full) ⇒ <code>String</code>
 Helper function to get the document key.
 
-**Kind**: instance method of <code>[Document](#Document)</code>  
+**Kind**: instance method of [<code>Document</code>](#Document)  
 **Returns**: <code>String</code> - document key  
 **Access**: public  
 
@@ -598,7 +599,7 @@ console.log(user.getDocumentKeyValue(true)) // user::114477a8-1901-4146-8c90-0fc
 ### document.getDocumentKeyKey() ⇒ <code>String</code>
 Gets the Document key property name.
 
-**Kind**: instance method of <code>[Document](#Document)</code>  
+**Kind**: instance method of [<code>Document</code>](#Document)  
 **Returns**: <code>String</code> - Document key property name  
 **Access**: public  
 **Example**  
@@ -608,12 +609,26 @@ var User = lounge.model('User', schema)
 var user = new User({ email: 'bsmith@acme.com' })
 console.log(user.getDocumentKeyKey()) // email
 ```
+<a name="document.getdocumentkeykey" id="document.getdocumentkeykey" data-id="document.getdocumentkeykey"></a>
+
+### Document.getDocumentKeyKey() ⇒ <code>String</code>
+Gets the Document key property name.
+
+**Kind**: static method of [<code>Document</code>](#Document)  
+**Returns**: <code>String</code> - Document key property name  
+**Access**: public  
+**Example**  
+```js
+var schema = lounge.schema({ email: { type: String, key: true, generate: false }});
+var User = lounge.model('User', schema);
+console.log(User.getDocumentKeyKey()); // email
+```
 <a name="document.getdocumentkeyvalue" id="document.getdocumentkeyvalue" data-id="document.getdocumentkeyvalue"></a>
 
 ### Document.getDocumentKeyValue(id, full) ⇒ <code>string</code>
 Static version of <code>getDocumentKeyValue</code>.
 
-**Kind**: static method of <code>[Document](#Document)</code>  
+**Kind**: static method of [<code>Document</code>](#Document)  
 **Returns**: <code>string</code> - Document key / id  
 **Access**: public  
 
@@ -650,9 +665,9 @@ so you can call them generically = require(this instance as well.
     * [.Lounge](#LoungeLounge)
     * [.connect(options, fn)](#Loungeconnect) ⇒ <code>Bucket</code>
     * [.disconnect()](#Loungedisconnect)
-    * [.schema(descriptor, options)](#Loungeschema) ⇒ <code>[Schema](#Schema)</code>
-    * [.model(name, schema, options)](#Loungemodel) ⇒ <code>[ModelInstance](#ModelInstance)</code>
-    * [.getModel(name)](#LoungegetModel) ⇒ <code>[Model](#Model)</code> \| <code>undefined</code>
+    * [.schema(descriptor, options)](#Loungeschema) ⇒ [<code>Schema</code>](#Schema)
+    * [.model(name, schema, options)](#Loungemodel) ⇒ [<code>ModelInstance</code>](#ModelInstance)
+    * [.getModel(name)](#LoungegetModel) ⇒ [<code>Model</code>](#Model) \| <code>undefined</code>
     * [.setOption(key, value)](#LoungesetOption)
     * [.getOption(key)](#LoungegetOption) ⇒ <code>\*</code>
     * [.modelNames()](#LoungemodelNames) ⇒ <code>Array</code>
@@ -686,39 +701,39 @@ The Lounge constructor
 ### lounge.Schema
 The Lounge Schema constructor
 
-**Kind**: instance property of <code>[Lounge](#Lounge)</code>  
+**Kind**: instance property of [<code>Lounge</code>](#Lounge)  
 <a name="loungemodel" id="loungemodel" data-id="loungemodel"></a>
 
 ### lounge.Model
 The Lounge Model constructor.
 
-**Kind**: instance property of <code>[Lounge](#Lounge)</code>  
+**Kind**: instance property of [<code>Lounge</code>](#Lounge)  
 <a name="loungecouchbasedocument" id="loungecouchbasedocument" data-id="loungecouchbasedocument"></a>
 
 ### lounge.CouchbaseDocument
 The Lounge CouchbaseDocument constructor.
 
-**Kind**: instance property of <code>[Lounge](#Lounge)</code>  
+**Kind**: instance property of [<code>Lounge</code>](#Lounge)  
 <a name="loungedocument" id="loungedocument" data-id="loungedocument"></a>
 
 ### lounge.Document
 The Lounge Document constructor.
 
-**Kind**: instance property of <code>[Lounge](#Lounge)</code>  
+**Kind**: instance property of [<code>Lounge</code>](#Lounge)  
 <a name="loungelounge" id="loungelounge" data-id="loungelounge"></a>
 
 ### lounge.Lounge
 The Lounge constructor
 The exports of the Lounge module is an instance of this class.
 
-**Kind**: instance property of <code>[Lounge](#Lounge)</code>  
+**Kind**: instance property of [<code>Lounge</code>](#Lounge)  
 <a name="loungeconnect" id="loungeconnect" data-id="loungeconnect"></a>
 
 ### lounge.connect(options, fn) ⇒ <code>Bucket</code>
 Connect to the database. You may define Models before connecting, but you should not create any actual document
 instances before connecting to the database.
 
-**Kind**: instance method of <code>[Lounge](#Lounge)</code>  
+**Kind**: instance method of [<code>Lounge</code>](#Lounge)  
 **Returns**: <code>Bucket</code> - Couchbase <code>Bucket</code> instance  
 **Access**: public  
 
@@ -744,14 +759,14 @@ lounge.connect({
 ### lounge.disconnect()
 Disconnect = require(the bucket. Deletes all defined models.
 
-**Kind**: instance method of <code>[Lounge](#Lounge)</code>  
+**Kind**: instance method of [<code>Lounge</code>](#Lounge)  
 <a name="loungeschema" id="loungeschema" data-id="loungeschema"></a>
 
-### lounge.schema(descriptor, options) ⇒ <code>[Schema](#Schema)</code>
+### lounge.schema(descriptor, options) ⇒ [<code>Schema</code>](#Schema)
 Creates a schema. Prefer to use this over Schema constructor as this will pass along Lounge config settings.
 
-**Kind**: instance method of <code>[Lounge](#Lounge)</code>  
-**Returns**: <code>[Schema](#Schema)</code> - created <code>Schema</code> instance  
+**Kind**: instance method of [<code>Lounge</code>](#Lounge)  
+**Returns**: [<code>Schema</code>](#Schema) - created <code>Schema</code> instance  
 **Access**: public  
 
 | Param | Type | Description |
@@ -765,17 +780,17 @@ var schema = lounge.schema({ name: String })
 ```
 <a name="loungemodel" id="loungemodel" data-id="loungemodel"></a>
 
-### lounge.model(name, schema, options) ⇒ <code>[ModelInstance](#ModelInstance)</code>
+### lounge.model(name, schema, options) ⇒ [<code>ModelInstance</code>](#ModelInstance)
 Creates a model = require(a schema.
 
-**Kind**: instance method of <code>[Lounge](#Lounge)</code>  
-**Returns**: <code>[ModelInstance](#ModelInstance)</code> - The created <code>ModelInstance</code> class.  
+**Kind**: instance method of [<code>Lounge</code>](#Lounge)  
+**Returns**: [<code>ModelInstance</code>](#ModelInstance) - The created <code>ModelInstance</code> class.  
 **Access**: public  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | name | <code>String</code> | name of the model. |
-| schema | <code>[Schema](#Schema)</code> | instance |
+| schema | [<code>Schema</code>](#Schema) | instance |
 | options | <code>Object</code> |  |
 | options.freeze | <code>Object</code> | to Freeze model. See <code>Object.freeze</code>. Default: <code>true</code> |
 
@@ -785,11 +800,11 @@ var Cat = lounge.model('Cat', schema)
 ```
 <a name="loungegetmodel" id="loungegetmodel" data-id="loungegetmodel"></a>
 
-### lounge.getModel(name) ⇒ <code>[Model](#Model)</code> \| <code>undefined</code>
+### lounge.getModel(name) ⇒ [<code>Model</code>](#Model) \| <code>undefined</code>
 Returns the model given the name.
 
-**Kind**: instance method of <code>[Lounge](#Lounge)</code>  
-**Returns**: <code>[Model](#Model)</code> \| <code>undefined</code> - The <code>ModelInstance</code> or <code>undefined</code> if the model by that name does
+**Kind**: instance method of [<code>Lounge</code>](#Lounge)  
+**Returns**: [<code>Model</code>](#Model) \| <code>undefined</code> - The <code>ModelInstance</code> or <code>undefined</code> if the model by that name does
 not exist.  
 
 | Param |
@@ -805,7 +820,7 @@ var Cat = lounge.getModel('Cat')
 ### lounge.setOption(key, value)
 Sets lounge config options
 
-**Kind**: instance method of <code>[Lounge](#Lounge)</code>  
+**Kind**: instance method of [<code>Lounge</code>](#Lounge)  
 **Access**: public  
 
 | Param | Type | Description |
@@ -818,7 +833,7 @@ Sets lounge config options
 ### lounge.getOption(key) ⇒ <code>\*</code>
 Get config option.
 
-**Kind**: instance method of <code>[Lounge](#Lounge)</code>  
+**Kind**: instance method of [<code>Lounge</code>](#Lounge)  
 **Returns**: <code>\*</code> - Option value  
 
 | Param | Type | Description |
@@ -830,7 +845,7 @@ Get config option.
 ### lounge.modelNames() ⇒ <code>Array</code>
 Returns an array of model names created on this instance of Lounge.
 
-**Kind**: instance method of <code>[Lounge](#Lounge)</code>  
+**Kind**: instance method of [<code>Lounge</code>](#Lounge)  
 **Returns**: <code>Array</code> - Array of model names registered.  
 **Access**: public  
 **Example**  
@@ -839,13 +854,13 @@ console.log(lounge.modelNames()) // [ 'Cat', 'Dog' ]
 ```
 <a name="model" id="model" data-id="model"></a>
 
-## Model ⇐ <code>[CouchbaseDocument](#CouchbaseDocument)</code>
+## Model ⇐ [<code>CouchbaseDocument</code>](#CouchbaseDocument)
 Model class is a base class for all <code>ModelInstances</code> and it extends <code>CouchbaseDocument</code>
 
 **Kind**: global class  
-**Extends**: <code>[CouchbaseDocument](#CouchbaseDocument)</code>  
+**Extends**: [<code>CouchbaseDocument</code>](#CouchbaseDocument)  
 
-* [Model](#Model) ⇐ <code>[CouchbaseDocument](#CouchbaseDocument)</code>
+* [Model](#Model) ⇐ [<code>CouchbaseDocument</code>](#CouchbaseDocument)
     * [new Model()](#new_Model_new)
     * [.cas](#CouchbaseDocumentcas) ⇒ <code>String</code>
     * [.db](#CouchbaseDocumentdb) ⇒ <code>Driver</code> \| <code>null</code>
@@ -871,7 +886,7 @@ Model class is a base class for all <code>ModelInstances</code> and it extends <
 ### model.cas ⇒ <code>String</code>
 Returns the string representation of <code>CAS</code> value.
 
-**Kind**: instance property of <code>[Model](#Model)</code>  
+**Kind**: instance property of [<code>Model</code>](#Model)  
 **Example**  
 ```js
 console.log(doc.cas) // String: 00000000a71626e4
@@ -881,19 +896,19 @@ console.log(doc.cas) // String: 00000000a71626e4
 ### model.db ⇒ <code>Driver</code> \| <code>null</code>
 Gets the database driver of the model
 
-**Kind**: instance property of <code>[Model](#Model)</code>  
+**Kind**: instance property of [<code>Model</code>](#Model)  
 <a name="couchbasedocumentconfig" id="couchbasedocumentconfig" data-id="couchbasedocumentconfig"></a>
 
 ### model.config ⇒ <code>Object</code>
 Gets the config object
 
-**Kind**: instance property of <code>[Model](#Model)</code>  
+**Kind**: instance property of [<code>Model</code>](#Model)  
 <a name="documentmodelname" id="documentmodelname" data-id="documentmodelname"></a>
 
 ### model.modelName : <code>String</code>
 The name the name of the model. This is both a static and instance property.
 
-**Kind**: instance property of <code>[Model](#Model)</code>  
+**Kind**: instance property of [<code>Model</code>](#Model)  
 **Example**  
 ```js
 var schema = lounge.schema({ name: String })
@@ -907,7 +922,7 @@ console.log(kitty.modelName) // 'Cat'
 ### model._isNew : <code>Boolean</code>
 Has a key been generated for this document.
 
-**Kind**: instance property of <code>[Model](#Model)</code>  
+**Kind**: instance property of [<code>Model</code>](#Model)  
 **Example**  
 ```js
 var schema = lounge.schema({ name: String })
@@ -922,7 +937,7 @@ console.log(kat._isNew) // false
 ### model.getCAS(raw) ⇒ <code>String</code> \| <code>Object</code>
 Returns the document <code>CAS</code> value.
 
-**Kind**: instance method of <code>[Model](#Model)</code>  
+**Kind**: instance method of [<code>Model</code>](#Model)  
 **Returns**: <code>String</code> \| <code>Object</code> - the CAS value  
 
 | Param | Type | Description |
@@ -939,7 +954,7 @@ console.log(doc.getCAS(true)) // Object: CouchbaseCas<11338961768815788032>
 ### model.save(options, replicate_to, fn)
 Save the current model instance. Calls db set function for the model id and saves the properties.
 
-**Kind**: instance method of <code>[Model](#Model)</code>  
+**Kind**: instance method of [<code>Model</code>](#Model)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -968,7 +983,7 @@ user.save(function(err, savedDoc) {
 Update all lookup documents for this document instance. Creates new lookup documents for properties that have changed
 and deletes the old ones not needed any more.
 
-**Kind**: instance method of <code>[Model](#Model)</code>  
+**Kind**: instance method of [<code>Model</code>](#Model)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -983,7 +998,7 @@ and deletes the old ones not needed any more.
 Removes the instance from the database.
 Calls the bucket <code>remove()</code> function. Options can be passed to the driver.
 
-**Kind**: instance method of <code>[Model](#Model)</code>  
+**Kind**: instance method of [<code>Model</code>](#Model)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1001,7 +1016,7 @@ user.remove(function(err, doc) {
 ### model.removeIndexes(options, fn)
 Removes all lookup / index documents for this document.
 
-**Kind**: instance method of <code>[Model](#Model)</code>  
+**Kind**: instance method of [<code>Model</code>](#Model)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1014,7 +1029,7 @@ Removes all lookup / index documents for this document.
 ### model.populate(options, fn)
 Populates this instance given the options
 
-**Kind**: instance method of <code>[Model](#Model)</code>  
+**Kind**: instance method of [<code>Model</code>](#Model)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1044,7 +1059,7 @@ User.findBy(userId, (err, user) {
 ### model.getDocumentKeyValue(full) ⇒ <code>String</code>
 Helper function to get the document key.
 
-**Kind**: instance method of <code>[Model](#Model)</code>  
+**Kind**: instance method of [<code>Model</code>](#Model)  
 **Returns**: <code>String</code> - document key  
 **Access**: public  
 
@@ -1065,7 +1080,7 @@ console.log(user.getDocumentKeyValue(true)) // user::114477a8-1901-4146-8c90-0fc
 ### model.getDocumentKeyKey() ⇒ <code>String</code>
 Gets the Document key property name.
 
-**Kind**: instance method of <code>[Model](#Model)</code>  
+**Kind**: instance method of [<code>Model</code>](#Model)  
 **Returns**: <code>String</code> - Document key property name  
 **Access**: public  
 **Example**  
@@ -1077,15 +1092,15 @@ console.log(user.getDocumentKeyKey()) // email
 ```
 <a name="modelinstance" id="modelinstance" data-id="modelinstance"></a>
 
-## ModelInstance ⇐ <code>[Model](#Model)</code>
+## ModelInstance ⇐ [<code>Model</code>](#Model)
 ModelInstance class is the compiled class from a schema definition. It extends <code>Model</code>.
 All models generated are an instance of <code>ModelInstance</code>. It also inherits <code>grappling-hook</code>
 See [grappling-hook](https://www.github.com/bojand/grappling-hook) for pre and post hooks.
 
 **Kind**: global class  
-**Extends**: <code>[Model](#Model)</code>  
+**Extends**: [<code>Model</code>](#Model)  
 
-* [ModelInstance](#ModelInstance) ⇐ <code>[Model](#Model)</code>
+* [ModelInstance](#ModelInstance) ⇐ [<code>Model</code>](#Model)
     * [new ModelInstance(data, options, cas)](#new_ModelInstance_new)
     * _instance_
         * [.cas](#CouchbaseDocumentcas) ⇒ <code>String</code>
@@ -1104,8 +1119,9 @@ See [grappling-hook](https://www.github.com/bojand/grappling-hook) for pre and p
     * _static_
         * [.schema](#ModelInstance.schema)
         * [.modelName](#ModelInstance.modelName)
-        * [.db](#ModelInstance.db)
+        * [.lounge](#ModelInstance.lounge)
         * [.config](#ModelInstance.config)
+        * [.db](#ModelInstance.db)
 
 <a name="new_modelinstance_new" id="new_modelinstance_new" data-id="new_modelinstance_new"></a>
 
@@ -1125,7 +1141,7 @@ This would be the constructor for the generated models.
 ### modelInstance.cas ⇒ <code>String</code>
 Returns the string representation of <code>CAS</code> value.
 
-**Kind**: instance property of <code>[ModelInstance](#ModelInstance)</code>  
+**Kind**: instance property of [<code>ModelInstance</code>](#ModelInstance)  
 **Example**  
 ```js
 console.log(doc.cas) // String: 00000000a71626e4
@@ -1135,19 +1151,19 @@ console.log(doc.cas) // String: 00000000a71626e4
 ### modelInstance.db ⇒ <code>Driver</code> \| <code>null</code>
 Gets the database driver of the model
 
-**Kind**: instance property of <code>[ModelInstance](#ModelInstance)</code>  
+**Kind**: instance property of [<code>ModelInstance</code>](#ModelInstance)  
 <a name="couchbasedocumentconfig" id="couchbasedocumentconfig" data-id="couchbasedocumentconfig"></a>
 
 ### modelInstance.config ⇒ <code>Object</code>
 Gets the config object
 
-**Kind**: instance property of <code>[ModelInstance](#ModelInstance)</code>  
+**Kind**: instance property of [<code>ModelInstance</code>](#ModelInstance)  
 <a name="documentmodelname" id="documentmodelname" data-id="documentmodelname"></a>
 
 ### modelInstance.modelName : <code>String</code>
 The name the name of the model. This is both a static and instance property.
 
-**Kind**: instance property of <code>[ModelInstance](#ModelInstance)</code>  
+**Kind**: instance property of [<code>ModelInstance</code>](#ModelInstance)  
 **Example**  
 ```js
 var schema = lounge.schema({ name: String })
@@ -1161,7 +1177,7 @@ console.log(kitty.modelName) // 'Cat'
 ### modelInstance._isNew : <code>Boolean</code>
 Has a key been generated for this document.
 
-**Kind**: instance property of <code>[ModelInstance](#ModelInstance)</code>  
+**Kind**: instance property of [<code>ModelInstance</code>](#ModelInstance)  
 **Example**  
 ```js
 var schema = lounge.schema({ name: String })
@@ -1176,7 +1192,7 @@ console.log(kat._isNew) // false
 ### modelInstance.getCAS(raw) ⇒ <code>String</code> \| <code>Object</code>
 Returns the document <code>CAS</code> value.
 
-**Kind**: instance method of <code>[ModelInstance](#ModelInstance)</code>  
+**Kind**: instance method of [<code>ModelInstance</code>](#ModelInstance)  
 **Returns**: <code>String</code> \| <code>Object</code> - the CAS value  
 
 | Param | Type | Description |
@@ -1193,7 +1209,7 @@ console.log(doc.getCAS(true)) // Object: CouchbaseCas<11338961768815788032>
 ### modelInstance.save(options, replicate_to, fn)
 Save the current model instance. Calls db set function for the model id and saves the properties.
 
-**Kind**: instance method of <code>[ModelInstance](#ModelInstance)</code>  
+**Kind**: instance method of [<code>ModelInstance</code>](#ModelInstance)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1222,7 +1238,7 @@ user.save(function(err, savedDoc) {
 Update all lookup documents for this document instance. Creates new lookup documents for properties that have changed
 and deletes the old ones not needed any more.
 
-**Kind**: instance method of <code>[ModelInstance](#ModelInstance)</code>  
+**Kind**: instance method of [<code>ModelInstance</code>](#ModelInstance)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1237,7 +1253,7 @@ and deletes the old ones not needed any more.
 Removes the instance from the database.
 Calls the bucket <code>remove()</code> function. Options can be passed to the driver.
 
-**Kind**: instance method of <code>[ModelInstance](#ModelInstance)</code>  
+**Kind**: instance method of [<code>ModelInstance</code>](#ModelInstance)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1255,7 +1271,7 @@ user.remove(function(err, doc) {
 ### modelInstance.removeIndexes(options, fn)
 Removes all lookup / index documents for this document.
 
-**Kind**: instance method of <code>[ModelInstance](#ModelInstance)</code>  
+**Kind**: instance method of [<code>ModelInstance</code>](#ModelInstance)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1268,7 +1284,7 @@ Removes all lookup / index documents for this document.
 ### modelInstance.populate(options, fn)
 Populates this instance given the options
 
-**Kind**: instance method of <code>[ModelInstance](#ModelInstance)</code>  
+**Kind**: instance method of [<code>ModelInstance</code>](#ModelInstance)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1298,7 +1314,7 @@ User.findBy(userId, (err, user) {
 ### modelInstance.getDocumentKeyValue(full) ⇒ <code>String</code>
 Helper function to get the document key.
 
-**Kind**: instance method of <code>[ModelInstance](#ModelInstance)</code>  
+**Kind**: instance method of [<code>ModelInstance</code>](#ModelInstance)  
 **Returns**: <code>String</code> - document key  
 **Access**: public  
 
@@ -1319,7 +1335,7 @@ console.log(user.getDocumentKeyValue(true)) // user::114477a8-1901-4146-8c90-0fc
 ### modelInstance.getDocumentKeyKey() ⇒ <code>String</code>
 Gets the Document key property name.
 
-**Kind**: instance method of <code>[ModelInstance](#ModelInstance)</code>  
+**Kind**: instance method of [<code>ModelInstance</code>](#ModelInstance)  
 **Returns**: <code>String</code> - Document key property name  
 **Access**: public  
 **Example**  
@@ -1334,25 +1350,31 @@ console.log(user.getDocumentKeyKey()) // email
 ### ModelInstance.schema
 Schema the schema of this model.
 
-**Kind**: static property of <code>[ModelInstance](#ModelInstance)</code>  
+**Kind**: static property of [<code>ModelInstance</code>](#ModelInstance)  
 <a name="modelinstance.modelname" id="modelinstance.modelname" data-id="modelinstance.modelname"></a>
 
 ### ModelInstance.modelName
 The name of the model.
 
-**Kind**: static property of <code>[ModelInstance](#ModelInstance)</code>  
-<a name="modelinstance.db" id="modelinstance.db" data-id="modelinstance.db"></a>
+**Kind**: static property of [<code>ModelInstance</code>](#ModelInstance)  
+<a name="modelinstance.lounge" id="modelinstance.lounge" data-id="modelinstance.lounge"></a>
 
-### ModelInstance.db
-The driver.
+### ModelInstance.lounge
+The static lounge instance in the model
 
-**Kind**: static property of <code>[ModelInstance](#ModelInstance)</code>  
+**Kind**: static property of [<code>ModelInstance</code>](#ModelInstance)  
 <a name="modelinstance.config" id="modelinstance.config" data-id="modelinstance.config"></a>
 
 ### ModelInstance.config
 The config.
 
-**Kind**: static property of <code>[ModelInstance](#ModelInstance)</code>  
+**Kind**: static property of [<code>ModelInstance</code>](#ModelInstance)  
+<a name="modelinstance.db" id="modelinstance.db" data-id="modelinstance.db"></a>
+
+### ModelInstance.db
+The driver.
+
+**Kind**: static property of [<code>ModelInstance</code>](#ModelInstance)  
 <a name="schema" id="schema" data-id="schema"></a>
 
 ## Schema
@@ -1425,7 +1447,7 @@ user.name = 'Joe Smith' //  { name: 'Joe Smith' }
 ### schema.index(prop, options)
 Creates an index on the specified property.
 
-**Kind**: instance method of <code>[Schema](#Schema)</code>  
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
 **Access**: public  
 
 | Param | Type | Description |
@@ -1465,7 +1487,7 @@ var User = lounge.model('User', userSchema)
 Creates a instance method for the created model.
 An object of function names and functions can also be passed in.
 
-**Kind**: instance method of <code>[Schema](#Schema)</code>  
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
 **Access**: public  
 
 | Param | Type | Description |
@@ -1498,7 +1520,7 @@ console.log(user.getFullName()) // Joe Smith
 Creates a static function or property for the created model.
 An object of function or property names and functions or values can also be passed in.
 
-**Kind**: instance method of <code>[Schema](#Schema)</code>  
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
 **Access**: public  
 
 | Param | Type | Description |
@@ -1529,7 +1551,7 @@ console.log(User.FOO) // 'bar'
 Creates a virtual property for the created model with the given object
 specifying the get and optionally set function
 
-**Kind**: instance method of <code>[Schema](#Schema)</code>  
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
 **Access**: public  
 
 | Param | Type | Description |
@@ -1571,7 +1593,7 @@ console.log(user.fullName) // Bill Jones
 ### schema.set(key, [value])
 Sets/gets a schema option.
 
-**Kind**: instance method of <code>[Schema](#Schema)</code>  
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
 **Access**: public  
 
 | Param | Type | Description |
@@ -1584,7 +1606,7 @@ Sets/gets a schema option.
 ### schema.get(key) ⇒ <code>\*</code>
 Gets a schema option.
 
-**Kind**: instance method of <code>[Schema](#Schema)</code>  
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
 **Returns**: <code>\*</code> - the option value  
 **Access**: public  
 
@@ -1598,20 +1620,20 @@ Gets a schema option.
 Defines a pre hook for the schema.
 See [grappling-hook](https://www.github.com/bojand/grappling-hook).
 
-**Kind**: instance method of <code>[Schema](#Schema)</code>  
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
 <a name="schemapost" id="schemapost" data-id="schemapost"></a>
 
 ### schema.post()
 Defines a post hook for the schema.
 See [grappling-hook](https://www.github.com/bojand/grappling-hook).
 
-**Kind**: instance method of <code>[Schema](#Schema)</code>  
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
 <a name="schemaadd" id="schemaadd" data-id="schemaadd"></a>
 
 ### schema.add(key, descriptor)
 Adds the descriptor to the schema at the given key. Or add an <code>object</code> as a descriptor.
 
-**Kind**: instance method of <code>[Schema](#Schema)</code>  
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1630,18 +1652,18 @@ userSchema.add({ email: String })
 Extends other schema. Copies descriptor properties, methods, statics, virtuals and middleware.
 If this schema has a named property already, the property is not copied.
 
-**Kind**: instance method of <code>[Schema](#Schema)</code>  
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| other | <code>[Schema](#Schema)</code> | the schema to extend. |
+| other | [<code>Schema</code>](#Schema) | the schema to extend. |
 
 <a name="schemagetdocumentkeyvalue" id="schemagetdocumentkeyvalue" data-id="schemagetdocumentkeyvalue"></a>
 
 ### schema.getDocumentKeyValue(id, full) ⇒ <code>String</code>
 Helper function to get the document key
 
-**Kind**: instance method of <code>[Schema](#Schema)</code>  
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1661,7 +1683,7 @@ console.log(schema.getDocumentKeyValue('114477a8-1901-4146-8c90-0fc9eec57a58', f
 ### schema.getRefKey(name, v) ⇒ <code>string</code>
 Gets the reference document key value
 
-**Kind**: instance method of <code>[Schema](#Schema)</code>  
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1673,7 +1695,7 @@ Gets the reference document key value
 ### schema.hasRefPath(path) ⇒ <code>boolean</code>
 Returns whether this schema has the specified reference path
 
-**Kind**: instance method of <code>[Schema](#Schema)</code>  
+**Kind**: instance method of [<code>Schema</code>](#Schema)  
 
 | Param | Type | Description |
 | --- | --- | --- |
