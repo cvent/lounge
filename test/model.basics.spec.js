@@ -1353,4 +1353,154 @@ describe('Model basics', function () {
       expect(user.email).to.not.be.ok
     })
   })
+
+  describe('delete properties manually', function () {
+    it('should be able to delete props manually', function () {
+      var userSchema = lounge.schema({
+        SSN: String,
+        name: String,
+        email: String
+      })
+
+      var User = lounge.model('User', userSchema)
+
+      var user = new User({
+        SSN: '1234567890',
+        name: 'Bruce Wayne',
+        email: 'bruce@wayne-industries.com'
+      })
+
+      expect(user instanceof User).to.be.ok
+      expect(user instanceof lounge.Model).to.be.ok
+
+      expect(user.name).to.equal('Bruce Wayne')
+      expect(user.SSN).to.equal('1234567890')
+      expect(user.email).to.equal('bruce@wayne-industries.com')
+
+      delete user.name
+      expect(user.name).to.not.be.ok
+      expect(user.SSN).to.equal('1234567890')
+      expect(user.email).to.equal('bruce@wayne-industries.com')
+
+      delete user.name
+      delete user.SSN
+      delete user.email
+
+      expect(user.name).to.not.be.ok
+      expect(user.SSN).to.not.be.ok
+      expect(user.email).to.not.be.ok
+    })
+
+    it('should be able to delete props with subdocs manually', function () {
+      var userSchema = lounge.schema({
+        SSN: String,
+        name: String,
+        email: String,
+        address: {
+          line1: String,
+          line2: String,
+          city: String,
+          postalCode: String,
+          country: String
+        }
+      })
+
+      var User = lounge.model('User', userSchema)
+
+      var user = new User({
+        SSN: '1234567890',
+        name: 'Bruce Wayne',
+        email: 'bruce@wayne-industries.com'
+      })
+
+      expect(user instanceof User).to.be.ok
+      expect(user instanceof lounge.Model).to.be.ok
+
+      expect(user.name).to.equal('Bruce Wayne')
+      expect(user.SSN).to.equal('1234567890')
+      expect(user.email).to.equal('bruce@wayne-industries.com')
+      expect(user.address).to.not.be.ok
+
+      delete user.name
+      expect(user.name).to.not.be.ok
+      expect(user.SSN).to.equal('1234567890')
+      expect(user.email).to.equal('bruce@wayne-industries.com')
+      expect(user.address).to.not.be.ok
+
+      delete user.name
+      delete user.SSN
+      delete user.email
+      delete user.address
+
+      expect(user.name).to.not.be.ok
+      expect(user.SSN).to.not.be.ok
+      expect(user.email).to.not.be.ok
+      expect(user.address).to.not.be.ok
+    })
+
+    it('should be able to delete props with subdocs manually 2', function () {
+      var userSchema = lounge.schema({
+        SSN: String,
+        name: String,
+        email: String,
+        address: {
+          line1: String,
+          line2: String,
+          city: String,
+          postalCode: String,
+          country: String
+        }
+      })
+
+      var User = lounge.model('User', userSchema)
+
+      var user = new User({
+        SSN: '1234567890',
+        name: 'Bruce Wayne',
+        email: 'bruce@wayne-industries.com',
+        address: {
+          line1: '123 Fake Street',
+          city: 'New York',
+          postalCode: '10003',
+          country: 'US'
+        }
+      })
+
+      expect(user instanceof User).to.be.ok
+      expect(user instanceof lounge.Model).to.be.ok
+
+      expect(user.name).to.equal('Bruce Wayne')
+      expect(user.SSN).to.equal('1234567890')
+      expect(user.email).to.equal('bruce@wayne-industries.com')
+      expect(user.address).to.be.ok
+      expect(user.address.line1).to.be.equal('123 Fake Street')
+      expect(user.address.line2).to.not.be.ok
+      expect(user.address.city).to.be.equal('New York')
+      expect(user.address.postalCode).to.be.equal('10003')
+      expect(user.address.country).to.be.equal('US')
+      expect(user.address).to.deep.equal({
+        line1: '123 Fake Street',
+        city: 'New York',
+        postalCode: '10003',
+        country: 'US'
+      })
+
+      delete user.name
+      expect(user.name).to.not.be.ok
+      expect(user.SSN).to.equal('1234567890')
+      expect(user.email).to.equal('bruce@wayne-industries.com')
+      expect(user.address).to.be.ok
+      expect(user.address.line1).to.be.equal('123 Fake Street')
+
+      delete user.name
+      delete user.SSN
+      delete user.email
+      delete user.address
+
+      expect(user.name).to.not.be.ok
+      expect(user.SSN).to.not.be.ok
+      expect(user.email).to.not.be.ok
+      expect(user.address).to.not.be.ok
+    })
+  })
 })
