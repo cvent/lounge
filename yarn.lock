@@ -1107,9 +1107,9 @@ core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
 
-couchbase-driver@~0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/couchbase-driver/-/couchbase-driver-0.2.1.tgz#916bc7e01afee3f0d0b1c27269c9bcb5109526d0"
+couchbase-driver@~0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/couchbase-driver/-/couchbase-driver-0.2.2.tgz#db95342ce472bd5bfcef2d951de9b9a3b050073f"
   dependencies:
     async "^2.0.0"
     couchbase "^2.3.3"
