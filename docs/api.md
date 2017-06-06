@@ -1413,7 +1413,7 @@ Creates an object schema
 | options.strict | <code>Boolean</code> | By default (<code>true</code>), allow only values in the schema to be set.                                   When this is <code>false</code>, setting new fields will dynamically add the field                                   to the schema as type "any". |
 | options.dotNotation | <code>Boolean</code> | Allow fields to be set via dot notation. Default: <code>true</code>.                                      <code>obj['user.name'] = 'Joe'; -> obj: { user: 'Joe' }</code> |
 | options.minimize | <code>Boolean</code> | "minimize" schemas by removing empty objects. Default: <code>true</code> |
-| options.toObject | <code>Object</code> | <code>toObject</code> method options. |
+| options.toObject | <code>Object</code> | <code>toObject</code> method. |
 | options.toObject.minimize | <code>Boolean</code> | "minimize" schemas by removing empty objects. Default: <code>true</code> |
 | options.toObject.transform | <code>function</code> | transform function |
 | options.toObject.virtuals | <code>Boolean</code> | whether to include virtual properties. Default: <code>false</code> |
@@ -1422,6 +1422,7 @@ Creates an object schema
 | options.strict | <code>Boolean</code> | ensures that value passed in to assigned that were not specified in our                                   schema do not get saved |
 | options.onBeforeValueSet | <code>function</code> | function called when write operations on an object takes place. Currently, it will only notify of write operations on the object itself and will not notify you when child objects are written to. If you return false or throw an error within the onBeforeValueSet handler, the write operation will be cancelled. Throwing an error will add the error to the error stack. |
 | options.onValueSet | <code>function</code> | Similar to <code>onBeforeValueSet</code>, but called after we've set a value on the key, |
+| options.saveOptions | <code>Object</code> | options for couchbase <code>save</code> method, such as <code>expiry</code>, <code>replicate_to</code>, and <code>persist_to</code>.                                       These options will propagate to all <code>save()</code> calls automatically and all index reference documents.                                       If a <code>save()</code> call has those options they are used over ones defined in the schema options. |
 
 **Example**  
 ```js
