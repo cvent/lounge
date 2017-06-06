@@ -944,20 +944,20 @@ describe('Model save tests', function () {
     var Post = lounge.model('Post', postSchema)
 
     var comments = [{
-        content: 'Comment 1',
-        date: new Date('November 10, 2015 03:00:00'),
-        owner: 'Bob'
-      },
-      {
-        content: 'Comment 2',
-        date: new Date('November 11, 2015 04:00:00'),
-        owner: 'Sara'
-      },
-      {
-        content: 'Comment 3',
-        date: new Date('November 12, 2015 05:00:00'),
-        owner: 'Jake'
-      }
+      content: 'Comment 1',
+      date: new Date('November 10, 2015 03:00:00'),
+      owner: 'Bob'
+    },
+    {
+      content: 'Comment 2',
+      date: new Date('November 11, 2015 04:00:00'),
+      owner: 'Sara'
+    },
+    {
+      content: 'Comment 3',
+      date: new Date('November 12, 2015 05:00:00'),
+      owner: 'Jake'
+    }
     ]
 
     var postDate = new Date('November 9, 2015 02:00:00')
@@ -2045,14 +2045,14 @@ describe('subdocument array change test', function () {
       name: 'Bob',
       email: 'bob1@gmail.com',
       sessions: [{
-          name: 'Session 1'
-        },
-        {
-          name: 'Session 2'
-        },
-        {
-          name: 'Session 3'
-        }
+        name: 'Session 1'
+      },
+      {
+        name: 'Session 2'
+      },
+      {
+        name: 'Session 3'
+      }
       ]
     })
 
@@ -2060,14 +2060,14 @@ describe('subdocument array change test', function () {
       name: 'Jane',
       email: 'jane1@gmail.com',
       sessions: [{
-          name: 'Session 1'
-        },
-        {
-          name: 'Session 2'
-        },
-        {
-          name: 'Session 3'
-        }
+        name: 'Session 1'
+      },
+      {
+        name: 'Session 2'
+      },
+      {
+        name: 'Session 3'
+      }
       ]
     })
 
@@ -2075,14 +2075,14 @@ describe('subdocument array change test', function () {
       name: 'Sara',
       email: 'sara1@gmail.com',
       sessions: [{
-          name: 'Session 1'
-        },
-        {
-          name: 'Session 2'
-        },
-        {
-          name: 'Session 3'
-        }
+        name: 'Session 1'
+      },
+      {
+        name: 'Session 2'
+      },
+      {
+        name: 'Session 3'
+      }
       ]
     })
 
@@ -2519,6 +2519,502 @@ describe('subdocument array change test', function () {
       })
 
       var User = lounge.model('UserRefModelArray', userSchema)
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe' + _.random(0, 1000) + '@gmail.com'
+      })
+
+      user.save({ expiry: 3 }, function (err, savedDoc) {
+        expect(err).to.not.be.ok
+        expect(savedDoc).to.be.ok
+
+        setTimeout(() => {
+          var k = userSchema.getRefKey('email', user.email)
+          bucket.get(k, function (err, indexRes) {
+            expect(err).to.not.be.ok
+            expect(indexRes).to.be.ok
+            expect(indexRes.value).to.be.ok
+            expect(indexRes.value.keys).to.be.ok
+            expect(indexRes.value.keys).to.deep.equal([user.id])
+
+            User.findById(user.id, (err, ud) => {
+              expect(err).to.not.be.ok
+              expect(ud).to.be.ok
+              expect(ud.id).to.equal(user.id)
+
+              setTimeout(() => {
+                User.findById(user.id, (err, ud2) => {
+                  expect(err).to.not.be.ok
+                  expect(ud2).to.not.be.ok
+
+                  bucket.get(k, (err, ir) => {
+                    expect(err).to.be.ok
+                    expect(ir).to.not.be.ok
+                    expect(err.code).to.equal(13)
+
+                    done()
+                  })
+                })
+              }, 3500)
+            })
+          })
+        }, 100)
+      })
+    })
+
+    // Schema options
+
+    it('should expire the document if expiry added to the save options in schema definition', function (done) {
+      this.timeout(5000)
+
+      var schema = lounge.schema({
+        name: String
+      }, {
+        saveOptions: {
+          expiry: 3
+        }
+      })
+
+      let Widget = lounge.model('widget2', schema)
+
+      var w = new Widget({
+        name: 'w12345'
+      })
+
+      // should expiry after 3 seconds
+      w.save((err, wdoc) => {
+        expect(err).to.not.be.ok
+        expect(wdoc).to.be.ok
+        expect(wdoc.id).to.be.ok
+        const id = wdoc.id
+
+        Widget.findById(id, (err, wdoc2) => {
+          expect(err).to.not.be.ok
+          expect(wdoc2).to.be.ok
+          expect(wdoc2.id).to.be.ok
+          expect(wdoc2.id).to.equal(id)
+
+          setTimeout(() => {
+            Widget.findById(id, (err, wdoc3) => {
+              expect(err).to.not.be.ok
+              expect(wdoc3).to.not.be.ok
+              done()
+            })
+          }, 3300)
+        })
+      })
+    })
+
+    it('should expire the document if expiry added to the save options and in schema definition', function (done) {
+      this.timeout(5000)
+
+      var schema = lounge.schema({
+        name: String
+      }, {
+        saveOptions: {
+          expiry: 10
+        }
+      })
+
+      let Widget = lounge.model('widget2', schema)
+
+      var w = new Widget({
+        name: 'w12345'
+      })
+
+      // should expiry after 3 seconds
+      w.save({ expiry: 3 }, (err, wdoc) => {
+        expect(err).to.not.be.ok
+        expect(wdoc).to.be.ok
+        expect(wdoc.id).to.be.ok
+        const id = wdoc.id
+
+        Widget.findById(id, (err, wdoc2) => {
+          expect(err).to.not.be.ok
+          expect(wdoc2).to.be.ok
+          expect(wdoc2.id).to.be.ok
+          expect(wdoc2.id).to.equal(id)
+
+          setTimeout(() => {
+            Widget.findById(id, (err, wdoc3) => {
+              expect(err).to.not.be.ok
+              expect(wdoc3).to.not.be.ok
+              done()
+            })
+          }, 3300)
+        })
+      })
+    })
+
+    it('should use schema options for save options only for schema it is set for', function (done) {
+      this.timeout(5000)
+
+      const userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String
+      })
+
+      const User = lounge.model('UserIndexRefTest', userSchema)
+
+      const postSchema = lounge.schema({
+        title: String,
+        content: String,
+        date: Date,
+        owner: User
+      }, {
+        saveOptions: {
+          expiry: 3
+        }
+      })
+
+      const Post = lounge.model('PostIndexRefTest', postSchema)
+
+      const user = new User({
+        firstName: 'William',
+        lastName: 'Smithers',
+        email: 'willies12@gmail.com'
+      })
+
+      const now = new Date()
+
+      const post = new Post({
+        title: 'sample title',
+        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor iaculis nunc vel tempus. Donec fringilla orci et posuere hendrerit.',
+        date: now,
+        owner: user
+      })
+
+      post.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok
+
+        expect(savedDoc).to.be.ok
+        expect(savedDoc).to.be.an('object')
+        expect(savedDoc.id).to.be.ok
+        expect(savedDoc.id).to.be.a('string')
+        expect(savedDoc.owner).to.be.ok
+        expect(savedDoc.owner).to.be.an('object')
+        expect(savedDoc.owner).to.be.an.instanceof(User)
+        expect(savedDoc.owner.id).to.be.ok
+        expect(savedDoc.owner.id).to.be.a('string')
+
+        var postKey = savedDoc.getDocumentKeyValue(true)
+        var userKey = savedDoc.owner.getDocumentKeyValue(true)
+        var docIds = [
+          postKey,
+          userKey
+        ]
+
+        bucket.getMulti(docIds, function (err, docs) {
+          expect(err).to.not.be.ok
+
+          var postDoc = docs[postKey].value
+          var userDoc = docs[userKey].value
+
+          expect(postDoc).to.be.ok
+          expect(userDoc).to.be.ok
+          expect(postDoc).to.be.an('object')
+          expect(userDoc).to.be.an('object')
+
+          setTimeout(() => {
+            bucket.getMulti(docIds, function (err, docs) {
+              expect(err).to.be.ok
+              expect(err).to.equal(1)
+              expect(docs[postKey].error).to.be.ok
+
+              User.findById(user.id, (err, userObj) => {
+                expect(err).to.not.be.ok
+
+                expect(userObj).to.be.ok
+                expect(userObj).to.be.an('object')
+                expect(userObj.id).to.be.ok
+                expect(userObj.id).to.be.a('string')
+                expect(userObj.id).to.be.a('string')
+                expect(userObj.firstName).to.equal('William')
+                done()
+              })
+            })
+          }, 3300)
+        })
+      })
+    })
+
+    it('should use save expiry options over schema options even when ref models', function (done) {
+      this.timeout(5000)
+
+      const userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String
+      })
+
+      const User = lounge.model('UserIndexRefTest', userSchema)
+
+      const postSchema = lounge.schema({
+        title: String,
+        content: String,
+        date: Date,
+        owner: User
+      }, {
+        saveOptions: {
+          expiry: 10
+        }
+      })
+
+      const Post = lounge.model('PostIndexRefTest', postSchema)
+
+      const user = new User({
+        firstName: 'William',
+        lastName: 'Smithers',
+        email: 'willies12@gmail.com'
+      })
+
+      const now = new Date()
+
+      const post = new Post({
+        title: 'sample title',
+        content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi tempor iaculis nunc vel tempus. Donec fringilla orci et posuere hendrerit.',
+        date: now,
+        owner: user
+      })
+
+      post.save({ expiry: 3 }, function (err, savedDoc) {
+        expect(err).to.not.be.ok
+
+        expect(savedDoc).to.be.ok
+        expect(savedDoc).to.be.an('object')
+        expect(savedDoc.id).to.be.ok
+        expect(savedDoc.id).to.be.a('string')
+        expect(savedDoc.owner).to.be.ok
+        expect(savedDoc.owner).to.be.an('object')
+        expect(savedDoc.owner).to.be.an.instanceof(User)
+        expect(savedDoc.owner.id).to.be.ok
+        expect(savedDoc.owner.id).to.be.a('string')
+
+        var postKey = savedDoc.getDocumentKeyValue(true)
+        var userKey = savedDoc.owner.getDocumentKeyValue(true)
+        var docIds = [
+          postKey,
+          userKey
+        ]
+
+        bucket.getMulti(docIds, function (err, docs) {
+          expect(err).to.not.be.ok
+
+          var postDoc = docs[postKey].value
+          var userDoc = docs[userKey].value
+
+          expect(postDoc).to.be.ok
+          expect(userDoc).to.be.ok
+          expect(postDoc).to.be.an('object')
+          expect(userDoc).to.be.an('object')
+
+          setTimeout(() => {
+            bucket.getMulti(docIds, function (err, docs) {
+              expect(err).to.be.ok
+              expect(err).to.equal(2)
+              expect(docs[postKey].error).to.be.ok
+              expect(docs[userKey].error).to.be.ok
+              done()
+            })
+          }, 3300)
+        })
+      })
+    })
+
+    it('should remove the index ref document when using expiry save option within schema', function (done) {
+      this.timeout(5000)
+
+      const userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: { type: String, index: true }
+      }, {
+        saveOptions: {
+          expiry: 3
+        }
+      })
+
+      var User = lounge.model('UserRefModel123', userSchema)
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe' + _.random(0, 1000) + '@gmail.com'
+      })
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok
+        expect(savedDoc).to.be.ok
+
+        setTimeout(() => {
+          var k = userSchema.getRefKey('email', user.email)
+          bucket.get(k, function (err, indexRes) {
+            expect(err).to.not.be.ok
+            expect(indexRes).to.be.ok
+            expect(indexRes.value).to.be.ok
+            expect(indexRes.value.key).to.be.ok
+            expect(indexRes.value.key).to.equal(user.id)
+
+            User.findById(user.id, (err, ud) => {
+              expect(err).to.not.be.ok
+              expect(ud).to.be.ok
+              expect(ud.id).to.equal(user.id)
+
+              setTimeout(() => {
+                User.findById(user.id, (err, ud2) => {
+                  expect(err).to.not.be.ok
+                  expect(ud2).to.not.be.ok
+
+                  bucket.get(k, (err, ir) => {
+                    expect(err).to.be.ok
+                    expect(ir).to.not.be.ok
+                    expect(err.code).to.equal(13)
+
+                    done()
+                  })
+                })
+              }, 3500)
+            })
+          })
+        }, 100)
+      })
+    })
+
+    it('should remove the index ref document when using expiry save option within schema and save options', function (done) {
+      this.timeout(5000)
+
+      const userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: { type: String, index: true }
+      }, {
+        saveOptions: {
+          expiry: 11
+        }
+      })
+
+      var User = lounge.model('UserRefModel123', userSchema)
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe' + _.random(0, 1000) + '@gmail.com'
+      })
+
+      user.save({ expiry: 3 }, function (err, savedDoc) {
+        expect(err).to.not.be.ok
+        expect(savedDoc).to.be.ok
+
+        setTimeout(() => {
+          var k = userSchema.getRefKey('email', user.email)
+          bucket.get(k, function (err, indexRes) {
+            expect(err).to.not.be.ok
+            expect(indexRes).to.be.ok
+            expect(indexRes.value).to.be.ok
+            expect(indexRes.value.key).to.be.ok
+            expect(indexRes.value.key).to.equal(user.id)
+
+            User.findById(user.id, (err, ud) => {
+              expect(err).to.not.be.ok
+              expect(ud).to.be.ok
+              expect(ud.id).to.equal(user.id)
+
+              setTimeout(() => {
+                User.findById(user.id, (err, ud2) => {
+                  expect(err).to.not.be.ok
+                  expect(ud2).to.not.be.ok
+
+                  bucket.get(k, (err, ir) => {
+                    expect(err).to.be.ok
+                    expect(ir).to.not.be.ok
+                    expect(err.code).to.equal(13)
+
+                    done()
+                  })
+                })
+              }, 3500)
+            })
+          })
+        }, 100)
+      })
+    })
+
+    it('should remove the index ref document when using expiry save option in schema in array index type', function (done) {
+      this.timeout(5000)
+
+      const userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: { type: String, index: true, indexType: 'array' }
+      }, {
+        saveOptions: {
+          expiry: 3
+        }
+      })
+
+      var User = lounge.model('UserRefModelArray21', userSchema)
+
+      var user = new User({
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe' + _.random(0, 1000) + '@gmail.com'
+      })
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok
+        expect(savedDoc).to.be.ok
+
+        setTimeout(() => {
+          var k = userSchema.getRefKey('email', user.email)
+          bucket.get(k, function (err, indexRes) {
+            expect(err).to.not.be.ok
+            expect(indexRes).to.be.ok
+            expect(indexRes.value).to.be.ok
+            expect(indexRes.value.keys).to.be.ok
+            expect(indexRes.value.keys).to.deep.equal([user.id])
+
+            User.findById(user.id, (err, ud) => {
+              expect(err).to.not.be.ok
+              expect(ud).to.be.ok
+              expect(ud.id).to.equal(user.id)
+
+              setTimeout(() => {
+                User.findById(user.id, (err, ud2) => {
+                  expect(err).to.not.be.ok
+                  expect(ud2).to.not.be.ok
+
+                  bucket.get(k, (err, ir) => {
+                    expect(err).to.be.ok
+                    expect(ir).to.not.be.ok
+                    expect(err.code).to.equal(13)
+
+                    done()
+                  })
+                })
+              }, 3500)
+            })
+          })
+        }, 100)
+      })
+    })
+
+    it('should remove the index ref document when using expiry save option in schema and in save with array index type', function (done) {
+      this.timeout(5000)
+
+      const userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: { type: String, index: true, indexType: 'array' }
+      }, {
+        saveOptions: {
+          expiry: 13
+        }
+      })
+
+      var User = lounge.model('UserRefModelArray345', userSchema)
 
       var user = new User({
         firstName: 'Joe',
