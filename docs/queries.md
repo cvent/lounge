@@ -29,7 +29,7 @@ User.findByUN('user1', function(err, doc) {
 })
 ```
 
-## Reference document errors
+### Reference document errors
 
 For example lets say we have a reference document `'$_ref_by_email_joe@gmail.com'`:
 
@@ -55,7 +55,7 @@ User.findByEmail('joe@gmail.com', function(err, doc) {
 })
 ``` 
 
-Similary we can jsut choose a single call invocation to fail:
+Similary we can just choose a single call invocation to fail:
 
 ```js
 var User = lounge.model('User', userSchema)
