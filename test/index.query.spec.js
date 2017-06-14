@@ -1004,7 +1004,7 @@ describe('Model index query tests', function () {
         username: String
       })
 
-      userSchema.index(['email', 'username'], {indexType: 'array'})
+      userSchema.index(['email', 'username'], { indexType: 'array' })
 
       var User = lounge.model('User', userSchema)
 
@@ -1707,6 +1707,183 @@ describe('Model index query tests', function () {
         var actual = _.map(rdoc, function (r) { return r.toObject() })
         expect(actual).to.eql(expectedUsers)
         done()
+      })
+    })
+  })
+
+  describe('log warning when target document is not found', function () {
+    // set debug flag
+    beforeEach(function (done) {
+      if (lounge) {
+        lounge.disconnect()
+      }
+
+      lounge = new lounge.Lounge() // recreate it
+
+      var cluster = testUtil.getCluser()
+      bucket = cluster.openBucket('lounge_test', function (err) {
+        if (err) {
+          return done(err)
+        }
+
+        lounge.connect({
+          bucket: bucket
+        }, function () {
+          bucket.manager().flush(done)
+        })
+      })
+    })
+
+    it('should log warning when target document is not found', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: { type: String, index: true }
+      })
+
+      var UserModel = lounge.model('UserLogMissingRef', userSchema)
+
+      var userData = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe33123@gmail.com'
+      }
+
+      var user = new UserModel(userData)
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok
+        expect(savedDoc).to.be.ok
+
+        UserModel.findByEmail(user.email, function (err, rdoc) {
+          expect(err).to.not.be.ok
+
+          expect(rdoc).to.be.ok
+          expect(rdoc).to.be.an('object')
+          expect(rdoc).to.be.an.instanceof(UserModel)
+          expect(rdoc.id).to.be.ok
+          expect(rdoc.id).to.be.a('string')
+
+          expect(rdoc.id).to.equal(user.id)
+          expect(rdoc.firstName).to.equal(userData.firstName)
+          expect(rdoc.lastName).to.equal(userData.lastName)
+          expect(rdoc.email).to.equal(userData.email)
+
+          const k = rdoc.getDocumentKeyValue(true)
+          bucket.remove(k, (err) => {
+            expect(err).to.not.be.ok
+
+            UserModel.findByEmail(user.email, function (err, rdoc) {
+              expect(err).to.not.be.ok
+
+              expect(rdoc).to.not.be.ok
+              done()
+            })
+          })
+        })
+      })
+    })
+
+    it('should error when target document is not found and option set in lounge config', function (done) {
+      lounge.setOption('errorOnMissingIndex', true)
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: { type: String, index: true }
+      })
+
+      var UserModel = lounge.model('UserLogMissingRef', userSchema)
+
+      var userData = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe33123@gmail.com'
+      }
+
+      var user = new UserModel(userData)
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok
+        expect(savedDoc).to.be.ok
+
+        UserModel.findByEmail(user.email, function (err, rdoc) {
+          expect(err).to.not.be.ok
+
+          expect(rdoc).to.be.ok
+          expect(rdoc).to.be.an('object')
+          expect(rdoc).to.be.an.instanceof(UserModel)
+          expect(rdoc.id).to.be.ok
+          expect(rdoc.id).to.be.a('string')
+
+          expect(rdoc.id).to.equal(user.id)
+          expect(rdoc.firstName).to.equal(userData.firstName)
+          expect(rdoc.lastName).to.equal(userData.lastName)
+          expect(rdoc.email).to.equal(userData.email)
+
+          const k = rdoc.getDocumentKeyValue(true)
+          bucket.remove(k, (err) => {
+            expect(err).to.not.be.ok
+
+            UserModel.findByEmail(user.email, function (err, rdoc) {
+              expect(err).to.be.ok
+              expect(err.reference).to.be.ok
+              expect(rdoc).to.not.be.ok
+              lounge.setOption('errorOnMissingIndex', false)
+              done()
+            })
+          })
+        })
+      })
+    })
+
+    it('should error when target document is not found and option set in call options', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: { type: String, index: true }
+      })
+
+      var UserModel = lounge.model('UserLogMissingRef', userSchema)
+
+      var userData = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joe33123@gmail.com'
+      }
+
+      var user = new UserModel(userData)
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok
+        expect(savedDoc).to.be.ok
+
+        UserModel.findByEmail(user.email, function (err, rdoc) {
+          expect(err).to.not.be.ok
+
+          expect(rdoc).to.be.ok
+          expect(rdoc).to.be.an('object')
+          expect(rdoc).to.be.an.instanceof(UserModel)
+          expect(rdoc.id).to.be.ok
+          expect(rdoc.id).to.be.a('string')
+
+          expect(rdoc.id).to.equal(user.id)
+          expect(rdoc.firstName).to.equal(userData.firstName)
+          expect(rdoc.lastName).to.equal(userData.lastName)
+          expect(rdoc.email).to.equal(userData.email)
+
+          const k = rdoc.getDocumentKeyValue(true)
+          bucket.remove(k, (err) => {
+            expect(err).to.not.be.ok
+
+            UserModel.findByEmail(user.email, { errorOnMissingIndex: true }, function (err, rdoc) {
+              expect(err).to.be.ok
+              expect(err.reference).to.be.ok
+              console.error(err)
+              expect(rdoc).to.not.be.ok
+              done()
+            })
+          })
+        })
       })
     })
   })

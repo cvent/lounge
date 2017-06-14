@@ -21,4 +21,5 @@
 
 - [Document Events](/events)
 - [Promises](/promises)
+- [Debugging](/debugging)
 - [API Reference](/api)

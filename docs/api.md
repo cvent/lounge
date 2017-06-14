@@ -695,6 +695,7 @@ The Lounge constructor
 | options.atomicRetryInterval | <code>Number</code> | The time to wait between retries, in milliseconds, within <code>Driver.atomic()</code>.                                               Default: <code>0</code>. See [https://github.com/bojand/couchbase-driver](https://github.com/bojand/couchbase-driver) |
 | options.atomicLock | <code>Boolean</code> | Whether to use <code>getAndLock</code> or standard <code>get</code> during atomic                                       operations within indexing. Default: <code>true</code>.                                       See [https://github.com/bojand/couchbase-driver](https://github.com/bojand/couchbase-driver) |
 | options.promisify | <code>Boolean</code> | to enable promise support. By default all async functions support promises and return a promise.                                      To disable promise support set this  option to <code>false</code>, ideally at start before                                      doing <code>connect</code> or any other operations. Default: <code>true</code>. |
+| options.errorOnMissingIndex | <code>Boolean</code> | error when a document referenced by index reference document is missing. Default: `false`                                                The error will have `reference` property of document reference target document id(s).                                                The error will have `missing` property of missing document ids. |
 
 <a name="loungeschema" id="loungeschema" data-id="loungeschema"></a>
 
