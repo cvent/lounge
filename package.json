@@ -32,6 +32,7 @@
     "couchbase": "^2.3.4",
     "couchbase-driver": "~0.2.2",
     "debug": "^2.6.0",
+    "escape-string-regexp": "^1.0.5",
     "grappling-hook-lounge": "~1.0.0",
     "inflection": "^1.8.0",
     "lodash": "~4.17.0",
