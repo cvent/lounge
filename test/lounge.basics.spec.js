@@ -37,7 +37,6 @@ describe('Lounge basics', function () {
         connectionString: 'couchbase://127.0.0.1',
         bucket: 'lounge_test'
       }, function (err) {
-        console.dir(lounge, { depth: 5, colors: true })
         expect(err).to.not.be.ok
         expect(lounge.bucket).to.be.ok
         expect(lounge.db).to.be.ok
