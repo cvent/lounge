@@ -92,6 +92,71 @@ describe('Model index function tests', function () {
     })
   })
 
+  it('should index using simple reference document when we call the function using delimiter', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: { type: String, index: true }
+    }, {
+      delimiter: '|'
+    })
+
+    var User = lounge.model('User', userSchema)
+
+    var user = new User({
+      firstName: 'Joe',
+      lastName: 'Smith',
+      email: 'joe@gmail.com'
+    })
+
+    var indexCalled = false
+    user.on('index', function () {
+      indexCalled = true
+    })
+
+    function checkRes (err, indexRes) {
+      expect(err).to.not.be.ok
+      expect(indexRes).to.be.ok
+      expect(indexRes.value).to.be.ok
+      expect(indexRes.value.key).to.be.ok
+      expect(indexRes.value.key).to.equal(user.id)
+    }
+
+    user.save(function (err, savedDoc) {
+      expect(err).to.not.be.ok
+      expect(savedDoc).to.be.ok
+
+      var k = userSchema.getRefKey('email', user.email)
+      bucket.get(k, function (err, indexRes) {
+        checkRes(err, indexRes)
+
+        user.email = 'joe2@gmail.com'
+
+        user.index(function (err, indexRes) {
+          expect(err).to.not.be.ok
+
+          // old one
+          k = userSchema.getRefKey('email', 'joe@gmail.com')
+          bucket.get(k, function (err, indexRes) {
+            expect(err).to.be.ok
+            expect(err.code).to.equal(couchbase.errors.keyNotFound)
+
+            k = userSchema.getRefKey('email', user.email)
+            console.log(k)
+            bucket.get(k, function (err, indexRes) {
+              console.dir(indexRes.value, {depth: 5, colors: true})
+              checkRes(err, indexRes)
+
+              expect(indexCalled).to.be.ok
+
+              done()
+            })
+          })
+        })
+      })
+    })
+  })
+
   it('should properly create index when defined separately', function (done) {
     var userSchema = lounge.schema({
       firstName: String,

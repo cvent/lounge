@@ -4,6 +4,14 @@ var expect = require('chai').expect
 var lounge = require('../')
 
 describe('Lounge basics', function () {
+  beforeEach(function () {
+    if (lounge) {
+      lounge.disconnect()
+    }
+
+    lounge = new lounge.Lounge()
+  })
+
   it('Should export the proper functions', function () {
     // exported data
     expect(lounge.models).to.be.an('object')
@@ -19,10 +27,6 @@ describe('Lounge basics', function () {
     expect(lounge.insert).to.be.a('function')
     expect(lounge.upsert).to.be.a('function')
     expect(lounge.remove).to.be.a('function')
-    // expect(lounge.model).to.be.a('function');
-
-    // exported prototype objects
-    // expect(lounge.Schema).to.be.a('function');
   })
 
   describe('connect()', function () {
@@ -35,6 +39,9 @@ describe('Lounge basics', function () {
       }, function (err) {
         expect(err).to.not.be.ok
         expect(lounge.bucket).to.be.ok
+        expect(lounge.db).to.be.ok
+        expect(lounge.models).to.be.ok
+        expect(lounge.config).to.be.ok
 
         expect(lounge.bucket.configThrottle).to.be.ok
         expect(lounge.bucket.connectionTimeout).to.be.ok
@@ -100,13 +107,20 @@ describe('Lounge basics', function () {
 
   describe('properties', function () {
     it('should set and get given properties', function () {
-      [
-        'configThrottle', 'connectionTimeout', 'durabilityInterval', 'durabilityTimeout', 'managementTimeout',
-        'nodeConnectionTimeout', 'operationTimeout', 'viewTimeout'
-      ].forEach(function (prop, index) {
-        var val = index * 5 * 1000
-        lounge[prop] = val
-        expect(lounge[prop]).to.equal(val)
+      lounge.connect({
+        connectionString: 'couchbase://127.0.0.1',
+        bucket: 'lounge_test'
+      }, function (err) {
+        expect(err).to.not.be.ok;
+
+        [
+          'configThrottle', 'connectionTimeout', 'durabilityInterval', 'durabilityTimeout', 'managementTimeout',
+          'nodeConnectionTimeout', 'operationTimeout', 'viewTimeout'
+        ].forEach(function (prop, index) {
+          var val = index * 5 * 1000
+          lounge[prop] = val
+          expect(lounge[prop]).to.equal(val, prop)
+        })
       })
     })
   })
