@@ -30,7 +30,7 @@
     "async": "^2.4.1",
     "clone": "^2.1.0",
     "couchbase": "^2.3.4",
-    "couchbase-driver": "~0.2.2",
+    "couchbase-driver": "https://github.com/scdowney/couchbase-driver.git#couchbase-tmp-retry",
     "debug": "^2.6.0",
     "escape-string-regexp": "^1.0.5",
     "grappling-hook-lounge": "~1.0.0",
