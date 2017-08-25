@@ -1,41 +1,41 @@
 ## Classes
 
 <dl>
-<dt>[AbstractBaseModel](#AbstractBaseModel)</dt>
+<dt><a href="#AbstractBaseModel">AbstractBaseModel</a></dt>
 <dd><p>Abstract Base Model representation for all created Document instances.
 Represents just the document data and generic properties and functions.
 Also used for &quot;object&quot; abstraction / representation of sub documents that are not actual Models / Documents.
 Clients should never have to call this directly.</p>
 </dd>
-<dt>[BaseModel](#BaseModel) ⇐ <code>EventEmitter</code></dt>
+<dt><a href="#BaseModel">BaseModel</a> ⇐ <code>EventEmitter</code></dt>
 <dd><p>BaseModel implements <code>AbstractBaseModel</code> and is a representation for all created Document
 instances that have a user defined schema. Represents just the document data and generic properties and functions.
 Clients should never have to call this directly. Inherits <code>EventEmitter</code></p>
 </dd>
-<dt>[CouchbaseDocument](#CouchbaseDocument) ⇐ <code>[Document](#Document)</code></dt>
+<dt><a href="#CouchbaseDocument">CouchbaseDocument</a> ⇐ <code><a href="#Document">Document</a></code></dt>
 <dd><p>CouchbaseDocument inherits Document and handles all the database related actions.
 Clients should never have to call this directly.</p>
 </dd>
-<dt>[Document](#Document) ⇐ <code>[BaseModel](#BaseModel)</code></dt>
+<dt><a href="#Document">Document</a> ⇐ <code><a href="#BaseModel">BaseModel</a></code></dt>
 <dd><p>Base constructor for all created Document instances.
 Represents just the document data and generic properties and functions.
 Clients should never have to call this directly.</p>
 </dd>
-<dt>[Lounge](#Lounge) ⇐ <code>Bucket</code></dt>
+<dt><a href="#Lounge">Lounge</a> ⇐ <code>Bucket</code></dt>
 <dd><p>The Lounge module
 The exports object of the <code>lounge</code> module is an instance of this class.
 Most apps will only use this one instance. We copy all Couchbase <code>Bucket</code> methods and properties
 so you can call them generically = require(this instance as well.</p>
 </dd>
-<dt>[Model](#Model) ⇐ <code>[CouchbaseDocument](#CouchbaseDocument)</code></dt>
+<dt><a href="#Model">Model</a> ⇐ <code><a href="#CouchbaseDocument">CouchbaseDocument</a></code></dt>
 <dd><p>Model class is a base class for all <code>ModelInstances</code> and it extends <code>CouchbaseDocument</code></p>
 </dd>
-<dt>[ModelInstance](#ModelInstance) ⇐ <code>[Model](#Model)</code></dt>
+<dt><a href="#ModelInstance">ModelInstance</a> ⇐ <code><a href="#Model">Model</a></code></dt>
 <dd><p>ModelInstance class is the compiled class from a schema definition. It extends <code>Model</code>.
 All models generated are an instance of <code>ModelInstance</code>. It also inherits <code>grappling-hook</code>
 See <a href="https://www.github.com/bojand/grappling-hook">grappling-hook</a> for pre and post hooks.</p>
 </dd>
-<dt>[Schema](#Schema)</dt>
+<dt><a href="#Schema">Schema</a></dt>
 <dd><p>Schema class represents the schema definition. It includes properties, methods, static methods, and any
 middleware we want to define.</p>
 </dd>
@@ -691,6 +691,9 @@ The Lounge constructor
 | options.waitForIndex | <code>Boolean</code> | When documents are saved, indexes are updated. We can wait for this operation to finish before returning = require(<code>save()</code>. Default: <code>false</code> |
 | options.minimize | <code>Boolean</code> | "minimize" schemas by removing empty objects. Default: <code>true</code> |
 | options.missing | <code>Boolean</code> | By default the <code>findById</code> and index query functions return 3 parameters to the callback:                                  <code>(err, docs, missing)</code>. If this option is set to <code>false</code> we won't return                                  missing keys as the final param in the callback. Default: <code>true</code>. |
+| options.retryTemporaryErrors | <code>Boolean</code> | Whether to automatically backoff/retry on temporary                                       couchbase errors. Default: <code>false</code>.                                            See [https://github.com/bojand/couchbase-driver](https://github.com/bojand/couchbase-driver) |
+| options.tempRetryTimes | <code>Number</code> | The number of attempts to make when backing off temporary errors.                                            See <code>async.retry</code>. Default: <code>5</code>.                                            See [https://github.com/bojand/couchbase-driver](https://github.com/bojand/couchbase-driver) |
+| options.tempRetryInterval | <code>Number</code> | The time to wait between retries, in milliseconds, when backing off temporary errors .                                               See <code>async.retry</code>. Default: <code>50</code>.                                            See [https://github.com/bojand/couchbase-driver](https://github.com/bojand/couchbase-driver) |
 | options.atomicRetryTimes | <code>Number</code> | The number of attempts to make within <code>Driver.atomic()</code>. Default: <code>5</code>.                                            See [https://github.com/bojand/couchbase-driver](https://github.com/bojand/couchbase-driver) |
 | options.atomicRetryInterval | <code>Number</code> | The time to wait between retries, in milliseconds, within <code>Driver.atomic()</code>.                                               Default: <code>0</code>. See [https://github.com/bojand/couchbase-driver](https://github.com/bojand/couchbase-driver) |
 | options.atomicLock | <code>Boolean</code> | Whether to use <code>getAndLock</code> or standard <code>get</code> during atomic                                       operations within indexing. Default: <code>true</code>.                                       See [https://github.com/bojand/couchbase-driver](https://github.com/bojand/couchbase-driver) |
