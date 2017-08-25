@@ -8,3 +8,6 @@ npm-debug.log
 test
 api-docs
 docs
+readme.hbs
+ISSUE_TEMPLATE.md
+.travis.yml

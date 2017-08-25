@@ -3,7 +3,6 @@
 .DS_Store
 node_modules
 dump.rdb
-npm-debug.log
 .nyc_output
 apidocs
 dist/
@@ -11,3 +10,18 @@ api-docs
 docs/api-docs
 _book
 .vscode
+logs
+*.log
+npm-debug.log*
+pids
+*.pid
+*.seed
+lib-cov
+coverage
+.grunt
+.lock-wscript
+build/Release
+jspm_packages
+.npm
+.node_repl_history
+.DS_Store
