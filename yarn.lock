@@ -259,7 +259,7 @@ async@^1.4.0:
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/async/-/async-1.5.2.tgz#ec6a61ae56480c0c3cb241c95618e20892f9672a"
 
-async@^2.0.0, async@^2.4.1:
+async@^2.4.1, async@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/async/-/async-2.5.0.tgz#843190fd6b7357a0b9e1c956edddd5ec8462b54d"
   dependencies:
@@ -1126,17 +1126,17 @@ core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
 
-"couchbase-driver@https://github.com/scdowney/couchbase-driver.git#couchbase-tmp-retry":
-  version "0.2.2"
-  resolved "https://github.com/scdowney/couchbase-driver.git#1cc6f5bc6cb2eac508f28e103945a7bfb5f63be1"
+couchbase-driver@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/couchbase-driver/-/couchbase-driver-0.3.0.tgz#20865f348d552dada52b57972e7d10417be8a58a"
   dependencies:
-    async "^2.0.0"
-    couchbase "^2.3.3"
-    debug "^2.6.0"
+    async "^2.5.0"
+    couchbase "^2.3.7"
+    debug "^3.0.0"
     lodash "^4.17.0"
     promisify-call "^2.0.4"
 
-couchbase@^2.3.3, couchbase@^2.3.4:
+couchbase@^2.3.4, couchbase@^2.3.7:
   version "2.3.7"
   resolved "https://registry.yarnpkg.com/couchbase/-/couchbase-2.3.7.tgz#3242b04722fd672e98ae0602b01cc22d65567feb"
   dependencies:
@@ -1205,6 +1205,12 @@ debug-log@^1.0.0, debug-log@^1.0.1:
 debug@2.6.8, debug@^2.1.1, debug@^2.2.0, debug@^2.6.0, debug@^2.6.3, debug@^2.6.8:
   version "2.6.8"
   resolved "https://registry.yarnpkg.com/debug/-/debug-2.6.8.tgz#e731531ca2ede27d188222427da17821d68ff4fc"
+  dependencies:
+    ms "2.0.0"
+
+debug@^3.0.0:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-3.0.1.tgz#0564c612b521dc92d9f2988f0549e34f9c98db64"
   dependencies:
     ms "2.0.0"
 
