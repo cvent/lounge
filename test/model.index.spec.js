@@ -142,7 +142,6 @@ describe('Model index function tests', function () {
             expect(err.code).to.equal(couchbase.errors.keyNotFound)
 
             k = userSchema.getRefKey('email', user.email)
-            console.log(k)
             bucket.get(k, function (err, indexRes) {
               console.dir(indexRes.value, {depth: 5, colors: true})
               checkRes(err, indexRes)
