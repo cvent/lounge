@@ -5,6 +5,7 @@
 [![npm version](https://img.shields.io/npm/v/lounge.svg?style=flat-square)](https://www.npmjs.com/package/lounge)
 [![build status](https://img.shields.io/travis/bojand/lounge/master.svg?style=flat-square)](https://travis-ci.org/bojand/lounge)
 [![stabdardjs](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
+[![License](https://img.shields.io/github/license/bojand/lounge.svg?style=flat-square)](https://raw.githubusercontent.com/bojand/lounge/master/LICENSE.txt)
 
 ## Installation
 
@@ -55,3 +56,7 @@ kitty.save(function (err) {
 the new key. The old document sticks around under the old key. There are too many implications if we start automatically
 handling document removal in this scenario. This should be handled by the user of this module. In most use cases this
 should not really be an issue.
+
+<hr>
+
+<div>Icon made by <a href="https://www.flaticon.com/authors/cursor-creative" title="Cursor Creative">Cursor Creative</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
