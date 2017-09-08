@@ -1,10 +1,18 @@
+<div align="center">
+	<br>
+	<img src="docs/sofa-icon/sofa 256.png" alt="Lounge">
+	<br>
+  <br>
+</div>
+
 # Lounge
 
-Simple Mongoose-inspired ODM for [Couchbase](http://www.couchbase.com).
+> Simple Mongoose-inspired ODM for [Couchbase](http://www.couchbase.com).
 
 [![npm version](https://img.shields.io/npm/v/lounge.svg?style=flat-square)](https://www.npmjs.com/package/lounge)
 [![build status](https://img.shields.io/travis/bojand/lounge/master.svg?style=flat-square)](https://travis-ci.org/bojand/lounge)
 [![stabdardjs](https://img.shields.io/badge/code_style-standard-brightgreen.svg?style=flat-square)](https://standardjs.com)
+[![License](https://img.shields.io/github/license/bojand/lounge.svg?style=flat-square)](https://raw.githubusercontent.com/bojand/lounge/master/LICENSE.txt)
 
 ## Installation
 
@@ -69,11 +77,10 @@ To run tests against an actual local database create a bucket `lounge_test` and 
 ## Credits
 
 Lots of code and design inspired by [Mongoose](http://mongoosejs.com/).
-Uses modified code from [node-schema-object](https://github.com/scotthovestadt/node-schema-object) for modeling
-available as a separate module [Plaster](https://github.com/bojand/plaster).
+Icon made by <a href="https://www.flaticon.com/authors/cursor-creative" title="Cursor Creative">Cursor Creative</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
 
 ## License
 
-Copyright 2015 Bojan D.
+Copyright 2015 - 2017 Bojan D.
 
 Licensed under the MIT License.
