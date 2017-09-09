@@ -19,9 +19,9 @@
     "name": "Bojan Djurkovic <dbojan@gmail.com>"
   },
   "scripts": {
-    "test": "LOUNGE_COUCHBASE_MOCK=true mocha test/*.spec.js && LOUNGE_COUCHBASE_MOCK=true ava -v -s",
-    "test-ava": "LOUNGE_COUCHBASE_MOCK=true ava -v -s",
-    "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha",
+    "test": "mocha test/*.spec.js && ava -v -s",
+    "test-ava": "ava -v -s",
+    "cover": "nyc mocha",
     "mddocs": "jsdoc2md lib/*.js > docs/apimd.md",
     "fixdocs": "cat docs/apimd.md | gsed 's/<a name=\"\\(.*\\)\"><\\/a>/<a name=\"\\L\\1\" id=\"\\L\\1\" data-id=\"\\L\\1\"><\\/a>/' | sed -e 's/e\\+/e/g; s/l\\+/l/g; s/t\\+/t/g; s/a\\+/a/g' > docs/api.md",
     "docs": "npm run mddocs && npm run fixdocs && rm docs/apimd.md"
@@ -29,7 +29,7 @@
   "dependencies": {
     "async": "^2.4.1",
     "clone": "^2.1.0",
-    "couchbase": "^2.3.4",
+    "couchbase": "~2.4.0",
     "couchbase-driver": "^0.3.0",
     "debug": "^3.0.0",
     "escape-string-regexp": "^1.0.5",

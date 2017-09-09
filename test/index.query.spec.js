@@ -196,65 +196,69 @@ describe('Model index query tests', function () {
         expect(err).to.not.be.ok
         expect(savedDoc).to.be.ok
 
-        User.findByEmailAndCompanyName(user.email, user.company.name, function (err, rdoc) {
-          expect(err).to.not.be.ok
-
-          expect(rdoc).to.be.ok
-          expect(rdoc).to.be.an('array')
-          expect(rdoc.length).to.equal(1)
-
-          expect(rdoc[0]).to.be.an('object')
-          expect(rdoc[0]).to.be.an.instanceof(User)
-          expect(rdoc[0].id).to.be.ok
-          expect(rdoc[0].id).to.be.a('string')
-
-          expect(rdoc[0].id).to.equal(user.id)
-          expect(rdoc[0].firstName).to.equal(userData.firstName)
-          expect(rdoc[0].lastName).to.equal(userData.lastName)
-          expect(rdoc[0].email).to.equal(userData.email)
-          expect(rdoc[0].company).to.be.ok
-          expect(rdoc[0].company).to.be.an('object')
-          expect(rdoc[0].company.name).to.equal(userData.company.name)
-
-          var userData2 = {
-            firstName: 'Joe2',
-            lastName: 'Smith2',
-            email: 'joe@gmail.com',
-            company: {
-              name: 'Acme Inc'
-            }
-          }
-
-          var user2 = new User(userData2)
-
-          user2.save(function (err, savedDoc) {
+        setTimeout(() => {
+          User.findByEmailAndCompanyName(user.email, user.company.name, function (err, rdoc) {
             expect(err).to.not.be.ok
-            expect(savedDoc).to.be.ok
 
-            User.findByEmailAndCompanyName(user2.email, user2.company.name, function (err, rdoc) {
+            expect(rdoc).to.be.ok
+            expect(rdoc).to.be.an('array')
+            expect(rdoc.length).to.equal(1)
+
+            expect(rdoc[0]).to.be.an('object')
+            expect(rdoc[0]).to.be.an.instanceof(User)
+            expect(rdoc[0].id).to.be.ok
+            expect(rdoc[0].id).to.be.a('string')
+
+            expect(rdoc[0].id).to.equal(user.id)
+            expect(rdoc[0].firstName).to.equal(userData.firstName)
+            expect(rdoc[0].lastName).to.equal(userData.lastName)
+            expect(rdoc[0].email).to.equal(userData.email)
+            expect(rdoc[0].company).to.be.ok
+            expect(rdoc[0].company).to.be.an('object')
+            expect(rdoc[0].company.name).to.equal(userData.company.name)
+
+            var userData2 = {
+              firstName: 'Joe2',
+              lastName: 'Smith2',
+              email: 'joe@gmail.com',
+              company: {
+                name: 'Acme Inc'
+              }
+            }
+
+            var user2 = new User(userData2)
+
+            user2.save(function (err, savedDoc) {
               expect(err).to.not.be.ok
+              expect(savedDoc).to.be.ok
 
-              expect(rdoc).to.be.ok
-              expect(rdoc).to.be.an('array')
-              expect(rdoc.length).to.equal(2)
+              setTimeout(() => {
+                User.findByEmailAndCompanyName(user2.email, user2.company.name, function (err, rdoc) {
+                  expect(err).to.not.be.ok
 
-              expect(rdoc[1]).to.be.an('object')
-              expect(rdoc[1]).to.be.an.instanceof(User)
-              expect(rdoc[1].id).to.be.ok
-              expect(rdoc[1].id).to.be.a('string')
+                  expect(rdoc).to.be.ok
+                  expect(rdoc).to.be.an('array')
+                  expect(rdoc.length).to.equal(2)
 
-              expect(rdoc[1].id).to.equal(user2.id)
-              expect(rdoc[1].firstName).to.equal(userData2.firstName)
-              expect(rdoc[1].lastName).to.equal(userData2.lastName)
-              expect(rdoc[1].email).to.equal(userData2.email)
-              expect(rdoc[1].company).to.be.ok
-              expect(rdoc[1].company).to.be.an('object')
-              expect(rdoc[1].company.name).to.equal(userData2.company.name)
+                  expect(rdoc[1]).to.be.an('object')
+                  expect(rdoc[1]).to.be.an.instanceof(User)
+                  expect(rdoc[1].id).to.be.ok
+                  expect(rdoc[1].id).to.be.a('string')
 
-              done()
+                  expect(rdoc[1].id).to.equal(user2.id)
+                  expect(rdoc[1].firstName).to.equal(userData2.firstName)
+                  expect(rdoc[1].lastName).to.equal(userData2.lastName)
+                  expect(rdoc[1].email).to.equal(userData2.email)
+                  expect(rdoc[1].company).to.be.ok
+                  expect(rdoc[1].company).to.be.an('object')
+                  expect(rdoc[1].company.name).to.equal(userData2.company.name)
+
+                  done()
+                })
+              })
             })
           })
-        })
+        }, 50)
       })
     })
 
