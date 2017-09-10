@@ -1037,7 +1037,7 @@ describe('Model index query tests', function () {
       })
     })
 
-    it('should query using simple reference document respecting key options', function (done) {
+    it('should query using simple reference document respecting key options - array index', function (done) {
       var userSchema = lounge.schema({
         firstName: String,
         lastName: String,
@@ -1077,7 +1077,7 @@ describe('Model index query tests', function () {
             expect(rdoc).to.be.an.instanceof(Array)
             expect(rdoc.length).to.equal(2)
 
-            rdoc = _.sortBy(rdoc, 'firstName')
+            rdoc = _.sortBy(rdoc, 'lastName')
 
             expect(rdoc[0]).to.be.an.instanceof(User)
             expect(rdoc[0].id).to.not.be.ok

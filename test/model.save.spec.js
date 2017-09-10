@@ -2430,7 +2430,7 @@ describe('subdocument array change test', function () {
               expect(wdoc3).to.not.be.ok
               done()
             })
-          }, 3300)
+          }, 3500)
         })
       })
     })
@@ -2509,7 +2509,7 @@ describe('subdocument array change test', function () {
               expect(docs[userKey].error).to.be.ok
               done()
             })
-          }, 3300)
+          }, 3600)
         })
       })
     })
@@ -2569,7 +2569,7 @@ describe('subdocument array change test', function () {
       })
     })
 
-    it('should remove the index ref document when using expiry save option in array index type', function (done) {
+    it.only('should remove the index ref document when using expiry save option in array index type', function (done) {
       this.timeout(5000)
 
       const userSchema = lounge.schema({
@@ -2610,6 +2610,7 @@ describe('subdocument array change test', function () {
                   expect(ud2).to.not.be.ok
 
                   bucket.get(k, (err, ir) => {
+                    console.dir(ir, {depth: 3, colors: true})
                     expect(err).to.be.ok
                     expect(ir).to.not.be.ok
                     expect(err.code).to.equal(13)
@@ -2617,10 +2618,10 @@ describe('subdocument array change test', function () {
                     done()
                   })
                 })
-              }, 3500)
+              }, 3600)
             })
           })
-        }, 100)
+        }, 300)
       })
     })
 
@@ -2662,7 +2663,7 @@ describe('subdocument array change test', function () {
               expect(wdoc3).to.not.be.ok
               done()
             })
-          }, 3300)
+          }, 3500)
         })
       })
     })
@@ -2703,7 +2704,7 @@ describe('subdocument array change test', function () {
               expect(wdoc3).to.not.be.ok
               done()
             })
-          }, 3300)
+          }, 3500)
         })
       })
     })
@@ -2796,7 +2797,7 @@ describe('subdocument array change test', function () {
                 done()
               })
             })
-          }, 3300)
+          }, 3500)
         })
       })
     })
@@ -2879,7 +2880,7 @@ describe('subdocument array change test', function () {
               expect(docs[userKey].error).to.be.ok
               done()
             })
-          }, 3300)
+          }, 3500)
         })
       })
     })
