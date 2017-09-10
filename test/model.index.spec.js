@@ -143,7 +143,6 @@ describe('Model index function tests', function () {
 
             k = userSchema.getRefKey('email', user.email)
             bucket.get(k, function (err, indexRes) {
-              console.dir(indexRes.value, {depth: 5, colors: true})
               checkRes(err, indexRes)
 
               expect(indexCalled).to.be.ok
