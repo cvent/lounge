@@ -19,7 +19,7 @@
     "name": "Bojan Djurkovic <dbojan@gmail.com>"
   },
   "scripts": {
-    "test": "LOUNGE_COUCHBASE_MOCK=true mocha test/*.spec.js && LOUNGE_COUCHBASE_MOCK=true ava -v -s",
+    "test": "mocha test/*.spec.js",
     "test-ava": "LOUNGE_COUCHBASE_MOCK=true ava -v -s",
     "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha",
     "mddocs": "jsdoc2md lib/*.js > docs/apimd.md",
