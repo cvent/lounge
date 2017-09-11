@@ -2569,7 +2569,7 @@ describe('subdocument array change test', function () {
       })
     })
 
-    it.only('should remove the index ref document when using expiry save option in array index type', function (done) {
+    it('should remove the index ref document when using expiry save option in array index type', function (done) {
       this.timeout(5000)
 
       const userSchema = lounge.schema({
