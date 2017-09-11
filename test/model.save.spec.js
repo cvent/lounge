@@ -2509,7 +2509,7 @@ describe('subdocument array change test', function () {
               expect(docs[userKey].error).to.be.ok
               done()
             })
-          }, 3900)
+          }, 4000)
         })
       })
     })
@@ -2610,7 +2610,6 @@ describe('subdocument array change test', function () {
                   expect(ud2).to.not.be.ok
 
                   bucket.get(k, (err, ir) => {
-                    console.dir(ir, {depth: 3, colors: true})
                     expect(err).to.be.ok
                     expect(ir).to.not.be.ok
                     expect(err.code).to.equal(13)
