@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "async": "^2.4.1",
+    "benchmark": "^2.1.4",
     "clone": "^2.1.0",
     "couchbase": "~2.4.0",
     "couchbase-driver": "^0.3.0",
