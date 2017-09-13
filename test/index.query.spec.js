@@ -11,24 +11,27 @@ var bucket
 describe('Model index query tests', function () {
   describe('single index query tests without populate', function () {
     beforeEach(function (done) {
-      if (lounge) {
-        lounge.disconnect()
-      }
-
-      lounge = new lounge.Lounge() // recreate it
-
-      var cluster = testUtil.getCluser()
-      bucket = cluster.openBucket('lounge_test', function (err) {
-        if (err) {
-          return done(err)
+      var t = process.env.LOUNGE_COUCHBASE_MOCK ? 10 : 100
+      setTimeout(() => {
+        if (lounge) {
+          lounge.disconnect()
         }
 
-        lounge.connect({
-          bucket: bucket
-        }, function () {
-          bucket.manager().flush(done)
+        lounge = new lounge.Lounge() // recreate it
+
+        var cluster = testUtil.getCluser()
+        bucket = cluster.openBucket('lounge_test', function (err) {
+          if (err) {
+            return done(err)
+          }
+
+          lounge.connect({
+            bucket: bucket
+          }, function () {
+            bucket.manager().flush(done)
+          })
         })
-      })
+      }, t)
     })
 
     it('should query using simple reference document', function (done) {
