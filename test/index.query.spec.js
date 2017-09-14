@@ -925,7 +925,7 @@ describe('Model index query tests', function () {
         expect(err).to.not.be.ok
         expect(savedDoc).to.be.ok
 
-        user2.save(function (err, savedDoc) {
+        user2.save({ waitForIndex: true }, function (err, savedDoc) {
           expect(err).to.not.be.ok
           expect(savedDoc).to.be.ok
 
@@ -1073,29 +1073,31 @@ describe('Model index query tests', function () {
           expect(err).to.not.be.ok
           expect(savedDoc).to.be.ok
 
-          User.findByEmail(user.email, function (err, rdoc) {
-            expect(err).to.not.be.ok
+          setTimeout(() => {
+            User.findByEmail(user.email, function (err, rdoc) {
+              expect(err).to.not.be.ok
 
-            expect(rdoc).to.be.ok
-            expect(rdoc).to.be.an.instanceof(Array)
-            expect(rdoc.length).to.equal(2)
+              expect(rdoc).to.be.ok
+              expect(rdoc).to.be.an.instanceof(Array)
+              expect(rdoc.length).to.equal(2)
 
-            rdoc = _.sortBy(rdoc, 'lastName')
+              rdoc = _.sortBy(rdoc, 'lastName')
 
-            expect(rdoc[0]).to.be.an.instanceof(User)
-            expect(rdoc[0].id).to.not.be.ok
-            expect(rdoc[0].firstName).to.equal(userData[0].firstName)
-            expect(rdoc[0].lastName).to.equal(userData[0].lastName)
-            expect(rdoc[0].email).to.equal(userData[0].email)
+              expect(rdoc[0]).to.be.an.instanceof(User)
+              expect(rdoc[0].id).to.not.be.ok
+              expect(rdoc[0].firstName).to.equal(userData[0].firstName)
+              expect(rdoc[0].lastName).to.equal(userData[0].lastName)
+              expect(rdoc[0].email).to.equal(userData[0].email)
 
-            expect(rdoc[1]).to.be.an.instanceof(User)
-            expect(rdoc[1].id).to.not.be.ok
-            expect(rdoc[1].firstName).to.equal(userData[1].firstName)
-            expect(rdoc[1].lastName).to.equal(userData[1].lastName)
-            expect(rdoc[1].email).to.equal(userData[1].email)
+              expect(rdoc[1]).to.be.an.instanceof(User)
+              expect(rdoc[1].id).to.not.be.ok
+              expect(rdoc[1].firstName).to.equal(userData[1].firstName)
+              expect(rdoc[1].lastName).to.equal(userData[1].lastName)
+              expect(rdoc[1].email).to.equal(userData[1].email)
 
-            done()
-          })
+              done()
+            })
+          }, 100)
         })
       })
     })
@@ -1399,7 +1401,7 @@ describe('Model index query tests', function () {
                 var cu = new User(ud)
                 userData[i].id = cu.id // populate id into the data so we can access later
                 i++
-                cu.save(eaCb)
+                cu.save({ waitForIndex: true }, eaCb)
               }, done)
             })
           })
@@ -1618,7 +1620,7 @@ describe('Model index query tests', function () {
 
               async.eachSeries(userData, function (ud, eaCb) {
                 var cu = new User(ud)
-                cu.save(eaCb)
+                cu.save({ waitForIndex: true }, eaCb)
               }, done)
             })
           })

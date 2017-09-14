@@ -687,7 +687,7 @@ describe('Model index on save tests', function () {
     user.save(function (err, savedDoc) {
       expect(err).to.not.be.ok
 
-      user2.save(function (err, savedDoc) {
+      user2.save({ waitForIndex: true }, function (err, savedDoc) {
         expect(err).to.not.be.ok
         var k = userSchema.getRefKey('email', user.email)
         bucket.get(k, function (err, indexRes) {

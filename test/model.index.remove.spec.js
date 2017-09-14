@@ -693,7 +693,7 @@ describe('Model index on remove tests', function () {
 
     user.companies.push(company2)
 
-    user.save(function (err, savedDoc) {
+    user.save({ waitForIndex: true }, function (err, savedDoc) {
       expect(err).to.not.be.ok
       expect(savedDoc).to.be.ok
 
@@ -854,7 +854,7 @@ describe('Model index on remove tests', function () {
       expect(err).to.not.be.ok
       expect(savedDoc).to.be.ok
 
-      user2.save(function (err, savedDoc) {
+      user2.save({ waitForIndex: true }, function (err, savedDoc) {
         expect(err).to.not.be.ok
         expect(savedDoc).to.be.ok
 
@@ -940,7 +940,7 @@ describe('Model index on remove tests', function () {
       expect(err).to.not.be.ok
       expect(savedDoc).to.be.ok
 
-      user2.save(function (err, savedDoc) {
+      user2.save({ waitForIndex: true }, function (err, savedDoc) {
         expect(err).to.not.be.ok
         expect(savedDoc).to.be.ok
 
@@ -1177,7 +1177,7 @@ describe('Model index on remove tests', function () {
       expect(err).to.not.be.ok
       expect(savedDoc).to.be.ok
 
-      user2.save(function (err, savedDoc) {
+      user2.save({ waitForIndex: true }, function (err, savedDoc) {
         expect(err).to.not.be.ok
         expect(savedDoc).to.be.ok
 
