@@ -49,12 +49,10 @@ function setup (options, done) {
 
 let counter = 0
 
-function testFnUser (fn) {
-  counter = counter + 1
-
+function testFnUser (n, fn) {
   user = new User({
     name: 'Joe Smith',
-    email: `joe+${counter}@gmail.com`
+    email: `joe+${counter + n}@gmail.com`
   })
 
   user.save({ waitForIndex: true }, (e_, savedDoc) => {
@@ -73,20 +71,24 @@ function complete (options, done) {
 const stats = {}
 
 const N = 9500
+const M = 5
 
-function createTest (options, testFn) {
+function createTest (options) {
   return function testerFn (done) {
     stats[options.name] = []
     console.dir(options, { depth: 3, colors: true })
     setup(options, () => {
       async.timesSeries(N - 5, (n, cb) => {
-      // async.timesLimit(N - 5, 10, (n, cb) => {
-        marky.mark(options.name + n)
-        testFn(() => {
-          const entry = marky.stop(options.name + n)
-          stats[options.name].push(entry.duration)
-          cb()
-        })
+        // async.timesLimit(N - 5, 10, (n, cb) => {
+
+        async.times(M, (m, tcb) => {
+          marky.mark(options.name + n + m)
+          testFnUser(n, () => {
+            const entry = marky.stop(options.name + n + m)
+            stats[options.name].push(entry.duration)
+            tcb()
+          })
+        }, cb)
       }, () => {
         complete(options, done)
       })
@@ -103,28 +105,22 @@ function createDocs (done) {
   }, done)
 }
 
-const testNew = createTest({ name: 'arrayindex.save.new', flush: true }, testFnUser)
-const testSecond = createTest({ name: 'arrayindex.save.second', flush: true }, testFnUser)
-const testNewOld = createTest({ name: 'arrayindex.save.new.old', removeMutateIn: true, flush: true }, testFnUser)
-const testSecondOld = createTest({ name: 'arrayindex.save.second.old', removeMutateIn: true, flush: true }, testFnUser)
+const testSecond = createTest({ name: 'arrayindex.save.second', flush: true })
+const testSecondOld = createTest({ name: 'arrayindex.save.second.old', removeMutateIn: true, flush: true })
 
 counter = 0
-testNew(() => {
-  counter = 0
+setup({}, () => {
   createDocs(() => {
     testSecond(() => {
       counter = N + 100
-      testNewOld(() => {
-        counter = N + 100
-        createDocs(() => {
-          testSecondOld(() => {
-            _.forEach(stats, (v, k) => {
-              v.shift()
-              var mean = _.sum(v) / v.length
-              console.log(`${k}: ${mean}`)
-            })
-            process.exit()
+      createDocs(() => {
+        testSecondOld(() => {
+          _.forEach(stats, (v, k) => {
+            v.shift()
+            var mean = _.sum(v) / v.length
+            console.log(`${k}: ${mean}`)
           })
+          process.exit()
         })
       })
     })
