@@ -1,7 +1,7 @@
-const Benchmark = require('benchmark')
 const testUtil = require('../test/helpers/utils')
 const _ = require('lodash')
 const async = require('async')
+const marky = require('marky')
 
 var lounge = require('../')
 var userSchema, User, user, bucket
@@ -49,7 +49,7 @@ function setup (options, done) {
 
 let counter = 0
 
-function testFnUser (deferred) {
+function testFnUser (fn) {
   counter = counter + 1
 
   user = new User({
@@ -58,17 +58,11 @@ function testFnUser (deferred) {
   })
 
   user.save({ waitForIndex: true }, (err, savedDoc) => {
-    if (err) {
-      return deferred.reject(err)
-    }
-    deferred.resolve()
+    fn()
   })
 }
 
-const results = {}
-
 function complete (options, done) {
-  results[options.name] = this.stats.mean * 1000
   if (options.flush) {
     bucket.manager().flush(done)
   } else {
@@ -76,24 +70,32 @@ function complete (options, done) {
   }
 }
 
+const stats = {}
+
+const N = 5000
+
 function createTest (options, testFn) {
   return function testerFn (done) {
+    stats[options.name] = []
     console.dir(options, { depth: 3, colors: true })
-    const onComplete = _.partial(complete, options, done)
     setup(options, () => {
-      var benchNew = new Benchmark(options.name, testFn, {
-        defer: true,
-        onComplete,
-        delay: 0.5
+      async.timesSeries(N - 5, (n, cb) => {
+      // async.timesLimit(N - 5, 10, (n, cb) => {
+        marky.mark(options.name + n)
+        testFn(() => {
+          const entry = marky.stop(options.name + n)
+          stats[options.name].push(entry.duration)
+          cb()
+        })
+      }, () => {
+        complete(options, done)
       })
-
-      benchNew.run({ async: true })
     })
   }
 }
 
 function createDocs (done) {
-  async.timesLimit(3000, 50, (n, cb) => {
+  async.timesLimit(N, 50, (n, cb) => {
     const keyCounter = counter + n
     const k = userSchema.getRefKey('email', `joe+${keyCounter}@gmail.com`)
     const id = `userid_${n}`
@@ -116,7 +118,11 @@ testNew(() => {
         counter = 10000
         createDocs(() => {
           testSecondOld(() => {
-            console.dir(results, { depth: 3, colors: true })
+            _.forEach(stats, (v, k) => {
+              v.shift()
+              var mean = _.sum(v) / v.length
+              console.log(`${k}: ${mean}`)
+            })
             process.exit()
           })
         })
