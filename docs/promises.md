@@ -1,7 +1,6 @@
 # Promises <a id="promises"></a>
 
-Lounge implements [Promise](https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Promise) support
-using the [Bluebird](bluebirdjs.com) module for all async operations. We support callback-style and Promise-style API, but you should not mix and use both at the same time. If a callback is provided a promise is not returned and normal callback-style
+In addition of callbacks, Lounge utilizes native [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) for async operations. We support callback-style and Promise-style API, but you should not mix and use both at the same time. If a callback is provided a promise is not returned and normal callback-style
 control flow happens. If no callback is provided a promise is returned, of course you do not have to do anything with it if you do not care about the result of an operation. Resolved promises only return the first success result parameter, so
 methods that would normally return more than 2 arguments via a callback (such as the `missing` argument in `find*`) lose that parameter when invoked promise-style. If you need that call the methods using callbacks. Promise support can be completely turned off using `promisify` configuration setting within the Lounge object. Simple example for ES6:
 
@@ -41,7 +40,7 @@ lounge.connect(connOpts)
   })
 ```
 
-With [Babel](https://babeljs.io/) we can use JavaScript features not available in Node yet, like `async / await` for async control.
+With Node.js 8 we can use `async / await` for async control.
 
 ```js
 await lounge.connect({
