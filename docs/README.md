@@ -52,6 +52,8 @@ kitty.save(function (err) {
  view lookup that it is impractical to accommodate anything sane within a simple ODM. This can easily be expanded
  on top of Lounge.
 * View queries. For same reasons this falls outside of the scope of Lounge.
+* N1QL index management and N1QL queries. For the same reasons this falls outside of the scope of this library.
+* Full Text Search index management and FTL queries. For the same reasons this falls outside of the scope of this library.
 * Automatic document removal on key change. That is if a document key property changes, the new document is saved under
 the new key. The old document sticks around under the old key. There are too many implications if we start automatically
 handling document removal in this scenario. This should be handled by the user of this module. In most use cases this

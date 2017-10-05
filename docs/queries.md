@@ -45,7 +45,7 @@ Additionally we can set `errorOnMissingIndex` property to `true` in `lounge` con
 var User = lounge.model('User', userSchema)
 
 // set global option to error on all calls
-lounge.setOption(errorOnMissingIndex, true)
+lounge.setOption('errorOnMissingIndex', true)
 
 User.findByEmail('joe@gmail.com', function(err, doc) {
   // assuming target document is not found

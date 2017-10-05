@@ -1,7 +1,7 @@
 {
   "name": "lounge",
   "description": "Simple Mongoose-inspired ODM for Couchbase",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "homepage": "https://github.com/bojand/lounge",
   "license": "MIT",
   "repository": {
@@ -19,7 +19,8 @@
     "name": "Bojan Djurkovic <dbojan@gmail.com>"
   },
   "scripts": {
-    "test": "mocha test/*.spec.js",
+    "test": "npm run test-mocha && npm run test-ava",
+    "test-mocha": "LOUNGE_COUCHBASE_MOCK=true mocha --exit test/*.spec.js",
     "test-ava": "LOUNGE_COUCHBASE_MOCK=true ava -v -s",
     "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha",
     "mddocs": "jsdoc2md lib/*.js > docs/apimd.md",
@@ -29,9 +30,9 @@
   "dependencies": {
     "async": "^2.4.1",
     "clone": "^2.1.0",
-    "couchbase": "~2.4.0",
-    "couchbase-driver": "^0.3.0",
-    "debug": "^3.0.0",
+    "couchbase": "^2.4.1",
+    "couchbase-driver": "^0.4.0",
+    "debug": "~3.1.0",
     "escape-string-regexp": "^1.0.5",
     "grappling-hook-lounge": "~1.0.0",
     "inflection": "^1.8.0",
@@ -49,10 +50,10 @@
     "jsdoc-to-markdown": "^3.0.0",
     "lodash3": "~3.10.0",
     "marky": "^1.2.0",
-    "mocha": "^3.4.0",
+    "mocha": "^4.0.0",
     "nyc": "^11.0.0",
     "standard": "^10.0.1",
-    "validator": "^7.2.0"
+    "validator": "^9.0.0"
   },
   "ava": {
     "files": [
