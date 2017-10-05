@@ -3,28 +3,30 @@
 Lounge allows for embedding and referencing other Models within schema.
 
 ```js
-var addressSchema = lounge.schema({
+const addressSchema = lounge.schema({
   street: String,
   city: String,
   country: String
 })
 
-var Address = lounge.model('Address', addressSchema)
+const Address = lounge.model('Address', addressSchema)
 
-var blogPostSchema = lounge.schema({
+const blogPostSchema = lounge.schema({
   title: String,
-  body: String,
+  body: String
 })
 
-var BlogPost = lounge.model('BlogPost', blogPostSchema)
+const BlogPost = lounge.model('BlogPost', blogPostSchema)
 
-var userSchema = lounge.schema({
+const userSchema = lounge.schema({
   name: String,
   address: Address,
   posts: [BlogPost]
 })
 
-var post = new BlogPost({
+const User = lounge.model('User', userSchema)
+
+const post = new BlogPost({
   title: 'Foo',
   body: 'Lorem ipsum'
 })
@@ -42,7 +44,7 @@ var user = new User({
 user.posts.push(new BlogPost({
   title: 'Post 2',
   body: 'Some more text!'
-})
+}))
 ```
 
 You can manipulate and work with subdocument just like any model instances. When the top level document is saved

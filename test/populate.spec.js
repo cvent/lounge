@@ -497,6 +497,7 @@ describe('Model populate tests', function () {
         var expectedCompany = ts.data.companies[1]
 
         expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         var actualComments = _.sortBy(rdoc.comments, 'id')
 
@@ -558,6 +559,7 @@ describe('Model populate tests', function () {
         var expectedCompanies = [ts.data.companies[2], ts.data.companies[0], ts.data.companies[2]]
 
         expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         var actualComments = _.sortBy(rdoc.comments, 'id')
 
@@ -872,6 +874,7 @@ describe('Model populate tests', function () {
 
         var expectedComments = _.sortBy([ts.data.comments[0]], 'id')
         expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         var actualComments = _.sortBy(rdoc.comments, 'id')
 
@@ -908,6 +911,7 @@ describe('Model populate tests', function () {
         var expectedComments = _.sortBy([ts.data.comments[1], ts.data.comments[2]], 'id')
 
         expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         var actualComments = _.sortBy(rdoc.comments, 'id')
 
@@ -945,6 +949,7 @@ describe('Model populate tests', function () {
         var expectedComments = _.sortBy([ts.data.comments[3], ts.data.comments[4], ts.data.comments[5]], 'id')
 
         expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         var actualComments = _.sortBy(rdoc.comments, 'id')
 
@@ -1029,6 +1034,7 @@ describe('Model populate tests', function () {
         var expectedUsers = [ts.data.users[2], ts.data.users[0], ts.data.users[2]]
 
         expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         var actualComments = _.sortBy(rdoc.comments, 'id')
 
@@ -1083,6 +1089,7 @@ describe('Model populate tests', function () {
         var expectedCompanies = [ts.data.companies[2], ts.data.companies[0], ts.data.companies[2]]
 
         expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         var actualComments = _.sortBy(rdoc.comments, 'id')
 
@@ -1150,6 +1157,7 @@ describe('Model populate tests', function () {
 
         var actualComments = rdoc.comments
         var expectedComments = [ts.data.comments[3].id, ts.data.comments[4], ts.data.comments[5].id]
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         actualComments.forEach(function (ac, i) {
           var expectedComment = expectedComments[i]
@@ -1189,6 +1197,8 @@ describe('Model populate tests', function () {
         var actualComments = rdoc.comments
         var expectedComments = [ts.data.comments[3].id, ts.data.comments[4], ts.data.comments[5].id]
         var expectedUsers = [ts.data.users[2].email, ts.data.users[2], ts.data.users[0].email]
+
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         actualComments.forEach(function (ac, i) {
           var expectedComment = expectedComments[i]
@@ -1244,6 +1254,8 @@ describe('Model populate tests', function () {
         var expectedComments = [ts.data.comments[3].id, ts.data.comments[4], ts.data.comments[5].id]
         var expectedUsers = [ts.data.users[2].email, ts.data.users[2], ts.data.users[0].email]
         var expectedCompany = ts.data.companies[2]
+
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         actualComments.forEach(function (ac, i) {
           var expectedComment = expectedComments[i]
@@ -1309,6 +1321,8 @@ describe('Model populate tests', function () {
         var expectedComments = [ts.data.comments[3].id, ts.data.comments[4], ts.data.comments[5].id]
         var expectedUsers = [ts.data.users[2].email, ts.data.users[2], ts.data.users[0].email]
 
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
+
         actualComments.forEach(function (ac, i) {
           var expectedComment = expectedComments[i]
           var expectedUser = expectedUsers[i]
@@ -1362,6 +1376,8 @@ describe('Model populate tests', function () {
         var actualComments = rdoc.comments
         var expectedComments = [ts.data.comments[3].id, ts.data.comments[4], ts.data.comments[5].id]
 
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
+
         actualComments.forEach(function (ac, i) {
           var expectedComment = expectedComments[i]
 
@@ -1399,6 +1415,8 @@ describe('Model populate tests', function () {
 
         var actualComments = rdoc.comments
         var expectedComments = [ts.data.comments[3].id, ts.data.comments[4].id, ts.data.comments[5].id]
+
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         actualComments.forEach(function (ac, i) {
           var expectedComment = expectedComments[i]
@@ -1606,6 +1624,8 @@ describe('Model populate tests', function () {
         expect(rdoc.tickets).to.be.an.instanceof(Array)
 
         var expectedTickets = [ts.data.tickets[0].id, ts.data.tickets[1], ts.data.tickets[2].id].sort()
+        expect(rdoc.tickets.length).to.equal(expectedTickets.length)
+
         var actual = rdoc.tickets.toArray().sort()
         expect(actual).to.deep.equal(expectedTickets)
         done()
@@ -1637,9 +1657,11 @@ describe('Model populate tests', function () {
 
         var ticket2 = _.cloneDeep(ts.data.tickets[2])
         ticket2.profile = ts.data.profiles[1]
-        var expectedTicetkets = [ts.data.tickets[0].id, ts.data.tickets[1].id, ticket2].sort()
+        var expectedTickets = [ts.data.tickets[0].id, ts.data.tickets[1].id, ticket2].sort()
+        expect(rdoc.tickets.length).to.equal(expectedTickets.length)
+
         var actual = rdoc.tickets.toArray().sort()
-        expect(actual).to.deep.equal(expectedTicetkets)
+        expect(actual).to.deep.equal(expectedTickets)
         done()
       })
     })
@@ -1914,6 +1936,7 @@ describe('Model populate tests', function () {
 
         var expectedComments = _.sortBy([ts.data.comments[0]], 'id')
         expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         var actualComments = _.sortBy(rdoc.comments, 'id')
 
@@ -1950,6 +1973,7 @@ describe('Model populate tests', function () {
         var expectedComments = _.sortBy([ts.data.comments[1], ts.data.comments[2]], 'id')
 
         expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         var actualComments = _.sortBy(rdoc.comments, 'id')
 
@@ -1987,6 +2011,7 @@ describe('Model populate tests', function () {
         var expectedComments = _.sortBy([ts.data.comments[3], ts.data.comments[4], ts.data.comments[5]], 'id')
 
         expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         var actualComments = _.sortBy(rdoc.comments, 'id')
 
@@ -2071,6 +2096,7 @@ describe('Model populate tests', function () {
         var expectedUsers = [ts.data.users[2], ts.data.users[0], ts.data.users[2]]
 
         expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         var actualComments = _.sortBy(rdoc.comments, 'id')
 
@@ -2125,6 +2151,7 @@ describe('Model populate tests', function () {
         var expectedCompanies = [ts.data.companies[2], ts.data.companies[0], ts.data.companies[2]]
 
         expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         var actualComments = _.sortBy(rdoc.comments, 'id')
 
@@ -2193,6 +2220,9 @@ describe('Model populate tests', function () {
         var actualComments = rdoc.comments
         var expectedComments = [ts.data.comments[3].id, ts.data.comments[4], ts.data.comments[5].id]
 
+        expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
+
         actualComments.forEach(function (ac, i) {
           var expectedComment = expectedComments[i]
 
@@ -2230,6 +2260,9 @@ describe('Model populate tests', function () {
 
         var actualComments = rdoc.comments
         var expectedComments = [ts.data.comments[3].id, ts.data.comments[4], ts.data.comments[5]]
+
+        expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         actualComments.forEach(function (ac, i) {
           var expectedComment = expectedComments[i]
@@ -2269,6 +2302,9 @@ describe('Model populate tests', function () {
         var actualComments = rdoc.comments
         var expectedComments = [ts.data.comments[3].id, ts.data.comments[4], ts.data.comments[5]]
         var expectedUsers = [ts.data.users[2].email, ts.data.users[2], ts.data.users[0].email]
+
+        expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         actualComments.forEach(function (ac, i) {
           var expectedComment = expectedComments[i]
@@ -2324,6 +2360,9 @@ describe('Model populate tests', function () {
         var expectedComments = [ts.data.comments[3].id, ts.data.comments[4], ts.data.comments[5].id]
         var expectedUsers = [ts.data.users[2].email, ts.data.users[2], ts.data.users[0].email]
 
+        expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
+
         actualComments.forEach(function (ac, i) {
           var expectedComment = expectedComments[i]
           var expectedUser = expectedUsers[i]
@@ -2377,6 +2416,9 @@ describe('Model populate tests', function () {
         var actualComments = rdoc.comments
         var expectedComments = [ts.data.comments[3].id, ts.data.comments[4].id, ts.data.comments[5]]
         var expectedUsers = [ts.data.users[2].email, ts.data.users[2], ts.data.users[0].email]
+
+        expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         actualComments.forEach(function (ac, i) {
           var expectedComment = expectedComments[i]
@@ -2432,6 +2474,9 @@ describe('Model populate tests', function () {
         var expectedComments = [ts.data.comments[3].id, ts.data.comments[4].id, ts.data.comments[5]]
         var expectedUsers = [ts.data.users[2].email, ts.data.users[2], ts.data.users[0]]
 
+        expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
+
         actualComments.forEach(function (ac, i) {
           var expectedComment = expectedComments[i]
           var expectedUser = expectedUsers[i]
@@ -2486,6 +2531,9 @@ describe('Model populate tests', function () {
         var expectedComments = [ts.data.comments[3].id, ts.data.comments[4], ts.data.comments[5].id]
         var expectedUsers = [ts.data.users[2].email, ts.data.users[2], ts.data.users[0].email]
         var expectedCompany = ts.data.companies[2]
+
+        expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         actualComments.forEach(function (ac, i) {
           var expectedComment = expectedComments[i]
@@ -2551,6 +2599,9 @@ describe('Model populate tests', function () {
         var expectedComments = [ts.data.comments[3].id, ts.data.comments[4], ts.data.comments[5].id]
         var expectedUsers = [ts.data.users[2].email, ts.data.users[2], ts.data.users[0].email]
 
+        expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
+
         actualComments.forEach(function (ac, i) {
           var expectedComment = expectedComments[i]
           var expectedUser = expectedUsers[i]
@@ -2604,6 +2655,9 @@ describe('Model populate tests', function () {
         var actualComments = rdoc.comments
         var expectedComments = [ts.data.comments[3].id, ts.data.comments[4], ts.data.comments[5].id]
 
+        expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
+
         actualComments.forEach(function (ac, i) {
           var expectedComment = expectedComments[i]
 
@@ -2641,6 +2695,9 @@ describe('Model populate tests', function () {
 
         var actualComments = rdoc.comments
         var expectedComments = [ts.data.comments[3].id, ts.data.comments[4].id, ts.data.comments[5].id]
+
+        expect(rdoc.comments).to.be.an.instanceof(Array)
+        expect(rdoc.comments.length).to.equal(expectedComments.length)
 
         actualComments.forEach(function (ac, i) {
           var expectedComment = expectedComments[i]
