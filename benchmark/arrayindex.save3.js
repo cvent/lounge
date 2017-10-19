@@ -70,17 +70,14 @@ function complete (options, done) {
 
 const stats = {}
 
-const N = 9500
+const N = 9000
 const M = 5
 
 function createTest (options) {
   return function testerFn (done) {
     stats[options.name] = []
-    console.dir(options, { depth: 3, colors: true })
     setup(options, () => {
       async.timesSeries(N - 5, (n, cb) => {
-        // async.timesLimit(N - 5, 10, (n, cb) => {
-
         async.times(M, (m, tcb) => {
           marky.mark(options.name + n + m)
           testFnUser(n, () => {
@@ -105,8 +102,8 @@ function createDocs (done) {
   }, done)
 }
 
-const testSecond = createTest({ name: 'arrayindex.save.second', flush: true })
-const testSecondOld = createTest({ name: 'arrayindex.save.second.old', removeMutateIn: true, flush: true })
+const testSecond = createTest({ name: 'arrayindex.save.second - existing ref with mutateIn', flush: true })
+const testSecondOld = createTest({ name: 'arrayindex.save.second - existing ref no mutateIn', removeMutateIn: true, flush: true })
 
 counter = 0
 setup({}, () => {

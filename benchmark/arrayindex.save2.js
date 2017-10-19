@@ -72,12 +72,11 @@ function complete (options, done) {
 
 const stats = {}
 
-const N = 9500
+const N = 9000
 
 function createTest (options, testFn) {
   return function testerFn (done) {
     stats[options.name] = []
-    console.dir(options, { depth: 3, colors: true })
     setup(options, () => {
       async.timesSeries(N - 5, (n, cb) => {
       // async.timesLimit(N - 5, 10, (n, cb) => {
@@ -103,10 +102,10 @@ function createDocs (done) {
   }, done)
 }
 
-const testNew = createTest({ name: 'arrayindex.save.new', flush: true }, testFnUser)
-const testSecond = createTest({ name: 'arrayindex.save.second', flush: true }, testFnUser)
-const testNewOld = createTest({ name: 'arrayindex.save.new.old', removeMutateIn: true, flush: true }, testFnUser)
-const testSecondOld = createTest({ name: 'arrayindex.save.second.old', removeMutateIn: true, flush: true }, testFnUser)
+const testNew = createTest({ name: 'arrayindex.save - new ref using mutateIn', flush: true }, testFnUser)
+const testSecond = createTest({ name: 'arrayindex.save.second - existing ref using mutateIn', flush: true }, testFnUser)
+const testNewOld = createTest({ name: 'arrayindex.save.new - new ref no mutateIn', removeMutateIn: true, flush: true }, testFnUser)
+const testSecondOld = createTest({ name: 'arrayindex.save.second  - existing ref no mutateIn', removeMutateIn: true, flush: true }, testFnUser)
 
 counter = 0
 testNew(() => {
