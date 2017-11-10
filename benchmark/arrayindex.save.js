@@ -6,7 +6,7 @@ const async = require('async')
 var lounge = require('../')
 var userSchema, User, user, bucket
 
-function connect(options, done) {
+function connect (options, done) {
   if (lounge) {
     lounge.disconnect()
   }
@@ -30,7 +30,7 @@ function connect(options, done) {
   })
 }
 
-function setup(options, done) {
+function setup (options, done) {
   connect(options, err => {
     if (err) {
       return done(err)
@@ -49,7 +49,7 @@ function setup(options, done) {
 
 let counter = 0
 
-function testFnUser(deferred) {
+function testFnUser (deferred) {
   counter = counter + 1
 
   user = new User({
@@ -64,7 +64,7 @@ function testFnUser(deferred) {
 
 const results = {}
 
-function complete(options, done) {
+function complete (options, done) {
   results[options.name] = this.stats.mean * 1000
   if (options.flush) {
     bucket.manager().flush(done)
@@ -73,8 +73,8 @@ function complete(options, done) {
   }
 }
 
-function createTest(options, testFn) {
-  return function testerFn(done) {
+function createTest (options, testFn) {
+  return function testerFn (done) {
     console.dir(options, { depth: 3, colors: true })
     const onComplete = _.partial(complete, options, done)
     setup(options, () => {
@@ -89,7 +89,7 @@ function createTest(options, testFn) {
   }
 }
 
-function createDocs(done) {
+function createDocs (done) {
   async.timesLimit(3000, 50, (n, cb) => {
     const keyCounter = counter + n
     const k = userSchema.getRefKey('email', `joe+${keyCounter}@gmail.com`)
