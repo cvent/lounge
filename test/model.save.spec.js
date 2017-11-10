@@ -2509,7 +2509,7 @@ describe('subdocument array change test', function () {
               expect(docs[userKey].error).to.be.ok
               done()
             })
-          }, 3900)
+          }, 4000)
         })
       })
     })

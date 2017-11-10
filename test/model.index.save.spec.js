@@ -687,7 +687,7 @@ describe('Model index on save tests', function () {
     user.save(function (err, savedDoc) {
       expect(err).to.not.be.ok
 
-      user2.save(function (err, savedDoc) {
+      user2.save({ waitForIndex: true }, function (err, savedDoc) {
         expect(err).to.not.be.ok
         var k = userSchema.getRefKey('email', user.email)
         bucket.get(k, function (err, indexRes) {
@@ -754,52 +754,55 @@ describe('Model index on save tests', function () {
           return userSchema.getRefKey('email', em)
         })
 
-        bucket.getMulti(keys, function (err, indexRes) {
-          expect(err).to.not.be.ok
-
-          var ex = [
-            [user.id],
-            [user.id, user2.id],
-            [user2.id]
-          ]
-          _.values(indexRes).forEach(function (ir, i) {
-            checkRes(ir, ex[i].sort())
-          })
-
-          user.email = ['joe2@gmail.com', 'joe4@gmail.com']
-
-          user.save(function (err, indexRes) {
+        setTimeout(() => {
+          bucket.getMulti(keys, function (err, indexRes) {
             expect(err).to.not.be.ok
 
-            // old one
-            var k = userSchema.getRefKey('email', 'joe@gmail.com')
-            setTimeout(function () {
-              bucket.get(k, function (err, indexRes) {
-                expect(err).to.be.ok
-                expect(err.code).to.equal(couchbase.errors.keyNotFound)
+            var ex = [
+              [user.id],
+              [user.id, user2.id],
+              [user2.id]
+            ]
 
-                var keys = _.map(['joe2@gmail.com', 'joe3@gmail.com', 'joe4@gmail.com'], function (em) {
-                  return userSchema.getRefKey('email', em)
-                })
+            _.values(indexRes).forEach(function (ir, i) {
+              checkRes(ir, ex[i].sort())
+            })
 
-                bucket.getMulti(keys, function (err, indexRes) {
-                  expect(err).to.not.be.ok
+            user.email = ['joe2@gmail.com', 'joe4@gmail.com']
 
-                  var ex = [
-                    [user.id, user2.id],
-                    [user2.id],
-                    [user.id]
-                  ]
-                  _.values(indexRes).forEach(function (ir, i) {
-                    checkRes(ir, ex[i].sort())
+            user.save(function (err, indexRes) {
+              expect(err).to.not.be.ok
+
+              // old one
+              var k = userSchema.getRefKey('email', 'joe@gmail.com')
+              setTimeout(function () {
+                bucket.get(k, function (err, indexRes) {
+                  expect(err).to.be.ok
+                  expect(err.code).to.equal(couchbase.errors.keyNotFound)
+
+                  var keys = _.map(['joe2@gmail.com', 'joe3@gmail.com', 'joe4@gmail.com'], function (em) {
+                    return userSchema.getRefKey('email', em)
                   })
 
-                  done()
+                  bucket.getMulti(keys, function (err, indexRes) {
+                    expect(err).to.not.be.ok
+
+                    var ex = [
+                      [user.id, user2.id],
+                      [user2.id],
+                      [user.id]
+                    ]
+                    _.values(indexRes).forEach(function (ir, i) {
+                      checkRes(ir, ex[i].sort())
+                    })
+
+                    done()
+                  })
                 })
-              })
-            }, 20)
+              }, 20)
+            })
           })
-        })
+        }, 20)
       })
     })
   })
@@ -847,21 +850,23 @@ describe('Model index on save tests', function () {
 
       var key = userSchema.getRefKey('company', company.id)
 
-      bucket.get(key, function (err, indexRes) {
-        expect(err).to.not.be.ok
-        checkRes(indexRes, [user.id])
-
-        user2.save(function (err, savedDoc) {
+      setTimeout(() => {
+        bucket.get(key, function (err, indexRes) {
           expect(err).to.not.be.ok
-          expect(savedDoc).to.be.ok
+          checkRes(indexRes, [user.id])
 
-          bucket.get(key, function (err, indexRes) {
+          user2.save(function (err, savedDoc) {
             expect(err).to.not.be.ok
-            checkRes(indexRes, [user.id, user2.id])
-            done()
+            expect(savedDoc).to.be.ok
+
+            bucket.get(key, function (err, indexRes) {
+              expect(err).to.not.be.ok
+              checkRes(indexRes, [user.id, user2.id])
+              done()
+            })
           })
         })
-      })
+      }, 20)
     })
   })
 
@@ -923,43 +928,47 @@ describe('Model index on save tests', function () {
         return userSchema.getRefKey('company', c.id)
       })
 
-      bucket.getMulti(keys, function (err, indexRes) {
-        expect(err).to.not.be.ok
-
-        var expected = [
-          [user.email],
-          [user.email]
-        ]
-
-        _.values(indexRes).forEach(function (ir, i) {
-          checkRes(ir, expected[i].sort())
-        })
-
-        user2.save(function (err, savedDoc) {
+      setTimeout(() => {
+        bucket.getMulti(keys, function (err, indexRes) {
           expect(err).to.not.be.ok
-          expect(savedDoc).to.be.ok
 
-          keys = _.map([company, company2, company3], function (c) {
-            return userSchema.getRefKey('company', c.id)
+          var expected = [
+            [user.email],
+            [user.email]
+          ]
+
+          _.values(indexRes).forEach(function (ir, i) {
+            checkRes(ir, expected[i].sort())
           })
 
-          bucket.getMulti(keys, function (err, indexRes) {
+          user2.save(function (err, savedDoc) {
             expect(err).to.not.be.ok
+            expect(savedDoc).to.be.ok
 
-            expected = [
-              [user.email],
-              [user.email, user2.email],
-              [user2.email]
-            ]
-
-            _.values(indexRes).forEach(function (ir, i) {
-              checkRes(ir, expected[i].sort())
+            keys = _.map([company, company2, company3], function (c) {
+              return userSchema.getRefKey('company', c.id)
             })
 
-            done()
+            setTimeout(() => {
+              bucket.getMulti(keys, function (err, indexRes) {
+                expect(err).to.not.be.ok
+
+                expected = [
+                  [user.email],
+                  [user.email, user2.email],
+                  [user2.email]
+                ]
+
+                _.values(indexRes).forEach(function (ir, i) {
+                  checkRes(ir, expected[i].sort())
+                })
+
+                done()
+              })
+            }, 20)
           })
         })
-      })
+      }, 20)
     })
   })
 

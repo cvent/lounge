@@ -1,0 +1,8 @@
+date=18.10.2017
+node=8.6.0
+couchbase-server=4.6.1-3652
+N=9000
+M=5
+
+arrayindex.save.second - existing ref with mutateIn: 1.568205324120588
+arrayindex.save.second - existing ref no mutateIn: 3.8795407272646063

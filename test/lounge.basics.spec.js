@@ -20,13 +20,13 @@ describe('Lounge basics', function () {
     // instance methods
     expect(lounge.setOption).to.be.a('function')
     expect(lounge.getOption).to.be.a('function')
-    expect(lounge.set).to.be.a('function')
     expect(lounge.get).to.be.a('function')
     expect(lounge.connect).to.be.a('function')
     expect(lounge.disconnect).to.be.a('function')
     expect(lounge.insert).to.be.a('function')
     expect(lounge.upsert).to.be.a('function')
     expect(lounge.remove).to.be.a('function')
+    expect(lounge.replace).to.be.a('function')
   })
 
   describe('connect()', function () {

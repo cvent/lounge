@@ -693,7 +693,7 @@ describe('Model index on remove tests', function () {
 
     user.companies.push(company2)
 
-    user.save(function (err, savedDoc) {
+    user.save({ waitForIndex: true }, function (err, savedDoc) {
       expect(err).to.not.be.ok
       expect(savedDoc).to.be.ok
 
@@ -854,7 +854,7 @@ describe('Model index on remove tests', function () {
       expect(err).to.not.be.ok
       expect(savedDoc).to.be.ok
 
-      user2.save(function (err, savedDoc) {
+      user2.save({ waitForIndex: true }, function (err, savedDoc) {
         expect(err).to.not.be.ok
         expect(savedDoc).to.be.ok
 
@@ -940,7 +940,7 @@ describe('Model index on remove tests', function () {
       expect(err).to.not.be.ok
       expect(savedDoc).to.be.ok
 
-      user2.save(function (err, savedDoc) {
+      user2.save({ waitForIndex: true }, function (err, savedDoc) {
         expect(err).to.not.be.ok
         expect(savedDoc).to.be.ok
 
@@ -958,10 +958,14 @@ describe('Model index on remove tests', function () {
             keys: [user.id]
           },
           {
-            keys: [user.id, user2.id]
+            keys: [user.id, user2.id].sort()
           }
           ]
 
+          expect(indexResults.length).to.equal(2)
+          expect(indexResults[1]).to.be.ok
+          expect(indexResults[1].keys).to.be.ok
+          indexResults[1].keys.sort()
           expect(indexResults).to.deep.equal(expected)
 
           var keys2 = _.map(user2.email, function (e) {
@@ -981,10 +985,14 @@ describe('Model index on remove tests', function () {
               keys: [user2.id]
             },
             {
-              keys: [user.id, user2.id]
+              keys: [user.id, user2.id].sort()
             }
             ]
 
+            expect(indexResults.length).to.equal(3)
+            expect(indexResults[2]).to.be.ok
+            expect(indexResults[2].keys).to.be.ok
+            indexResults[2].keys.sort()
             expect(indexResults).to.deep.equal(expected)
 
             user.remove(function (err, rdoc) {
@@ -1169,7 +1177,7 @@ describe('Model index on remove tests', function () {
       expect(err).to.not.be.ok
       expect(savedDoc).to.be.ok
 
-      user2.save(function (err, savedDoc) {
+      user2.save({ waitForIndex: true }, function (err, savedDoc) {
         expect(err).to.not.be.ok
         expect(savedDoc).to.be.ok
 

@@ -28,7 +28,7 @@
     "docs": "npm run mddocs && npm run fixdocs && rm docs/apimd.md"
   },
   "dependencies": {
-    "async": "^2.4.1",
+    "async": "^2.6.0",
     "clone": "^2.1.0",
     "couchbase": "^2.4.1",
     "couchbase-driver": "^0.4.0",
@@ -44,14 +44,16 @@
     "with-callback": "^1.0.2"
   },
   "devDependencies": {
-    "ava": "^0.22.0",
+    "ava": "^0.23.0",
+    "benchmark": "^2.1.4",
     "chai": "^4.0.2",
     "jsdoc-to-markdown": "^3.0.0",
     "lodash3": "~3.10.0",
+    "marky": "^1.2.0",
     "mocha": "^4.0.0",
-    "nyc": "^11.0.0",
-    "standard": "^10.0.1",
-    "validator": "^9.0.0"
+    "nyc": "^11.3.0",
+    "standard": "^10.0.0",
+    "validator": "^9.1.1"
   },
   "ava": {
     "files": [

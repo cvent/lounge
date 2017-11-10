@@ -6,6 +6,7 @@ dump.rdb
 npm-debug.log
 .nyc_output
 test
+benchmark
 api-docs
 docs
 readme.hbs
