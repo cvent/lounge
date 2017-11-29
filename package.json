@@ -30,7 +30,7 @@
   "dependencies": {
     "async": "^2.6.0",
     "clone": "^2.1.0",
-    "couchbase-driver": "git://github.com/bojand/couchbase-driver.git#peerdep",
+    "couchbase-driver": "~0.5.0",
     "debug": "~3.1.0",
     "escape-string-regexp": "^1.0.5",
     "grappling-hook-lounge": "~1.0.0",
