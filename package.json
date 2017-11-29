@@ -30,8 +30,7 @@
   "dependencies": {
     "async": "^2.6.0",
     "clone": "^2.1.0",
-    "couchbase": "^2.4.1",
-    "couchbase-driver": "^0.4.0",
+    "couchbase-driver": "~0.5.0",
     "debug": "~3.1.0",
     "escape-string-regexp": "^1.0.5",
     "grappling-hook-lounge": "~1.0.0",
@@ -43,10 +42,14 @@
     "uuid": "^3.0.0",
     "with-callback": "^1.0.2"
   },
+  "peerDependencies": {
+    "couchbase": "^2.4.0"
+  },
   "devDependencies": {
-    "ava": "^0.23.0",
+    "ava": "^0.24.0",
     "benchmark": "^2.1.4",
     "chai": "^4.0.2",
+    "couchbase": "^2.4.0",
     "jsdoc-to-markdown": "^3.0.0",
     "lodash3": "~3.10.0",
     "marky": "^1.2.0",
