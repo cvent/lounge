@@ -16,7 +16,7 @@ test('should connect and get a bucket', async t => {
     lounge.disconnect()
   }
 
-  lounge = new lounge.Lounge() // recreate it
+  lounge = new lounge.Lounge({emitErrors: false}) // recreate it
 
   bucket = await lounge.connect({
     connectionString: 'couchbase://127.0.0.1',

@@ -229,4 +229,83 @@ describe('Events tests', function () {
       })
     })
   })
+
+  describe('Error suppression', function () {
+    it('Should emit \'error\' by default', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String
+      })
+
+      var User = lounge.model('User', userSchema)
+
+      const user = new User({
+        firstName: 'Bob',
+        lastName: 'Smith',
+        email: 'bob@gmail.com'
+      })
+
+      let loungeEmitted = false
+      let modelEmitted = false
+      let instanceEmitted = false
+
+      lounge.on('error', () => { loungeEmitted = true })
+      User.on('error', () => { modelEmitted = true })
+      user.on('error', () => { instanceEmitted = true })
+
+      process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL = true
+      user.save((err, savedDoc) => {
+        delete process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL
+
+        expect(err).to.be.ok
+        expect(savedDoc).to.not.be.ok
+
+        expect(loungeEmitted).to.be.true
+        expect(modelEmitted).to.be.true
+        expect(instanceEmitted).to.be.true
+
+        done()
+      })
+    })
+
+    it('Should not emit \'error\' when suppressed', function (done) {
+      lounge.setOption('emitErrors', false)
+
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String
+      })
+
+      var User = lounge.model('User', userSchema)
+
+      const user = new User({
+        firstName: 'Bob',
+        lastName: 'Smith',
+        email: 'bob@gmail.com'
+      })
+
+      let loungeEmitted = false
+      let modelEmitted = false
+      let instanceEmitted = false
+
+      lounge.on('error', () => { loungeEmitted = true })
+      User.on('error', () => { modelEmitted = true })
+      user.on('error', () => { instanceEmitted = true })
+
+      process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL = true
+      user.save((err, savedDoc) => {
+        delete process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL
+
+        expect(err).to.be.ok
+        expect(savedDoc).to.not.be.ok
+        expect(loungeEmitted).to.be.false
+        expect(modelEmitted).to.be.false
+        expect(instanceEmitted).to.be.false
+
+        done()
+      })
+    })
+  })
 })

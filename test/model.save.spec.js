@@ -18,7 +18,7 @@ describe('Model save tests', function () {
       lounge.disconnect()
     }
 
-    lounge = new lounge.Lounge() // recreate it
+    lounge = new lounge.Lounge({emitErrors: false}) // recreate it
 
     var cluster = testUtil.getCluser()
     bucket = cluster.openBucket('lounge_test', function (err) {
@@ -1655,6 +1655,7 @@ describe('Model save tests', function () {
         email: email,
         dateOfBirth: dob
       })
+
 
       var p = user.save()
       p.then(function (savedDoc) {
