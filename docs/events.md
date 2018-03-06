@@ -1,7 +1,7 @@
 # Events <a id="events"></a>
 
 All model instances inherit [`EventEmitter`](https://nodejs.org/api/events.html#events_class_events_eventemitter), and
-emit three events:
+emit four events:
 
 * `index` - when indexing of lookup document is successfully finished.
 * `save` - when the document was successfully saved.
@@ -95,4 +95,15 @@ var user = new User({
 })
 
 user.save() // prints 'saved User document: bob@gmail.com'
+```
+
+Errors are emitted by default, but if you do not have listeners attached, they will manifest as uncaught exceptions in your application.
+Error emitting can be disabled via your the config on your lounge instance (the other emit types will not be impacted):
+
+```js
+const lounge = new Lounge({emitErrors: false});
+
+// or
+const lounge = new Lounge();
+lounge.setOption('emitErrors', false);
 ```
