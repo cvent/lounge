@@ -98,7 +98,7 @@ user.save() // prints 'saved User document: bob@gmail.com'
 ```
 
 Errors are emitted by default, but if you do not have listeners attached, they will manifest as uncaught exceptions in your application.
-Error emitting can be disabled via your the config on your lounge instance (the other emit types will not be impacted):
+Error emitting can be disabled via `emitErrors` config variable (other event types will not be impacted):
 
 ```js
 const lounge = new Lounge({emitErrors: false});
