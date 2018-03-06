@@ -97,7 +97,7 @@ var user = new User({
 user.save() // prints 'saved User document: bob@gmail.com'
 ```
 
-Errors are emitted by default, but if you do not have listeners attached, they will manifest as uncaught exceptions in your application.
+Errors are emitted by default. If you do not have listeners attached they will manifest as uncaught exceptions in your application.
 Error emitting can be disabled via `emitErrors` config variable (other event types will not be impacted):
 
 ```js
