@@ -1396,6 +1396,40 @@ describe('Model save tests', function () {
     })
   })
 
+  it('should properly save an empty model when it has an indexed field', function (done) {
+    var userSchema = lounge.schema({
+      firstName: String,
+      lastName: String,
+      email: { type: String, index: true }
+    })
+
+    var User = lounge.model('User', userSchema)
+
+    var user = new User()
+
+    user.save(function (err, savedDoc) {
+      expect(err).to.not.be.ok
+      expect(savedDoc).to.be.ok
+      expect(savedDoc).to.be.an('object')
+      expect(savedDoc.id).to.be.ok
+      expect(savedDoc.id).to.be.a('string')
+
+      bucket.get(savedDoc.getDocumentKeyValue(true), function (err, dbDoc) {
+        expect(err).to.not.be.ok
+        expect(dbDoc).to.be.ok
+        expect(dbDoc.value).to.be.ok
+        expect(dbDoc.value).to.be.an('object')
+
+        var expected = {
+          id: savedDoc.getDocumentKeyValue(true)
+        }
+
+        expect(dbDoc.value).to.deep.equal(expected)
+        done()
+      });
+    })
+  })
+
   describe('save() pre hooks tests', function () {
     this.slow(200)
 

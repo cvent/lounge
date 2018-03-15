@@ -646,6 +646,28 @@ describe('Model basics', function () {
 
       expect(user._isNew).to.be.undefined
     })
+
+    it('should properly create an empty model when it has an indexed field', function () {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: { type: String, index: true, indexType: 'array' }
+      })
+
+      var User = lounge.model('User', userSchema)
+
+      var user = new User()
+
+      expect(user instanceof User).to.be.ok
+      expect(user instanceof lounge.Document).to.be.ok
+      expect(user instanceof lounge.Model).to.be.ok
+
+      expect(user.id).to.be.a('string')
+      expect(user.id).to.be.ok
+      expect(user.firstName).to.not.be.ok
+      expect(user.lastName).to.not.be.ok
+      expect(user.email).to.not.be.ok
+    })
   })
 
   describe('Nested properties tests', function () {
