@@ -1,9 +1,9 @@
 language: node_js
 node_js:
-  - "6.0"
-  - "6"
-  - "8.0"
   - "8"
+  - "8.0"
+  - "6"
+  - "6.0"
 env:
   - CXX=g++-4.8
 addons:
@@ -12,3 +12,8 @@ addons:
       - ubuntu-toolchain-r-test
     packages:
       - g++-4.8
+before_install:
+  - npm install -g npm
+  - npm install -g greenkeeper-lockfile@1
+before_script: greenkeeper-lockfile-update
+after_script: greenkeeper-lockfile-upload
