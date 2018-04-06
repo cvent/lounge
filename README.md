@@ -7,6 +7,8 @@
 
 # Lounge
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/bojand/lounge.svg)](https://greenkeeper.io/)
+
 > Simple Mongoose-inspired ODM for [Couchbase](http://www.couchbase.com).
 
 [![npm version](https://img.shields.io/npm/v/lounge.svg?style=flat-square)](https://www.npmjs.com/package/lounge)
