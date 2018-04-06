@@ -74,6 +74,46 @@ describe('Model index query tests', function () {
       })
     })
 
+    it('should query using simple reference document with a long index value', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: { type: String, index: true }
+      })
+
+      var User = lounge.model('User', userSchema)
+
+      var userData = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmith@gmail.com'
+      }
+
+      var user = new User(userData)
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok
+        expect(savedDoc).to.be.ok
+
+        User.findByEmail(user.email, function (err, rdoc) {
+          expect(err).to.not.be.ok
+
+          expect(rdoc).to.be.ok
+          expect(rdoc).to.be.an('object')
+          expect(rdoc).to.be.an.instanceof(User)
+          expect(rdoc.id).to.be.ok
+          expect(rdoc.id).to.be.a('string')
+
+          expect(rdoc.id).to.equal(user.id)
+          expect(rdoc.firstName).to.equal(userData.firstName)
+          expect(rdoc.lastName).to.equal(userData.lastName)
+          expect(rdoc.email).to.equal(userData.email)
+
+          done()
+        })
+      })
+    })
+
     it('should query using compound indexes', function (done) {
       var userSchema = lounge.schema({
         firstName: String,
@@ -90,6 +130,51 @@ describe('Model index query tests', function () {
         firstName: 'Joe',
         lastName: 'Smith',
         email: 'joe@gmail.com',
+        username: 'jsmith'
+      }
+
+      var user = new User(userData)
+
+      user.save(function (err, savedDoc) {
+        expect(err).to.not.be.ok
+        expect(savedDoc).to.be.ok
+
+        User.findByEmailAndUsername(user.email, user.username, function (err, rdoc) {
+          expect(err).to.not.be.ok
+
+          expect(rdoc).to.be.ok
+          expect(rdoc).to.be.an('object')
+          expect(rdoc).to.be.an.instanceof(User)
+          expect(rdoc.id).to.be.ok
+          expect(rdoc.id).to.be.a('string')
+
+          expect(rdoc.id).to.equal(user.id)
+          expect(rdoc.firstName).to.equal(userData.firstName)
+          expect(rdoc.lastName).to.equal(userData.lastName)
+          expect(rdoc.email).to.equal(userData.email)
+          expect(rdoc.username).to.equal(userData.username)
+
+          done()
+        })
+      })
+    })
+
+    it('should query using compound indexes and a long index value', function (done) {
+      var userSchema = lounge.schema({
+        firstName: String,
+        lastName: String,
+        email: String,
+        username: String
+      })
+
+      userSchema.index(['email', 'username'])
+
+      var User = lounge.model('User', userSchema)
+
+      var userData = {
+        firstName: 'Joe',
+        lastName: 'Smith',
+        email: 'joesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmith@gmail.com',
         username: 'jsmith'
       }
 
