@@ -72,3 +72,22 @@ Index lookup documents are automatically managed by lounge when documents are sa
 
 You can control reference document key casing using `refKeyCase` option. Options are `'upper'` or `'lower'`.
 This will make query lookups case insensitive.
+
+
+Couchbase keys can only be 250 bytes, so if a lookup document key is too long, its index values will be hashed and the prefix `hashed_` will precede the hashed value.
+
+```js
+var userSchema = lounge.schema({
+  name: String,
+  email: { type: String, index: true }
+})
+
+var user = new User({
+  name: 'Joe Smith',
+  email: 'joesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmithjoesmith@gmail.com'
+})
+
+user.save()
+```
+
+will result in lookup document key `$_ref_by_email_hashed_ac2685991d01d0f4a308d528868e8b9b`.
