@@ -747,6 +747,7 @@ instances before connecting to the database.
 | options | <code>Object</code> |  |
 | options.connectionString | <code>String</code> | connection string for the cluster |
 | options.bucket | <code>String</code> \| <code>Bucket</code> | name of the bucket or the actual Couchbase <code>bucket</code> instance |
+| options.username | <code>String</code> | username |
 | options.password | <code>String</code> | password |
 | options.certpath | <code>String</code> | certpath for cluster |
 | options.mock | <code>Boolean</code> | whether to use mocking |
