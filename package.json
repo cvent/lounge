@@ -57,7 +57,7 @@
     "mocha": "^5.1.1",
     "nyc": "^11.7.1",
     "standard": "^11.0.1",
-    "validator": "^9.4.1"
+    "validator": "^10.0.0"
   },
   "ava": {
     "files": [
