@@ -28,7 +28,7 @@
     "docs": "npm run mddocs && npm run fixdocs && rm docs/apimd.md"
   },
   "dependencies": {
-    "async": "^2.6.0",
+    "async": "^2.6.1",
     "clone": "^2.1.2",
     "couchbase-driver": "^0.5.1",
     "debug": "~3.1.0",
@@ -50,12 +50,12 @@
     "benchmark": "^2.1.4",
     "chai": "^4.0.2",
     "couchbase": "^2.4.6",
-    "greenkeeper-lockfile": "^1.14.0",
+    "greenkeeper-lockfile": "^1.15.1",
     "jsdoc-to-markdown": "^4.0.0",
     "lodash3": "~3.10.0",
     "marky": "^1.2.0",
-    "mocha": "^5.1.1",
-    "nyc": "^11.7.1",
+    "mocha": "^5.2.0",
+    "nyc": "^11.8.0",
     "standard": "^11.0.1",
     "validator": "^10.0.0"
   },
