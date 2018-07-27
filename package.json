@@ -22,7 +22,7 @@
     "test": "npm run test-mocha && npm run test-ava",
     "test-mocha": "LOUNGE_COUCHBASE_MOCK=true mocha --exit test/*.spec.js",
     "test-ava": "LOUNGE_COUCHBASE_MOCK=true ava -v -s",
-    "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha",
+    "cover": "LOUNGE_COUCHBASE_MOCK=true nyc npm run test",
     "mddocs": "jsdoc2md lib/*.js > docs/apimd.md",
     "fixdocs": "cat docs/apimd.md | gsed 's/<a name=\"\\(.*\\)\"><\\/a>/<a name=\"\\L\\1\" id=\"\\L\\1\" data-id=\"\\L\\1\"><\\/a>/' | sed -e 's/e\\+/e/g; s/l\\+/l/g; s/t\\+/t/g; s/a\\+/a/g' > docs/api.md",
     "docs": "npm run mddocs && npm run fixdocs && rm docs/apimd.md"
