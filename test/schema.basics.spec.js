@@ -601,13 +601,13 @@ describe('Schema basics', function () {
       var User = lounge.model('User', userSchema)
       var user = new User()
 
-      user.email = 'joe@gmail.com'
+      user.email = 'joe123@gmail.com'
 
-      expect(user.email).to.equal('joe@gmail.com')
+      expect(user.email).to.equal('joe123@gmail.com')
 
       user.email = 'jsmith'
 
-      expect(user.email).to.equal('joe@gmail.com')
+      expect(user.email).to.equal('joe123@gmail.com')
     })
   })
 })
