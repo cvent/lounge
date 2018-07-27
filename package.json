@@ -22,7 +22,7 @@
     "test": "npm run test-mocha && npm run test-ava",
     "test-mocha": "LOUNGE_COUCHBASE_MOCK=true mocha --exit test/*.spec.js",
     "test-ava": "LOUNGE_COUCHBASE_MOCK=true ava -v -s",
-    "cover": "LOUNGE_COUCHBASE_MOCK=true nyc mocha",
+    "cover": "LOUNGE_COUCHBASE_MOCK=true nyc npm run test",
     "mddocs": "jsdoc2md lib/*.js > docs/apimd.md",
     "fixdocs": "cat docs/apimd.md | gsed 's/<a name=\"\\(.*\\)\"><\\/a>/<a name=\"\\L\\1\" id=\"\\L\\1\" data-id=\"\\L\\1\"><\\/a>/' | sed -e 's/e\\+/e/g; s/l\\+/l/g; s/t\\+/t/g; s/a\\+/a/g' > docs/api.md",
     "docs": "npm run mddocs && npm run fixdocs && rm docs/apimd.md"
@@ -39,7 +39,7 @@
     "memoizee": "^0.4.12",
     "mpath": "^0.4.1",
     "traverse": "^0.6.6",
-    "uuid": "^3.2.1",
+    "uuid": "^3.3.2",
     "with-callback": "^1.0.2"
   },
   "peerDependencies": {
@@ -49,15 +49,15 @@
     "ava": "^0.25.0",
     "benchmark": "^2.1.4",
     "chai": "^4.0.2",
-    "couchbase": "^2.4.6",
+    "couchbase": "^2.5.1",
     "greenkeeper-lockfile": "^1.15.1",
     "jsdoc-to-markdown": "^4.0.0",
     "lodash3": "~3.10.0",
     "marky": "^1.2.0",
     "mocha": "^5.2.0",
-    "nyc": "^11.8.0",
+    "nyc": "^12.0.2",
     "standard": "^11.0.1",
-    "validator": "^10.0.0"
+    "validator": "^10.4.0"
   },
   "ava": {
     "files": [
