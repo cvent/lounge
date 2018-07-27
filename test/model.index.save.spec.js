@@ -1083,4 +1083,39 @@ describe('Model index on save tests', function () {
       })
     })
   })
+
+  it('should index sucessfully with matching ref but different case, when refKeyCase is set', function (done) {
+    var userSchema = lounge.schema({
+      email: { type: String, index: true, indexType: 'array', refKeyCase: 'lower' }
+    })
+
+    userSchema.pre('save', function (next) {
+      if (this.email) {
+        this.email = this.email.toLowerCase()
+      }
+
+      next()
+    })
+
+    var User = lounge.model('User', userSchema)
+
+    var user = new User({
+      email: 'joe@gmail.com'
+    })
+
+    user.save({ waitForIndex: true }, function (err, savedDoc) {
+      expect(err).to.not.be.ok
+      expect(savedDoc).to.be.ok
+
+      var user2 = new User({
+        email: 'JOE@gmail.com'
+      })
+      user2.save({ waitForIndex: true }, function (err, savedDoc) {
+        expect(err).to.not.be.ok
+        expect(savedDoc).to.be.ok
+
+        done()
+      })
+    })
+  })
 })
