@@ -1,4 +1,4 @@
-# Removing Documents <a id="removing"></a>
+# Removing Documents
 
 Removing documents is done using `remove` function that every model instance has. This will execute all pre
 'remove' middleware and then perform Couchbase `remove` operation. It will also perform lookup document updates

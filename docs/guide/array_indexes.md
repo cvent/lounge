@@ -1,3 +1,7 @@
+---
+title: Array Indexes
+---
+
 # Array index type
 
 If we can have multiple documents to be indexed by the same value then want the the reference lookup document to

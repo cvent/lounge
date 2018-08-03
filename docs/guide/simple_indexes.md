@@ -1,4 +1,4 @@
-# Simple Indexes <a id="indexes"></a>
+# Simple Indexes
 
 Lounge provides Indexing mechanism using [reference lookup documents](http://docs.couchbase.com/developer/dev-guide-3.0/lookups.html).
 This allows us to set up simple lookups for easier document retrieval where we do not need to do create view

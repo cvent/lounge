@@ -1,6 +1,6 @@
-# Modeling <a id="model"></a>
+# Modeling
 
-#### Basics
+## Basics
 
 We begin defining a data model using a schema.
 
@@ -74,7 +74,7 @@ console.log(cat2)
 console.log(cat2.modelName) // Cat
 ```
 
-#### Document keys
+## Document keys
 
 By default schemas come with an `id` property as the document key, and the automatically generated value will be
 a [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier)
@@ -156,7 +156,7 @@ user.save()
 This will automatically generate a uuid `id` property and save the user document under key
 similar to `user::110ec58a-a0f2-4ac4-8393-c866d813b8d1`.
 
-#### Data manipulation
+## Data manipulation
 
 Data in Model instances can be access directly or using `get` function. Similarly it can be manipulated using
 either assignment operator or using the `set` function. In either case the input value is validated to be of proper type.
@@ -184,7 +184,7 @@ user.set('setup', 'yup') // nope
 user.setup = true // OK
 ```
 
-#### Validation
+## Validation
 
 Lounge does automatic validation against input data using the type information specified in the schema definition.
 We can provide custom validation in schema definition by providing `validator` function.
@@ -205,7 +205,7 @@ user.email = 'bsmith' // Nope
 console.log(user.email) // 'bob@gmail.com'
 ```
 
-#### Virtuals
+## Virtuals
 
 Virtuals are document properties that you can get and set but that do not get persisted to the database.
 The getters are useful for formatting or combining fields, while setters are useful for de-composing a single value
@@ -241,7 +241,7 @@ console.log(user.lastName) // Jones
 
 If no `set` function is defined the virtual is read-only.
 
-#### Statics
+## Statics
 
 Adding static methods to Models can be accomplished using `static()` schema function
 
@@ -261,7 +261,7 @@ User.foo(1, 2) // 3
 
 We can also pass an object of function keys and function values, and they will all be added.
 
-#### Methods
+## Methods
 
 Similarly adding instance methods to Models can be done using `method()` schema function.
 
@@ -282,16 +282,16 @@ user.fullName() // 'Bob Smith'
 
 We can also pass an object of function keys and function values, and they will all be added.
 
-#### init() method
+## init() method
 
 There is a special `init` method that if specified in schema definition will be called at the end of model creation.
 You can do additional setup here. This method is not passed in any arguments.
 
-#### _isNew property
+## _isNew property
 
 There is a special `_isNew` property that specified that an instance was created without a key property and that we generated one. This is only applicable for models with schemas where `generate` is set to `true`, that is we want `Lounge` to generate key automatically if not present.
 
-#### toObject()
+## toObject()
 
 Model instances come with `toObject` function that is automatically used for `console.log` inspection.
 
@@ -331,11 +331,11 @@ var user = new User({
 console.log(user) // { name: 'Joe', email: 'joe@gmail.com' }
 ```
 
-#### toJSON()
+## toJSON()
 
 Similar to `toObject`. The return value of this method is used in calls to `JSON.stringify`.
 
-#### CAS
+## CAS
 
 All document instances have a read-only property `cas` that returns the string representation of the CAS object retrieved
 from the database. The `cas` property is initialized only once a document has been retrieved from the database using one
@@ -349,7 +349,7 @@ console.log(doc.getCAS()) // String: 00000000a71626e4
 console.log(doc.getCAS(true)) // Object: CouchbaseCas<11338961768815788032>
 ```
 
-#### Useful member variables
+## Useful member variables
 
 All model instances come with a `modelName` read only property that you can use to access the model name. As well
 instances have `schema` property that represents the models schema used when creating the model with `model()` function.
@@ -367,7 +367,7 @@ console.log(user.modelName) // 'User'
 console.log(user.schema instanceof lounge.Schema) // true
 ```
 
-#### Errors
+## Errors
 
 When setting a value fails, an error is generated silently. Errors can be retrieved with `getErrors()` and cleared with `clearErrors()`.
 
