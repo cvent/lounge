@@ -23,7 +23,7 @@
     "test-mocha": "LOUNGE_COUCHBASE_MOCK=true mocha --exit test/*.spec.js",
     "test-ava": "LOUNGE_COUCHBASE_MOCK=true ava -v -s",
     "cover": "LOUNGE_COUCHBASE_MOCK=true nyc npm run test",
-    "apidocs": "jsdoc2md lib/*.js > docs/api.readme.md",
+    "apidocs": "jsdoc2md lib/*.js > docs/api/readme.md",
     "docs:dev": "vuepress dev docs",
     "docs:build": "npm run apidocs && vuepress build docs"
   },

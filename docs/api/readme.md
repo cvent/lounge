@@ -1,10 +1,3 @@
----
-sidebar: auto
-sidebarDepth: 0
----
-
-# API Reference
-
 ## Classes
 
 <dl>
@@ -642,7 +635,7 @@ Static version of <code>getDocumentKeyValue</code>.
 | Param | Type | Description |
 | --- | --- | --- |
 | id | <code>String</code> | id of the document |
-| full | <code>Boolean</code> | If <options>true</options> the full expanded value of the key will be returned.                  If there were any suffix and / or prefix defined in schema they are applied. |
+| full | <code>Boolean</code> | If <code>true</code> the full expanded value of the key will be returned.                  If there were any suffix and / or prefix defined in schema they are applied. |
 
 **Example**  
 ```js
@@ -1714,6 +1707,4 @@ Returns whether this schema has the specified reference path
 | Param | Type | Description |
 | --- | --- | --- |
 | path | <code>String</code> | path to check |
-
-
 

@@ -39,6 +39,23 @@ module.exports = {
             'debugging'
           ]
         }
+      ],
+      '/api/': [
+        {
+          title: 'API Reference',
+          collapsable: false,
+          children: [
+            ['#classes', 'Classes'],
+            ['#abstractbasemodel', 'AbstractBaseModel'],
+            ['#basemodel', 'BaseModel'],
+            ['#CouchbaseDocument', 'CouchbaseDocument'],
+            ['#Document', 'Document'],
+            ['#Lounge', 'Lounge'],
+            ['#Model', 'Model'],
+            ['#modelinstance', 'ModelInstance'],
+            ['#schema', 'Schema']
+          ]
+        }
       ]
     }
   }
