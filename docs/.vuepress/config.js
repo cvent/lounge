@@ -47,12 +47,12 @@ module.exports = {
           children: [
             ['#classes', 'Classes'],
             ['#abstractbasemodel', 'AbstractBaseModel'],
-            ['#basemodel', 'BaseModel'],
-            ['#CouchbaseDocument', 'CouchbaseDocument'],
-            ['#Document', 'Document'],
-            ['#Lounge', 'Lounge'],
-            ['#Model', 'Model'],
-            ['#modelinstance', 'ModelInstance'],
+            ['#basemodel-⇐-eventemitter', 'BaseModel'],
+            ['#couchbasedocument-⇐-document', 'CouchbaseDocument'],
+            ['#document-⇐-basemodel', 'Document'],
+            ['#lounge-⇐-bucket', 'Lounge'],
+            ['#model-⇐-couchbasemocument', 'Model'],
+            ['#modelinstance-⇐-model', 'ModelInstance'],
             ['#schema', 'Schema']
           ]
         }
