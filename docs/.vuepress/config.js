@@ -55,15 +55,15 @@ module.exports = {
       //   ]
       // }
       '/api/': [
-        ['','Classes'],
-        ['AbstractBaseModel','AbstractBaseModel'],
-        ['BaseModel','BaseModel'],
-        ['CouchbaseDocument','CouchbaseDocument'],
+        ['', 'Classes'],
+        ['AbstractBaseModel', 'AbstractBaseModel'],
+        ['BaseModel', 'BaseModel'],
+        ['CouchbaseDocument', 'CouchbaseDocument'],
         ['Document', 'Document'],
-        ['Lounge','Lounge'],
-        ['Model','Model'],
-        ['ModelInstance','ModelInstance'],
-        ['Schema','Schema']
+        ['Lounge', 'Lounge'],
+        ['Model', 'Model'],
+        ['ModelInstance', 'ModelInstance'],
+        ['Schema', 'Schema']
       ]
       // '/api/': [
       //   {

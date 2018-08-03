@@ -7,7 +7,7 @@ sidebarDepth: 0
 ## Classes
 
 <dl>
-<dt><a href="/lounge/api/abstractBaseModel.html">AbstractBaseModel</a></dt>
+<dt><a href="/lounge/api/AbstractBaseModel.html">AbstractBaseModel</a></dt>
 <dd><p>Abstract Base Model representation for all created Document instances.
 Represents just the document data and generic properties and functions.
 Also used for &quot;object&quot; abstraction / representation of sub documents that are not actual Models / Documents.
