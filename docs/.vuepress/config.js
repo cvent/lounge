@@ -39,7 +39,49 @@ module.exports = {
             'debugging'
           ]
         }
+      ],
+      // '/api/': {
+      //   title: 'API Reference',
+      //   collapsable: false,
+      //   children: [
+      //     ['AbstractBaseModel', 'AbstractBaseModel'],
+      //     ['BaseModel', 'BaseModel'],
+      //     ['CouchbaseDocument', 'CouchbaseDocument'],
+      //     ['Document', 'Document'],
+      //     ['Lounge', 'Lounge'],
+      //     ['Model', 'Model'],
+      //     ['ModelInstance', 'ModelInstance'],
+      //     ['Schema', 'Schema']
+      //   ]
+      // }
+      '/api/': [
+        ['','Classes'],
+        ['AbstractBaseModel','AbstractBaseModel'],
+        ['BaseModel','BaseModel'],
+        ['CouchbaseDocument','CouchbaseDocument'],
+        ['Document', 'Document'],
+        ['Lounge','Lounge'],
+        ['Model','Model'],
+        ['ModelInstance','ModelInstance'],
+        ['Schema','Schema']
       ]
+      // '/api/': [
+      //   {
+      //     title: 'API Reference',
+      //     collapsable: false,
+      //     children: [
+      //       ['#classes', 'Classes'],
+      //       ['#abstractbasemodel', 'AbstractBaseModel'],
+      //       ['#basemodel-⇐-eventemitter', 'BaseModel'],
+      //       ['#couchbasedocument', 'CouchbaseDocument'],
+      //       ['#document', 'Document'],
+      //       ['#lounge', 'Lounge'],
+      //       ['#model', 'Model'],
+      //       ['#modelinstance', 'ModelInstance'],
+      //       ['#schema', 'Schema']
+      //     ]
+      //   }
+      // ]
     }
   }
   // markdown: {
