@@ -1,7 +1,7 @@
 module.exports = {
   title: 'Lounge',
   description: 'Simple Mongoose-inspired ODM for Couchbase',
-  base: '/lounge',
+  base: '/lounge/',
   themeConfig: {
     nav: [
       {
