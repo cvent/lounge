@@ -19,8 +19,6 @@ actionLink: /guide/
 footer: MIT Licensed | Copyright © 2018 - present Bojan D.
 ---
 
-<hr>
-
 ```js
 var lounge = require('lounge')
 lounge.connect({
