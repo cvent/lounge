@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: /sofa 128.png
+heroImage: /sofa128.png
 actionText: Get Started →
 features:
 - title: Schema definition
@@ -20,8 +20,6 @@ footer: MIT Licensed | Copyright © 2018 - present Bojan D.
 ---
 
 <hr>
-
-### As Easy as 1, 2, 3
 
 ```js
 var lounge = require('lounge')
