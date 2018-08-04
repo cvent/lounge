@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: /sofa128.png
+heroImage: /lounge/sofa128.png
 actionText: Get Started →
 features:
 - title: Schema definition

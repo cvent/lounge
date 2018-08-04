@@ -1,6 +1,6 @@
 <div align="center">
 	<br>
-	<img src="docs/.vuepress/public/sofa 256.png" alt="Lounge">
+	<img src="docs/.vuepress/public/sofa256.png" alt="Lounge">
 	<br>
   <br>
 </div>
