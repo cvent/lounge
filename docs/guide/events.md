@@ -1,4 +1,4 @@
-# Events <a id="events"></a>
+# Events
 
 All model instances inherit [`EventEmitter`](https://nodejs.org/api/events.html#events_class_events_eventemitter), and
 emit four events:

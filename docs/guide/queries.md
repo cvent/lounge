@@ -1,4 +1,4 @@
-# Index queries <a id="queries"></a>
+# Index queries
 
 Any indexed property the Model will automatically get a `findBy*` static function for easier lookup.
 For example code above:

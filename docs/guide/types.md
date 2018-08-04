@@ -1,4 +1,4 @@
-# Types <a id="types"></a>
+# Types
 
 Supported types:
 - String
@@ -32,9 +32,9 @@ var NotEmptyString = { type: String, minLength: 1 }
 country: { type: NotEmptyString, default: 'USA' }
 ```
 
-### General attributes
+## General attributes
 
-#### transform
+### transform
 
 Called immediately when value is set and before any typecast is done.
 
@@ -48,7 +48,7 @@ name: {
 }
 ```
 
-#### validate
+### validate
 
 Called immediately when value is set and before any typecast is done. Can be used for validating input data.
 If you return `false` the write operation will be cancelled.
@@ -63,7 +63,7 @@ name: {
 }
 ```
 
-#### default
+### default
 
 Provide default value. You may pass value directly or pass a function which will be executed when the object is initialized. The function is executed in the context of the object and can use "this" to access other properties (which .
 
@@ -71,7 +71,7 @@ Provide default value. You may pass value directly or pass a function which will
 country: { type: String, default: 'USA' }
 ```
 
-#### get
+### get
 Provide function to transform value when retrieved. Executed in the context of the object and can use `this` to access properties.
 
 ```js
@@ -83,7 +83,7 @@ string: {
 }
 ```
 
-#### readOnly
+### readOnly
 If `true`, the value can be read but cannot be written to. This can be useful for creating fields that reflect other values.
 
 ```js
@@ -96,20 +96,20 @@ fullName: {
 }
 ```
 
-#### invisible
+### invisible
 If `true`, the value can be written to but isn't outputted as an index when `toObject()` is called.
 This can be useful for hiding internal variables.
 
-#### serializable
+### serializable
 By default all values defined in the schema except those that are set to invisible using the property above are written
 to the database when the document is saved. If this property is set to `false`, the value can be written to and can be
 read and will be visible using `toObject` and `toJSON` methods but is not written when model is saved to the database.
 This can be useful when you need some "working" properties that you never want to serialized but otherwise passed around
 and visible.
 
-### String
+## String
 
-#### stringTransform
+### stringTransform
 
 Called after value is typecast to string **if** value was successfully typecast but called before all validation.
 
@@ -123,7 +123,7 @@ postalCode: {
 }
 ```
 
-#### regex
+### regex
 
 Validates string against Regular Expression. If string doesn't match, it's rejected.
 
@@ -134,7 +134,7 @@ memberCode: {
 }
 ```
 
-#### enum
+### enum
 
 Validates string against array of strings. If not present, it's rejected.
 
@@ -145,7 +145,7 @@ gender: {
 }
 ```
 
-#### minLength
+### minLength
 
 Enforces minimum string length.
 
@@ -153,7 +153,7 @@ Enforces minimum string length.
 notEmpty: { type: String, minLength: 1 }
 ```
 
-#### maxLength
+### maxLength
 
 Enforces maximum string length.
 
@@ -161,16 +161,16 @@ Enforces maximum string length.
 stateAbbrev: { type: String, maxLength: 2 }
 ```
 
-#### clip
+### clip
 If `true`, clips string to maximum string length instead of rejecting string.
 
 ```js
 bio: { type: String, maxLength: 255, clip: true }
 ```
 
-### Number
+## Number
 
-#### min
+### min
 
 Number must be > min attribute or it's rejected.
 
@@ -178,7 +178,7 @@ Number must be > min attribute or it's rejected.
 positive: { type: Number, min: 0 }
 ```
 
-#### max
+### max
 
 Number must be < max attribute or it's rejected.
 
@@ -186,9 +186,9 @@ Number must be < max attribute or it's rejected.
 negative: { type: Number, max: 0 }
 ```
 
-### Array
+## Array
 
-#### unique
+### unique
 
 Ensures duplicate-free array, using `===` to test object equality.
 
@@ -196,7 +196,7 @@ Ensures duplicate-free array, using `===` to test object equality.
 emails: { type: Array, unique: true, arrayType: String }
 ```
 
-#### arrayType
+### arrayType
 
 Elements within the array will be typed to the attributes defined.
 
@@ -216,9 +216,9 @@ An alternative shorthand version is also available -- wrap the properties within
 aliases: [{ type: String, minLength: 1 }]
 ```
 
-### Object
+## Object
 
-#### objectType
+### objectType
 Allows you to define a typed object.
 
 ```js
@@ -236,9 +236,9 @@ company: {
 }
 ```
 
-### Alias
+## Alias
 
-#### target (required)
+### target (required)
 
 The target key of the property being aliased.
 

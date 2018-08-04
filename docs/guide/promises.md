@@ -1,4 +1,4 @@
-# Promises <a id="promises"></a>
+# Promises
 
 In addition of callbacks, Lounge utilizes native [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) for async operations. We support callback-style and Promise-style API, but you should not mix and use both at the same time. If a callback is provided a promise is not returned and normal callback-style
 control flow happens. If no callback is provided a promise is returned, of course you do not have to do anything with it if you do not care about the result of an operation. Resolved promises only return the first success result parameter, so

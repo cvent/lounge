@@ -1,3 +1,7 @@
+---
+title: Embedded Indexes
+---
+
 # Indexing on embedded documents
 
 Finally, indexing can be accomplished on embedded documents.

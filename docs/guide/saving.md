@@ -1,4 +1,4 @@
-# Saving Documents <a id="saving"></a>
+# Saving Documents
 
 Saving documents is done using `save` function that every model instance has. This will execute all pre
 'save' middleware and then perform Couchbase `upsert` operation on any subdocuments and the actual document. It will also

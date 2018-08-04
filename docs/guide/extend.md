@@ -1,4 +1,4 @@
-# Schema Extension <a id="extend"></a>
+# Schema Extension
 
 It is useful to have a common base schema, that all other schemas / models would extend or "inherit" properties from.
 This can be accomplished by using the `Schema.extend` function. When used all properties, virtuals,
