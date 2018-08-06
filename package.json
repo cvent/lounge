@@ -36,7 +36,7 @@
     "grappling-hook-lounge": "~1.0.0",
     "inflection": "^1.8.0",
     "lodash": "^4.17.10",
-    "memoizee": "^0.4.12",
+    "memoizee": "^0.4.13",
     "mpath": "^0.4.1",
     "traverse": "^0.6.6",
     "uuid": "^3.3.2",
