@@ -37,7 +37,7 @@
     "inflection": "^1.8.0",
     "lodash": "^4.17.10",
     "memoizee": "^0.4.12",
-    "mpath": "^0.4.1",
+    "mpath": "^0.5.1",
     "traverse": "^0.6.6",
     "uuid": "^3.3.2",
     "with-callback": "^1.0.2"
