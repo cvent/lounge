@@ -35,7 +35,7 @@
     "escape-string-regexp": "^1.0.5",
     "grappling-hook-lounge": "~1.0.0",
     "inflection": "^1.8.0",
-    "lodash": "^4.17.10",
+    "lodash": "4.17.10",
     "memoizee": "^0.4.12",
     "mpath": "^0.4.1",
     "traverse": "^0.6.6",
