@@ -57,7 +57,7 @@
     "marky": "^1.2.0",
     "mocha": "^5.2.0",
     "nyc": "^12.0.2",
-    "standard": "^11.0.1",
+    "standard": "^12.0.1",
     "validator": "^10.4.0",
     "vuepress": "^0.13.1"
   },
