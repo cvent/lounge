@@ -29,95 +29,96 @@ describe('Model populate tests', function () {
         return done(err)
       }
 
-      lounge.connect({
-        bucket: bucket
-      }, function (err) {
-        if (err) {
-          return done(err)
-        }
-
-        bucket.manager().flush(function (err) {
+      lounge.connect(
+        { bucket: bucket },
+        function (err) {
           if (err) {
             return done(err)
           }
 
-          var companySchema = lounge.schema({
-            id: { type: String, key: true, generate: true, prefix: 'company::' },
-            name: String,
-            streetAddress: String,
-            city: String,
-            country: String,
-            state: String,
-            postalCode: String,
-            founded: Date
-          })
-
-          Company = lounge.model('Company', companySchema)
-
-          var countrySchema = lounge.schema({
-            code: { type: String, key: true, generate: false },
-            name: String
-          })
-
-          var Country = lounge.model('Country', countrySchema)
-
-          var userSchema = lounge.schema({
-            firstName: String,
-            lastName: String,
-            email: { type: String, key: true, generate: false },
-            dateOfBirth: Date,
-            company: Company,
-            location: {
-              city: String,
-              countryCode: Country,
-              country: Object
+          bucket.manager().flush(function (err) {
+            if (err) {
+              return done(err)
             }
+
+            var companySchema = lounge.schema({
+              id: { type: String, key: true, generate: true, prefix: 'company::' },
+              name: String,
+              streetAddress: String,
+              city: String,
+              country: String,
+              state: String,
+              postalCode: String,
+              founded: Date
+            })
+
+            Company = lounge.model('Company', companySchema)
+
+            var countrySchema = lounge.schema({
+              code: { type: String, key: true, generate: false },
+              name: String
+            })
+
+            var Country = lounge.model('Country', countrySchema)
+
+            var userSchema = lounge.schema({
+              firstName: String,
+              lastName: String,
+              email: { type: String, key: true, generate: false },
+              dateOfBirth: Date,
+              company: Company,
+              location: {
+                city: String,
+                countryCode: Country,
+                country: Object
+              }
+            })
+
+            User = lounge.model('User', userSchema)
+
+            var commentSchema = lounge.schema({
+              body: String,
+              user: User
+            })
+
+            Comment = lounge.model('Comment', commentSchema)
+
+            var postSchema = lounge.schema({
+              title: String,
+              body: String,
+              comments: [Comment]
+            })
+
+            Post = lounge.model('Post', postSchema)
+
+            var profileSchema = lounge.schema({
+              firstName: String,
+              lastName: String,
+              email: String
+            })
+
+            Profile = lounge.model('Profile', profileSchema)
+
+            var ticketSchema = lounge.schema({
+              confirmationCode: String,
+              profileId: Profile,
+              profile: Object
+            })
+
+            Ticket = lounge.model('Ticket', ticketSchema)
+
+            var eventSchema = lounge.schema({
+              name: String,
+              ticketIds: [Ticket],
+              tickets: [Object]
+            })
+
+            Event = lounge.model('Event', eventSchema)
+
+            ts.setup(bucket, done)
           })
-
-          User = lounge.model('User', userSchema)
-
-          var commentSchema = lounge.schema({
-            body: String,
-            user: User
-          })
-
-          Comment = lounge.model('Comment', commentSchema)
-
-          var postSchema = lounge.schema({
-            title: String,
-            body: String,
-            comments: [Comment]
-          })
-
-          Post = lounge.model('Post', postSchema)
-
-          var profileSchema = lounge.schema({
-            firstName: String,
-            lastName: String,
-            email: String
-          })
-
-          Profile = lounge.model('Profile', profileSchema)
-
-          var ticketSchema = lounge.schema({
-            confirmationCode: String,
-            profileId: Profile,
-            profile: Object
-          })
-
-          Ticket = lounge.model('Ticket', ticketSchema)
-
-          var eventSchema = lounge.schema({
-            name: String,
-            ticketIds: [Ticket],
-            tickets: [Object]
-          })
-
-          Event = lounge.model('Event', eventSchema)
-
-          ts.setup(bucket, done)
-        })
-      })
+        }
+      )
     })
   })
 
@@ -1520,7 +1521,11 @@ describe('Model populate tests', function () {
       var userId = ts.data.users[0].email
       var userData = ts.data.users[0]
 
-      User.findById(userId, { populate: { path: 'location.countryCode', target: 'location.country' } }, function (err, rdoc, missed) {
+      User.findById(userId, { populate: { path: 'location.countryCode', target: 'location.country' } }, function (
+        err,
+        rdoc,
+        missed
+      ) {
         expect(err).to.not.be.ok
 
         expect(rdoc).to.be.ok
@@ -1636,7 +1641,11 @@ describe('Model populate tests', function () {
       var eventId = ts.data.events[0].id
       var ticketIds = [ts.data.tickets[0].id, ts.data.tickets[1].id, ts.data.tickets[2].id]
 
-      Event.findById(eventId, { populate: { path: 'ticketIds.2.profileId', target: 'tickets.2.profile' } }, function (err, rdoc, missed) {
+      Event.findById(eventId, { populate: { path: 'ticketIds.2.profileId', target: 'tickets.2.profile' } }, function (
+        err,
+        rdoc,
+        missed
+      ) {
         expect(err).to.not.be.ok
         expect(rdoc).to.be.ok
         expect(rdoc).to.be.an('object')
@@ -2940,6 +2949,186 @@ describe('Model populate tests', function () {
 
           expect(missed).to.be.an.instanceof(Array)
           expect(missed.length).to.equal(0)
+          done()
+        })
+      })
+    })
+  })
+
+  describe('regression', function (dene) {
+    it('should populate refs in array with schema having prefix #129', function (done) {
+      const addressSchema = lounge.schema({
+        street: String,
+        city: String,
+        country: String
+      })
+
+      const Address = lounge.model('Address_129_1', addressSchema)
+
+      const blogPostSchema = lounge.schema(
+        {
+          title: String,
+          body: String
+        },
+        {
+          keyPrefix: 'blog::'
+        }
+      )
+
+      const BlogPost = lounge.model('BlogPost_129_1', blogPostSchema)
+
+      const userSchema = lounge.schema({
+        name: String,
+        address: Address,
+        posts: [BlogPost]
+      })
+
+      const User = lounge.model('User_129_1', userSchema)
+
+      const post = new BlogPost({
+        title: 'Foo',
+        body: 'Lorem ipsum'
+      })
+
+      let user = new User({
+        name: 'Bob Smith',
+        posts: [post],
+        address: new Address({
+          street: '123 Fake Street',
+          city: 'Springfield',
+          country: 'USA'
+        })
+      })
+
+      user.posts.push(
+        new BlogPost({
+          title: 'Post 2',
+          body: 'Some more text!'
+        })
+      )
+
+      user.save((e_, savedUser) => {
+        User.findById(savedUser.id, { populate: true }, (err, doc) => {
+          expect(err).to.not.be.ok
+          expect(doc).to.be.ok
+
+          expect(doc.id).to.equal(savedUser.id)
+          expect(doc.name).to.equal('Bob Smith')
+
+          expect(doc.address).to.be.ok
+          expect(doc.address).to.be.an.instanceof(Address)
+          expect(doc.address.id).to.be.ok
+          expect(doc.address.street).to.equal('123 Fake Street')
+          expect(doc.address.city).to.equal('Springfield')
+          expect(doc.address.country).to.equal('USA')
+
+          expect(doc.posts).to.be.ok
+          expect(doc.posts).to.be.an.instanceof(Array)
+          expect(doc.posts[0]).to.be.an.instanceof(BlogPost)
+          expect(doc.posts[0].id).to.be.ok
+          expect(doc.posts[0].title).to.be.ok
+          expect(doc.posts[0].title).to.be.a('string')
+          expect(doc.posts[0].title).to.equal('Foo')
+          expect(doc.posts[1]).to.be.an.instanceof(BlogPost)
+          expect(doc.posts[1].id).to.be.ok
+          expect(doc.posts[1].title).to.be.ok
+          expect(doc.posts[1].title).to.be.a('string')
+          expect(doc.posts[1].title).to.equal('Post 2')
+
+          done()
+        })
+      })
+    })
+
+    it('should populate refs in array with schema having prefix #129', function (done) {
+      const addressSchema = lounge.schema(
+        {
+          street: String,
+          city: String,
+          country: String
+        },
+        {
+          keyPrefix: 'address::'
+        }
+      )
+
+      const Address = lounge.model('Address_129_2', addressSchema)
+
+      const blogPostSchema = lounge.schema(
+        {
+          title: String,
+          body: String
+        },
+        {
+          keyPrefix: 'blog::'
+        }
+      )
+
+      const BlogPost = lounge.model('BlogPost_129_2', blogPostSchema)
+
+      const userSchema = lounge.schema(
+        {
+          name: String,
+          address: Address,
+          posts: [BlogPost]
+        },
+        {
+          keyPrefix: 'user::'
+        }
+      )
+
+      const User = lounge.model('User_129_2', userSchema)
+
+      const post = new BlogPost({
+        title: 'Foo',
+        body: 'Lorem ipsum'
+      })
+
+      let user = new User({
+        name: 'Bob Smith',
+        posts: [post],
+        address: new Address({
+          street: '123 Fake Street',
+          city: 'Springfield',
+          country: 'USA'
+        })
+      })
+
+      user.posts.push(
+        new BlogPost({
+          title: 'Post 2',
+          body: 'Some more text!'
+        })
+      )
+
+      user.save((e_, savedUser) => {
+        User.findById(savedUser.id, { populate: true }, (err, doc) => {
+          expect(err).to.not.be.ok
+          expect(doc).to.be.ok
+
+          expect(doc.id).to.equal(savedUser.id)
+          expect(doc.name).to.equal('Bob Smith')
+
+          expect(doc.address).to.be.ok
+          expect(doc.address).to.be.an.instanceof(Address)
+          expect(doc.address.id).to.be.ok
+          expect(doc.address.street).to.equal('123 Fake Street')
+          expect(doc.address.city).to.equal('Springfield')
+          expect(doc.address.country).to.equal('USA')
+
+          expect(doc.posts).to.be.ok
+          expect(doc.posts).to.be.an.instanceof(Array)
+          expect(doc.posts[0]).to.be.an.instanceof(BlogPost)
+          expect(doc.posts[0].id).to.be.ok
+          expect(doc.posts[0].title).to.be.ok
+          expect(doc.posts[0].title).to.be.a('string')
+          expect(doc.posts[0].title).to.equal('Foo')
+          expect(doc.posts[1]).to.be.an.instanceof(BlogPost)
+          expect(doc.posts[1].id).to.be.ok
+          expect(doc.posts[1].title).to.be.ok
+          expect(doc.posts[1].title).to.be.a('string')
+          expect(doc.posts[1].title).to.equal('Post 2')
+
           done()
         })
       })
