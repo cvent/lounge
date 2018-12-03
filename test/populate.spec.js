@@ -3040,7 +3040,7 @@ describe('Model populate tests', function () {
       })
     })
 
-    it('should populate refs in array with schema having prefix #129', function (done) {
+    it('should populate refs in array with all schemas having prefix #129', function (done) {
       const addressSchema = lounge.schema(
         {
           street: String,
