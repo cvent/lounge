@@ -46,7 +46,7 @@
     "couchbase": "^2.4.0"
   },
   "devDependencies": {
-    "ava": "^0.25.0",
+    "ava": "^1.0.1",
     "benchmark": "^2.1.4",
     "chai": "^4.2.0",
     "couchbase": "^2.6.0",
