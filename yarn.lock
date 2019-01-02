@@ -2741,14 +2741,14 @@ cosmiconfig@^5.0.2:
     parse-json "^4.0.0"
 
 couchbase-driver@^0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/couchbase-driver/-/couchbase-driver-0.5.1.tgz#c5f068f6ccf821ba6fb0805a354420e17bebbcab"
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/couchbase-driver/-/couchbase-driver-0.5.2.tgz#e169200eb1243a3baa3df41c4987366de7991223"
   dependencies:
-    async "^2.6.0"
-    debug "^3.1.0"
+    async "^2.6.1"
+    debug "^3.2.6"
     lodash.defaults "^4.2.0"
     promisify-call "^2.0.4"
-    semver "^5.5.0"
+    semver "^5.6.0"
 
 couchbase@^2.6.0:
   version "2.6.1"
@@ -3002,7 +3002,7 @@ debug@^2.1.2, debug@^2.2.0, debug@^2.3.3, debug@^2.6.1, debug@^2.6.3, debug@^2.6
   dependencies:
     ms "2.0.0"
 
-debug@^3.0.1, debug@^3.1.0:
+debug@^3.0.1, debug@^3.1.0, debug@^3.2.6:
   version "3.2.6"
   resolved "https://registry.yarnpkg.com/debug/-/debug-3.2.6.tgz#e83d17de16d8a7efb7717edbe5fb10135eee629b"
   dependencies:
@@ -7635,7 +7635,7 @@ semver-diff@^2.0.0:
   dependencies:
     semver "^5.0.3"
 
-"semver@2 || 3 || 4 || 5", semver@^5.0.3, semver@^5.1.0, semver@^5.3.0, semver@^5.4.1, semver@^5.5.0:
+"semver@2 || 3 || 4 || 5", semver@^5.0.3, semver@^5.1.0, semver@^5.3.0, semver@^5.4.1, semver@^5.5.0, semver@^5.6.0:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.6.0.tgz#7e74256fbaa49c75aa7c7a205cc22799cac80004"
 
