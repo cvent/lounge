@@ -337,7 +337,7 @@ test('async save fail test', async t => {
     email: 'bob@gmail.com'
   })
 
-  await t.throws(user.save())
+  await t.throwsAsync(async () => user.save())
   process.env.LOUNGE_DEBUG_FORCE_SAVE_FAIL = null
 })
 
