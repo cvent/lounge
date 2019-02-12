@@ -222,7 +222,7 @@ describe('Model index function tests', function () {
       username: String
     })
 
-    userSchema.index(['email', 'username'])
+    userSchema.index([ 'email', 'username' ])
 
     var User = lounge.model('User', userSchema)
 
@@ -579,7 +579,7 @@ describe('Model index function tests', function () {
       firstName: String,
       lastName: String,
       email: { type: String, key: true, generate: false },
-      usernames: [{ type: String, index: true, indexName: 'username' }]
+      usernames: [ { type: String, index: true, indexName: 'username' } ]
     }, {
       refIndexKeyPrefix: 'app::dev::ref::',
       delimiter: '::'
@@ -591,7 +591,7 @@ describe('Model index function tests', function () {
       firstName: 'Joe',
       lastName: 'Smith',
       email: 'joe@gmail.com',
-      usernames: ['js1', 'js2', 'js3']
+      usernames: [ 'js1', 'js2', 'js3' ]
     })
 
     user.save(function (err, savedDoc) {
@@ -615,19 +615,19 @@ describe('Model index function tests', function () {
         var resKeys = Object.keys(indexRes)
 
         _.each(resKeys, function (ik) {
-          var v = indexRes[ik].value
+          var v = indexRes[ ik ].value
           expect(v).to.be.ok
           expect(v.key).to.be.ok
           expect(v.key).to.equal(user.email)
         })
 
-        user.usernames = ['jsnew1', 'js2', 'jsnew3']
+        user.usernames = [ 'jsnew1', 'js2', 'jsnew3' ]
 
         user.index(function (err) {
           expect(err).to.not.be.ok
 
           // check old ones
-          keys = _.map(['js1', 'js3'], function (un) {
+          keys = _.map([ 'js1', 'js3' ], function (un) {
             return userSchema.getRefKey('username', un)
           })
 
@@ -646,7 +646,7 @@ describe('Model index function tests', function () {
               var resKeys = Object.keys(indexRes)
 
               _.each(resKeys, function (ik) {
-                var v = indexRes[ik].value
+                var v = indexRes[ ik ].value
                 expect(v).to.be.ok
                 expect(v.key).to.be.ok
                 expect(v.key).to.equal(user.email)
@@ -667,13 +667,13 @@ describe('Model index function tests', function () {
       firstName: String,
       lastName: String,
       email: { type: String, key: true, generate: false },
-      usernames: [{ type: String, indexName: 'username' }]
+      usernames: [ { type: String, indexName: 'username' } ]
     }, {
       refIndexKeyPrefix: 'app::dev::ref::',
       delimiter: '::'
     })
 
-    userSchema.index(['email', 'usernames'])
+    userSchema.index([ 'email', 'usernames' ])
 
     var User = lounge.model('User', userSchema)
 
@@ -681,7 +681,7 @@ describe('Model index function tests', function () {
       firstName: 'Joe',
       lastName: 'Smith',
       email: 'joe@gmail.com',
-      usernames: ['js1', 'js2', 'js3']
+      usernames: [ 'js1', 'js2', 'js3' ]
     })
 
     user.save(function (err, savedDoc) {
@@ -705,19 +705,19 @@ describe('Model index function tests', function () {
         var resKeys = Object.keys(indexRes)
 
         _.each(resKeys, function (ik) {
-          var v = indexRes[ik].value
+          var v = indexRes[ ik ].value
           expect(v).to.be.ok
           expect(v.key).to.be.ok
           expect(v.key).to.equal(user.email)
         })
 
-        user.usernames = ['jsnew1', 'js2', 'jsnew3']
+        user.usernames = [ 'jsnew1', 'js2', 'jsnew3' ]
 
         user.index(function (err) {
           expect(err).to.not.be.ok
 
           // check old ones
-          keys = _.map(['js1', 'js3'], function (un) {
+          keys = _.map([ 'js1', 'js3' ], function (un) {
             return userSchema.getRefKey('email_and_username', user.email + '_' + un)
           })
 
@@ -736,7 +736,7 @@ describe('Model index function tests', function () {
               var resKeys = Object.keys(indexRes)
 
               _.each(resKeys, function (ik) {
-                var v = indexRes[ik].value
+                var v = indexRes[ ik ].value
                 expect(v).to.be.ok
                 expect(v.key).to.be.ok
                 expect(v.key).to.equal(user.email)
@@ -791,7 +791,7 @@ describe('Model index function tests', function () {
         var k = userSchema.getRefKey('email', user.email)
         bucket.get(k, function (err, indexRes) {
           expect(err).to.not.be.ok
-          checkRes(indexRes, [user.id, user2.id])
+          checkRes(indexRes, [ user.id, user2.id ])
 
           user.email = 'joe2@gmail.com'
 
@@ -802,12 +802,12 @@ describe('Model index function tests', function () {
             k = userSchema.getRefKey('email', 'joe@gmail.com')
             bucket.get(k, function (err, indexRes) {
               expect(err).to.not.be.ok
-              checkRes(indexRes, [user2.id])
+              checkRes(indexRes, [ user2.id ])
 
               k = userSchema.getRefKey('email', user.email)
               bucket.get(k, function (err, indexRes) {
                 expect(err).to.not.be.ok
-                checkRes(indexRes, [user.id])
+                checkRes(indexRes, [ user.id ])
 
                 expect(indexCalled).to.be.ok
 
@@ -827,7 +827,7 @@ describe('Model index function tests', function () {
       username: String
     })
 
-    userSchema.index(['email', 'username'], { indexType: 'array' })
+    userSchema.index([ 'email', 'username' ], { indexType: 'array' })
 
     var User = lounge.model('User', userSchema)
 
@@ -864,7 +864,7 @@ describe('Model index function tests', function () {
         var k = userSchema.getRefKey('email_and_username', user.email + '_' + user.username)
         bucket.get(k, function (err, indexRes) {
           expect(err).to.not.be.ok
-          checkRes(indexRes, [user.id, user2.id])
+          checkRes(indexRes, [ user.id, user2.id ])
 
           user.email = 'joe2@gmail.com'
 
@@ -875,12 +875,12 @@ describe('Model index function tests', function () {
             k = userSchema.getRefKey('email_and_username', 'joe@gmail.com' + '_' + user.username)
             bucket.get(k, function (err, indexRes) {
               expect(err).to.not.be.ok
-              checkRes(indexRes, [user2.id])
+              checkRes(indexRes, [ user2.id ])
 
               k = userSchema.getRefKey('email_and_username', user.email + '_' + user.username)
               bucket.get(k, function (err, indexRes) {
                 expect(err).to.not.be.ok
-                checkRes(indexRes, [user.id])
+                checkRes(indexRes, [ user.id ])
 
                 expect(indexCalled).to.be.ok
 
@@ -934,7 +934,7 @@ describe('Model index function tests', function () {
         var k = userSchema.getRefKey('email', user.email)
         bucket.get(k, function (err, indexRes) {
           expect(err).to.not.be.ok
-          checkRes(indexRes, [user.id, user2.id])
+          checkRes(indexRes, [ user.id, user2.id ])
 
           user.email = 'joe2@gmail.com'
 
@@ -945,12 +945,12 @@ describe('Model index function tests', function () {
             k = userSchema.getRefKey('email', 'joe@gmail.com')
             bucket.get(k, function (err, indexRes) {
               expect(err).to.not.be.ok
-              checkRes(indexRes, [user2.id])
+              checkRes(indexRes, [ user2.id ])
 
               k = userSchema.getRefKey('email', user.email)
               bucket.get(k, function (err, indexRes) {
                 expect(err).to.not.be.ok
-                checkRes(indexRes, [user.id])
+                checkRes(indexRes, [ user.id ])
 
                 expect(indexCalled).to.be.ok
 
@@ -966,19 +966,19 @@ describe('Model index function tests', function () {
   it('should index using array reference document for array index type', function (done) {
     var userSchema = lounge.schema({
       name: String,
-      email: [{ type: String, index: true, indexType: 'array' }]
+      email: [ { type: String, index: true, indexType: 'array' } ]
     })
 
     var User = lounge.model('User', userSchema)
 
     var user = new User({
       name: 'Joe Smith',
-      email: ['joe@gmail.com', 'joe2@gmail.com']
+      email: [ 'joe@gmail.com', 'joe2@gmail.com' ]
     })
 
     var user2 = new User({
       name: 'Joe Jones',
-      email: ['joe2@gmail.com', 'joe3@gmail.com']
+      email: [ 'joe2@gmail.com', 'joe3@gmail.com' ]
     })
 
     var indexCalled = false
@@ -999,7 +999,7 @@ describe('Model index function tests', function () {
       user2.index(function (err, savedDoc) {
         expect(err).to.not.be.ok
 
-        var keys = _.map(['joe@gmail.com', 'joe2@gmail.com', 'joe3@gmail.com'], function (em) {
+        var keys = _.map([ 'joe@gmail.com', 'joe2@gmail.com', 'joe3@gmail.com' ], function (em) {
           return userSchema.getRefKey('email', em)
         })
 
@@ -1007,15 +1007,15 @@ describe('Model index function tests', function () {
           expect(err).to.not.be.ok
 
           var ex = [
-            [user.id],
-            [user.id, user2.id],
-            [user2.id]
+            [ user.id ],
+            [ user.id, user2.id ],
+            [ user2.id ]
           ]
           _.values(indexRes).forEach(function (ir, i) {
-            checkRes(ir, ex[i])
+            checkRes(ir, ex[ i ])
           })
 
-          user.email = ['joe2@gmail.com', 'joe4@gmail.com']
+          user.email = [ 'joe2@gmail.com', 'joe4@gmail.com' ]
 
           user.index(function (err, indexRes) {
             expect(err).to.not.be.ok
@@ -1026,7 +1026,7 @@ describe('Model index function tests', function () {
               expect(err).to.be.ok
               expect(err.code).to.equal(couchbase.errors.keyNotFound)
 
-              var keys = _.map(['joe2@gmail.com', 'joe3@gmail.com', 'joe4@gmail.com'], function (em) {
+              var keys = _.map([ 'joe2@gmail.com', 'joe3@gmail.com', 'joe4@gmail.com' ], function (em) {
                 return userSchema.getRefKey('email', em)
               })
 
@@ -1034,12 +1034,12 @@ describe('Model index function tests', function () {
                 expect(err).to.not.be.ok
 
                 var ex = [
-                  [user.id, user2.id],
-                  [user2.id],
-                  [user.id]
+                  [ user.id, user2.id ],
+                  [ user2.id ],
+                  [ user.id ]
                 ]
                 _.values(indexRes).forEach(function (ir, i) {
-                  checkRes(ir, ex[i])
+                  checkRes(ir, ex[ i ])
                 })
 
                 expect(indexCalled).to.be.ok
@@ -1138,7 +1138,7 @@ describe('Model index function tests', function () {
     var userSchema = lounge.schema({
       name: String,
       email: { type: String, key: true, generate: 'false' },
-      company: [{ type: Company, index: true }]
+      company: [ { type: Company, index: true } ]
     })
 
     var User = lounge.model('User', userSchema)
@@ -1161,7 +1161,7 @@ describe('Model index function tests', function () {
     var user = new User({
       name: 'Joe Smith',
       email: 'joe@gmail.com',
-      company: [company, company2]
+      company: [ company, company2 ]
     })
 
     var indexCalled = false
@@ -1189,7 +1189,7 @@ describe('Model index function tests', function () {
 
         _.values(indexRes).forEach(checkRes)
 
-        user.company = [company2, company3]
+        user.company = [ company2, company3 ]
 
         user.index(function (err, indexRes) {
           expect(err).to.not.be.ok
@@ -1271,7 +1271,7 @@ describe('Model index function tests', function () {
         var k = userSchema.getRefKey('company', user.company.id)
         bucket.get(k, function (err, indexRes) {
           expect(err).to.not.be.ok
-          checkRes(indexRes, [user.email, user2.email])
+          checkRes(indexRes, [ user.email, user2.email ])
 
           user.company = 'company-2-id'
 
@@ -1282,12 +1282,12 @@ describe('Model index function tests', function () {
             k = userSchema.getRefKey('company', company.id)
             bucket.get(k, function (err, indexRes) {
               expect(err).to.not.be.ok
-              checkRes(indexRes, [user2.email])
+              checkRes(indexRes, [ user2.email ])
 
               k = userSchema.getRefKey('company', user.company)
               bucket.get(k, function (err, indexRes) {
                 expect(err).to.not.be.ok
-                checkRes(indexRes, [user.email])
+                checkRes(indexRes, [ user.email ])
 
                 expect(indexCalled).to.be.ok
 
@@ -1310,7 +1310,7 @@ describe('Model index function tests', function () {
 
     var userSchema = lounge.schema({
       name: String,
-      company: [{ type: Company, index: true, indexType: 'array' }]
+      company: [ { type: Company, index: true, indexType: 'array' } ]
     })
 
     var User = lounge.model('User', userSchema)
@@ -1332,12 +1332,12 @@ describe('Model index function tests', function () {
 
     var user = new User({
       name: 'Joe Smith',
-      company: [company, company2]
+      company: [ company, company2 ]
     })
 
     var user2 = new User({
       name: 'Joe Jones',
-      company: [company2, company3]
+      company: [ company2, company3 ]
     })
 
     var indexCalled = false
@@ -1358,7 +1358,7 @@ describe('Model index function tests', function () {
       user2.index(function (err, savedDoc) {
         expect(err).to.not.be.ok
 
-        var keys = _.map([company.id, company2.id, company3.id], function (em) {
+        var keys = _.map([ company.id, company2.id, company3.id ], function (em) {
           return userSchema.getRefKey('company', em)
         })
 
@@ -1366,15 +1366,15 @@ describe('Model index function tests', function () {
           expect(err).to.not.be.ok
 
           var ex = [
-            [user.id],
-            [user.id, user2.id],
-            [user2.id]
+            [ user.id ],
+            [ user.id, user2.id ],
+            [ user2.id ]
           ]
           _.values(indexRes).forEach(function (ir, i) {
-            checkRes(ir, ex[i])
+            checkRes(ir, ex[ i ])
           })
 
-          user.company = [company2, 'company4-id']
+          user.company = [ company2, 'company4-id' ]
 
           user.index(function (err, indexRes) {
             expect(err).to.not.be.ok
@@ -1385,7 +1385,7 @@ describe('Model index function tests', function () {
               expect(err).to.be.ok
               expect(err.code).to.equal(couchbase.errors.keyNotFound)
 
-              var keys = _.map([company2.id, company3.id, 'company4-id'], function (em) {
+              var keys = _.map([ company2.id, company3.id, 'company4-id' ], function (em) {
                 return userSchema.getRefKey('company', em)
               })
 
@@ -1393,12 +1393,12 @@ describe('Model index function tests', function () {
                 expect(err).to.not.be.ok
 
                 var ex = [
-                  [user.id, user2.id],
-                  [user2.id],
-                  [user.id]
+                  [ user.id, user2.id ],
+                  [ user2.id ],
+                  [ user.id ]
                 ]
                 _.values(indexRes).forEach(function (ir, i) {
-                  checkRes(ir, ex[i])
+                  checkRes(ir, ex[ i ])
                 })
 
                 expect(indexCalled).to.be.ok
@@ -1410,5 +1410,243 @@ describe('Model index function tests', function () {
         })
       })
     })
+  })
+
+  it('base schema index should work with schema extend', async function () {
+    const schema = lounge.schema({
+      name: String,
+      event: { type: String, index: true },
+      settings: Object
+    })
+
+    const Foo = lounge.model('Foo', schema)
+
+    let foo = new Foo({
+      name: 'Foo1',
+      event: 'event1',
+      settings: {
+        aa: {
+          bb: 'cc'
+        }
+      }
+    })
+
+    foo = await foo.save({ waitForIndex: true })
+    expect(foo).to.be.ok
+    expect(foo.settings).to.be.ok
+    expect(foo.name).to.equal('Foo1')
+    expect(foo.event).to.equal('event1')
+    expect(foo.settings.aa.bb).to.equal('cc')
+
+    let res = await Foo.findByEvent('event1')
+
+    expect(res).to.be.ok
+    expect(res.settings).to.be.ok
+    expect(res.name).to.equal('Foo1')
+    expect(res.settings.aa.bb).to.equal('cc')
+
+    const schema2 = lounge.schema({
+      settings: {
+        crq: Object,
+        ciq: Object
+      }
+    })
+
+    schema2.extend(schema)
+
+    const Bar = lounge.model('Bar', schema2)
+
+    let bar = new Bar({
+      name: 'Bar1',
+      event: 'event1',
+      settings: {
+        crq: {
+          zz: 'zz'
+        },
+        ciq: {
+          xx: 'xx'
+        }
+      }
+    })
+
+    bar = await bar.save({ waitForIndex: true })
+
+    expect(bar).to.be.ok
+    expect(bar.settings).to.be.ok
+    expect(bar.name).to.equal('Bar1')
+    expect(bar.event).to.equal('event1')
+    expect(bar.settings.crq.zz).to.equal('zz')
+    expect(bar.settings.ciq.xx).to.equal('xx')
+
+    let res2 = await Bar.findByEvent('event1')
+
+    expect(res2).to.be.ok
+    expect(res2.settings).to.be.ok
+    expect(res2.name).to.equal('Bar1')
+    expect(res2.event).to.equal('event1')
+    expect(res2.settings.crq.zz).to.equal('zz')
+    expect(res2.settings.ciq.xx).to.equal('xx')
+
+    let bar2 = new Bar({
+      name: 'Bar2',
+      event: 'event2',
+      settings: {
+        crq: {
+          ff: 'ff'
+        },
+        ciq: {
+          gg: 'gg'
+        }
+      }
+    })
+
+    bar2 = await bar2.save({ waitForIndex: true })
+
+    expect(bar2).to.be.ok
+    expect(bar2.settings).to.be.ok
+    expect(bar2.name).to.equal('Bar2')
+    expect(bar2.event).to.equal('event2')
+    expect(bar2.settings.crq.ff).to.equal('ff')
+    expect(bar2.settings.ciq.gg).to.equal('gg')
+
+    res2 = await Bar.findByEvent('event2')
+
+    expect(res2).to.be.ok
+    expect(res2.settings).to.be.ok
+    expect(res2.name).to.equal('Bar2')
+    expect(res2.event).to.equal('event2')
+    expect(res2.settings.crq.ff).to.equal('ff')
+    expect(res2.settings.ciq.gg).to.equal('gg')
+
+    res2 = await Bar.findByEvent('event1')
+
+    expect(res2).to.be.ok
+    expect(res2.settings).to.be.ok
+    expect(res2.name).to.equal('Bar1')
+    expect(res2.event).to.equal('event1')
+    expect(res2.settings.crq.zz).to.equal('zz')
+    expect(res2.settings.ciq.xx).to.equal('xx')
+
+    res2 = await Bar.findByEvent('event432')
+    expect(res2).to.not.be.ok
+  })
+
+  it('base schema index should work with schema extend with keyPrefix', async function () {
+    const schema = lounge.schema({
+      name: String,
+      event: { type: String, index: true },
+      settings: Object
+    })
+
+    const Foo = lounge.model('Foo', schema)
+
+    let foo = new Foo({
+      name: 'Foo1',
+      event: 'event1',
+      settings: {
+        aa: {
+          bb: 'cc'
+        }
+      }
+    }, { keyPrefix: 'foo::' })
+
+    foo = await foo.save({ waitForIndex: true })
+    expect(foo).to.be.ok
+    expect(foo.settings).to.be.ok
+    expect(foo.name).to.equal('Foo1')
+    expect(foo.event).to.equal('event1')
+    expect(foo.settings.aa.bb).to.equal('cc')
+
+    let res = await Foo.findByEvent('event1')
+
+    expect(res).to.be.ok
+    expect(res.settings).to.be.ok
+    expect(res.name).to.equal('Foo1')
+    expect(res.settings.aa.bb).to.equal('cc')
+
+    const schema2 = lounge.schema({
+      settings: {
+        crq: Object,
+        ciq: Object
+      }
+    }, { keyPrefix: 'bar::' })
+
+    schema2.extend(schema)
+
+    const Bar = lounge.model('Bar', schema2)
+
+    let bar = new Bar({
+      name: 'Bar1',
+      event: 'event1',
+      settings: {
+        crq: {
+          zz: 'zz'
+        },
+        ciq: {
+          xx: 'xx'
+        }
+      }
+    })
+
+    bar = await bar.save({ waitForIndex: true })
+
+    expect(bar).to.be.ok
+    expect(bar.settings).to.be.ok
+    expect(bar.name).to.equal('Bar1')
+    expect(bar.event).to.equal('event1')
+    expect(bar.settings.crq.zz).to.equal('zz')
+    expect(bar.settings.ciq.xx).to.equal('xx')
+
+    let res2 = await Bar.findByEvent('event1')
+
+    expect(res2).to.be.ok
+    expect(res2.settings).to.be.ok
+    expect(res2.name).to.equal('Bar1')
+    expect(res2.event).to.equal('event1')
+    expect(res2.settings.crq.zz).to.equal('zz')
+    expect(res2.settings.ciq.xx).to.equal('xx')
+
+    let bar2 = new Bar({
+      name: 'Bar2',
+      event: 'event2',
+      settings: {
+        crq: {
+          ff: 'ff'
+        },
+        ciq: {
+          gg: 'gg'
+        }
+      }
+    })
+
+    bar2 = await bar2.save({ waitForIndex: true })
+
+    expect(bar2).to.be.ok
+    expect(bar2.settings).to.be.ok
+    expect(bar2.name).to.equal('Bar2')
+    expect(bar2.event).to.equal('event2')
+    expect(bar2.settings.crq.ff).to.equal('ff')
+    expect(bar2.settings.ciq.gg).to.equal('gg')
+
+    res2 = await Bar.findByEvent('event2')
+
+    expect(res2).to.be.ok
+    expect(res2.settings).to.be.ok
+    expect(res2.name).to.equal('Bar2')
+    expect(res2.event).to.equal('event2')
+    expect(res2.settings.crq.ff).to.equal('ff')
+    expect(res2.settings.ciq.gg).to.equal('gg')
+
+    res2 = await Bar.findByEvent('event1')
+
+    expect(res2).to.be.ok
+    expect(res2.settings).to.be.ok
+    expect(res2.name).to.equal('Bar1')
+    expect(res2.event).to.equal('event1')
+    expect(res2.settings.crq.zz).to.equal('zz')
+    expect(res2.settings.ciq.xx).to.equal('xx')
+
+    res2 = await Bar.findByEvent('event432')
+    expect(res2).to.not.be.ok
   })
 })
