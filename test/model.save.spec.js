@@ -1290,7 +1290,7 @@ describe('Model save tests', function () {
       expect(savedCommentDoc.id).to.equal(comment3.id)
       expect(savedCommentDoc.content).to.be.a('string')
       expect(savedCommentDoc.content).to.equal('Comment 3')
-    }
+    })
 
     var comments = [
       new Comment({
