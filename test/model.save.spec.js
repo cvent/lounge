@@ -1273,6 +1273,25 @@ describe('Model save tests', function () {
       dateOfBirth: dob2.toISOString()
     })
 
+    var comment3 = new Comment({
+      content: 'Comment 3',
+      date: new Date('November 12, 2015 05:00:00'),
+      owner: user2.id
+    })
+
+    comment3.save(function (err, savedCommentDoc) {
+      expect(err).to.not.be.ok
+
+      expect(savedCommentDoc).to.be.ok
+      expect(savedCommentDoc).to.be.an('object')
+      expect(savedCommentDoc).to.be.an.instanceof(Comment)
+      expect(savedCommentDoc.id).to.be.ok
+      expect(savedCommentDoc.id).to.be.a('string')
+      expect(savedCommentDoc.id).to.equal(comment3.id)
+      expect(savedCommentDoc.content).to.be.a('string')
+      expect(savedCommentDoc.content).to.equal('Comment 3')
+    }
+
     var comments = [
       new Comment({
         content: 'Comment 1',
@@ -1284,11 +1303,7 @@ describe('Model save tests', function () {
         date: new Date('November 11, 2015 04:00:00'),
         owner: user1
       }),
-      new Comment({
-        content: 'Comment 3',
-        date: new Date('November 12, 2015 05:00:00'),
-        owner: user2.id
-      })
+      comment3.id
     ]
 
     var now = new Date()
