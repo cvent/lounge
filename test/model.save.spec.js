@@ -1273,6 +1273,25 @@ describe('Model save tests', function () {
       dateOfBirth: dob2.toISOString()
     })
 
+    var comment3 = new Comment({
+      content: 'Comment 3',
+      date: new Date('November 12, 2015 05:00:00'),
+      owner: user2.id
+    })
+
+    comment3.save(function (err, savedCommentDoc) {
+      expect(err).to.not.be.ok
+
+      expect(savedCommentDoc).to.be.ok
+      expect(savedCommentDoc).to.be.an('object')
+      expect(savedCommentDoc).to.be.an.instanceof(Comment)
+      expect(savedCommentDoc.id).to.be.ok
+      expect(savedCommentDoc.id).to.be.a('string')
+      expect(savedCommentDoc.id).to.equal(comment3.id)
+      expect(savedCommentDoc.content).to.be.a('string')
+      expect(savedCommentDoc.content).to.equal('Comment 3')
+    })
+
     var comments = [
       new Comment({
         content: 'Comment 1',
@@ -1284,11 +1303,7 @@ describe('Model save tests', function () {
         date: new Date('November 11, 2015 04:00:00'),
         owner: user1
       }),
-      new Comment({
-        content: 'Comment 3',
-        date: new Date('November 12, 2015 05:00:00'),
-        owner: user2.id
-      })
+      comment3.id
     ]
 
     var now = new Date()
@@ -1311,7 +1326,7 @@ describe('Model save tests', function () {
       expect(savedDoc.id).to.be.a('string')
       expect(savedDoc.id).to.equal(post.id)
 
-      var keys = [user1.id, user2.id, comments[0].id, comments[1].id, comments[2].id, post.id]
+      var keys = [user1.id, user2.id, comments[0].id, comments[1].id, comment3.id, post.id]
 
       bucket.getMulti(keys, function (err, docs) {
         expect(err).to.not.be.ok
@@ -1322,7 +1337,7 @@ describe('Model save tests', function () {
         var user2doc = docs[user2.id].value
         var comment1Doc = docs[comments[0].id].value
         var comment2Doc = docs[comments[1].id].value
-        var comment3Doc = docs[comments[2].id].value
+        var comment3Doc = docs[comment3.id].value
         var postDoc = docs[post.id].value
 
         // USER 1
@@ -1361,7 +1376,7 @@ describe('Model save tests', function () {
 
         var commentDocs = _.sortBy([comment1Doc, comment2Doc, comment3Doc], 'id')
 
-        var expectedComments = _.sortBy([comments[0].toObject(), comments[1].toObject(), comments[2].toObject()], 'id')
+        var expectedComments = _.sortBy([comments[0].toObject(), comments[1].toObject(), comment3.toObject()], 'id')
 
         expectedComments = _.map(expectedComments, function (comment) {
           comment.date = comment.date.toISOString()
