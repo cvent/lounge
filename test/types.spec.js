@@ -102,11 +102,20 @@ describe('Type tests', function () {
             default: function () {
               return Date.now() * Math.random()
             }
+          },
+          defaultObject: {
+            type: Object,
+            objectType: { foo: String },
+            default: function () {
+              return { foo: 'bar' }
+            }
           }
         })
 
         var SModel = lounge.model('SModel', schema)
         var o = new SModel()
+
+        expect(o.hasErrors()).to.be.false
 
         var token = o.token
         var stillSameToken = o.token
@@ -115,6 +124,10 @@ describe('Type tests', function () {
         var date = o.defaultDate
         var stillSameDate = o.defaultDate
         expect(date).to.equal(stillSameDate)
+
+        var obj = o.defaultObject
+        var stillSameObject = o.defaultObject
+        expect(_.isEqual(obj, stillSameObject)).to.be.true
         done()
       })
     })
