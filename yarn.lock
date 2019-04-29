@@ -5833,8 +5833,8 @@ move-concurrently@^1.0.1:
     run-queue "^1.0.3"
 
 mpath@^0.5.0:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/mpath/-/mpath-0.5.1.tgz#17131501f1ff9e6e4fbc8ffa875aa7065b5775ab"
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/mpath/-/mpath-0.5.2.tgz#b1eac586dffb5175d2f51ca9aacba35d9940dd41"
 
 ms@2.0.0:
   version "2.0.0"
