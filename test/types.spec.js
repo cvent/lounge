@@ -146,22 +146,6 @@ describe('Type tests', function () {
         expect(user.initials).equal('BW')
         done()
       })
-
-      // it('it should fail because this is empty', function (done) {
-      //   var userSchema = lounge.schema({
-      //     fullName: String,
-      //     initials: {
-      //       type: String,
-      //       default: function () {
-      //         var initials = this.fullName.match(/\b\w/g) || []
-      //         return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase()
-      //       }
-      //     }
-      //   })
-      //   var User = lounge.model('User', userSchema)
-      //   expect(() => new User({fullName: 'Bruce Wayne'})).to.throw(TypeError)
-      //   done()
-      // })
     })
 
     describe('alias', function () {
