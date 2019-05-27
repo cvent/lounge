@@ -28,7 +28,7 @@
     "docs:build": "npm run docs:api && vuepress build docs"
   },
   "dependencies": {
-    "async": "^2.6.1",
+    "async": "^3.0.1",
     "clone": "^2.1.2",
     "couchbase-driver": "^0.5.1",
     "debug": "^4.0.0",
