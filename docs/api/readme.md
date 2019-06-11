@@ -293,7 +293,7 @@ console.log(kitty.modelName) // 'Cat'
 ```
 <a name="Document+_isNew"></a>
 
-### couchbaseDocument._isNew : <code>Boolean</code>
+### couchbaseDocument.\_isNew : <code>Boolean</code>
 Has a key been generated for this document.
 
 **Kind**: instance property of [<code>CouchbaseDocument</code>](#CouchbaseDocument)  
@@ -562,7 +562,7 @@ console.log(kitty.modelName) // 'Cat'
 ```
 <a name="Document+_isNew"></a>
 
-### document._isNew : <code>Boolean</code>
+### document.\_isNew : <code>Boolean</code>
 Has a key been generated for this document.
 
 **Kind**: instance property of [<code>Document</code>](#Document)  
@@ -927,7 +927,7 @@ console.log(kitty.modelName) // 'Cat'
 ```
 <a name="Document+_isNew"></a>
 
-### model._isNew : <code>Boolean</code>
+### model.\_isNew : <code>Boolean</code>
 Has a key been generated for this document.
 
 **Kind**: instance property of [<code>Model</code>](#Model)  
@@ -1150,6 +1150,7 @@ This would be the constructor for the generated models.
 Returns the string representation of <code>CAS</code> value.
 
 **Kind**: instance property of [<code>ModelInstance</code>](#ModelInstance)  
+**Overrides**: [<code>cas</code>](#CouchbaseDocument+cas)  
 **Example**  
 ```js
 console.log(doc.cas) // String: 00000000a71626e4
@@ -1160,18 +1161,21 @@ console.log(doc.cas) // String: 00000000a71626e4
 Gets the database driver of the model
 
 **Kind**: instance property of [<code>ModelInstance</code>](#ModelInstance)  
+**Overrides**: [<code>db</code>](#CouchbaseDocument+db)  
 <a name="CouchbaseDocument+config"></a>
 
 ### modelInstance.config ⇒ <code>Object</code>
 Gets the config object
 
 **Kind**: instance property of [<code>ModelInstance</code>](#ModelInstance)  
+**Overrides**: [<code>config</code>](#CouchbaseDocument+config)  
 <a name="Document+modelName"></a>
 
 ### modelInstance.modelName : <code>String</code>
 The name the name of the model. This is both a static and instance property.
 
 **Kind**: instance property of [<code>ModelInstance</code>](#ModelInstance)  
+**Overrides**: [<code>modelName</code>](#Document+modelName)  
 **Example**  
 ```js
 var schema = lounge.schema({ name: String })
@@ -1182,10 +1186,11 @@ console.log(kitty.modelName) // 'Cat'
 ```
 <a name="Document+_isNew"></a>
 
-### modelInstance._isNew : <code>Boolean</code>
+### modelInstance.\_isNew : <code>Boolean</code>
 Has a key been generated for this document.
 
 **Kind**: instance property of [<code>ModelInstance</code>](#ModelInstance)  
+**Overrides**: [<code>\_isNew</code>](#Document+_isNew)  
 **Example**  
 ```js
 var schema = lounge.schema({ name: String })
@@ -1201,6 +1206,7 @@ console.log(kat._isNew) // false
 Returns the document <code>CAS</code> value.
 
 **Kind**: instance method of [<code>ModelInstance</code>](#ModelInstance)  
+**Overrides**: [<code>getCAS</code>](#CouchbaseDocument+getCAS)  
 **Returns**: <code>String</code> \| <code>Object</code> - the CAS value  
 
 | Param | Type | Description |
@@ -1218,6 +1224,7 @@ console.log(doc.getCAS(true)) // Object: CouchbaseCas<11338961768815788032>
 Save the current model instance. Calls db set function for the model id and saves the properties.
 
 **Kind**: instance method of [<code>ModelInstance</code>](#ModelInstance)  
+**Overrides**: [<code>save</code>](#CouchbaseDocument+save)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1247,6 +1254,7 @@ Update all lookup documents for this document instance. Creates new lookup docum
 and deletes the old ones not needed any more.
 
 **Kind**: instance method of [<code>ModelInstance</code>](#ModelInstance)  
+**Overrides**: [<code>index</code>](#CouchbaseDocument+index)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1262,6 +1270,7 @@ Removes the instance from the database.
 Calls the bucket <code>remove()</code> function. Options can be passed to the driver.
 
 **Kind**: instance method of [<code>ModelInstance</code>](#ModelInstance)  
+**Overrides**: [<code>remove</code>](#CouchbaseDocument+remove)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1280,6 +1289,7 @@ user.remove(function(err, doc) {
 Removes all lookup / index documents for this document.
 
 **Kind**: instance method of [<code>ModelInstance</code>](#ModelInstance)  
+**Overrides**: [<code>removeIndexes</code>](#CouchbaseDocument+removeIndexes)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1293,6 +1303,7 @@ Removes all lookup / index documents for this document.
 Populates this instance given the options
 
 **Kind**: instance method of [<code>ModelInstance</code>](#ModelInstance)  
+**Overrides**: [<code>populate</code>](#CouchbaseDocument+populate)  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -1323,6 +1334,7 @@ User.findBy(userId, (err, user) {
 Helper function to get the document key.
 
 **Kind**: instance method of [<code>ModelInstance</code>](#ModelInstance)  
+**Overrides**: [<code>getDocumentKeyValue</code>](#Document+getDocumentKeyValue)  
 **Returns**: <code>String</code> - document key  
 **Access**: public  
 
@@ -1344,6 +1356,7 @@ console.log(user.getDocumentKeyValue(true)) // user::114477a8-1901-4146-8c90-0fc
 Gets the Document key property name.
 
 **Kind**: instance method of [<code>ModelInstance</code>](#ModelInstance)  
+**Overrides**: [<code>getDocumentKeyKey</code>](#Document+getDocumentKeyKey)  
 **Returns**: <code>String</code> - Document key property name  
 **Access**: public  
 **Example**  
