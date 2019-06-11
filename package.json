@@ -57,7 +57,7 @@
     "mocha": "^6.0.2",
     "nyc": "^14.0.0",
     "standard": "^12.0.0",
-    "validator": "^10.8.0",
+    "validator": "^11.0.0",
     "vuepress": "^1.0.1"
   },
   "ava": {
