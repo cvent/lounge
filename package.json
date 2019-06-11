@@ -28,7 +28,7 @@
     "docs:build": "npm run docs:api && vuepress build docs"
   },
   "dependencies": {
-    "async": "^2.6.1",
+    "async": "^3.0.0",
     "clone": "^2.1.2",
     "couchbase-driver": "^0.5.1",
     "debug": "^4.0.0",
@@ -37,7 +37,7 @@
     "inflection": "^1.8.0",
     "lodash": "^4.17.11",
     "memoizee": "^0.4.14",
-    "mpath": "^0.5.0",
+    "mpath": "^0.6.0",
     "traverse": "^0.6.6",
     "uuid": "^3.3.2",
     "with-callback": "^1.0.2"
@@ -46,19 +46,19 @@
     "couchbase": "^2.4.0"
   },
   "devDependencies": {
-    "ava": "^1.1.0",
+    "ava": "^2.1.0",
     "benchmark": "^2.1.4",
     "chai": "^4.2.0",
     "couchbase": "^2.6.0",
-    "jsdoc-to-markdown": "^4.0.0",
+    "jsdoc-to-markdown": "^5.0.0",
     "lodash3": "~3.10.0",
     "markdown-it-highlightjs": "^3.0.0",
     "marky": "^1.2.0",
     "mocha": "^6.0.2",
-    "nyc": "^14.0.0",
+    "nyc": "^14.1.1",
     "standard": "^12.0.0",
-    "validator": "^10.8.0",
-    "vuepress": "^0.14.8"
+    "validator": "^11.0.0",
+    "vuepress": "^1.0.0"
   },
   "ava": {
     "files": [

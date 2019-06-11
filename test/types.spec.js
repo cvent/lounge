@@ -130,6 +130,76 @@ describe('Type tests', function () {
         expect(_.isEqual(obj, stillSameObject)).to.be.true
         done()
       })
+
+      it('should set the value to default', function (done) {
+        var schema = lounge.schema({
+          token: {
+            type: String,
+            default: 'foo'
+          },
+          obj: {
+            type: Object,
+            default: {
+              foo: 'bar'
+            }
+          }
+        })
+
+        var SModel = lounge.model('SModel123', schema)
+        var o = new SModel()
+
+        expect(o.hasErrors()).to.be.false
+
+        expect(o.token).to.equal('foo')
+        expect(o.obj).to.deep.equal({ foo: 'bar' })
+        done()
+      })
+
+      it('should keep the initialized value', function (done) {
+        var schema = lounge.schema({
+          token: {
+            type: String,
+            default: 'foo'
+          },
+          obj: {
+            type: Object,
+            default: {
+              foo: 'bar'
+            }
+          }
+        })
+
+        var SModel = lounge.model('SModel234', schema)
+        var o = new SModel({
+          token: 'asdf',
+          obj: {
+            prop1: 'asdf'
+          }
+        })
+
+        expect(o.hasErrors()).to.be.false
+
+        expect(o.token).to.equal('asdf')
+        expect(o.obj).to.deep.equal({ prop1: 'asdf' })
+        done()
+      })
+
+      it('it should be ok to use this in default', function (done) {
+        var userSchema = lounge.schema({
+          fullName: String,
+          initials: {
+            type: String,
+            default: function () {
+              var initials = this.fullName.match(/\b\w/g) || []
+              return ((initials.shift() || '') + (initials.pop() || '')).toUpperCase()
+            }
+          }
+        })
+        var User = lounge.model('User', userSchema)
+        var user = new User({ fullName: 'Bruce Wayne' })
+        expect(user.initials).equal('BW')
+        done()
+      })
     })
 
     describe('alias', function () {
