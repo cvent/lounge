@@ -68,7 +68,7 @@ should not really be an issue.
 
 ## Documentation
 
-* [Guide & API Documentation](http://bojand.github.io/lounge)
+* [Guide & API Documentation](http://cvent.github.io/lounge)
 
 ## Tests
 
