@@ -30,7 +30,7 @@
   "dependencies": {
     "async": "^3.0.1",
     "clone": "^2.1.2",
-    "couchbase-driver": "^0.5.1",
+    "couchbase-driver": "^0.5.2",
     "debug": "^4.0.0",
     "escape-string-regexp": "^2.0.0",
     "grappling-hook-lounge": "~1.0.0",
